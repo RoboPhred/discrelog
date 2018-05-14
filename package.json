@@ -1,5 +1,5 @@
 {
-  "name": "react-logic",
+  "name": "discrelog",
   "version": "0.0.1",
   "description": "Logic simulator in React",
   "main": "dist/index.jsx",
@@ -7,12 +7,16 @@
     "build": "webpack --config ./config/webpack.config.js",
     "start": "cross-env NODE_ENV=development webpack-dev-server --config ./config/webpack.config.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RoboPhred/discrelog.git"
+  },
   "keywords": [
     "Discrete Logic",
     "Simulator",
     "Logic Simulator"
   ],
-  "author": "robophred@gmail.com",
+  "author": "William Matthews",
   "license": "MIT",
   "devDependencies": {
     "@types/react": "^16.3.14",
