@@ -1,6 +1,10 @@
 
-export interface State {
+import { SimulatorState, defaultSimulatorState } from "../services/simulator/state";
 
+export interface State {
+    simulator: SimulatorState;
 }
 
-export const defaultState: State = {};
+export const defaultState: State = {
+    simulator: defaultSimulatorState
+};

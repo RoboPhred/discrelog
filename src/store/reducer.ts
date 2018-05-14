@@ -1,8 +1,15 @@
 
-import { Action } from "redux";
+import { Action, combineReducers } from "redux";
+
+import simulator from "../services/simulator/reducer";
 
 import { State, defaultState } from "./state";
 
-export function reducer(state: State = defaultState, action: Action): State {
-    return state;
-}
+const reducer = combineReducers<State>({
+    simulator 
+});
+export default reducer;
+
+// export function reducer(state: State = defaultState, action: Action): State {
+//     return state;
+// }

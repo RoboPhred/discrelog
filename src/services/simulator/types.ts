@@ -1,58 +1,54 @@
 
-export interface NodePinMap {
+import { NodeType } from "./nodes";
+
+export interface InputValueMap {
     [key: string]: boolean;
 }
 
-export interface NodeConnection {
-    /**
-     * The ID of the node of this connection.
-     */
-    targetNode: string;
-
-    /**
-     * The name of the input on the target node.
-     */
-    targetInput: string;
-}
-
-export interface PinConnectionMap {
-    [key: string]: NodeConnection[];
-}
-
-export interface PendingTransition {
-    /**
-     * The tick at which to execute this transition.
-     */
-    tick: number;
-
-    /**
-     * The node on which to transition the pin.
-     */
-    nodeId: string;
-
-    /**
-     * The output pin name.
-     */
-    output: string;
-
-    /**
-     * The value to transition to.
-     */
+export interface OutputTransition {
+    tickOffset: number;
+    outputId: string;
     value: boolean;
 }
 
-export interface EvolveResult {
-    transitions: {
-        tick: number;
-        output: string;
-        value: boolean;
-    }[];
+export interface EvolutionResult {
+    state?: any;
+    transitions?: OutputTransition[];
 }
 
-export type NodeEvolverFunction = (inputs: NodePinMap, tick: number) => EvolveResult;
+export type NodeInteractFunction = (state: any) => EvolutionResult;
+export type NodeEvolverFunction = (state: any, inputs: InputValueMap, tick: number) => EvolutionResult;
 
 export interface NodeDefinition {
-    INPUTS: string[];
-    OUTPUTS: string[];
-    evolve: NodeEvolverFunction;
+    type: string;
+    inputs: string[];
+    outputs: string[];
+    interact?: NodeInteractFunction;
+    evolve?: NodeEvolverFunction;
+}
+
+export interface Node {
+    id: string;
+    type: NodeType;
+    inputEdgeIds: {
+        [key: string]: string
+    }
+    outputEdgeIds: {
+        [key: string]: string;
+    }
+}
+
+export interface EdgeConnection {
+    nodeId: string;
+    port: string;
+}
+export interface Edge {
+    id: string;
+    source: EdgeConnection;
+    targets: EdgeConnection[];
+}
+
+export interface PendingTransition {
+    edgeId: string;
+    value: boolean;
 }

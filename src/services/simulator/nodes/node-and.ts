@@ -1,14 +1,16 @@
 
-import { NodeEvolverFunction } from "../types";
+import { NodeEvolverFunction, EvolutionResult } from "../types";
 
-export const INPUTS = ["A", "B"];
-export const OUTPUTS = ["X"];
-export const evolve: NodeEvolverFunction = (inputs, tick) => {
-    return {
+export const type = "and";
+export const inputs = ["A", "B"];
+export const outputs = ["OUT"];
+export const evolve: NodeEvolverFunction = (state, inputs, tick) => {
+    const result: EvolutionResult = {
         transitions: [{
-            tick: tick + 4,
-            output: "X",
-            value: inputs["A"] && inputs["B"]
+            outputId: "OUT",
+            tickOffset: 4,
+            value: inputs.A && inputs.B
         }]
-    };
+    }
+    return result;
 }
