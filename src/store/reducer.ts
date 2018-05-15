@@ -6,7 +6,13 @@ import simulator from "../services/simulator/reducer";
 import { State, defaultState } from "./state";
 
 const reducer = combineReducers<State>({
-    simulator 
+    services: combineReducers({
+        simulator
+    }),
+    ui(s, a) {
+        if (!s) s = defaultState.ui;
+        return s;
+    }
 });
 export default reducer;
 
