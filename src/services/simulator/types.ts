@@ -31,10 +31,10 @@ export interface Node {
     id: string;
     type: NodeType;
     inputEdgeIds: {
-        [key: string]: string
+        [key: string]: string | null;
     }
     outputEdgeIds: {
-        [key: string]: string;
+        [key: string]: string | null;
     }
 }
 
