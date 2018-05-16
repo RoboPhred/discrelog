@@ -39,8 +39,6 @@ class CircuitField extends React.Component<CircuitFieldProps> {
                 height
             },
             tick,
-            nodes,
-            nodeStates,
             edges,
             edgeValues,
             transitionWindows,
