@@ -84,7 +84,7 @@ class CircuitField extends React.Component<CircuitFieldProps> {
                         x={sp.x}
                         y={sp.y}
                         points={[25, 25, tp.x-sp.x+25, tp.y-sp.y+25]}
-                        stroke="black"
+                        stroke={edgeValues[edge.id] ? "red" : "black"}
                     />
                 )
             })

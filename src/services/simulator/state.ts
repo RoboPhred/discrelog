@@ -112,7 +112,7 @@ export const defaultSimulatorState: SimulatorState = {
             targets: [{nodeId: "and", port: "B"}]
         },
         "output": {
-            id: "out",
+            id: "output",
             source: {nodeId: "and", port: "OUT"}, 
             targets: [{nodeId: "console-out", port: "IN"}]
         }
