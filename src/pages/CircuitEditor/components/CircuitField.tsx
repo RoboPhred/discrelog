@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { connect } from "react-redux";
 
-import { Stage, Layer, Rect, Line } from "react-konva";
+import { Stage, Layer, Group, Line } from "react-konva";
 
 import { State } from "@/store";
 import { SimulatorState } from "@/services/simulator/state";
@@ -11,6 +11,8 @@ import { evolveSim, interactSim } from "@/services/simulator/actions";
 
 import { Position, Size } from "../types";
 import { CircuitEditorState } from "../state";
+
+import CircuitNode from "./CircuitNode";
 
 type CircuitFieldProps = CircuitEditorState & SimulatorState & {
     interactNode(nodeId: string): void;
@@ -48,27 +50,11 @@ class CircuitField extends React.Component<CircuitFieldProps> {
         } = this.props;
 
         const nodeElements = Object.keys(nodePositions).map(key => {
-            const node = nodes[key];
             const { x, y } = nodePositions[key];
-            let fill = "blue";
-            if (node.type === "toggle") {
-                let checked = nodeStates[key].toggleState;
-                fill = checked ? "green" : "red";
-            }
-            else if (node.type === "console") {
-                const edge = node.inputEdgeIds["IN"];
-                fill = edgeValues[edge] ? "green" : "red";
-            }
             return (
-                <Rect
-                    key={node.id}
-                    x={x}
-                    y={y}
-                    width={50}
-                    height={50}
-                    fill={fill}
-                    onClick={interactNode.bind(null, key)}
-                />
+                <Group key={key} x={x} y={y}>
+                    <CircuitNode nodeId={key} onClick={interactNode}/>
+                </Group>
             );
         });
 

@@ -13,8 +13,8 @@ export interface CircuitEditorState {
 
 export const defaultCircuitEditorState: CircuitEditorState = {
     fieldSize: {
-        width: 400,
-        height: 400
+        width: 300,
+        height: 200
     },
     nodePositions: {
         "toggle-a": {
@@ -29,7 +29,7 @@ export const defaultCircuitEditorState: CircuitEditorState = {
             x: 100,
             y: 50
         },
-        "console-out": {
+        "out-led": {
             x: 200,
             y: 50
         }

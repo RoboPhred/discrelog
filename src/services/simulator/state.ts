@@ -83,9 +83,9 @@ export const defaultSimulatorState: SimulatorState = {
                 "OUT": "output"
             }
         },
-        "console-out": {
-            id: "console-out",
-            type: "console",
+        "out-led": {
+            id: "out-led",
+            type: "led",
             inputEdgeIds: {
                 "IN": "output"
             },
@@ -114,7 +114,7 @@ export const defaultSimulatorState: SimulatorState = {
         "output": {
             id: "output",
             source: {nodeId: "and", port: "OUT"}, 
-            targets: [{nodeId: "console-out", port: "IN"}]
+            targets: [{nodeId: "out-led", port: "IN"}]
         }
     },
     edgeValues: {
