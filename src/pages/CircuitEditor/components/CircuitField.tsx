@@ -12,7 +12,7 @@ import { evolveSim, interactSim } from "@/services/simulator/actions";
 import { Position, Size } from "../types";
 import { CircuitEditorState } from "../state";
 
-import CircuitNode from "./CircuitNode";
+import CircuitElement from "./CircuitElement";
 
 type CircuitFieldProps = CircuitEditorState & SimulatorState & {
     interactNode(nodeId: string): void;
@@ -51,7 +51,7 @@ class CircuitField extends React.Component<CircuitFieldProps> {
             const { x, y } = nodePositions[key];
             return (
                 <Group key={key} x={x} y={y}>
-                    <CircuitNode nodeId={key} onClick={interactNode}/>
+                    <CircuitElement nodeId={key} onClick={interactNode}/>
                 </Group>
             );
         });
@@ -70,7 +70,7 @@ class CircuitField extends React.Component<CircuitFieldProps> {
                         points={[25, 25, tp.x-sp.x+25, tp.y-sp.y+25]}
                         stroke={edgeValues[edge.id] ? "red" : "black"}
                     />
-                )
+                );
             })
         }));
 

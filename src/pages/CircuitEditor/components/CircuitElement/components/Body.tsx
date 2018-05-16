@@ -3,13 +3,16 @@ import * as React from "react";
 
 import { connect } from "react-redux";
 
-import { Group, Rect } from "react-konva";
+import { ContainerConfig } from "konva";
+import { KonvaNodeProps, Group, Rect } from "react-konva";
 
 import { Node } from "@/services/simulator/types";
 import { State } from "@/store";
 
-interface CircuitNodeProps {
+interface BodyProps extends ContainerConfig, KonvaNodeProps {
     nodeId: string;
+    width: number;
+    height: number;
     onClick(nodeId: string): void;
 }
 
@@ -17,7 +20,7 @@ interface StateProps {
     node: Node;
     nodeState: any;
 }
-function mapStateToProps(state: State, props: CircuitNodeProps) {
+function mapStateToProps(state: State, props: BodyProps) {
     const { nodeId } = props;
     const simState = state.services.simulator;
     return {
@@ -26,8 +29,8 @@ function mapStateToProps(state: State, props: CircuitNodeProps) {
     }
 }
 
-type Props = CircuitNodeProps & StateProps;
-class CircuitNode extends React.Component<Props> {
+type Props = BodyProps & StateProps;
+class Body extends React.Component<Props> {
 
     constructor(props: Props) {
         super(props);
@@ -37,11 +40,15 @@ class CircuitNode extends React.Component<Props> {
 
     render() {
         const {
+            nodeId,
             node: {
                 type
             },
             nodeState,
-            onClick
+            onClick,
+            width,
+            height,
+            ...groupProps
         } = this.props;
 
         let fill = "blue";
@@ -53,14 +60,16 @@ class CircuitNode extends React.Component<Props> {
             fill = (nodeState || {}).value ? "green" : "red";
         }
         return (
-            <Rect
-                x={0}
-                y={0}
-                width={50}
-                height={50}
-                fill={fill}
-                onClick={this._onClick}
-            />
+            <Group {...groupProps}>
+                <Rect
+                    x={0}
+                    y={0}
+                    width={width}
+                    height={height}
+                    fill={fill}
+                    onClick={this._onClick}
+                />
+            </Group>
         );
     }
 
@@ -70,4 +79,4 @@ class CircuitNode extends React.Component<Props> {
     }
 }
 
-export default connect(mapStateToProps)(CircuitNode);
+export default connect(mapStateToProps)(Body);
