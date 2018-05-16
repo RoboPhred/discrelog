@@ -3,23 +3,16 @@ import * as React from "react";
 
 import { connect } from "react-redux";
 
-import { Stage, Layer, Rect } from "react-konva";
+import { Stage, Layer, Rect, Line } from "react-konva";
 
 import { State } from "@/store";
+import { SimulatorState } from "@/services/simulator/state";
 import { evolveSim, interactSim } from "@/services/simulator/actions";
 
 import { Position, Size } from "../types";
+import { CircuitEditorState } from "../state";
 
-interface CircuitFieldProps {
-    fieldSize: Size,
-    nodePositions: {
-        [key: string]: Position
-    },
-    nodes: State["services"]["simulator"]["nodes"];
-    nodeStates: any;
-    tick: number;
-    edgeValues: {[key: string]: boolean};
-    transitionWindows: any;
+type CircuitFieldProps = CircuitEditorState & SimulatorState & {
     interactNode(nodeId: string): void;
     evolveSim(tickCount: number): void;
 }
@@ -27,11 +20,7 @@ interface CircuitFieldProps {
 function mapStateToProps(state: State): Partial<CircuitFieldProps> {
     return {
         ...state.ui.circuitEditor,
-        nodes: state.services.simulator.nodes,
-        nodeStates: state.services.simulator.nodeStates,
-        tick: state.services.simulator.tick,
-        edgeValues: state.services.simulator.edgeValues,
-        transitionWindows: state.services.simulator.transitionWindows
+        ...state.services.simulator
     };
 }
 
@@ -47,9 +36,10 @@ class CircuitField extends React.Component<CircuitFieldProps> {
                 width,
                 height
             },
+            tick,
             nodes,
             nodeStates,
-            tick,
+            edges,
             edgeValues,
             transitionWindows,
             nodePositions,
@@ -70,7 +60,8 @@ class CircuitField extends React.Component<CircuitFieldProps> {
                 fill = edgeValues[edge] ? "green" : "red";
             }
             return (
-                <Rect 
+                <Rect
+                    key={node.id}
                     x={x}
                     y={y}
                     width={50}
@@ -78,9 +69,27 @@ class CircuitField extends React.Component<CircuitFieldProps> {
                     fill={fill}
                     onClick={interactNode.bind(null, key)}
                 />
-            );   
+            );
         });
-        
+
+        const edgeData = Object.keys(edges).map(x => edges[x]);
+        const connectorElements = ([] as JSX.Element[]).concat(...edgeData.map(edge => {
+            const { source, targets } = edge;
+            const sp = nodePositions[source.nodeId];
+            return targets.map(target => {
+                const tp = nodePositions[target.nodeId];
+                return (
+                    <Line
+                        key={edge.id}
+                        x={sp.x}
+                        y={sp.y}
+                        points={[25, 25, tp.x-sp.x+25, tp.y-sp.y+25]}
+                        stroke="black"
+                    />
+                )
+            })
+        }));
+
         return (
             <div>
                 <div>
@@ -90,6 +99,9 @@ class CircuitField extends React.Component<CircuitFieldProps> {
                     Ticks: {tick} <button onClick={evolveSim.bind(null, 4)}>Tick 4</button>
                 </div>
                 <Stage width={width} height={height}>
+                    <Layer>
+                        {connectorElements}
+                    </Layer>
                     <Layer>
                         {nodeElements}
                     </Layer>
