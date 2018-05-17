@@ -7,6 +7,7 @@ import { Stage, Layer, Group, Line } from "react-konva";
 
 import { State as AppState } from "@/store";
 import { SimulatorState } from "@/services/simulator/state";
+import { Node, PinConnection } from "@/services/simulator/types";
 import { evolveSim, interactNode, wireNode, unwireNode } from "@/services/simulator/actions";
 import { isWired } from "@/services/simulator/helpers";
 
@@ -55,8 +56,8 @@ class CircuitField extends React.Component<CircuitFieldProps, State> {
                 height
             },
             tick,
-            edges,
-            edgeValues,
+            nodes,
+            nodeOutputValues,
             transitionWindows,
             nodePositions,
             interactNode,
@@ -77,23 +78,22 @@ class CircuitField extends React.Component<CircuitFieldProps, State> {
             );
         });
 
-        const edgeData = Object.keys(edges).map(x => edges[x]);
-        const connectorElements = ([] as JSX.Element[]).concat(...edgeData.map(edge => {
-            const { source, targets } = edge;
+        const outputs = aggregateOutputs(Object.keys(nodes).map(x => nodes[x]));
+        const connectorElements = outputs.map((output, i) => {
+            const { source, target } = output;
             const sp = nodePositions[source.nodeId];
-            return targets.map(target => {
-                const tp = nodePositions[target.nodeId];
-                return (
-                    <Line
-                        key={edge.id}
-                        x={sp.x}
-                        y={sp.y}
-                        points={[25, 25, tp.x - sp.x + 25, tp.y - sp.y + 25]}
-                        stroke={edgeValues[edge.id] ? "red" : "black"}
-                    />
-                );
-            })
-        }));
+            const tp = nodePositions[target.nodeId];
+            const value = nodeOutputValues[source.nodeId][source.pin];
+            return (
+                <Line
+                    key={i}
+                    x={sp.x}
+                    y={sp.y}
+                    points={[25, 25, tp.x - sp.x + 25, tp.y - sp.y + 25]}
+                    stroke={value ? "red" : "black"}
+                />
+            );
+        });
 
         return (
             <div>
@@ -112,8 +112,8 @@ class CircuitField extends React.Component<CircuitFieldProps, State> {
                     </Layer>
                 </Stage>
                 <div>
-                    <div>Edge values</div>
-                    <pre><code>{JSON.stringify(edgeValues, null, 2)}</code></pre>
+                    <div>Output values</div>
+                    <pre><code>{JSON.stringify(nodeOutputValues, null, 2)}</code></pre>
                 </div>
                 <div>
                     <div>Pending Transitions</div>
@@ -140,7 +140,7 @@ class CircuitField extends React.Component<CircuitFieldProps, State> {
             return;
         }
 
-        if (isWired(this.props, {nodeId: wireSourceNode, port: wireSourceOutput}, {nodeId, port: pin})) {
+        if (isWired(this.props, { nodeId: wireSourceNode, pin: wireSourceOutput }, { nodeId, pin: pin })) {
             this.props.unwireNode(wireSourceNode, wireSourceOutput, nodeId, pin);
         }
         else {
@@ -155,3 +155,24 @@ class CircuitField extends React.Component<CircuitFieldProps, State> {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CircuitField);
+
+interface Edge {
+    source: PinConnection;
+    target: PinConnection;
+}
+function aggregateOutputs(nodes: Node[]): Edge[] {
+    return nodes.reduce<Edge[]>((a, node) => {
+        for (const outputPin of Object.keys(node.outputConnectionsByPin)) {
+            for (const outputConn of node.outputConnectionsByPin[outputPin]) {
+                a.push({
+                    source: {
+                        nodeId: node.id,
+                        pin: outputPin
+                    },
+                    target: outputConn
+                });
+            }
+        }
+        return a;
+    }, []);
+}

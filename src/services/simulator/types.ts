@@ -30,25 +30,21 @@ export interface NodeDefinition {
 export interface Node {
     id: string;
     type: NodeType;
-    inputEdgeIds: {
-        [key: string]: string | null;
+    inputConnectionsByPin: {
+        [key: string]: PinConnection | null;
     }
-    outputEdgeIds: {
-        [key: string]: string | null;
+    outputConnectionsByPin: {
+        [key: string]: PinConnection[];
     }
 }
 
-export interface EdgeConnection {
+export interface PinConnection {
     nodeId: string;
-    port: string;
-}
-export interface Edge {
-    id: string;
-    source: EdgeConnection;
-    targets: EdgeConnection[];
+    pin: string;
 }
 
 export interface PendingTransition {
-    edgeId: string;
+    nodeId: string;
+    outputPinId: string;
     value: boolean;
 }

@@ -6,7 +6,7 @@ import binarySearch from "binary-search";
 import uuidV4 from "uuid/v4";
 
 import {
-    Node, Edge
+    Node, PinConnection
 } from "./types";
 
 import {
@@ -31,19 +31,18 @@ import { PendingTransition, InputValueMap, EvolutionResult } from "./types";
 
 import { Nodes } from "./nodes";
 
-const wireAction = produce((state: SimulatorState, action: WireNodeAction) => {
+const wireNodeReducer = produce((state: SimulatorState, action: WireNodeAction) => {
     const {
         sourceNodeId,
-        sourceOutput,
+        sourcePin,
         targetNodeId,
-        targetInput
+        targetPin
     } = action.payload;
 
     const {
         tick,
-        edges,
         nodeStates,
-        edgeValues,
+        nodeOutputValues,
         transitionWindows
     } = state;
 
@@ -54,73 +53,38 @@ const wireAction = produce((state: SimulatorState, action: WireNodeAction) => {
         return;
     }
 
-    // Only one source per input
-    if (targetNode.inputEdgeIds[targetInput] != null) {
+    // Only one source per input.
+    if (targetNode.inputConnectionsByPin[targetPin]) {
         return;
     }
 
-    let edgeId = sourceNode.outputEdgeIds[sourceOutput];
-    let edge: Edge;
-    if (edgeId) {
-        // Edge exists
-        edge = edges[edgeId];
-        if (edge.targets.some(c => c.nodeId === targetNodeId && c.port === targetInput)) {
-            // Already wired in.
-            return;
-        }
-    }
-    else {
-        // No edge hooked up to output.  Create one and
-        //  apply it to the source node.
-        edgeId = uuidV4();
-        edge = {
-            id: edgeId,
-            source: { nodeId: sourceNodeId, port: sourceOutput },
-            targets: []
-        };
-        edges[edgeId] = edge;
-        edgeValues[edgeId] = false;
-        sourceNode.outputEdgeIds[sourceOutput] = edgeId;
-    }
+    // Tell the target about the source.
+    targetNode.inputConnectionsByPin[targetPin] = {
+        nodeId: sourceNodeId,
+        pin: sourcePin
+    };
 
-    // Add the new target
-    edge.targets.push({
+    // Tell the source about the target.
+    sourceNode.outputConnectionsByPin[sourcePin].push({
         nodeId: targetNodeId,
-        port: targetInput
+        pin: targetPin
     });
 
-    // Tell the target about its new edge
-    targetNode.inputEdgeIds[targetInput] = edgeId;
-
     // Evolve with the new inputs.
-    const type = Nodes[targetNode.type];
-    if (type && type.evolve) {
-        const inputs: InputValueMap = {};
-        for (const input of Object.keys(targetNode.inputEdgeIds)) {
-            const edgeId = targetNode.inputEdgeIds[input];
-            inputs[input] = edgeId ? edgeValues[edgeId] : false;
-        }
-
-        // TODO: Provide frozen state.  The state passed to this is currently
-        //  the immer mutable record.
-        const result = type.evolve(nodeStates[targetNodeId] || {}, inputs, tick);
-        applyNodeEvolution(targetNode, tick, result, nodeStates, transitionWindows);
-    }
+    evolveNode(state, targetNode);
 });
 
-const unwireAction = produce((state: SimulatorState, action: UnwireNodeAction) => {
+const unwireNodeReducer = produce((state: SimulatorState, action: UnwireNodeAction) => {
     const {
         sourceNodeId,
-        sourceOutput,
+        sourcePin,
         targetNodeId,
-        targetInput
+        targetPin
     } = action.payload;
 
     const {
         tick,
-        edges,
         nodeStates,
-        edgeValues,
         transitionWindows
     } = state;
 
@@ -131,55 +95,32 @@ const unwireAction = produce((state: SimulatorState, action: UnwireNodeAction) =
         return;
     }
 
-    const edgeId = sourceNode.outputEdgeIds[sourceOutput];
-    if (!edgeId) {
+    const targetConn = targetNode.inputConnectionsByPin[targetPin];
+    if (!targetConn) {
         return;
     }
 
-    const edge = edges[edgeId];
-    if (!edge) {
+    if (targetConn.nodeId !== sourceNodeId || targetConn.pin !== sourcePin) {
+        return;
+    }
+    targetNode.inputConnectionsByPin[targetPin] = null;
+
+    const outConns = sourceNode.outputConnectionsByPin[sourcePin];
+    if (!outConns) {
         return;
     }
 
-    const connIndex = edge.targets.findIndex(c => c.nodeId === targetNodeId && c.port === targetInput);
-    if (connIndex === -1) {
+    const sourceConnIndex = outConns.findIndex(c => c.nodeId === targetNodeId && c.pin === targetPin);
+    if (sourceConnIndex === -1) {
         return;
     }
-
-    // Disconnect the edge from the target.
-    targetNode.inputEdgeIds[targetInput] = null;
-
-    if (edge.targets.length === 1) {
-        // If this was the last connection, remove the edge.
-        delete edges[edgeId];
-        delete edgeValues[edgeId];
-
-        // Since we are removing the edge, we have to remove
-        //  the reference on the source node as well.
-        sourceNode.outputEdgeIds[sourceOutput] = null;
-    }
-    else {
-        // Otherwise, remove the target.
-        edge.targets.splice(connIndex, 1);
-    }
+    outConns.splice(sourceConnIndex, 1);
 
     // Evolve with the new inputs.
-    const type = Nodes[targetNode.type];
-    if (type && type.evolve) {
-        const inputs: InputValueMap = {};
-        for (const input of Object.keys(targetNode.inputEdgeIds)) {
-            const edgeId = targetNode.inputEdgeIds[input];
-            inputs[input] = edgeId ? edgeValues[edgeId] : false;
-        }
-
-        // TODO: Provide frozen state.  The state passed to this is currently
-        //  the immer mutable record.
-        const result = type.evolve(nodeStates[targetNodeId] || {}, inputs, tick);
-        applyNodeEvolution(targetNode, tick, result, nodeStates, transitionWindows);
-    }
+    evolveNode(state, targetNode);
 });
 
-const interactAction = produce((state: SimulatorState, action: InteractNodeAction) => {
+const interactNodeAction = produce((state: SimulatorState, action: InteractNodeAction) => {
     const {
         nodeId
     } = action.payload;
@@ -200,7 +141,7 @@ const interactAction = produce((state: SimulatorState, action: InteractNodeActio
     return;
 });
 
-const evolveAction = produce((state: SimulatorState, action: EvolveSimAction) => {
+const evolveSimReducer = produce((state: SimulatorState, action: EvolveSimAction) => {
     const {
         tickCount
     } = action.payload;
@@ -208,8 +149,7 @@ const evolveAction = produce((state: SimulatorState, action: EvolveSimAction) =>
         tick,
         nodes,
         nodeStates,
-        edges,
-        edgeValues,
+        nodeOutputValues,
         transitionWindows,
     } = state;
 
@@ -223,31 +163,23 @@ const evolveAction = produce((state: SimulatorState, action: EvolveSimAction) =>
 
         // apply the transitions for this tick window.
         for (const transition of window.transitions) {
-            const { edgeId, value } = transition;
-            if (edgeValues[edgeId] !== value) {
+            const { nodeId, outputPinId, value } = transition;
+            const node = nodes[nodeId];
+            if(!node) {
+                continue;
+            }
+
+            if (nodeOutputValues[nodeId][outputPinId] !== value) {
                 // Track what nodes we need to evolve as a result of this state change.
-                edgeValues[edgeId] = value;
-                const targetNodes = edges[edgeId].targets;
+                nodeOutputValues[nodeId][outputPinId] = value;
+                const targetNodes = node.outputConnectionsByPin[outputPinId];
                 targetNodes.forEach(conn => evolveNodes.add(conn.nodeId));
             }
         }
 
         // Evolve affected nodes.
         for (const nodeId of evolveNodes) {
-            const node = nodes[nodeId];
-            const type = Nodes[node.type];
-            if (!type || !type.evolve) {
-                continue;
-            }
-
-            const inputs: InputValueMap = {};
-            for (const input of Object.keys(node.inputEdgeIds)) {
-                const edgeId = node.inputEdgeIds[input];
-                inputs[input] = edgeId ? edgeValues[edgeId] : false;
-            }
-
-            const result = type.evolve(nodeStates[nodeId] || {}, inputs, tick);
-            applyNodeEvolution(node, tick, result, nodeStates, transitionWindows);
+            evolveNode(state, nodeId);
         }
     }
 
@@ -260,16 +192,57 @@ export default function simulatorReducer(
 ): SimulatorState {
     switch (action.type) {
         case ACTION_WIRE:
-            return wireAction(state, action);
+            return wireNodeReducer(state, action);
         case ACTION_UNWIRE:
-            return unwireAction(state, action);
+            return unwireNodeReducer(state, action);
         case ACTION_INTERACT:
-            return interactAction(state, action);
+            return interactNodeAction(state, action);
         case ACTION_EVOLVE:
-            return evolveAction(state, action);
+            return evolveSimReducer(state, action);
     }
     return state;
 };
+
+/**
+ * Determines the next transitions for a given node based on its current
+ * inputs.
+ */
+function evolveNode(state: SimulatorState, node: string | Node): void {
+    if (typeof node === "string") {
+        node = state.nodes[node];
+    }
+
+    const {
+        tick,
+        nodeStates,
+        nodeOutputValues,
+        transitionWindows
+    } = state;
+
+    // Evolve with the new inputs.
+    const type = Nodes[node.type];
+    if (type && type.evolve) {
+        const inputs: InputValueMap = {};
+        for (const inputPin of Object.keys(node.inputConnectionsByPin)) {
+            const inputConn = node.inputConnectionsByPin[inputPin];
+            if (!inputConn) {
+                inputs[inputPin] = false;
+                continue;
+            }
+            const {
+                nodeId: sourceNodeId,
+                pin: sourcePin
+            } = inputConn;
+
+            inputs[inputPin] = nodeOutputValues[sourceNodeId][sourcePin];
+        }
+
+        // TODO: Provide frozen state.  The state passed to this is currently
+        //  the immer mutable record.
+        const result = type.evolve(nodeStates[node.id] || {}, inputs, tick);
+        applyNodeEvolution(node, tick, result, nodeStates, transitionWindows);
+    }
+}
 
 function applyNodeEvolution(
     node: Node,
@@ -286,19 +259,14 @@ function applyNodeEvolution(
         for (const transition of evolution.transitions) {
             // Register the transition.
             const transitionTick = tick + transition.tickOffset;
-            const edgeId = node.outputEdgeIds[transition.outputId];
-
-            if (edgeId == null) {
-                // Edge is not wired up.
-                continue;
-            }
 
             // Warning: getWindow mutates newTransitionWindows.
             //  We currently work off a clone of the object, but we should make this
             //  only clone where needed. 
             const transitionWindow = getWindow(transitionWindows, transitionTick);
             transitionWindow.transitions.push({
-                edgeId,
+                nodeId: node.id,
+                outputPinId: transition.outputId,
                 value: transition.value
             });
         }

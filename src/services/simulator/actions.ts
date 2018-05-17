@@ -9,25 +9,25 @@ export const interactNode = (nodeId: string) => ({type: ACTION_INTERACT, payload
 export type InteractNodeAction = ReturnType<typeof interactNode>;
 
 export const ACTION_WIRE = "@sim/wire" as "@sim/wire";
-export const wireNode = (sourceNodeId: string, sourceOutput: string, targetNodeId: string, targetInput: string) => ({
+export const wireNode = (sourceNodeId: string, sourcePin: string, targetNodeId: string, targetPin: string) => ({
     type: ACTION_WIRE,
     payload: {
         sourceNodeId,
-        sourceOutput,
+        sourcePin,
         targetNodeId,
-        targetInput
+        targetPin
     }
 });
 export type WireNodeAction = ReturnType<typeof wireNode>;
 
 export const ACTION_UNWIRE = "@sim/unwire" as "@sim/unwire";
-export const unwireNode = (sourceNodeId: string, sourceOutput: string, targetNodeId: string, targetInput: string) => ({
+export const unwireNode = (sourceNodeId: string, sourcePin: string, targetNodeId: string, targetPin: string) => ({
     type: ACTION_UNWIRE,
     payload: {
         sourceNodeId,
-        sourceOutput,
+        sourcePin,
         targetNodeId,
-        targetInput
+        targetPin
     }
 });
 export type UnwireNodeAction = ReturnType<typeof unwireNode>;
