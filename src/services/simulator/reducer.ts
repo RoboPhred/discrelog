@@ -259,10 +259,6 @@ function applyNodeEvolution(
         for (const transition of evolution.transitions) {
             // Register the transition.
             const transitionTick = tick + transition.tickOffset;
-
-            // Warning: getWindow mutates newTransitionWindows.
-            //  We currently work off a clone of the object, but we should make this
-            //  only clone where needed. 
             const transitionWindow = getWindow(transitionWindows, transitionTick);
             transitionWindow.transitions.push({
                 nodeId: node.id,
