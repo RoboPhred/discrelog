@@ -31,13 +31,6 @@ function mapStateToProps(state: State, props: BodyProps) {
 
 type Props = BodyProps & StateProps;
 class Body extends React.Component<Props> {
-
-    constructor(props: Props) {
-        super(props);
-
-        this._onClick = this._onClick.bind(this);
-    }
-
     render() {
         const {
             nodeId,
@@ -67,15 +60,10 @@ class Body extends React.Component<Props> {
                     width={width}
                     height={height}
                     fill={fill}
-                    onClick={this._onClick}
+                    onClick={onClick}
                 />
             </Group>
         );
-    }
-
-    private _onClick() {
-        const { nodeId, onClick } = this.props;
-        onClick(nodeId);
     }
 }
 

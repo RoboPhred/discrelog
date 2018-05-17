@@ -29,7 +29,7 @@ export default function simulatorReducer(
     state: SimulatorState = defaultSimulatorState,
     action: Actions
 ): SimulatorState {
-    switch(action.type) {
+    switch (action.type) {
         case ACTION_WIRE: {
             const {
                 sourceNodeId,
@@ -39,7 +39,11 @@ export default function simulatorReducer(
             } = action.payload;
 
             const {
-                edges
+                tick,
+                edges,
+                nodeStates,
+                edgeValues,
+                transitionWindows
             } = state;
 
             let sourceNode = state.nodes[sourceNodeId];
@@ -58,7 +62,7 @@ export default function simulatorReducer(
             let edge: Edge;
             if (edgeId) {
                 // Edge exists, clone it
-                edge = {...edges[edgeId]};
+                edge = { ...edges[edgeId] };
             }
             else {
                 // No edge hooked up to output.  Create one and
@@ -66,7 +70,7 @@ export default function simulatorReducer(
                 edgeId = uuidV4();
                 edge = {
                     id: edgeId,
-                    source: {nodeId: sourceNodeId, port: sourceOutput},
+                    source: { nodeId: sourceNodeId, port: sourceOutput },
                     targets: []
                 };
                 sourceNode = {
@@ -97,6 +101,25 @@ export default function simulatorReducer(
                     [targetInput]: edgeId
                 }
             };
+            
+            // TODO: do not clone unless needed.
+            const newNodeStates = { ...nodeStates };
+            const newTransitionWindows = transitionWindows.map(x => ({
+                tick: x.tick,
+                transitions: [...x.transitions]
+            }));
+
+            const type = Nodes[targetNode.type];
+            if (type && type.evolve) {
+                const inputs: InputValueMap = {};
+                for (const input of Object.keys(targetNode.inputEdgeIds)) {
+                    const edgeId = targetNode.inputEdgeIds[input];
+                    inputs[input] = edgeId ? edgeValues[edgeId] : false;
+                }
+
+                const result = type.evolve(newNodeStates[targetNodeId] || {}, inputs, tick);
+                applyNodeEvolution(targetNode, tick, result, newNodeStates, newTransitionWindows);
+            }
 
             return {
                 ...state,
@@ -108,7 +131,9 @@ export default function simulatorReducer(
                     ...state.nodes,
                     [sourceNodeId]: sourceNode,
                     [targetNodeId]: targetNode
-                }
+                },
+                nodeStates: newNodeStates,
+                transitionWindows: newTransitionWindows
             };
         }
         case ACTION_UNWIRE: {
@@ -120,7 +145,11 @@ export default function simulatorReducer(
             } = action.payload;
 
             const {
-                edges
+                tick,
+                edges,
+                nodeStates,
+                edgeValues,
+                transitionWindows
             } = state;
 
             let sourceNode = state.nodes[sourceNodeId];
@@ -155,6 +184,26 @@ export default function simulatorReducer(
 
             // TODO: Delete edge if targets is zero.
 
+
+            // TODO: do not clone unless needed.
+            const newNodeStates = { ...nodeStates };
+            const newTransitionWindows = transitionWindows.map(x => ({
+                tick: x.tick,
+                transitions: [...x.transitions]
+            }));
+
+            const type = Nodes[targetNode.type];
+            if (type && type.evolve) {
+                const inputs: InputValueMap = {};
+                for (const input of Object.keys(targetNode.inputEdgeIds)) {
+                    const edgeId = targetNode.inputEdgeIds[input];
+                    inputs[input] = edgeId ? edgeValues[edgeId] : false;
+                }
+
+                const result = type.evolve(newNodeStates[targetNodeId] || {}, inputs, tick);
+                applyNodeEvolution(targetNode, tick, result, newNodeStates, newTransitionWindows);
+            }
+
             return {
                 ...state,
                 nodes: {
@@ -170,7 +219,9 @@ export default function simulatorReducer(
                             ...edge.targets.slice(connIndex + 1)
                         ]
                     }
-                }
+                },
+                nodeStates: newNodeStates,
+                transitionWindows: newTransitionWindows
             };
         }
         case ACTION_INTERACT: {
@@ -191,7 +242,7 @@ export default function simulatorReducer(
             }
 
             // TODO: do not clone unless needed.
-            const newNodeStates = {...nodeStates};
+            const newNodeStates = { ...nodeStates };
             const newTransitionWindows = transitionWindows.map(x => ({
                 tick: x.tick,
                 transitions: [...x.transitions]
@@ -222,8 +273,8 @@ export default function simulatorReducer(
             const endTick = tick + tickCount;
 
             // TODO: do not clone unless needed.
-            const newNodeStates = {...nodeStates};
-            const newEdgeValues = {...edgeValues};
+            const newNodeStates = { ...nodeStates };
+            const newEdgeValues = { ...edgeValues };
             const newTransitionWindows = transitionWindows.map(x => ({
                 tick: x.tick,
                 transitions: [...x.transitions]
@@ -234,7 +285,7 @@ export default function simulatorReducer(
             for (const window of windows) {
                 const tick = window.tick;
                 const evolveNodes = new Set<string>();
-                
+
                 // apply the transitions for this tick window.
                 for (const transition of window.transitions) {
                     const { edgeId, value } = transition;
@@ -253,7 +304,7 @@ export default function simulatorReducer(
                     if (!type || !type.evolve) {
                         continue;
                     }
-                    
+
                     const inputs: InputValueMap = {};
                     for (const input of Object.keys(node.inputEdgeIds)) {
                         const edgeId = node.inputEdgeIds[input];
@@ -284,7 +335,7 @@ function applyNodeEvolution(
     node: Node,
     tick: number,
     evolution: EvolutionResult,
-    nodeStates: {[key: string]: any},
+    nodeStates: { [key: string]: any },
     transitionWindows: TransitionWindow[]
 ) {
     if (evolution.state) {
@@ -331,7 +382,7 @@ function getWindow(windows: TransitionWindow[], tick: number): TransitionWindow 
 
 function popWhile<T>(items: T[], pickWhile: (item: T) => boolean): T[] {
     const result = [];
-    while(items.length > 0) {
+    while (items.length > 0) {
         const item = items.pop()!;
         if (!pickWhile(item)) {
             items.unshift(item);

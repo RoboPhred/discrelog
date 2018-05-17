@@ -15,7 +15,8 @@ import Pin from "./components/Pin";
 
 export interface CircuitNodePinoutProps extends ContainerConfig, KonvaNodeProps {
     nodeId: string;
-    onClick(nodeId: string): void;
+    onClick(): void;
+    onPinClick(direction: "input" | "output", pin: string): void;
 }
 
 interface StateProps {
@@ -39,6 +40,7 @@ class CircuitElement extends React.Component<Props> {
             nodeId,
             node,
             onClick,
+            onPinClick,
             ...groupProps
         } = this.props;
 
@@ -60,6 +62,7 @@ class CircuitElement extends React.Component<Props> {
                     length={PIN_LENGTH}
                     x={0}
                     y={inputFirstY + PIN_PADDING * i}
+                    onClick={onPinClick.bind(null, "input", name)}
                 />
             );
         });
@@ -74,6 +77,7 @@ class CircuitElement extends React.Component<Props> {
                     length={PIN_LENGTH}
                     x={BODY_WIDTH + PIN_LENGTH}
                     y={outputFirstY + PIN_PADDING * i}
+                    onClick={onPinClick.bind(null, "output", name)}
                 />
             );
         });

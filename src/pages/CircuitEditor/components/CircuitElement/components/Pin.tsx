@@ -6,6 +6,7 @@ import { KonvaNodeProps, Group, Circle, Line } from "react-konva";
 export interface PinProps extends ContainerConfig, KonvaNodeProps {
     orientation: "left" | "right";
     length: number;
+    onClick(): void;
 }
 
 const PIN_CIRCLE_RADIUS = 4;
@@ -17,6 +18,7 @@ class Pin extends React.Component<Props> {
         const {
             orientation,
             length,
+            onClick,
             ...groupProps
         } = this.props;
         const toRight = orientation === "right";
@@ -34,6 +36,7 @@ class Pin extends React.Component<Props> {
                     y={0}
                     radius={PIN_CIRCLE_RADIUS}
                     fill="black"
+                    onClick={onClick}
                 />
             </Group>
         );
