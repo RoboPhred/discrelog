@@ -7,7 +7,7 @@ import { Stage, Layer, Group, Line } from "react-konva";
 
 import { State as AppState } from "@/store";
 import { SimulatorState } from "@/services/simulator/state";
-import { evolveSim, interactSim, wireNode, unwireNode } from "@/services/simulator/actions";
+import { evolveSim, interactNode, wireNode, unwireNode } from "@/services/simulator/actions";
 import { isWired } from "@/services/simulator/helpers";
 
 import { Position, Size } from "../types";
@@ -30,7 +30,7 @@ function mapStateToProps(state: AppState): Partial<CircuitFieldProps> {
 }
 
 const mapDispatchToProps: Partial<CircuitFieldProps> = {
-    interactNode: interactSim,
+    interactNode: interactNode,
     evolveSim,
     wireNode,
     unwireNode
