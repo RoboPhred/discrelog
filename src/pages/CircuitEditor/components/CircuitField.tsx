@@ -9,6 +9,7 @@ import { State as AppState } from "@/store";
 import { SimulatorState } from "@/services/simulator/state";
 import { evolveSim, interactNode, wireNode, unwireNode } from "@/services/simulator/actions";
 import { isWired } from "@/services/simulator/helpers";
+import { Nodes } from "@/services/simulator/nodes";
 
 import { moveNode } from "../actions";
 
@@ -59,6 +60,7 @@ class CircuitField extends React.Component<CircuitFieldProps, State> {
                 height
             },
             tick,
+            nodes,
             edges,
             edgeValues,
             transitionWindows,
@@ -90,15 +92,23 @@ class CircuitField extends React.Component<CircuitFieldProps, State> {
         const edgeData = Object.keys(edges).map(x => edges[x]);
         const connectorElements = ([] as JSX.Element[]).concat(...edgeData.map(edge => {
             const { source, targets } = edge;
-            const sp = nodePositions[source.nodeId];
+            const sourceNode = nodes[source.nodeId];
+            const sourceType = Nodes[sourceNode.type];
+            const sp = {...nodePositions[source.nodeId]};
+            const spp = sourceType && sourceType.outputs[source.port] ? sourceType.outputs[source.port] : {x: 0, y: 0};
+            sp.x += spp.x;
+            sp.y += spp.y;
             return targets.map(target => {
-                const tp = nodePositions[target.nodeId];
+                const targetNode = nodes[target.nodeId];
+                const targetType = Nodes[targetNode.type];
+                const tp = {...nodePositions[target.nodeId]};
+                const tpp = targetType && targetType.inputs[target.port] ? targetType.inputs[target.port] : {x: 0, y: 0};
+                tp.x += tpp.x;
+                tp.y += tpp.y;
                 return (
                     <Line
                         key={edge.id}
-                        x={sp.x}
-                        y={sp.y}
-                        points={[25, 25, tp.x - sp.x + 25, tp.y - sp.y + 25]}
+                        points={[sp.x, sp.y, tp.x, tp.y]}
                         stroke={edgeValues[edge.id] ? "red" : "black"}
                     />
                 );
