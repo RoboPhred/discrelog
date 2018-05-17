@@ -10,6 +10,8 @@ import { SimulatorState } from "@/services/simulator/state";
 import { evolveSim, interactNode, wireNode, unwireNode } from "@/services/simulator/actions";
 import { isWired } from "@/services/simulator/helpers";
 
+import { moveNode } from "../actions";
+
 import { Position, Size } from "../types";
 import { CircuitEditorState } from "../state";
 
@@ -20,6 +22,7 @@ type CircuitFieldProps = CircuitEditorState & SimulatorState & {
     evolveSim(tickCount: number): void;
     wireNode: typeof wireNode;
     unwireNode: typeof unwireNode;
+    moveNode: typeof moveNode;
 }
 
 function mapStateToProps(state: AppState): Partial<CircuitFieldProps> {
@@ -33,7 +36,8 @@ const mapDispatchToProps: Partial<CircuitFieldProps> = {
     interactNode: interactNode,
     evolveSim,
     wireNode,
-    unwireNode
+    unwireNode,
+    moveNode
 };
 
 interface State {
@@ -60,7 +64,8 @@ class CircuitField extends React.Component<CircuitFieldProps, State> {
             transitionWindows,
             nodePositions,
             interactNode,
-            evolveSim
+            evolveSim,
+            moveNode
         } = this.props;
 
         const nodeElements = Object.keys(nodePositions).map(key => {
@@ -68,9 +73,14 @@ class CircuitField extends React.Component<CircuitFieldProps, State> {
             return (
                 <CircuitElement
                     key={key}
+                    nodeId={key}
                     x={x}
                     y={y}
-                    nodeId={key}
+                    draggable
+                    onDragMove={e => {
+                        const pos = e.target.getAbsolutePosition();
+                        moveNode(key, pos.x, pos.y);
+                    }}
                     onClick={interactNode.bind(null, key)}
                     onPinClick={this._onPinClick.bind(this, key)}
                 />

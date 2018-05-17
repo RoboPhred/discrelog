@@ -1,21 +1,17 @@
 
 import { Action, combineReducers } from "redux";
 
-import simulator from "../services/simulator/reducer";
+import simulator from "@/services/simulator/reducer";
+
+import circuitEditor from "@/pages/CircuitEditor/reducer";
 
 import { State, defaultState } from "./state";
 
-const reducer = combineReducers<State>({
+export default combineReducers<State>({
     services: combineReducers({
         simulator
     }),
-    ui(s, a) {
-        if (!s) s = defaultState.ui;
-        return s;
-    }
+    ui: combineReducers({
+        circuitEditor
+    })
 });
-export default reducer;
-
-// export function reducer(state: State = defaultState, action: Action): State {
-//     return state;
-// }
