@@ -44,55 +44,43 @@ class CircuitElement extends React.Component<Props> {
             ...groupProps
         } = this.props;
 
-        const nodeType = Nodes[node.type] || {};
-        const inputs = nodeType.inputs || [];
-        const outputs = nodeType.outputs || [];
+        const def = Nodes[node.type] || {};
+        const inputs = def.inputs || [];
+        const outputs = def.outputs || [];
 
         const yCenter = BODY_HEIGHT / 2;
 
-        // Total height of the input pin area
-        const inputTotalHeight = PIN_PADDING * inputs.length;
-        // The y position of the first pin.  Add half the padding as pins y 0 is centered.
-        const inputFirstY = yCenter - (inputTotalHeight / 2) + PIN_PADDING / 2;
-        const inputPins = inputs.map((name, i) => {
+        const inputPins = Object.keys(inputs).map(key => {
+            const input = inputs[key]
             return (
                 <Pin
-                    key={`input-${name}:${i}`}
-                    orientation="left"
-                    length={PIN_LENGTH}
-                    x={0}
-                    y={inputFirstY + PIN_PADDING * i}
-                    onClick={onPinClick.bind(null, "input", name)}
+                    key={`input-${key}`}
+                    x={input.x}
+                    y={input.y}
+                    onClick={onPinClick.bind(null, "input", key)}
                 />
             );
         });
 
-        const outputTotalHeight = PIN_PADDING * outputs.length;
-        const outputFirstY = yCenter - (outputTotalHeight / 2) + PIN_PADDING / 2;
-        const outputPins = outputs.map((name, i) => {
+        const outputPins = Object.keys(outputs).map(key => {
+            const output = outputs[key];
             return (
                 <Pin
-                    key={`output-${name}:${i}`}
-                    orientation="right"
-                    length={PIN_LENGTH}
-                    x={BODY_WIDTH + PIN_LENGTH}
-                    y={outputFirstY + PIN_PADDING * i}
-                    onClick={onPinClick.bind(null, "output", name)}
+                    key={`output-${key}`}
+                    x={output.x}
+                    y={output.y}
+                    onClick={onPinClick.bind(null, "output", key)}
                 />
             );
         });
 
         return (
             <Group {...groupProps}>
-                {inputPins}
                 <Body
-                    x={PIN_LENGTH}
-                    y={0}
-                    width={BODY_WIDTH}
-                    height={BODY_HEIGHT}
                     nodeId={nodeId}
                     onClick={onClick}
                 />
+                {inputPins}
                 {outputPins}
             </Group>
         );

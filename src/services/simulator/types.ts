@@ -19,10 +19,23 @@ export interface EvolutionResult {
 export type NodeInteractFunction = (state: any) => EvolutionResult;
 export type NodeEvolverFunction = (state: any, inputs: InputValueMap, tick: number) => EvolutionResult;
 
+export interface NodePinDefinition {
+    name: string;
+    x: number;
+    y: number;
+}
 export interface NodeDefinition {
     type: string;
-    inputs: string[];
-    outputs: string[];
+
+    // TODO: node appearance and pin positions should be a ui-only concern.
+    //  Preferably without splitting it out of the def... Move node defs to its own folder outside
+    //  of the service?
+    width: number;
+    height: number;
+    shapePath: string;
+    inputs: {[key: string]: NodePinDefinition};
+    outputs: {[key: string]: NodePinDefinition};
+
     interact?: NodeInteractFunction;
     evolve?: NodeEvolverFunction;
 }

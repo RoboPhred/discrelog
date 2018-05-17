@@ -4,15 +4,14 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import { ContainerConfig } from "konva";
-import { KonvaNodeProps, Group, Rect } from "react-konva";
+import { KonvaNodeProps, Group, Rect, Line, Path } from "react-konva";
 
 import { Node } from "@/services/simulator/types";
+import { Nodes } from "@/services/simulator/nodes";
 import { State } from "@/store";
 
 interface BodyProps extends ContainerConfig, KonvaNodeProps {
     nodeId: string;
-    width: number;
-    height: number;
     onClick(nodeId: string): void;
 }
 
@@ -44,6 +43,7 @@ class Body extends React.Component<Props> {
             ...groupProps
         } = this.props;
 
+        // TODO: Let nodes specify colors and such from their state.
         let fill = "blue";
         if (type === "toggle") {
             let checked = (nodeState || {}).toggleState;
@@ -52,16 +52,33 @@ class Body extends React.Component<Props> {
         else if (type === "led") {
             fill = (nodeState || {}).value ? "green" : "red";
         }
+
+        let bodyElement: React.ReactChild;
+        const def = Nodes[type];
+        if (def) {
+            bodyElement = <Path
+                data={def.shapePath}
+                stroke="black"
+                fill={fill}
+                strokeWidth={1}
+                onClick={onClick}
+            />;
+        }
+        else {
+            bodyElement = <Rect
+                x={0}
+                y={0}
+                width={width}
+                height={height}
+                fill={fill}
+                onClick={onClick}
+            />;
+        }
+
+
         return (
             <Group {...groupProps}>
-                <Rect
-                    x={0}
-                    y={0}
-                    width={width}
-                    height={height}
-                    fill={fill}
-                    onClick={onClick}
-                />
+                {bodyElement}
             </Group>
         );
     }
