@@ -14,92 +14,84 @@ import { moveNode } from "../../../actions";
 
 import CircuitElement from "./CircuitElement";
 
-
 const nodePositionsSelector = (s: AppState) => s.ui.circuitEditor.nodePositions;
 
 interface StateProps {
-    nodePositions: ReturnType<typeof nodePositionsSelector>; 
+  nodePositions: ReturnType<typeof nodePositionsSelector>;
 }
 
 const mapStateToProps = createStructuredSelector<AppState, StateProps>({
-    nodePositions: nodePositionsSelector
+  nodePositions: nodePositionsSelector
 });
 
 interface DispatchProps {
-    interactNode: typeof interactNode,
-    moveNode: typeof moveNode,
-    toggleWireNode: typeof toggleWireNode
+  interactNode: typeof interactNode;
+  moveNode: typeof moveNode;
+  toggleWireNode: typeof toggleWireNode;
 }
 
 const mapDispatchToProps = {
-    interactNode,
-    moveNode,
-    toggleWireNode
+  interactNode,
+  moveNode,
+  toggleWireNode
 };
 
 interface State {
-    wireSourceNode: string | null;
-    wireSourcePin: string | null;
+  wireSourceNode: string | null;
+  wireSourcePin: string | null;
 }
 
 type Props = StateProps & DispatchProps;
 class NodesLayer extends React.Component<Props, State> {
-    render() {
-        const {
-            nodePositions,
-            interactNode,
-            moveNode
-        } = this.props;
+  render() {
+    const { nodePositions, interactNode, moveNode } = this.props;
 
-        const nodeElements = Object.keys(nodePositions).map(key => {
-            const { x, y } = nodePositions[key];
-            return (
-                <CircuitElement
-                    key={key}
-                    nodeId={key}
-                    x={x}
-                    y={y}
-                    draggable
-                    onDragMove={e => {
-                        const pos = e.target.getAbsolutePosition();
-                        moveNode(key, pos.x, pos.y);
-                    }}
-                    onClick={interactNode.bind(null, key)}
-                    onPinClick={this._onPinClick.bind(this, key)}
-                />
-            );
-        });
+    const nodeElements = Object.keys(nodePositions).map(key => {
+      const { x, y } = nodePositions[key];
+      return (
+        <CircuitElement
+          key={key}
+          nodeId={key}
+          x={x}
+          y={y}
+          draggable
+          onDragMove={e => {
+            const pos = e.target.getAbsolutePosition();
+            moveNode(key, pos.x, pos.y);
+          }}
+          onClick={interactNode.bind(null, key)}
+          onPinClick={this._onPinClick.bind(this, key)}
+        />
+      );
+    });
 
-        return (
-            <Layer>
-                {nodeElements}
-            </Layer>
-        );
+    return <Layer>{nodeElements}</Layer>;
+  }
+
+  private _onPinClick(
+    nodeId: string,
+    direction: "input" | "output",
+    pin: string
+  ) {
+    if (direction === "output") {
+      this.setState({
+        wireSourceNode: nodeId,
+        wireSourcePin: pin
+      });
+      return;
     }
 
-    private _onPinClick(nodeId: string, direction: "input" | "output", pin: string) {
-        if (direction === "output") {
-            this.setState({
-                wireSourceNode: nodeId,
-                wireSourcePin: pin
-            });
-            return;
-        }
-
-        const {
-            wireSourceNode,
-            wireSourcePin
-        } = this.state;
-        if (!wireSourceNode || !wireSourcePin) {
-            return;
-        }
-
-        this.props.toggleWireNode(wireSourceNode, wireSourcePin, nodeId, pin);
-
-        this.setState({
-            wireSourceNode: null,
-            wireSourcePin: null
-        });
+    const { wireSourceNode, wireSourcePin } = this.state;
+    if (!wireSourceNode || !wireSourcePin) {
+      return;
     }
+
+    this.props.toggleWireNode(wireSourceNode, wireSourcePin, nodeId, pin);
+
+    this.setState({
+      wireSourceNode: null,
+      wireSourcePin: null
+    });
+  }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(NodesLayer);

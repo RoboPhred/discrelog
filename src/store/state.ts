@@ -1,22 +1,27 @@
+import {
+  SimulatorState,
+  defaultSimulatorState
+} from "@/services/simulator/state";
 
-import { SimulatorState, defaultSimulatorState } from "@/services/simulator/state";
-
-import { CircuitEditorState, defaultCircuitEditorState } from "@/pages/CircuitEditor/state";
+import {
+  CircuitEditorState,
+  defaultCircuitEditorState
+} from "@/pages/CircuitEditor/state";
 
 export interface State {
-    services: {
-        simulator: SimulatorState;
-    }
-    ui: {
-        circuitEditor: CircuitEditorState
-    }
+  services: {
+    simulator: SimulatorState;
+  };
+  ui: {
+    circuitEditor: CircuitEditorState;
+  };
 }
 
 export const defaultState: State = {
-    services: {
-        simulator: defaultSimulatorState
-    },
-    ui: {
-        circuitEditor: defaultCircuitEditorState
-    }
+  services: {
+    simulator: defaultSimulatorState
+  },
+  ui: {
+    circuitEditor: defaultCircuitEditorState
+  }
 };
