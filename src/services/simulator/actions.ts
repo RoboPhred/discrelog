@@ -1,8 +1,18 @@
 import { Action } from "redux";
 
+import uuidV4 from "uuid/v4";
+
+import { NodeType } from "./nodes";
+
 export const ACTION_EVOLVE = "@sim/evolve" as "@sim/evolve";
 export const evolveSim = (tickCount: number) => ({type: ACTION_EVOLVE, payload: {tickCount}});
 export type EvolveSimAction = ReturnType<typeof evolveSim>;
+
+export const ACTION_NODE_ADD = "@sim/node/add" as "@sim/node/add";
+// TODO: Including x and y pos in simulator logic, which so far has tried to not concern itself with this.
+//  Probably a sign that these actions need to be at a higher level.
+export const addNode = (nodeType: NodeType, x?: number, y?: number) => ({type: ACTION_NODE_ADD, payload: {nodeId: uuidV4(), nodeType, x, y}});
+export type AddNodeAction = ReturnType<typeof addNode>;
 
 export const ACTION_INTERACT = "@sim/interact" as "@sim/interact";
 export const interactNode = (nodeId: string) => ({type: ACTION_INTERACT, payload: {nodeId}});
@@ -46,6 +56,7 @@ export type ToggleWireNodeAction = ReturnType<typeof toggleWireNode>;
 
 export type Actions = 
     EvolveSimAction
+    | AddNodeAction
     | InteractNodeAction
     | WireNodeAction
     | UnwireNodeAction

@@ -3,7 +3,7 @@ import produce from "immer";
 
 import binarySearch from "binary-search";
 
-import uuidV4 from "uuid/v4";
+import { mapValues } from "lodash-es";
 
 import {
     Node, PinConnection
@@ -25,7 +25,9 @@ import {
     WireNodeAction,
     UnwireNodeAction,
     InteractNodeAction,
-    EvolveSimAction
+    EvolveSimAction,
+    AddNodeAction,
+    ACTION_NODE_ADD
 } from "./actions";
 
 import { PendingTransition, InputValueMap, EvolutionResult } from "./types";
@@ -33,6 +35,37 @@ import { PendingTransition, InputValueMap, EvolutionResult } from "./types";
 import { NodeTypes } from "./nodes";
 
 import { isWired } from "./helpers";
+
+const addNodeReducer = produce((state: SimulatorState, action: AddNodeAction) => {
+    const {
+        nodeId: id,
+        nodeType: type
+    } = action.payload;
+
+    const def = NodeTypes[type];
+    if (!def) {
+        return;
+    }
+
+    const {
+        nodes,
+        nodeStates,
+        nodeOutputValues
+    } = state;
+
+    nodes[id] = {
+        id,
+        type,
+        inputConnectionsByPin: mapValues(def.inputs, () => null),
+        outputConnectionsByPin: mapValues(def.outputs, () => []),
+    };
+
+    nodeStates[id] = {};
+    nodeOutputValues[id] = mapValues(def.outputs, () => false);
+
+    // Give the node a chance to evolve.
+    evolveNode(state, id);
+});
 
 const wireNodeReducer = produce((state: SimulatorState, action: WireNodeAction) => {
     const {
@@ -194,6 +227,8 @@ export default function simulatorReducer(
     action: Actions
 ): SimulatorState {
     switch (action.type) {
+        case ACTION_NODE_ADD:
+            return addNodeReducer(state, action);
         case ACTION_WIRE:
             return wireNodeReducer(state, action);
         case ACTION_UNWIRE:

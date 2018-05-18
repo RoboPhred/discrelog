@@ -10,7 +10,7 @@ import { isWired } from "@/services/simulator/helpers";
 
 import { State as AppState } from "@/store";
 
-import { moveNode } from "../actions";
+import { moveNode } from "../../../actions";
 
 import CircuitElement from "./CircuitElement";
 

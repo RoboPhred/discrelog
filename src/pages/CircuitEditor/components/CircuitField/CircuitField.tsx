@@ -2,6 +2,7 @@
 import * as React from "react";
 
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
 import { Stage, Layer } from "react-konva";
 
@@ -9,9 +10,8 @@ import { State } from "@/store";
 
 import { evolveSim } from "@/services/simulator/actions";
 
-import WiresLayer from "./WiresLayer";
-import NodesLayer from "./NodesLayer";
-import { createStructuredSelector } from "reselect";
+import WiresLayer from "./components/WiresLayer";
+import NodesLayer from "./components/NodesLayer";
 
 interface StateProps {
     tick: number;
