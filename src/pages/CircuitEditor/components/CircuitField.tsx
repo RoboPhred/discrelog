@@ -10,7 +10,7 @@ import { SimulatorState } from "@/services/simulator/state";
 import { Node, PinConnection } from "@/services/simulator/types";
 import { evolveSim, interactNode, wireNode, unwireNode } from "@/services/simulator/actions";
 import { isWired } from "@/services/simulator/helpers";
-import { Nodes } from "@/services/simulator/nodes";
+import { NodeTypes } from "@/services/simulator/nodes";
 
 import { moveNode } from "../actions";
 
@@ -18,6 +18,8 @@ import { Position, Size } from "../types";
 import { CircuitEditorState } from "../state";
 
 import CircuitElement from "./CircuitElement";
+
+import WiresLayer from "./WiresLayer";
 
 type CircuitFieldProps = CircuitEditorState & SimulatorState & {
     interactNode(nodeId: string): void;
@@ -89,31 +91,6 @@ class CircuitField extends React.Component<CircuitFieldProps, State> {
             );
         });
 
-        const outputs = aggregateOutputs(Object.keys(nodes).map(x => nodes[x]));
-        const connectorElements = outputs.map((output, i) => {
-            const { source, target } = output;
-            const sourceNode = nodes[source.nodeId];
-            const sourceType = Nodes[sourceNode.type];
-            const sp = {...nodePositions[source.nodeId]};
-            const spp = sourceType && sourceType.outputs[source.pin] ? sourceType.outputs[source.pin] : {x: 0, y: 0};
-            sp.x += spp.x;
-            sp.y += spp.y;
-            const targetNode = nodes[target.nodeId];
-            const targetType = Nodes[targetNode.type];
-            const tp = {...nodePositions[target.nodeId]};
-            const tpp = targetType && targetType.inputs[target.pin] ? targetType.inputs[target.pin] : {x: 0, y: 0};
-            tp.x += tpp.x;
-            tp.y += tpp.y;
-            const value = (nodeOutputValues[source.nodeId] || {})[source.pin];
-            return (
-                <Line
-                    key={1}
-                    points={[sp.x, sp.y, tp.x, tp.y]}
-                    stroke={value ? "red" : "black"}
-                />
-            );
-        });
-
         return (
             <div>
                 <div>
@@ -123,9 +100,7 @@ class CircuitField extends React.Component<CircuitFieldProps, State> {
                     Ticks: {tick} <button onClick={evolveSim.bind(null, 4)}>Tick 4</button>
                 </div>
                 <Stage width={width} height={height}>
-                    <Layer>
-                        {connectorElements}
-                    </Layer>
+                    <WiresLayer/>
                     <Layer>
                         {nodeElements}
                     </Layer>
@@ -174,24 +149,3 @@ class CircuitField extends React.Component<CircuitFieldProps, State> {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CircuitField);
-
-interface Edge {
-    source: PinConnection;
-    target: PinConnection;
-}
-function aggregateOutputs(nodes: Node[]): Edge[] {
-    return nodes.reduce<Edge[]>((a, node) => {
-        for (const outputPin of Object.keys(node.outputConnectionsByPin)) {
-            for (const outputConn of node.outputConnectionsByPin[outputPin]) {
-                a.push({
-                    source: {
-                        nodeId: node.id,
-                        pin: outputPin
-                    },
-                    target: outputConn
-                });
-            }
-        }
-        return a;
-    }, []);
-}

@@ -1,6 +1,7 @@
 
 import {
     Node,
+    NodesById,
     PendingTransition
 } from "./types";
 
@@ -26,9 +27,7 @@ export interface SimulatorState {
     /**
      * A map of nodes by node id.
      */
-    nodes: {
-        [key: string]: Node
-    };
+    nodes: NodesById;
 
     /**
      * A map of node states by node id.

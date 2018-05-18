@@ -29,7 +29,7 @@ import {
 
 import { PendingTransition, InputValueMap, EvolutionResult } from "./types";
 
-import { Nodes } from "./nodes";
+import { NodeTypes } from "./nodes";
 
 const wireNodeReducer = produce((state: SimulatorState, action: WireNodeAction) => {
     const {
@@ -132,7 +132,7 @@ const interactNodeAction = produce((state: SimulatorState, action: InteractNodeA
     } = state;
 
     const node = nodes[nodeId];
-    const type = Nodes[node.type];
+    const type = NodeTypes[node.type];
     if (!type || !type.interact) {
         return;
     }
@@ -220,7 +220,7 @@ function evolveNode(state: SimulatorState, node: string | Node): void {
     } = state;
 
     // Evolve with the new inputs.
-    const type = Nodes[node.type];
+    const type = NodeTypes[node.type];
     if (type && type.evolve) {
         const inputs: InputValueMap = {};
         for (const inputPin of Object.keys(node.inputConnectionsByPin)) {

@@ -51,6 +51,10 @@ export interface Node {
     }
 }
 
+export interface NodesById {
+    [key: string]: Node;
+}
+
 export interface PinConnection {
     nodeId: string;
     pin: string;

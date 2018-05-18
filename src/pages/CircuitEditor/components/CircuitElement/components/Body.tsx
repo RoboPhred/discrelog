@@ -7,7 +7,7 @@ import { ContainerConfig } from "konva";
 import { KonvaNodeProps, Group, Rect, Line, Path } from "react-konva";
 
 import { Node } from "@/services/simulator/types";
-import { Nodes } from "@/services/simulator/nodes";
+import { NodeTypes } from "@/services/simulator/nodes";
 import { State } from "@/store";
 
 interface BodyProps extends ContainerConfig, KonvaNodeProps {
@@ -54,7 +54,7 @@ class Body extends React.Component<Props> {
         }
 
         let bodyElement: React.ReactChild;
-        const def = Nodes[type];
+        const def = NodeTypes[type];
         if (def) {
             bodyElement = <Path
                 data={def.shapePath}

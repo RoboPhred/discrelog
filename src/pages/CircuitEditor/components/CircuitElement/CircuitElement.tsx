@@ -8,7 +8,7 @@ import { KonvaNodeProps, Group } from "react-konva";
 import { State } from "@/store";
 
 import { Node } from "@/services/simulator/types";
-import { Nodes } from "@/services/simulator/nodes";
+import { NodeTypes } from "@/services/simulator/nodes";
 
 import Body from "./components/Body";
 import Pin from "./components/Pin";
@@ -44,7 +44,7 @@ class CircuitElement extends React.Component<Props> {
             ...groupProps
         } = this.props;
 
-        const def = Nodes[node.type] || {};
+        const def = NodeTypes[node.type] || {};
         const inputs = def.inputs || [];
         const outputs = def.outputs || [];
 
