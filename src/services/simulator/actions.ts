@@ -8,7 +8,7 @@ export const ACTION_INTERACT = "@sim/interact" as "@sim/interact";
 export const interactNode = (nodeId: string) => ({type: ACTION_INTERACT, payload: {nodeId}});
 export type InteractNodeAction = ReturnType<typeof interactNode>;
 
-export const ACTION_WIRE = "@sim/wire" as "@sim/wire";
+export const ACTION_WIRE = "@sim/wire/add" as "@sim/wire/add";
 export const wireNode = (sourceNodeId: string, sourcePin: string, targetNodeId: string, targetPin: string) => ({
     type: ACTION_WIRE,
     payload: {
@@ -20,7 +20,7 @@ export const wireNode = (sourceNodeId: string, sourcePin: string, targetNodeId: 
 });
 export type WireNodeAction = ReturnType<typeof wireNode>;
 
-export const ACTION_UNWIRE = "@sim/unwire" as "@sim/unwire";
+export const ACTION_UNWIRE = "@sim/wire/remove" as "@sim/wire/remove";
 export const unwireNode = (sourceNodeId: string, sourcePin: string, targetNodeId: string, targetPin: string) => ({
     type: ACTION_UNWIRE,
     payload: {
@@ -32,8 +32,21 @@ export const unwireNode = (sourceNodeId: string, sourcePin: string, targetNodeId
 });
 export type UnwireNodeAction = ReturnType<typeof unwireNode>;
 
+export const ACTION_TOGGLEWIRE = "@sim/wire/toggle" as "@sim/wire/toggle";
+export const toggleWireNode = (sourceNodeId: string, sourcePin: string, targetNodeId: string, targetPin: string) => ({
+    type: ACTION_TOGGLEWIRE,
+    payload: {
+        sourceNodeId,
+        sourcePin,
+        targetNodeId,
+        targetPin
+    }
+});
+export type ToggleWireNodeAction = ReturnType<typeof toggleWireNode>;
+
 export type Actions = 
     EvolveSimAction
     | InteractNodeAction
     | WireNodeAction
-    | UnwireNodeAction;
+    | UnwireNodeAction
+    | ToggleWireNodeAction;

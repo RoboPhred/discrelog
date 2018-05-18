@@ -2,7 +2,7 @@
 import {
     Position,
     Size
-} from "./types";
+} from "@/types";
 
 export interface CircuitEditorState {
     fieldSize: Size;

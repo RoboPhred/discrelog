@@ -19,6 +19,7 @@ import {
     Actions,
     ACTION_WIRE,
     ACTION_UNWIRE,
+    ACTION_TOGGLEWIRE,
     ACTION_EVOLVE,
     ACTION_INTERACT,
     WireNodeAction,
@@ -30,6 +31,8 @@ import {
 import { PendingTransition, InputValueMap, EvolutionResult } from "./types";
 
 import { NodeTypes } from "./nodes";
+
+import { isWired } from "./helpers";
 
 const wireNodeReducer = produce((state: SimulatorState, action: WireNodeAction) => {
     const {
@@ -195,6 +198,19 @@ export default function simulatorReducer(
             return wireNodeReducer(state, action);
         case ACTION_UNWIRE:
             return unwireNodeReducer(state, action);
+        case ACTION_TOGGLEWIRE:
+            const {
+                sourceNodeId,
+                sourcePin,
+                targetNodeId,
+                targetPin
+            } = action.payload;
+            if (isWired(state.nodes, {nodeId: sourceNodeId, pin: sourcePin}, {nodeId: targetNodeId, pin: targetPin})) {
+                return unwireNodeReducer(state, {type: ACTION_UNWIRE, payload: action.payload});
+            }
+            else {
+                return wireNodeReducer(state, {type: ACTION_WIRE, payload: action.payload});
+            }
         case ACTION_INTERACT:
             return interactNodeAction(state, action);
         case ACTION_EVOLVE:

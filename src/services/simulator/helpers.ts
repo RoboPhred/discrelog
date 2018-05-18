@@ -1,12 +1,10 @@
 
-import { PinConnection } from "./types";
-import { SimulatorState } from "./state";
+import { PinConnection, NodesById } from "./types";
 
-export function isWired(state: SimulatorState, output: PinConnection, input: PinConnection): boolean {
-    const outputNode = state.nodes[output.nodeId];
-    const inputNode = state.nodes[input.nodeId];
+export function isWired(nodes: NodesById, output: PinConnection, input: PinConnection): boolean {
+    const inputNode = nodes[input.nodeId];
     
-    if(!outputNode || !inputNode) {
+    if(!inputNode) {
         return false;
     }
 

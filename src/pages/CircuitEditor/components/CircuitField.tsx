@@ -3,93 +3,50 @@ import * as React from "react";
 
 import { connect } from "react-redux";
 
-import { Stage, Layer, Group, Line } from "react-konva";
+import { Stage, Layer } from "react-konva";
 
-import { State as AppState } from "@/store";
-import { SimulatorState } from "@/services/simulator/state";
-import { Node, PinConnection } from "@/services/simulator/types";
-import { evolveSim, interactNode, wireNode, unwireNode } from "@/services/simulator/actions";
-import { isWired } from "@/services/simulator/helpers";
-import { NodeTypes } from "@/services/simulator/nodes";
+import { State } from "@/store";
 
-import { moveNode } from "../actions";
-
-import { Position, Size } from "../types";
-import { CircuitEditorState } from "../state";
-
-import CircuitElement from "./CircuitElement";
+import { evolveSim } from "@/services/simulator/actions";
 
 import WiresLayer from "./WiresLayer";
+import NodesLayer from "./NodesLayer";
+import { createStructuredSelector } from "reselect";
 
-type CircuitFieldProps = CircuitEditorState & SimulatorState & {
-    interactNode(nodeId: string): void;
-    evolveSim(tickCount: number): void;
-    wireNode: typeof wireNode;
-    unwireNode: typeof unwireNode;
-    moveNode: typeof moveNode;
+interface StateProps {
+    tick: number;
+    width: number;
+    height: number;
+    nodeOutputValues: any,
+    transitionWindows: any
 }
+const mapStateToProps = createStructuredSelector<State, StateProps>({
+    tick: s => s.services.simulator.tick,
+    width: s => s.ui.circuitEditor.fieldSize.width,
+    height: s => s.ui.circuitEditor.fieldSize.height,
+    nodeOutputValues: s => s.services.simulator.nodeOutputValues,
+    transitionWindows: s => s.services.simulator.transitionWindows
+});
 
-function mapStateToProps(state: AppState): Partial<CircuitFieldProps> {
-    return {
-        ...state.ui.circuitEditor,
-        ...state.services.simulator
-    };
-}
-
-const mapDispatchToProps: Partial<CircuitFieldProps> = {
-    interactNode: interactNode,
-    evolveSim,
-    wireNode,
-    unwireNode,
-    moveNode
+interface DispatchProps {
+    evolveSim: typeof evolveSim
 };
 
-interface State {
-    wireSourceNode: string | null;
-    wireSourceOutput: string | null;
-}
-class CircuitField extends React.Component<CircuitFieldProps, State> {
-    constructor(props: CircuitFieldProps) {
-        super(props);
-        this.state = {
-            wireSourceNode: null,
-            wireSourceOutput: null
-        };
-    }
+const mapDispatchToProps = {
+    evolveSim
+};
+
+type Props = StateProps & DispatchProps;
+class CircuitField extends React.Component<Props> {
     render() {
         const {
-            fieldSize: {
-                width,
-                height
-            },
             tick,
-            nodes,
+            width,
+            height,
             nodeOutputValues,
             transitionWindows,
-            nodePositions,
-            interactNode,
-            evolveSim,
-            moveNode
+            evolveSim
         } = this.props;
-
-        const nodeElements = Object.keys(nodePositions).map(key => {
-            const { x, y } = nodePositions[key];
-            return (
-                <CircuitElement
-                    key={key}
-                    nodeId={key}
-                    x={x}
-                    y={y}
-                    draggable
-                    onDragMove={e => {
-                        const pos = e.target.getAbsolutePosition();
-                        moveNode(key, pos.x, pos.y);
-                    }}
-                    onClick={interactNode.bind(null, key)}
-                    onPinClick={this._onPinClick.bind(this, key)}
-                />
-            );
-        });
 
         return (
             <div>
@@ -101,9 +58,7 @@ class CircuitField extends React.Component<CircuitFieldProps, State> {
                 </div>
                 <Stage width={width} height={height}>
                     <WiresLayer/>
-                    <Layer>
-                        {nodeElements}
-                    </Layer>
+                    <NodesLayer/>
                 </Stage>
                 <div>
                     <div>Output values</div>
@@ -117,35 +72,7 @@ class CircuitField extends React.Component<CircuitFieldProps, State> {
         );
     }
 
-    private _onPinClick(nodeId: string, direction: "input" | "output", pin: string) {
-        if (direction === "output") {
-            this.setState({
-                wireSourceNode: nodeId,
-                wireSourceOutput: pin
-            });
-            return;
-        }
 
-        const {
-            wireSourceNode,
-            wireSourceOutput
-        } = this.state;
-        if (!wireSourceNode || !wireSourceOutput) {
-            return;
-        }
-
-        if (isWired(this.props, { nodeId: wireSourceNode, pin: wireSourceOutput }, { nodeId, pin: pin })) {
-            this.props.unwireNode(wireSourceNode, wireSourceOutput, nodeId, pin);
-        }
-        else {
-            this.props.wireNode(wireSourceNode, wireSourceOutput, nodeId, pin);
-        }
-
-        this.setState({
-            wireSourceNode: null,
-            wireSourceOutput: null
-        });
-    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CircuitField);
