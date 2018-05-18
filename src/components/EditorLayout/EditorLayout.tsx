@@ -1,7 +1,8 @@
 import * as React from "react";
 
-import FlexHorizontal from "./components/FlexHorizontal";
-import FlexVertical from "./components/FlexVertical";
+import LayoutContainer from "./components/LayoutContainer";
+import SidebarPanel from "./components/SidebarPanel";
+import ContentPanel from "./components/ContentPanel";
 
 export interface EditorPanelProps {
   leftSidebar?: React.ReactNode;
@@ -11,10 +12,10 @@ class EditorLayout extends React.Component<Props> {
   render() {
     const { leftSidebar, children } = this.props;
     return (
-      <FlexHorizontal>
-        {leftSidebar && <FlexVertical>{leftSidebar}</FlexVertical>}
-        {children}
-      </FlexHorizontal>
+      <LayoutContainer>
+        {leftSidebar && <SidebarPanel>{leftSidebar}</SidebarPanel>}
+        <ContentPanel>{children}</ContentPanel>
+      </LayoutContainer>
     );
   }
 }
