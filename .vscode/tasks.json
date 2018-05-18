@@ -12,29 +12,37 @@
       "problemMatcher": [
         {
           "owner": "webpack-ts",
-          "applyTo": "closedDocuments",
+          "applyTo": "allDocuments",
           "fileLocation": "absolute",
           "severity": "error",
+          "source": "ts",
           "pattern": [
             {
-              // ERROR in /Users/william.matthews/Documents/dev-personal/discrelog/src/components/EditorLayout/ToolWindow.tsx
+              // "ERROR in /Users/william.matthews/Documents/dev-personal/discrelog/src/components/EditorLayout/ToolWindow.tsx"
+              // Unused; redunant data.
               "regexp": "^(WARNING|ERROR) in .+$"
             },
             {
-              // ./src/components/EditorLayout/ToolWindow.tsx
+              // "./src/components/EditorLayout/ToolWindow.tsx"
               // Unused; redundant data.
               "regexp": "^.+$"
             },
             {
+              // "[tsl] ERROR in /Users/william.matthews/Documents/dev-personal/discrelog/src/components/EditorLayout/ToolWindow.tsx(10,3)"
               "regexp":
-                "^\\[tsl\\] (WARNING|ERROR) in (\\/[^(]+)\\((\\d+),(\\d+)\\)$",
+                "^\\[tsl\\] (WARNING|ERROR) in \\/([^(]+)\\((\\d+),(\\d+)\\)$",
               "severity": 1,
               "file": 2,
               "line": 3,
               "column": 4
             },
-            { "regexp": "^TS(\\d+): (.+)$", "code": 1, "message": 2 },
-            { "regexp": "^\\w+(.+)$", "message": 1, "loop": true }
+            {
+              // "      TS1005: ';' expected."
+              "regexp": "^\\s*TS(\\d+): (.+)$",
+              "code": 1,
+              "message": 2
+            }
+            // "regexp": "^\\s+(.+)$", "message": 1, "loop": true }
           ],
           "background": {
             "activeOnStart": true,
