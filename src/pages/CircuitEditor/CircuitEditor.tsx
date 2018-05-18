@@ -1,20 +1,23 @@
 
 import * as React from "react";
 
+import EditorLayout, { ToolWindow } from "@/components/EditorLayout";
+
 import CircuitTray from "./components/CircuitTray";
 import CircuitField from "./components/CircuitField";
 
 export default class CircuitEditor extends React.Component {
     render() {
-        const style: React.CSSProperties = {
-            display: "flex",
-            flexDirection: "row"
-        };
         return (
-            <div style={style}>
-                <CircuitTray/>
+            <EditorLayout
+                leftSidebar={(
+                    <ToolWindow>
+                        <CircuitTray/>
+                    </ToolWindow>
+                )}
+            >
                 <CircuitField/>
-            </div>
+            </EditorLayout>
         );
     }
 }

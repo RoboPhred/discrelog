@@ -16,6 +16,11 @@
         "paths": {
             "@/*": ["./*"]
         },
-        "sourceMap": true
+        "sourceMap": true,
+        "plugins": [
+            {
+                "name": "typescript-styled-plugin"
+            }
+        ]
     }
 }
