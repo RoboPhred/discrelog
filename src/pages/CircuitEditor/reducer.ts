@@ -10,7 +10,9 @@ import { CircuitEditorState, defaultCircuitEditorState } from "./state";
 
 import {
   Actions as EditorActions,
+  ACTION_NODE_MOUSEOVER,
   ACTION_NODE_MOVE,
+  MouseOverNodeAction,
   MoveNodeAction
 } from "./actions";
 
@@ -24,6 +26,10 @@ const addNodeAction = produce(
     };
   }
 );
+
+const mouseOverNodeAction = produce((state: CircuitEditorState, action: MouseOverNodeAction) => {
+  state.mouseOverNode = action.payload.nodeId;
+});
 
 const moveNodeAction = produce(
   (state: CircuitEditorState, action: MoveNodeAction) => {
@@ -44,6 +50,8 @@ export default function circuitEditorReducer(
   switch (action.type) {
     case ACTION_NODE_ADD:
       return addNodeAction(state, action);
+    case ACTION_NODE_MOUSEOVER:
+      return mouseOverNodeAction(state, action);
     case ACTION_NODE_MOVE:
       return moveNodeAction(state, action);
   }

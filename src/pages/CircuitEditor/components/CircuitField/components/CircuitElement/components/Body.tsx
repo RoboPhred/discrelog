@@ -35,8 +35,6 @@ class Body extends React.Component<Props> {
       node: { type },
       nodeState,
       onClick,
-      width,
-      height,
       ...groupProps
     } = this.props;
 
@@ -50,8 +48,12 @@ class Body extends React.Component<Props> {
     }
 
     let bodyElement: React.ReactChild;
+    let width = 50;
+    let height = 50;
     const def = NodeTypes[type];
     if (def) {
+      width = def.width;
+      height = def.height;
       bodyElement = (
         <Path
           data={def.shapePath}
@@ -74,7 +76,12 @@ class Body extends React.Component<Props> {
       );
     }
 
-    return <Group {...groupProps}>{bodyElement}</Group>;
+    return (
+      <Group {...groupProps}>
+        <Rect x={0} y={0} width={width} height={height} fill="transparent" />
+        {bodyElement}
+      </Group>
+    );
   }
 }
 

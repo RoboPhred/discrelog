@@ -5,12 +5,12 @@ import { createSelector, createStructuredSelector } from "reselect";
 
 import { Layer } from "react-konva";
 
-import { interactNode, toggleWireNode } from "@/services/simulator/actions";
+import { interactNode, toggleWireNode, } from "@/services/simulator/actions";
 import { isWired } from "@/services/simulator/helpers";
 
 import { State as AppState } from "@/store";
 
-import { moveNode } from "../../../actions";
+import { moveNode, mouseOverNode } from "../../../actions";
 
 import CircuitElement from "./CircuitElement";
 
@@ -28,12 +28,14 @@ interface DispatchProps {
   interactNode: typeof interactNode;
   moveNode: typeof moveNode;
   toggleWireNode: typeof toggleWireNode;
+  mouseOverNode: typeof mouseOverNode;
 }
 
 const mapDispatchToProps = {
   interactNode,
   moveNode,
-  toggleWireNode
+  toggleWireNode,
+  mouseOverNode
 };
 
 interface State {
@@ -44,7 +46,12 @@ interface State {
 type Props = StateProps & DispatchProps;
 class NodesLayer extends React.Component<Props, State> {
   render() {
-    const { nodePositions, interactNode, moveNode } = this.props;
+    const {
+      nodePositions,
+      interactNode,
+      moveNode,
+      mouseOverNode
+    } = this.props;
 
     const nodeElements = Object.keys(nodePositions).map(key => {
       const { x, y } = nodePositions[key];
@@ -55,6 +62,10 @@ class NodesLayer extends React.Component<Props, State> {
           x={x}
           y={y}
           draggable
+          onMouseOver={e => {
+            mouseOverNode(key);
+          }}
+          onMouseLeave={e => mouseOverNode(null)}
           onDragMove={e => {
             const pos = e.target.getAbsolutePosition();
             moveNode(key, pos.x, pos.y);

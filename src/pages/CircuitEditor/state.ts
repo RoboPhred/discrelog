@@ -1,17 +1,13 @@
 import { Position, Size } from "@/types";
 
 export interface CircuitEditorState {
-  fieldSize: Size;
   nodePositions: {
     [key: string]: Position;
   };
+  mouseOverNode: string | null;
 }
 
 export const defaultCircuitEditorState: CircuitEditorState = {
-  fieldSize: {
-    width: 300,
-    height: 200
-  },
   nodePositions: {
     "toggle-a": {
       x: 0,
@@ -29,5 +25,6 @@ export const defaultCircuitEditorState: CircuitEditorState = {
       x: 200,
       y: 50
     }
-  }
+  },
+  mouseOverNode: null
 };
