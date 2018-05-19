@@ -9,9 +9,12 @@ const defaultToggleState: ToggleState = {
 
 const toggleSwitchNodeDefinition: NodeDefinition = {
   type: "toggle",
-  width: 25,
-  height: 50,
-  shapePath: `M0,0 L0,50 L25,50 L25,0 z`,
+  visual: {
+    shapePath: {
+      path: `M0,0 L0,50 L25,50 L25,0 z`,
+      fill: (state: ToggleState) => state.toggleState ? "green" : "red"
+    }
+  },
   inputs: {},
   outputs: {
     OUT: {

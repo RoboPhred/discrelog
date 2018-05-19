@@ -12,7 +12,7 @@ import { State as AppState } from "@/store";
 
 import { moveNode, mouseOverNode } from "../../../actions";
 
-import CircuitElement from "./CircuitElement";
+import CircuitNode from "../../CircuitNode";
 
 const nodePositionsSelector = (s: AppState) => s.ui.circuitEditor.nodePositions;
 
@@ -56,7 +56,7 @@ class NodesLayer extends React.Component<Props, State> {
     const nodeElements = Object.keys(nodePositions).map(key => {
       const { x, y } = nodePositions[key];
       return (
-        <CircuitElement
+        <CircuitNode
           key={key}
           nodeId={key}
           x={x}

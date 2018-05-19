@@ -13,9 +13,7 @@ import { NodeTypes } from "@/services/simulator/nodes";
 import Body from "./components/Body";
 import Pin from "./components/Pin";
 
-export interface CircuitNodePinoutProps
-  extends ContainerConfig,
-    KonvaNodeProps {
+export interface CircuitNodePinoutProps extends ContainerConfig, KonvaNodeProps {
   nodeId: string;
   onClick(): void;
   onPinClick(direction: "input" | "output", pin: string): void;
@@ -39,9 +37,15 @@ const BODY_WIDTH = 50;
 const BODY_HEIGHT = 50;
 
 type Props = CircuitNodePinoutProps & StateProps;
-class CircuitElement extends React.Component<Props> {
+class CircuitNode extends React.Component<Props> {
   render() {
-    const { nodeId, node, onClick, onPinClick, ...groupProps } = this.props;
+    const {
+      nodeId,
+      node,
+      onClick,
+      onPinClick,
+      ...groupProps
+    } = this.props;
 
     const def = NodeTypes[node.type] || {};
     const inputs = def.inputs || [];
@@ -82,4 +86,4 @@ class CircuitElement extends React.Component<Props> {
     );
   }
 }
-export default connect(mapStateToProps)(CircuitElement);
+export default connect(mapStateToProps)(CircuitNode);

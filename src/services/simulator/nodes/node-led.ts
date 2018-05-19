@@ -8,9 +8,15 @@ function genCirclePath(cx: number, cy: number, r: number): string {
 
 const ledNodeDefinition: NodeDefinition = {
   type: "led",
-  width: 50,
-  height: 50,
-  shapePath: genCirclePath(25, 25, 25),
+  visual: {
+    shapePath: [
+      genCirclePath(25, 25, 25),
+      {
+        path: genCirclePath(25, 25, 20),
+        fill: state => state.value ? "lightgreen" : "darkgreen"
+      }
+    ]
+  },
   inputs: {
     IN: {
       name: "IN",

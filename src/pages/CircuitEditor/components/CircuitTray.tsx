@@ -2,10 +2,14 @@ import * as React from "react";
 
 import { connect } from "react-redux";
 
+import { Stage, Layer } from "react-konva";
+
 import { addNode } from "@/services/simulator/actions";
 import { NodeTypes, NodeType } from "@/services/simulator/nodes";
 
 import { typedKeys } from "@/utils";
+
+import NodeVisual from "./NodeVisual";
 
 interface DispatchProps {
   addNode: typeof addNode;
@@ -24,15 +28,11 @@ class CircuitTray extends React.Component<Props> {
       const type = NodeTypes[typeKey as NodeType];
       return (
         <div key={typeKey} onClick={() => addNode(typeKey)}>
-          <svg width={type.width + 1} height={type.height + 1}>
-            <path
-              transform="translate(.5,.5)"
-              d={type.shapePath}
-              stroke="black"
-              strokeWidth={1}
-              fill="white"
-            />
-          </svg>
+          <Stage width={50} height={50}>
+            <Layer>
+              <NodeVisual visual={type.visual} state={{}} />
+            </Layer>
+          </Stage>
         </div>
       );
     });
