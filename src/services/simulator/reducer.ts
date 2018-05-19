@@ -170,6 +170,11 @@ const evolveSimReducer = produce(
       const tick = window.tick;
       const evolveNodes = new Set<string>();
 
+      // Update the current tick.  It will be referenced
+      //  by evolveNode when determining when to schedule
+      //  future transitions.
+      state.tick = window.tick;
+
       // apply the transitions for this tick window.
       for (const transition of window.transitions) {
         const { nodeId, outputPinId, value } = transition;
