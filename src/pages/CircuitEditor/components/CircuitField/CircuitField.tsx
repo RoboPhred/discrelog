@@ -43,4 +43,4 @@ class CircuitField extends React.Component<Props> {
   }
 }
 
-export default sizeme({ monitorWidth: true, monitorHeight: true })(connect(mapStateToProps)(CircuitField));
+export default sizeme({ monitorWidth: true, monitorHeight: true, noPlaceholder: true })(connect(mapStateToProps)(CircuitField));

@@ -8,6 +8,7 @@ declare module "react-sizeme" {
   export interface SizeConfig {
     monitorWidth?: boolean;
     monitorHeight?: boolean;
+    noPlaceholder?: boolean;
   }
 
   export interface SizeProps {

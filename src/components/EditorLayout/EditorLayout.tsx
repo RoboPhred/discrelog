@@ -4,22 +4,67 @@ import LayoutContainer from "./components/LayoutContainer";
 import SidebarPanel from "./components/SidebarPanel";
 import ContentPanel from "./components/ContentPanel";
 
+import ResizeHandle from "./components/ResizeHandle";
+
 export interface EditorPanelProps {
   className?: string;
   leftSidebar?: React.ReactNode;
   rightSidebar?: React.ReactNode;
 }
 type Props = EditorPanelProps;
-class EditorLayout extends React.Component<Props> {
+interface State {
+  leftSidebarSize: number;
+  rightSidebarSize: number;
+}
+class EditorLayout extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      leftSidebarSize: 50,
+      rightSidebarSize: 50
+    };
+
+    this._leftSidebarResize = this._leftSidebarResize.bind(this);
+    this._rightSidebarResize = this._rightSidebarResize.bind(this);
+  }
+
   render() {
-    const { leftSidebar, rightSidebar, children } = this.props;
+    const {
+      leftSidebar,
+      rightSidebar,
+      children
+    } = this.props;
+    const {
+      leftSidebarSize,
+      rightSidebarSize
+    } = this.state;
+
     return (
       <LayoutContainer className={this.props.className}>
-        {leftSidebar && <SidebarPanel>{leftSidebar}</SidebarPanel>}
+        {leftSidebar && <React.Fragment>
+          <SidebarPanel width={leftSidebarSize}>{leftSidebar}</SidebarPanel>
+          <ResizeHandle onResize={this._leftSidebarResize} />
+        </React.Fragment>}
         <ContentPanel>{children}</ContentPanel>
-        {rightSidebar && <SidebarPanel>{rightSidebar}</SidebarPanel>}
+        {rightSidebar && <React.Fragment>
+          <ResizeHandle onResize={this._rightSidebarResize} />
+          <SidebarPanel width={rightSidebarSize}>{rightSidebar}</SidebarPanel>
+        </React.Fragment>}
       </LayoutContainer>
     );
+  }
+
+  private _leftSidebarResize(delta: number) {
+    this.setState(s => ({
+      leftSidebarSize: s.leftSidebarSize + delta
+    }));
+  }
+
+  private _rightSidebarResize(delta: number) {
+    this.setState(s => ({
+      rightSidebarSize: s.rightSidebarSize - delta
+    }));
   }
 }
 export default EditorLayout;
