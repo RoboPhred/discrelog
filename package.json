@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --config ./config/webpack.config.js",
     "start": "cross-env NODE_ENV=development webpack-dev-server --config ./config/webpack.config.js",
-    "format": "prettier --write \"src/**/*.{ts,tsx}\""
+    "format": "prettier --spaces=2 --write \"src/**/*.{ts,tsx}\""
   },
   "repository": {
     "type": "git",
