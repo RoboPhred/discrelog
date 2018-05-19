@@ -2,25 +2,26 @@ import { EvolutionResult, NodeDefinition } from "../types";
 
 const andNodeDefinition: NodeDefinition = {
   type: "and",
-  width: 50,
+  width: 100,
   height: 50,
-  shapePath: `M0,0 L0,50 L50,50 L50,0 z`,
+  // https://commons.wikimedia.org/wiki/File:AND_ANSI.svg
+  shapePath: `M70 25h25M31 15H5M32 35H5 M30 5V45H50.47619c11.267908 0 20-9.000045 20-20s-8.732091-20-20-20H30zm2.857143 2.857143H50.47619c9.760663 0 16.666667 7.639955 16.666667 17.142857 0 9.502902-7.382195 17.142857-17.142857 17.142857H32.857143V7.857143z`,
   inputs: {
     A: {
       name: "A",
       x: 0,
-      y: 16.66
+      y: 14.5
     },
     B: {
       name: "B",
       x: 0,
-      y: 33.33
+      y: 35
     }
   },
   outputs: {
     OUT: {
       name: "OUT",
-      x: 50,
+      x: 100,
       y: 25
     }
   },

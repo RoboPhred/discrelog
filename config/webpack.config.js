@@ -70,6 +70,14 @@ module.exports = {
                     },
                     "ts-loader",
                 ],
+            },
+
+            // css support.
+            //  style-loader can do a lot more than we use it for;
+            //  we currently just use it to inject the css into the html.
+            {
+              test: /\.css$/,
+              use: [ 'style-loader', 'css-loader' ]
             }
         ]
     },
