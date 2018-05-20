@@ -29,6 +29,7 @@ export default class CircuitEditor extends React.Component {
             <CircuitTray />
           </ToolWindow>
         }
+        defaultLeftSidebarWidth={100}
         rightSidebar={
           <React.Fragment>
             <ToolWindow>
@@ -42,6 +43,7 @@ export default class CircuitEditor extends React.Component {
             </ToolWindow>
           </React.Fragment>
         }
+        defaultRightSidebarWidth={200}
       >
         <FillParentCircuitField />
       </FillParentEditorLayout>

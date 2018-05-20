@@ -28,7 +28,7 @@ class CircuitTray extends React.Component<Props> {
       const type = NodeTypes[typeKey as NodeType];
       return (
         <div key={typeKey} onClick={() => addNode(typeKey)}>
-          <Stage width={50} height={50}>
+          <Stage width={110} height={110}>
             <Layer>
               <NodeVisual visual={type.visual} state={{}} />
             </Layer>

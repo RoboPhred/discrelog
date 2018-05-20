@@ -10,6 +10,8 @@ export interface EditorPanelProps {
   className?: string;
   leftSidebar?: React.ReactNode;
   rightSidebar?: React.ReactNode;
+  defaultLeftSidebarWidth?: number;
+  defaultRightSidebarWidth?: number;
 }
 type Props = EditorPanelProps;
 interface State {
@@ -21,8 +23,8 @@ class EditorLayout extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      leftSidebarSize: 50,
-      rightSidebarSize: 50
+      leftSidebarSize: props.defaultLeftSidebarWidth || 100,
+      rightSidebarSize: props.defaultRightSidebarWidth || 100
     };
 
     this._leftSidebarResize = this._leftSidebarResize.bind(this);
