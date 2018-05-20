@@ -27,7 +27,7 @@ function mapStateToProps(
   props: CircuitNodePinoutProps
 ): StateProps {
   return {
-    node: state.services.simulator.nodes[props.nodeId]
+    node: state.services.simulator.nodesById[props.nodeId]
   };
 }
 

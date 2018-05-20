@@ -27,7 +27,7 @@ interface Connection {
 
 const NO_POS = Object.freeze({ x: 0, y: 0 });
 
-const nodesSelector = (s: State) => s.services.simulator.nodes;
+const nodesSelector = (s: State) => s.services.simulator.nodesById;
 const edgeSelector = createSelector(nodesSelector, nodes =>
   aggregateOutputs(Object.keys(nodes).map(k => nodes[k]))
 );
@@ -38,7 +38,7 @@ const connectionSelector = createSelector(
   edgeSelector,
   (s: State) => s.ui.circuitEditor.nodePositions,
   nodeTypesSelector,
-  (s: State) => s.services.simulator.nodeOutputValues,
+  (s: State) => s.services.simulator.nodeOutputValuesByNodeId,
   (edges, nodePositions, nodeTypes, outputValues) => {
     return edges.map<Connection>(edge => {
       const {

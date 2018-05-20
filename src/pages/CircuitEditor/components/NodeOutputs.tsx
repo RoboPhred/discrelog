@@ -6,7 +6,7 @@ import { createStructuredSelector, createSelector } from "reselect";
 import { State } from "@/store";
 
 const mouseOverNodeOutputsSelector = createSelector(
-  (s: State) => s.services.simulator.nodeOutputValues,
+  (s: State) => s.services.simulator.nodeOutputValuesByNodeId,
   (s: State) => s.ui.circuitEditor.mouseOverNode,
   (outputs, nodeId) => (nodeId != null) ? outputs[nodeId] : {}
 );

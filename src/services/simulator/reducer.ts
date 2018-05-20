@@ -44,17 +44,17 @@ const addNodeReducer = produce(
       return;
     }
 
-    const { nodes, nodeStates, nodeOutputValues } = state;
+    const { nodesById, nodeStatesByNodeId, nodeOutputValuesByNodeId } = state;
 
-    nodes[id] = {
+    nodesById[id] = {
       id,
       type,
       inputConnectionsByPin: mapValues(def.inputs, () => null),
       outputConnectionsByPin: mapValues(def.outputs, () => [])
     };
 
-    nodeStates[id] = {};
-    nodeOutputValues[id] = mapValues(def.outputs, () => false);
+    nodeStatesByNodeId[id] = {};
+    nodeOutputValuesByNodeId[id] = mapValues(def.outputs, () => false);
 
     // Give the node a chance to evolve.
     evolveNode(state, id);
@@ -65,10 +65,10 @@ const wireNodeReducer = produce(
   (state: SimulatorState, action: WireNodeAction) => {
     const { sourceNodeId, sourcePin, targetNodeId, targetPin } = action.payload;
 
-    const { tick, nodeStates, nodeOutputValues, transitionWindows } = state;
+    const { tick, nodeStatesByNodeId, nodeOutputValuesByNodeId, transitionWindows } = state;
 
-    const sourceNode = state.nodes[sourceNodeId];
-    const targetNode = state.nodes[targetNodeId];
+    const sourceNode = state.nodesById[sourceNodeId];
+    const targetNode = state.nodesById[targetNodeId];
 
     if (!sourceNode || !targetNode) {
       return;
@@ -100,10 +100,10 @@ const unwireNodeReducer = produce(
   (state: SimulatorState, action: UnwireNodeAction) => {
     const { sourceNodeId, sourcePin, targetNodeId, targetPin } = action.payload;
 
-    const { tick, nodeStates, transitionWindows } = state;
+    const { tick, nodeStatesByNodeId, transitionWindows } = state;
 
-    const sourceNode = state.nodes[sourceNodeId];
-    const targetNode = state.nodes[targetNodeId];
+    const sourceNode = state.nodesById[sourceNodeId];
+    const targetNode = state.nodesById[targetNodeId];
 
     if (!sourceNode || !targetNode) {
       return;
@@ -140,15 +140,15 @@ const unwireNodeReducer = produce(
 const interactNodeAction = produce(
   (state: SimulatorState, action: InteractNodeAction) => {
     const { nodeId } = action.payload;
-    const { tick, nodes, nodeStates, transitionWindows } = state;
+    const { tick, nodesById, nodeStatesByNodeId, transitionWindows } = state;
 
-    const node = nodes[nodeId];
+    const node = nodesById[nodeId];
     const type = NodeTypes[node.type];
     if (!type || !type.interact) {
       return;
     }
-    const evolution = type.interact(nodeStates[nodeId]);
-    applyNodeEvolution(node, tick, evolution, nodeStates, transitionWindows);
+    const evolution = type.interact(nodeStatesByNodeId[nodeId]);
+    applyNodeEvolution(node, tick, evolution, nodeStatesByNodeId, transitionWindows);
     return;
   }
 );
@@ -158,9 +158,9 @@ const evolveSimReducer = produce(
     const { tickCount } = action.payload;
     const {
       tick,
-      nodes,
-      nodeStates,
-      nodeOutputValues,
+      nodesById,
+      nodeStatesByNodeId,
+      nodeOutputValuesByNodeId,
       transitionWindows
     } = state;
 
@@ -180,14 +180,14 @@ const evolveSimReducer = produce(
       // apply the transitions for this tick window.
       for (const transition of window.transitions) {
         const { nodeId, outputPinId, value } = transition;
-        const node = nodes[nodeId];
+        const node = nodesById[nodeId];
         if (!node) {
           continue;
         }
 
-        if (nodeOutputValues[nodeId][outputPinId] !== value) {
+        if (nodeOutputValuesByNodeId[nodeId][outputPinId] !== value) {
           // Track what nodes we need to evolve as a result of this state change.
-          nodeOutputValues[nodeId][outputPinId] = value;
+          nodeOutputValuesByNodeId[nodeId][outputPinId] = value;
           const targetNodes = node.outputConnectionsByPin[outputPinId];
           targetNodes.forEach(conn => evolveNodes.add(conn.nodeId));
         }
@@ -223,7 +223,7 @@ export default function simulatorReducer(
       } = action.payload;
       if (
         isWired(
-          state.nodes,
+          state.nodesById,
           { nodeId: sourceNodeId, pin: sourcePin },
           { nodeId: targetNodeId, pin: targetPin }
         )
@@ -252,10 +252,10 @@ export default function simulatorReducer(
  */
 function evolveNode(state: SimulatorState, node: string | Node): void {
   if (typeof node === "string") {
-    node = state.nodes[node];
+    node = state.nodesById[node];
   }
 
-  const { tick, nodeStates, nodeOutputValues, transitionWindows } = state;
+  const { tick, nodeStatesByNodeId, nodeOutputValuesByNodeId, transitionWindows } = state;
 
   // Evolve with the new inputs.
   const type = NodeTypes[node.type];
@@ -269,13 +269,13 @@ function evolveNode(state: SimulatorState, node: string | Node): void {
       }
       const { nodeId: sourceNodeId, pin: sourcePin } = inputConn;
 
-      inputs[inputPin] = nodeOutputValues[sourceNodeId][sourcePin];
+      inputs[inputPin] = nodeOutputValuesByNodeId[sourceNodeId][sourcePin];
     }
 
     // TODO: Provide frozen state.  The state passed to this is currently
     //  the immer mutable record.
-    const result = type.evolve(nodeStates[node.id] || {}, inputs, tick);
-    applyNodeEvolution(node, tick, result, nodeStates, transitionWindows);
+    const result = type.evolve(nodeStatesByNodeId[node.id] || {}, inputs, tick);
+    applyNodeEvolution(node, tick, result, nodeStatesByNodeId, transitionWindows);
   }
 }
 

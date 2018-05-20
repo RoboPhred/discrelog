@@ -1,10 +1,8 @@
+import { IDMap } from "@/types";
+
 import { Node, NodesById, PendingTransition } from "./types";
 
 import { NodeType } from "./node-types";
-
-export interface NodeMap<T> {
-  [key: string]: T;
-}
 
 export interface TransitionWindow {
   tick: number;
@@ -20,23 +18,17 @@ export interface SimulatorState {
   /**
    * A map of nodes by node id.
    */
-  nodes: NodesById;
+  nodesById: NodesById;
 
   /**
    * A map of node states by node id.
    */
-  nodeStates: {
-    [key: string]: any;
-  };
+  nodeStatesByNodeId: IDMap<any>;
 
   /**
    * A map of output-to-value maps by node id.
    */
-  nodeOutputValues: {
-    [key: string]: {
-      [key: string]: boolean;
-    };
-  };
+  nodeOutputValuesByNodeId: IDMap<IDMap<boolean>>;
 
   /**
    * Transitions windowed by tick, sorted ascending
@@ -56,7 +48,7 @@ export interface SimulatorState {
 
 export const defaultSimulatorState: SimulatorState = {
   tick: 0,
-  nodes: {
+  nodesById: {
     "toggle-a": {
       id: "toggle-a",
       type: "toggle",
@@ -93,7 +85,7 @@ export const defaultSimulatorState: SimulatorState = {
       outputConnectionsByPin: {}
     }
   },
-  nodeStates: {
+  nodeStatesByNodeId: {
     "toggle-a": {
       toggleState: false
     },
@@ -101,7 +93,7 @@ export const defaultSimulatorState: SimulatorState = {
       toggleState: false
     }
   },
-  nodeOutputValues: {
+  nodeOutputValuesByNodeId: {
     "toggle-a": {
       OUT: false
     },

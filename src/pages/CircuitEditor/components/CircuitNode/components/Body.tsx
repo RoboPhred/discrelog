@@ -24,8 +24,8 @@ function mapStateToProps(state: State, props: BodyProps) {
   const { nodeId } = props;
   const simState = state.services.simulator;
   return {
-    node: simState.nodes[nodeId],
-    nodeState: simState.nodeStates[nodeId]
+    node: simState.nodesById[nodeId],
+    nodeState: simState.nodeStatesByNodeId[nodeId]
   };
 }
 
