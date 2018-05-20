@@ -18,7 +18,7 @@
     "Logic Simulator"
   ],
   "author": "William Matthews",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "devDependencies": {
     "@types/lodash-es": "^4.17.0",
     "@types/react": "^16.3.14",
