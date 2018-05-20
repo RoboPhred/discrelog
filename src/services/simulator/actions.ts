@@ -2,7 +2,7 @@ import { Action } from "redux";
 
 import uuidV4 from "uuid/v4";
 
-import { NodeType } from "./nodes";
+import { NodeType } from "./node-types";
 
 export const ACTION_EVOLVE = "@sim/evolve" as "@sim/evolve";
 export const evolveSim = (tickCount: number) => ({

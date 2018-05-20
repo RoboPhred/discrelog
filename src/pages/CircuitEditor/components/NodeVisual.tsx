@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Path, Group } from "react-konva";
 
-import { NodeVisualDefinition, NodeVisualPath } from "@/services/simulator/types";
+import { NodeVisualDefinition, NodeVisualPath } from "@/services/simulator/node-types";
 
 export interface NodeVisualProps {
   visual: NodeVisualDefinition;

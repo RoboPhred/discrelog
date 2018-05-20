@@ -1,4 +1,4 @@
-import { EvolutionResult, NodeDefinition } from "../types";
+import { NodeDefinition } from "./types";
 
 function genCirclePath(cx: number, cy: number, r: number): string {
   return `M ${cx - r}, ${cy}

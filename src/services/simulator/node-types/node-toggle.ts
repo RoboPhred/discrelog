@@ -1,4 +1,4 @@
-import { NodeDefinition } from "../types";
+import { NodeDefinition } from "./types";
 
 interface ToggleState {
   toggleState: boolean;

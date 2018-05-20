@@ -1,12 +1,12 @@
-import { EvolutionResult, NodeDefinition } from "../types";
+import { NodeDefinition } from "./types";
 
 const orNodeDefinition: NodeDefinition = {
   type: "not",
   visual: {
-    // https://commons.wikimedia.org/wiki/File:NOT_ANSI.svg
     hitPath: `
-      M28.96875 2.59375v44.8125l2.15625-1.0625 41.03125-20v-2.6875l-41.03125-20-2.15625-1.0625z
+    M28.96875 2.59375v44.8125l2.15625-1.0625 41.03125-20v-2.6875l-41.03125-20-2.15625-1.0625z
     `,
+    // https://commons.wikimedia.org/wiki/File:NOT_ANSI.svg
     shapePath: `
       M79.15691 25H95
       M29.043478 25h-24
@@ -30,7 +30,7 @@ const orNodeDefinition: NodeDefinition = {
     }
   },
   evolve(state, inputs, tick) {
-    const result: EvolutionResult = {
+    return {
       transitions: [
         {
           outputId: "OUT",
@@ -39,7 +39,6 @@ const orNodeDefinition: NodeDefinition = {
         }
       ]
     };
-    return result;
   }
 };
 export default orNodeDefinition;

@@ -8,7 +8,7 @@ import { KonvaNodeProps, Group } from "react-konva";
 import { State } from "@/store";
 
 import { Node } from "@/services/simulator/types";
-import { NodeTypes } from "@/services/simulator/nodes";
+import { NodeTypes } from "@/services/simulator/node-types";
 
 import Body from "./components/Body";
 import Pin from "./components/Pin";

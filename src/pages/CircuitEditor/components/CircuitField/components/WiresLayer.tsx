@@ -8,7 +8,7 @@ import { Layer, Line } from "react-konva";
 import { mapValues } from "lodash-es";
 
 import { Node, NodesById, PinConnection } from "@/services/simulator/types";
-import { NodeTypes } from "@/services/simulator/nodes";
+import { NodeTypes } from "@/services/simulator/node-types";
 
 import { State } from "@/store";
 

@@ -1,12 +1,12 @@
-import { EvolutionResult, NodeDefinition } from "../types";
+import { NodeDefinition } from "./types";
 
 const norNodeDefinition: NodeDefinition = {
   type: "nor",
   visual: {
-    // https://commons.wikimedia.org/wiki/File:NOR_ANSI.svg
     hitPath: `
     M24.09375 5l2 2.4375S31.75 14.437549 31.75 25s-5.65625 17.5625-5.65625 17.5625l-2 2.4375H41.25c2.408076.000001 7.689699.024514 13.625-2.40625s12.536536-7.343266 17.6875-16.875L71.25 25l1.3125-.71875C62.259387 5.21559 46.006574 5 41.25 5H24.09375z
     `,
+    // https://commons.wikimedia.org/wiki/File:NOR_ANSI.svg
     shapePath: `
       M79 25h16M31 15H5M32 35H5
       
@@ -35,7 +35,7 @@ const norNodeDefinition: NodeDefinition = {
     }
   },
   evolve(state, inputs, tick) {
-    const result: EvolutionResult = {
+    return {
       transitions: [
         {
           outputId: "OUT",
@@ -44,7 +44,6 @@ const norNodeDefinition: NodeDefinition = {
         }
       ]
     };
-    return result;
   }
 };
 export default norNodeDefinition;

@@ -1,6 +1,11 @@
-import { NodeDefinition } from "../types";
+import { NodeDefinition } from "./types";
 
-// Art from https://commons.wikimedia.org/wiki/Logic_gates_unified_symbols
+export * from "./types";
+
+// Many of these art assets used in these files are public domain and sourced from
+//  https://commons.wikimedia.org/wiki/Logic_gates_unified_symbols
+// Some assets have been modified for formatting or added functionality.
+// Assets that have been pulled from external sources are marked as such.
 
 export const NodeTypes = {
   and: require("./node-and").default as NodeDefinition,

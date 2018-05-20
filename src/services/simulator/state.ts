@@ -1,6 +1,6 @@
 import { Node, NodesById, PendingTransition } from "./types";
 
-import { NodeType } from "./nodes";
+import { NodeType } from "./node-types";
 
 export interface NodeMap<T> {
   [key: string]: T;

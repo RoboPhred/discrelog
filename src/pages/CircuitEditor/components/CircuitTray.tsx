@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { Stage, Layer } from "react-konva";
 
 import { addNode } from "@/services/simulator/actions";
-import { NodeTypes, NodeType } from "@/services/simulator/nodes";
+import { NodeTypes, NodeType } from "@/services/simulator/node-types";
 
 import { typedKeys } from "@/utils";
 

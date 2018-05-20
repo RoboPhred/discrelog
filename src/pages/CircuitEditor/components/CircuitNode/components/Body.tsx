@@ -5,8 +5,8 @@ import { connect } from "react-redux";
 import { ContainerConfig } from "konva";
 import { KonvaNodeProps, Group, Rect, Line, Path } from "react-konva";
 
-import { Node, NodeVisualPath, NodeVisualPathDefinition } from "@/services/simulator/types";
-import { NodeTypes } from "@/services/simulator/nodes";
+import { Node } from "@/services/simulator/types";
+import { NodeTypes, NodeVisualPath, NodeVisualPathDefinition } from "@/services/simulator/node-types";
 import { State } from "@/store";
 
 import NodeVisual from "../../NodeVisual";

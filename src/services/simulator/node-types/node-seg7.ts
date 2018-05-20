@@ -1,10 +1,17 @@
 
 import { typedKeys } from "@/utils";
 
-import { NodeDefinition, NodeVisualPathDefinition } from "../types";
+import { NodeDefinition, NodeVisualPathDefinition } from "./types";
+
 const SCALE = 3;
 const OFFSET = [15, 0];
 
+/**
+ * Produce a visual path definition of a segment given a series of polygon points.
+ * The path definition will color itself based on the state key specified by 'name'
+ * @param name The state key to select color based on.  The key should represent a boolean value.
+ * @param points An array of [x,y] pairs that make up the polygon.
+ */
 function createSeg(name: string, points: [number, number][]): NodeVisualPathDefinition {
   const start = points[0];
   let path = `M${start[0] * SCALE + OFFSET[0]},${start[1] * SCALE + OFFSET[1]}`;

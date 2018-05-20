@@ -4,6 +4,8 @@ import binarySearch from "binary-search";
 
 import { mapValues } from "lodash-es";
 
+import { IDMap } from "@/types";
+
 import { Node, PinConnection } from "./types";
 
 import {
@@ -27,9 +29,9 @@ import {
   ACTION_NODE_ADD
 } from "./actions";
 
-import { PendingTransition, InputValueMap, EvolutionResult } from "./types";
+import { PendingTransition } from "./types";
 
-import { NodeTypes } from "./nodes";
+import { EvolutionResult, NodeTypes } from "./node-types";
 
 import { isWired } from "./helpers";
 
@@ -258,7 +260,7 @@ function evolveNode(state: SimulatorState, node: string | Node): void {
   // Evolve with the new inputs.
   const type = NodeTypes[node.type];
   if (type && type.evolve) {
-    const inputs: InputValueMap = {};
+    const inputs: IDMap<boolean> = {};
     for (const inputPin of Object.keys(node.inputConnectionsByPin)) {
       const inputConn = node.inputConnectionsByPin[inputPin];
       if (!inputConn) {
