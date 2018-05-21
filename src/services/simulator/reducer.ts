@@ -6,7 +6,7 @@ import { mapValues } from "lodash-es";
 
 import { IDMap } from "@/types";
 
-import { Node, PinConnection } from "./types";
+import { Node } from "./types";
 
 import {
   SimulatorState,

@@ -7,7 +7,7 @@ import { Layer, Line } from "react-konva";
 
 import { mapValues } from "lodash-es";
 
-import { Node, NodesById, PinConnection } from "@/services/simulator/types";
+import { Node, NodesById, NodePin } from "@/services/simulator/types";
 import { NodeTypes } from "@/services/simulator/node-types";
 
 import { State } from "@/store";
@@ -99,8 +99,8 @@ class WiresLayer extends React.Component<Props> {
 export default connect(mapStateToProps)(WiresLayer);
 
 interface Edge {
-  source: PinConnection;
-  target: PinConnection;
+  source: NodePin;
+  target: NodePin;
 }
 function aggregateOutputs(nodes: Node[]): Edge[] {
   return nodes.reduce<Edge[]>((a, node) => {

@@ -1,9 +1,9 @@
-import { PinConnection, NodesById } from "./types";
+import { NodePin, NodesById } from "./types";
 
 export function isWired(
   nodes: NodesById,
-  output: PinConnection,
-  input: PinConnection
+  output: NodePin,
+  input: NodePin
 ): boolean {
   const inputNode = nodes[input.nodeId];
 
