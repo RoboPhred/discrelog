@@ -3,12 +3,8 @@ import produce from "immer";
 import { SimulatorState } from "../state";
 import { WireNodeAction } from "../actions";
 
-import { evolveNode } from "../helpers";
-
 export function wireNodeMutator(state: SimulatorState, action: WireNodeAction) {
   const { sourceNodeId, sourcePin, targetNodeId, targetPin } = action.payload;
-
-  const { tick, nodeStatesByNodeId, nodeOutputValuesByNodeId, transitionWindows } = state;
 
   const sourceNode = state.nodesById[sourceNodeId];
   const targetNode = state.nodesById[targetNodeId];
@@ -34,8 +30,9 @@ export function wireNodeMutator(state: SimulatorState, action: WireNodeAction) {
     pin: targetPin
   });
 
-  // Evolve with the new inputs.
-  evolveNode(state, targetNode);
+  if (state.dirtyInputNodeIds.indexOf(targetNodeId) === -1) {
+    state.dirtyInputNodeIds.push(targetNodeId);
+  }
 }
 
 export default produce(wireNodeMutator);

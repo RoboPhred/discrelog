@@ -5,8 +5,6 @@ import { AddNodeAction } from "../actions";
 import { NodeTypes } from "../node-types";
 import { SimulatorState } from "../state";
 
-import { evolveNode } from "../helpers";
-
 export function addNodeMutator(state: SimulatorState, action: AddNodeAction) {
   const { nodeId: id, nodeType: type } = action.payload;
 
@@ -26,9 +24,6 @@ export function addNodeMutator(state: SimulatorState, action: AddNodeAction) {
 
   nodeStatesByNodeId[id] = {};
   nodeOutputValuesByNodeId[id] = mapValues(def.outputs, () => false);
-
-  // Give the node a chance to evolve.
-  evolveNode(state, id);
 }
 
 export default produce(addNodeMutator);

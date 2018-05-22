@@ -12,7 +12,7 @@ const toggleSwitchNodeDefinition: NodeDefinition = {
   visual: {
     shapePath: {
       path: `M0,0 L0,50 L25,50 L25,0 z`,
-      fill: (state: ToggleState) => state.toggleState ? "green" : "red"
+      fill: (state: ToggleState) => (state.toggleState ? "green" : "red")
     }
   },
   inputs: {},
@@ -24,16 +24,18 @@ const toggleSwitchNodeDefinition: NodeDefinition = {
     }
   },
   interact(state: ToggleState = defaultToggleState) {
-    const toggleState = !state.toggleState;
     return {
-      state: {
-        toggleState
-      },
+      ...state,
+      toggleState: !state.toggleState
+    };
+  },
+  evolve(state, inputs, tick) {
+    return {
       transitions: [
         {
+          tickOffset: 1,
           outputId: "OUT",
-          tickOffset: 4,
-          value: toggleState
+          value: state.toggleState
         }
       ]
     };

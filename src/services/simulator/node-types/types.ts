@@ -1,22 +1,6 @@
 import { IDMap } from "@/types";
 
-export interface OutputTransition {
-  tickOffset: number;
-  outputId: string;
-  value: boolean;
-}
-
-export interface EvolutionResult {
-  state?: any;
-  transitions?: OutputTransition[];
-}
-
-export type NodeInteractFunction = (state: any) => EvolutionResult;
-export type NodeEvolverFunction = (
-  state: any,
-  inputs: IDMap<boolean>,
-  tick: number
-) => EvolutionResult;
+import { PinValueMap, TransitionWindow } from "../types";
 
 export interface NodePinDefinition {
   name: string;
@@ -45,7 +29,25 @@ export interface NodeVisualDefinition {
    * The path or paths that make up the visual component of this node.
    */
   shapePath: NodeVisualPath | NodeVisualPath[];
-};
+}
+
+export interface OutputTransition {
+  tickOffset: number;
+  outputId: string;
+  value: boolean;
+}
+
+export interface EvolutionResult {
+  state?: any;
+  transitions?: OutputTransition[];
+}
+
+export type NodeInteractFunction = (state: any) => any;
+export type NodeEvolverFunction = (
+  state: any,
+  inputs: PinValueMap,
+  tick: number
+) => EvolutionResult;
 
 export interface NodeDefinition {
   type: string;

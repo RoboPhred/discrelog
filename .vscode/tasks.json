@@ -18,7 +18,7 @@
           "source": "ts",
           "pattern": [
             {
-              // "ERROR in /Users/william.matthews/Documents/dev-personal/discrelog/src/components/EditorLayout/ToolWindow.tsx"
+              // "ERROR in /Users/user/Documents/dev-personal/discrelog/src/components/EditorLayout/ToolWindow.tsx"
               // Unused; redunant data.
               "regexp": "^(WARNING|ERROR) in .+$"
             },
@@ -28,7 +28,7 @@
               "regexp": "^.+$"
             },
             {
-              // "[tsl] ERROR in /Users/william.matthews/Documents/dev-personal/discrelog/src/components/EditorLayout/ToolWindow.tsx(10,3)"
+              // "[tsl] ERROR in /Users/user/Documents/dev-personal/discrelog/src/components/EditorLayout/ToolWindow.tsx(10,3)"
               "regexp":
                 "^\\[tsl\\] (WARNING|ERROR) in \\/([^(]+)\\((\\d+),(\\d+)\\)$",
               "severity": 1,

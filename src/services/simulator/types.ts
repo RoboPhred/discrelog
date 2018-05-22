@@ -28,13 +28,9 @@ export interface NodePin {
   pin: string;
 }
 
-export interface PendingTransition {
-  nodeId: string;
-  outputPinId: string;
-  value: boolean;
-}
+export type PinValueMap = IDMap<boolean>;
 
 export interface TransitionWindow {
   tick: number;
-  transitions: PendingTransition[];
+  transitionsByNodeId: IDMap<PinValueMap>;
 }

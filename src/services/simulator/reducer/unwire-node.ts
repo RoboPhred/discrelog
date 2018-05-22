@@ -3,12 +3,11 @@ import produce from "immer";
 import { SimulatorState } from "../state";
 import { UnwireNodeAction } from "../actions";
 
-import { evolveNode } from "../helpers";
-
-export function unwireNodeMutator(state: SimulatorState, action: UnwireNodeAction) {
+export function unwireNodeMutator(
+  state: SimulatorState,
+  action: UnwireNodeAction
+) {
   const { sourceNodeId, sourcePin, targetNodeId, targetPin } = action.payload;
-
-  const { tick, nodeStatesByNodeId, transitionWindows } = state;
 
   const sourceNode = state.nodesById[sourceNodeId];
   const targetNode = state.nodesById[targetNodeId];
@@ -40,8 +39,9 @@ export function unwireNodeMutator(state: SimulatorState, action: UnwireNodeActio
   }
   outConns.splice(sourceConnIndex, 1);
 
-  // Evolve with the new inputs.
-  evolveNode(state, targetNode);
+  if (state.dirtyInputNodeIds.indexOf(targetNodeId) === -1) {
+    state.dirtyInputNodeIds.push(targetNodeId);
+  }
 }
 
 export default produce(unwireNodeMutator);

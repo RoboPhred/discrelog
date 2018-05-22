@@ -1,6 +1,6 @@
 import { IDMap } from "@/types";
 
-import { Node, NodesById, PendingTransition, TransitionWindow } from "./types";
+import { Node, NodesById, TransitionWindow } from "./types";
 
 import { NodeType } from "./node-types";
 
@@ -26,20 +26,16 @@ export interface SimulatorState {
   nodeOutputValuesByNodeId: IDMap<IDMap<boolean>>;
 
   /**
-   * Transitions windowed by tick, sorted ascending
-   * on tick.
+   * Transition windows in ascending order of tick.
    */
   transitionWindows: TransitionWindow[];
-}
 
-// export const defaultSimulatorState: SimulatorState = {
-//     tick: 0,
-//     nodes: {},
-//     nodeStates: {},
-//     edges: {},
-//     edgeValues: {},
-//     transitionWindows: []
-// };
+  /**
+   * A list of node ids whose nodes need to be updated
+   * due to input changes.
+   */
+  dirtyInputNodeIds: string[];
+}
 
 export const defaultSimulatorState: SimulatorState = {
   tick: 0,
@@ -100,5 +96,6 @@ export const defaultSimulatorState: SimulatorState = {
     },
     "out-led": {}
   },
-  transitionWindows: []
+  transitionWindows: [],
+  dirtyInputNodeIds: []
 };
