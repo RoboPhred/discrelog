@@ -6,7 +6,7 @@ import EditorLayout, { ToolWindow } from "@/components/EditorLayout";
 
 import CircuitTray from "./components/CircuitTray";
 import TimingControls from "./components/TimingControls";
-import NodeOutputs from "./components/NodeOutputs";
+import NodeInfo from "./components/NodeInfo";
 import PendingTransitions from "./components/PendingTransitions";
 import CircuitField from "./components/CircuitField";
 
@@ -36,7 +36,7 @@ export default class CircuitEditor extends React.Component {
               <TimingControls />
             </ToolWindow>
             <ToolWindow>
-              <NodeOutputs />
+              <NodeInfo />
             </ToolWindow>
             <ToolWindow>
               <PendingTransitions />

@@ -4,7 +4,7 @@ export interface CircuitEditorState {
   nodePositions: {
     [key: string]: Position;
   };
-  mouseOverNode: string | null;
+  mouseOverNodeId: string | null;
 }
 
 export const defaultCircuitEditorState: CircuitEditorState = {
@@ -26,5 +26,5 @@ export const defaultCircuitEditorState: CircuitEditorState = {
       y: 50
     }
   },
-  mouseOverNode: null
+  mouseOverNodeId: null
 };

@@ -28,7 +28,7 @@ const addNodeAction = produce(
 );
 
 const mouseOverNodeAction = produce((state: CircuitEditorState, action: MouseOverNodeAction) => {
-  state.mouseOverNode = action.payload.nodeId;
+  state.mouseOverNodeId = action.payload.nodeId;
 });
 
 const moveNodeAction = produce(
