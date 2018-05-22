@@ -1,13 +1,8 @@
 import { IDMap } from "@/types";
 
-import { Node, NodesById, PendingTransition } from "./types";
+import { Node, NodesById, PendingTransition, TransitionWindow } from "./types";
 
 import { NodeType } from "./node-types";
-
-export interface TransitionWindow {
-  tick: number;
-  transitions: PendingTransition[];
-}
 
 export interface SimulatorState {
   /**

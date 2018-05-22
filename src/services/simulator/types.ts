@@ -33,3 +33,8 @@ export interface PendingTransition {
   outputPinId: string;
   value: boolean;
 }
+
+export interface TransitionWindow {
+  tick: number;
+  transitions: PendingTransition[];
+}
