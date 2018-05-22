@@ -20,7 +20,7 @@ const orNodeDefinition: NodeDefinition = {
       name: "IN",
       x: 0,
       y: 25
-    },
+    }
   },
   outputs: {
     OUT: {
@@ -31,13 +31,12 @@ const orNodeDefinition: NodeDefinition = {
   },
   evolve(state, inputs, tick) {
     return {
-      transitions: [
-        {
-          outputId: "OUT",
+      transitions: {
+        OUT: {
           tickOffset: 4,
           value: !inputs.IN
         }
-      ]
+      }
     };
   }
 };

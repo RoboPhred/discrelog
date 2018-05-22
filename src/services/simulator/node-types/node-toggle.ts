@@ -31,13 +31,12 @@ const toggleSwitchNodeDefinition: NodeDefinition = {
   },
   evolve(state, inputs, tick) {
     return {
-      transitions: [
-        {
+      transitions: {
+        OUT: {
           tickOffset: 1,
-          outputId: "OUT",
           value: state.toggleState
         }
-      ]
+      }
     };
   }
 };

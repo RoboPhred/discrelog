@@ -36,13 +36,12 @@ const andNodeDefinition: NodeDefinition = {
   },
   evolve(state, inputs, tick) {
     return {
-      transitions: [
-        {
-          outputId: "OUT",
+      transitions: {
+        OUT: {
           tickOffset: 4,
           value: inputs.A && inputs.B
         }
-      ]
+      }
     };
   }
 };

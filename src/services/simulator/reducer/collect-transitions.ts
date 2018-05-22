@@ -55,12 +55,11 @@ export function collectNodeTransitionsMutator(
 
   if (result.transitions) {
     const nodeOutputs = nodeOutputValuesByNodeId[node.id] || {};
-    for (const transition of result.transitions) {
-      const { outputId, value } = transition;
+    for (const outputId of Object.keys(result.transitions)) {
+      const { tickOffset, value } = result.transitions[outputId];
 
       // Sanity check that we are not producing transitions for the past or current tick.
-      const tickOffset = transition.tickOffset > 0 ? transition.tickOffset : 1;
-      const transitionTick = tick + tickOffset;
+      const transitionTick = tick + (tickOffset > 0 ? tickOffset : 1);
 
       removeTransitionMutator(state, node.id, outputId);
 

@@ -33,13 +33,12 @@ export interface NodeVisualDefinition {
 
 export interface OutputTransition {
   tickOffset: number;
-  outputId: string;
   value: boolean;
 }
 
 export interface EvolutionResult {
   state?: any;
-  transitions?: OutputTransition[];
+  transitions?: IDMap<OutputTransition>;
 }
 
 export type NodeInteractFunction = (state: any) => any;
