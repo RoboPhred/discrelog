@@ -3,6 +3,8 @@ import produce from "immer";
 import { SimulatorState } from "../state";
 import { WireNodeAction } from "../actions";
 
+import { collectNodeTransitionsMutator } from "./collect-transitions";
+
 export function wireNodeMutator(state: SimulatorState, action: WireNodeAction) {
   const { sourceNodeId, sourcePin, targetNodeId, targetPin } = action.payload;
 
@@ -30,9 +32,7 @@ export function wireNodeMutator(state: SimulatorState, action: WireNodeAction) {
     pin: targetPin
   });
 
-  if (state.dirtyInputNodeIds.indexOf(targetNodeId) === -1) {
-    state.dirtyInputNodeIds.push(targetNodeId);
-  }
+  collectNodeTransitionsMutator(state, targetNodeId);
 }
 
 export default produce(wireNodeMutator);

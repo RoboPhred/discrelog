@@ -4,6 +4,8 @@ import { SimulatorState } from "../state";
 import { InteractNodeAction } from "../actions";
 import { NodeTypes } from "../node-types";
 
+import { collectNodeTransitionsMutator } from "./collect-transitions";
+
 export function interactNodeMutator(
   state: SimulatorState,
   action: InteractNodeAction
@@ -21,9 +23,7 @@ export function interactNodeMutator(
   const newState = type.interact(nodeStatesByNodeId[nodeId]);
   nodeStatesByNodeId[nodeId] = newState;
 
-  if (state.dirtyInputNodeIds.indexOf(nodeId) === -1) {
-    state.dirtyInputNodeIds.push(nodeId);
-  }
+  collectNodeTransitionsMutator(state, nodeId);
 }
 
 export default produce(interactNodeMutator);

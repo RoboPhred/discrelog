@@ -30,7 +30,22 @@ export interface NodePin {
 
 export type PinValueMap = IDMap<boolean>;
 
-export interface TransitionWindow {
+export interface NodePinTransition {
+  id: string;
+  nodeId: string;
+  outputId: string;
   tick: number;
-  transitionsByNodeId: IDMap<PinValueMap>;
+  value: boolean;
+}
+
+export interface TransitionWindow {
+  /**
+   * The tick represented by this window.
+   */
+  tick: number;
+
+  /**
+   * The transitions contained in this window.
+   */
+  transitionIds: string[];
 }

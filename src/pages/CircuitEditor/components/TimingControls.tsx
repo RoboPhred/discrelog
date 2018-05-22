@@ -26,15 +26,11 @@ const mapDispatchToProps = {
 type Props = StateProps & DispatchProps;
 class TimingControls extends React.Component<Props> {
   render() {
-    const {
-      tick,
-      evolveSim
-    } = this.props;
+    const { tick, evolveSim } = this.props;
 
     return (
       <div>
-        Ticks: {tick}{" "}
-        <button onClick={evolveSim.bind(null, 4)}>Tick 4</button>
+        Ticks: {tick} <button onClick={evolveSim.bind(null, 1)}>Tick</button>
       </div>
     );
   }

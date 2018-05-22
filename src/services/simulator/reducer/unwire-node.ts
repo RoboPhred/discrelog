@@ -3,6 +3,8 @@ import produce from "immer";
 import { SimulatorState } from "../state";
 import { UnwireNodeAction } from "../actions";
 
+import { collectNodeTransitionsMutator } from "./collect-transitions";
+
 export function unwireNodeMutator(
   state: SimulatorState,
   action: UnwireNodeAction
@@ -39,9 +41,7 @@ export function unwireNodeMutator(
   }
   outConns.splice(sourceConnIndex, 1);
 
-  if (state.dirtyInputNodeIds.indexOf(targetNodeId) === -1) {
-    state.dirtyInputNodeIds.push(targetNodeId);
-  }
+  collectNodeTransitionsMutator(state, targetNodeId);
 }
 
 export default produce(unwireNodeMutator);

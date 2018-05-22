@@ -1,4 +1,5 @@
 import binarySearch from "binary-search";
+import uuidV4 from "uuid/v4";
 
 import { IDMap } from "@/types";
 
@@ -7,19 +8,11 @@ import { SimulatorState } from "../state";
 import { Node, TransitionWindow } from "../types";
 import { NodeTypes, EvolutionResult } from "../node-types";
 
-export function collectTransitionsMutator(state: SimulatorState) {
-  // TODO: This can be made more efficient by tracking which nodes
-  //  need to be checked for updates.
-  const dirtyInputs = [...state.dirtyInputNodeIds];
-  state.dirtyInputNodeIds = [];
-  for (const nodeId of dirtyInputs) {
-    const node = state.nodesById[nodeId];
-    collectNodeTransitionsMutator(state, node);
-  }
-}
-
-function collectNodeTransitionsMutator(state: SimulatorState, node: Node) {
-  console.log("collecting transitions for", node.id);
+export function collectNodeTransitionsMutator(
+  state: SimulatorState,
+  nodeId: string
+) {
+  console.log("collecting transitions for", nodeId);
 
   const {
     tick,
@@ -28,9 +21,14 @@ function collectNodeTransitionsMutator(state: SimulatorState, node: Node) {
     transitionWindows
   } = state;
 
+  const node = state.nodesById[nodeId];
+  if (!node) {
+    return;
+  }
+
   // Evolve with the new inputs.
   const type = NodeTypes[node.type];
-  if (type == null || type.evolve == null) {
+  if (!type || !type.evolve) {
     return;
   }
 
@@ -56,28 +54,112 @@ function collectNodeTransitionsMutator(state: SimulatorState, node: Node) {
   }
 
   if (result.transitions) {
+    const nodeOutputs = nodeOutputValuesByNodeId[node.id] || {};
     for (const transition of result.transitions) {
       const { outputId, value } = transition;
 
       // Sanity check that we are not producing transitions for the past or current tick.
       const tickOffset = transition.tickOffset > 0 ? transition.tickOffset : 1;
-
       const transitionTick = tick + tickOffset;
 
-      // Find the transition tick window this transition will occur at.
-      const transitionsByNodeId = getWindow(transitionWindows, transitionTick)
-        .transitionsByNodeId;
+      removeTransitionMutator(state, node.id, outputId);
 
-      // Get the transitions for this node at the transition tick.
-      let nodeTransitions = transitionsByNodeId[node.id];
-      if (!nodeTransitions) {
-        nodeTransitions = {};
-        transitionsByNodeId[node.id] = nodeTransitions;
+      if (nodeOutputs[outputId] !== value) {
+        addTransitionMutator(state, node.id, outputId, transitionTick, value);
       }
 
       console.log(`> tick ${transitionTick} pin ${outputId} = ${value}`);
-      nodeTransitions[outputId] = value;
     }
+  }
+}
+
+function addTransitionMutator(
+  state: SimulatorState,
+  nodeId: string,
+  outputId: string,
+  tick: number,
+  value: boolean
+) {
+  const {
+    nodeOutputTransitionsByNodeId,
+    transitionsById,
+    transitionWindows
+  } = state;
+
+  const transitionId = uuidV4();
+
+  transitionsById[transitionId] = {
+    id: transitionId,
+    nodeId,
+    outputId,
+    tick,
+    value
+  };
+
+  let nodeTransitions = nodeOutputTransitionsByNodeId[nodeId];
+  if (!nodeTransitions) {
+    nodeTransitions = {};
+    nodeOutputTransitionsByNodeId[nodeId] = nodeTransitions;
+  }
+
+  nodeTransitions[outputId] = transitionId;
+
+  const transitionWindow = getWindow(transitionWindows, tick);
+  transitionWindow.transitionIds.push(transitionId);
+}
+
+function removeTransitionMutator(
+  state: SimulatorState,
+  nodeId: string,
+  outputId: string
+) {
+  const {
+    nodeOutputTransitionsByNodeId,
+    transitionsById,
+    transitionWindows
+  } = state;
+
+  const pinTransitions = nodeOutputTransitionsByNodeId[nodeId];
+  if (!pinTransitions) {
+    return;
+  }
+
+  const transitionId = pinTransitions[outputId];
+  if (!transitionId) {
+    return;
+  }
+
+  // Remove the transition from the node output transitions
+  delete pinTransitions[outputId];
+
+  const transition = transitionsById[transitionId];
+  if (!transition) {
+    return;
+  }
+
+  // Remove the transition from the transitions map.
+  delete transitionsById[transitionId];
+
+  const transitionWindowIndex = transitionWindows.findIndex(
+    x => x.tick === transition.tick
+  );
+  if (transitionWindowIndex === -1) {
+    return;
+  }
+  const transitionWindow = transitionWindows[transitionWindowIndex];
+
+  const tickWindowTransitionIndex = transitionWindow.transitionIds.indexOf(
+    transitionId
+  );
+  if (tickWindowTransitionIndex === -1) {
+    return;
+  }
+  if (transitionWindow.transitionIds.length === 1) {
+    // Only one element left, remove the window.
+    transitionWindows.splice(transitionWindowIndex, 1);
+  } else {
+    // Remove the transition from the tick window.
+    transitionWindow.transitionIds.splice(tickWindowTransitionIndex, 1);
   }
 }
 
@@ -93,7 +175,7 @@ function getWindow(
   const insertAt = -index - 1;
   const result: TransitionWindow = {
     tick,
-    transitionsByNodeId: {}
+    transitionIds: []
   };
   windows.splice(insertAt, 0, result);
   return result;

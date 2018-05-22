@@ -1,6 +1,6 @@
 import { IDMap } from "@/types";
 
-import { Node, NodesById, TransitionWindow } from "./types";
+import { Node, NodesById, NodePinTransition, TransitionWindow } from "./types";
 
 import { NodeType } from "./node-types";
 
@@ -26,15 +26,24 @@ export interface SimulatorState {
   nodeOutputValuesByNodeId: IDMap<IDMap<boolean>>;
 
   /**
+   * A map of the the ids of the pending transitions for a node by node id.
+   */
+  nodeOutputTransitionsByNodeId: IDMap<IDMap<string>>;
+
+  // Not entirely happy having this on the state, since it is
+  //  highly transient and has a lot of churn.
+  // However, thisthis greatly simplifies the one-transition-per-pin logic.
+  //  Without this, either the logic to add or logic to apply transitions would have
+  //  to do a deep scan of the other's state data.
+  /**
+   * A map of pending transitions by id.
+   */
+  transitionsById: IDMap<NodePinTransition>;
+
+  /**
    * Transition windows in ascending order of tick.
    */
   transitionWindows: TransitionWindow[];
-
-  /**
-   * A list of node ids whose nodes need to be updated
-   * due to input changes.
-   */
-  dirtyInputNodeIds: string[];
 }
 
 export const defaultSimulatorState: SimulatorState = {
@@ -96,6 +105,7 @@ export const defaultSimulatorState: SimulatorState = {
     },
     "out-led": {}
   },
-  transitionWindows: [],
-  dirtyInputNodeIds: []
+  nodeOutputTransitionsByNodeId: {},
+  transitionsById: {},
+  transitionWindows: []
 };
