@@ -37,12 +37,12 @@ export function intersects(r1: Rectangle, r2: Rectangle) {
   r2 = normalizeRectangle(r2);
 
   // r1 starts after p2's extent, or does not reach r2's start.
-  if (r1.p1.x > r2.p2.x || r1.p1.x < r2.p1.x) {
+  if (r1.p1.x > r2.p2.x || r1.p2.x < r2.p1.x) {
     return false;
   }
 
   // r1 starts after p2's extent, or does not reach r2's start.
-  if (r1.p1.y > r2.p2.y || r1.p1.y < r2.p1.y) {
+  if (r1.p1.y > r2.p2.y || r1.p2.y < r2.p1.y) {
     return false;
   }
 

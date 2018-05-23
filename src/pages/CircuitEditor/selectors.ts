@@ -46,7 +46,7 @@ export const nodeRectsById = createSelector(
         },
         {
           x: p1.x + bounds[2],
-          y: p1.x + bounds[3]
+          y: p1.y + bounds[3]
         }
       );
     })
