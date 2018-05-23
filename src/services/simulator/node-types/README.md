@@ -23,6 +23,9 @@ Each output pin can only have one pending transition at a given time. If your ev
 setting a new transition to the pin will cancel and re-schedule the transition.
 
 A pin cannot be changed in the same tick that requests a change. Attempts to do so will schedule the change on the next tick.
+The one exception to the above is when a node is first created. The first time evolve is called on a newly created node, all transitions
+will immediately be applied. This is to prevent inconsistent states that will cause the circuit to function differently depending on the
+order of node creation.
 
 ## Visual Appearance
 
