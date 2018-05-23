@@ -3,7 +3,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { State } from "@/store";
+import { AppState } from "@/store";
 
 import { evolveSim } from "@/services/simulator/actions";
 
@@ -11,7 +11,7 @@ interface StateProps {
   tick: number;
 }
 
-const mapStateToProps = createStructuredSelector<State, StateProps>({
+const mapStateToProps = createStructuredSelector<AppState, StateProps>({
   tick: s => s.services.simulator.tick
 });
 

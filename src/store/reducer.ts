@@ -4,9 +4,9 @@ import simulator from "@/services/simulator/reducer";
 
 import circuitEditor from "@/pages/CircuitEditor/reducer";
 
-import { State, defaultState } from "./state";
+import { AppState, defaultAppState } from "./state";
 
-export default combineReducers<State>({
+export default combineReducers<AppState>({
   services: combineReducers({
     simulator
   }),

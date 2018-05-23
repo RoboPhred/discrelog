@@ -8,7 +8,7 @@ import {
   defaultCircuitEditorState
 } from "@/pages/CircuitEditor/state";
 
-export interface State {
+export interface AppState {
   services: {
     simulator: SimulatorState;
   };
@@ -17,7 +17,7 @@ export interface State {
   };
 }
 
-export const defaultState: State = {
+export const defaultAppState: AppState = {
   services: {
     simulator: defaultSimulatorState
   },

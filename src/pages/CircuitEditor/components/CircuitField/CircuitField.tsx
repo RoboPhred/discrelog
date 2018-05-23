@@ -10,7 +10,7 @@ import { Stage, Layer, Rect } from "react-konva";
 import sizeme, { SizeProps } from "react-sizeme";
 
 import { Position } from "@/types";
-import { State as AppState } from "@/store";
+import { AppState } from "@/store";
 
 import WiresLayer from "./components/WiresLayer";
 import NodesLayer from "./components/NodesLayer";

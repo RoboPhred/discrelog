@@ -6,8 +6,12 @@ import { ContainerConfig } from "konva";
 import { KonvaNodeProps, Group, Rect, Line, Path } from "react-konva";
 
 import { Node } from "@/services/simulator/types";
-import { NodeTypes, NodeVisualPath, NodeVisualPathDefinition } from "@/services/simulator/node-types";
-import { State } from "@/store";
+import {
+  NodeTypes,
+  NodeVisualPath,
+  NodeVisualPathDefinition
+} from "@/services/simulator/node-types";
+import { AppState } from "@/store";
 
 import NodeVisual from "../../NodeVisual";
 
@@ -20,7 +24,7 @@ interface StateProps {
   node: Node;
   nodeState: any;
 }
-function mapStateToProps(state: State, props: BodyProps) {
+function mapStateToProps(state: AppState, props: BodyProps) {
   const { nodeId } = props;
   const simState = state.services.simulator;
   return {
@@ -44,12 +48,8 @@ class Body extends React.Component<Props> {
     const def = NodeTypes[type];
     if (def) {
       bodyElement = (
-        <NodeVisual
-          visual={def.visual}
-          state={nodeState}
-          onClick={onClick}
-        />
-      )
+        <NodeVisual visual={def.visual} state={nodeState} onClick={onClick} />
+      );
     } else {
       bodyElement = (
         <Rect
@@ -63,11 +63,7 @@ class Body extends React.Component<Props> {
       );
     }
 
-    return (
-      <Group {...groupProps}>
-        {bodyElement}
-      </Group>
-    );
+    return <Group {...groupProps}>{bodyElement}</Group>;
   }
 }
 

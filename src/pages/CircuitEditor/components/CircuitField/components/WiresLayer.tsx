@@ -10,7 +10,7 @@ import { mapValues } from "lodash-es";
 import { Node, NodesById, NodePin } from "@/services/simulator/types";
 import { NodeTypes } from "@/services/simulator/node-types";
 
-import { State } from "@/store";
+import { AppState } from "@/store";
 
 interface Connection {
   key: string;
@@ -27,7 +27,7 @@ interface Connection {
 
 const NO_POS = Object.freeze({ x: 0, y: 0 });
 
-const nodesSelector = (s: State) => s.services.simulator.nodesById;
+const nodesSelector = (s: AppState) => s.services.simulator.nodesById;
 const edgeSelector = createSelector(nodesSelector, nodes =>
   aggregateOutputs(Object.keys(nodes).map(k => nodes[k]))
 );
@@ -36,9 +36,9 @@ const nodeTypesSelector = createSelector(nodesSelector, nodes =>
 );
 const connectionSelector = createSelector(
   edgeSelector,
-  (s: State) => s.ui.circuitEditor.nodePositions,
+  (s: AppState) => s.ui.circuitEditor.nodePositions,
   nodeTypesSelector,
-  (s: State) => s.services.simulator.nodeOutputValuesByNodeId,
+  (s: AppState) => s.services.simulator.nodeOutputValuesByNodeId,
   (edges, nodePositions, nodeTypes, outputValues) => {
     return edges.map<Connection>(edge => {
       const {
@@ -76,7 +76,7 @@ const connectionSelector = createSelector(
 interface StateProps {
   connections: ReturnType<typeof connectionSelector>;
 }
-const mapStateToProps = createStructuredSelector<State, StateProps>({
+const mapStateToProps = createStructuredSelector<AppState, StateProps>({
   connections: connectionSelector
 });
 

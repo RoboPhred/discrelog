@@ -5,10 +5,10 @@ import { createSelector, createStructuredSelector } from "reselect";
 
 import { Layer } from "react-konva";
 
-import { interactNode, toggleWireNode, } from "@/services/simulator/actions";
+import { interactNode, toggleWireNode } from "@/services/simulator/actions";
 import { isWired } from "@/services/simulator/helpers";
 
-import { State as AppState } from "@/store";
+import { AppState } from "@/store";
 
 import { moveNode, mouseOverNode } from "../../../actions";
 
@@ -46,12 +46,7 @@ interface State {
 type Props = StateProps & DispatchProps;
 class NodesLayer extends React.Component<Props, State> {
   render() {
-    const {
-      nodePositions,
-      interactNode,
-      moveNode,
-      mouseOverNode
-    } = this.props;
+    const { nodePositions, interactNode, moveNode, mouseOverNode } = this.props;
 
     const nodeElements = Object.keys(nodePositions).map(key => {
       const { x, y } = nodePositions[key];

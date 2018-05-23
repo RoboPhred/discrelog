@@ -3,24 +3,23 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { State } from "@/store";
+import { AppState } from "@/store";
 
-const transitionWindowsSelector = (s: State) => s.services.simulator.transitionWindows;
+const transitionWindowsSelector = (s: AppState) =>
+  s.services.simulator.transitionWindows;
 
 interface StateProps {
   transitionWindows: ReturnType<typeof transitionWindowsSelector>;
 }
 
-const mapStateToProps = createStructuredSelector<State, StateProps>({
+const mapStateToProps = createStructuredSelector<AppState, StateProps>({
   transitionWindows: transitionWindowsSelector
 });
 
 type Props = StateProps;
 class PendingTransitions extends React.Component<Props> {
   render() {
-    const {
-      transitionWindows
-    } = this.props;
+    const { transitionWindows } = this.props;
 
     return (
       <div>

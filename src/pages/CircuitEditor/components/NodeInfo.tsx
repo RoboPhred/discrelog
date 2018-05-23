@@ -5,29 +5,32 @@ import { createStructuredSelector, createSelector } from "reselect";
 
 import { mapValues } from "lodash-es";
 
-import { State } from "@/store";
+import { AppState } from "@/store";
 
 const mouseOverNode = createSelector(
-  (s: State) => s.ui.circuitEditor.mouseOverNodeId,
-  (s: State) => s.services.simulator.nodesById,
-  (id, nodesById) => id ? nodesById[id] : null
+  (s: AppState) => s.ui.circuitEditor.mouseOverNodeId,
+  (s: AppState) => s.services.simulator.nodesById,
+  (id, nodesById) => (id ? nodesById[id] : null)
 );
 
 const mouseOverNodeInputsSelector = createSelector(
   mouseOverNode,
-  (s: State) => s.services.simulator.nodeOutputValuesByNodeId,
-  (node, outputsByNodeId) => node ? mapValues(node.inputConnectionsByPin, (v, k) => {
-    if (!v) {
-      return null;
-    }
-    return outputsByNodeId[v.nodeId][v.pin];
-  }) : {}
+  (s: AppState) => s.services.simulator.nodeOutputValuesByNodeId,
+  (node, outputsByNodeId) =>
+    node
+      ? mapValues(node.inputConnectionsByPin, (v, k) => {
+          if (!v) {
+            return null;
+          }
+          return outputsByNodeId[v.nodeId][v.pin];
+        })
+      : {}
 );
 
 const mouseOverNodeOutputsSelector = createSelector(
-  (s: State) => s.services.simulator.nodeOutputValuesByNodeId,
-  (s: State) => s.ui.circuitEditor.mouseOverNodeId,
-  (outputs, nodeId) => (nodeId != null) ? outputs[nodeId] : {}
+  (s: AppState) => s.services.simulator.nodeOutputValuesByNodeId,
+  (s: AppState) => s.ui.circuitEditor.mouseOverNodeId,
+  (outputs, nodeId) => (nodeId != null ? outputs[nodeId] : {})
 );
 
 interface StateProps {
@@ -35,7 +38,7 @@ interface StateProps {
   nodeOutputValues: ReturnType<typeof mouseOverNodeOutputsSelector>;
 }
 
-const mapStateToProps = createStructuredSelector<State, StateProps>({
+const mapStateToProps = createStructuredSelector<AppState, StateProps>({
   nodeInputValues: mouseOverNodeInputsSelector,
   nodeOutputValues: mouseOverNodeOutputsSelector
 });
