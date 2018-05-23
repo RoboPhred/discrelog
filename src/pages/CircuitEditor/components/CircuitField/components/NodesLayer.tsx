@@ -24,19 +24,13 @@ const mapStateToProps = createStructuredSelector<AppState, StateProps>({
   nodePositions: nodePositionsSelector
 });
 
-interface DispatchProps {
-  interactNode: typeof interactNode;
-  moveNode: typeof moveNode;
-  toggleWireNode: typeof toggleWireNode;
-  mouseOverNode: typeof mouseOverNode;
-}
-
 const mapDispatchToProps = {
   interactNode,
   moveNode,
   toggleWireNode,
   mouseOverNode
 };
+type DispatchProps = typeof mapDispatchToProps;
 
 interface State {
   wireSourceNode: string | null;

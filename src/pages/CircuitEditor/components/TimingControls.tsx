@@ -15,13 +15,10 @@ const mapStateToProps = createStructuredSelector<AppState, StateProps>({
   tick: s => s.services.simulator.tick
 });
 
-interface DispatchProps {
-  evolveSim: typeof evolveSim;
-}
-
 const mapDispatchToProps = {
   evolveSim
 };
+type DispatchProps = typeof mapDispatchToProps;
 
 type Props = StateProps & DispatchProps;
 class TimingControls extends React.Component<Props> {

@@ -11,13 +11,10 @@ import { typedKeys } from "@/utils";
 
 import NodeVisual from "./NodeVisual";
 
-interface DispatchProps {
-  addNode: typeof addNode;
-}
-
 const mapDispatchToProps = {
   addNode
 };
+type DispatchProps = typeof mapDispatchToProps;
 
 type Props = DispatchProps;
 class CircuitTray extends React.Component<Props> {

@@ -3,19 +3,20 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import { ContainerConfig } from "konva";
-import { KonvaNodeProps, Group } from "react-konva";
+import { KonvaNodeProps, Group, Rect } from "react-konva";
 
 import { AppState } from "@/store";
 
+import { NodeDefinition } from "@/services/simulator/node-types";
+import { nodesById, nodeDefsById } from "@/services/simulator/selectors";
 import { Node } from "@/services/simulator/types";
-import { NodeTypes } from "@/services/simulator/node-types";
+
+import { selectedNodes } from "@/pages/CircuitEditor/selectors";
 
 import Body from "./components/Body";
 import Pin from "./components/Pin";
 
-export interface CircuitNodePinoutProps
-  extends ContainerConfig,
-    KonvaNodeProps {
+export interface CircuitNodeProps extends ContainerConfig, KonvaNodeProps {
   nodeId: string;
   onClick(): void;
   onPinClick(direction: "input" | "output", pin: string): void;
@@ -23,13 +24,14 @@ export interface CircuitNodePinoutProps
 
 interface StateProps {
   node: Node;
+  def: NodeDefinition;
+  isSelected: boolean;
 }
-function mapStateToProps(
-  state: AppState,
-  props: CircuitNodePinoutProps
-): StateProps {
+function mapStateToProps(state: AppState, props: CircuitNodeProps): StateProps {
   return {
-    node: state.services.simulator.nodesById[props.nodeId]
+    node: nodesById(state)[props.nodeId],
+    def: nodeDefsById(state)[props.nodeId],
+    isSelected: selectedNodes(state).indexOf(props.nodeId) !== -1
   };
 }
 
@@ -38,12 +40,19 @@ const PIN_PADDING = 12;
 const BODY_WIDTH = 50;
 const BODY_HEIGHT = 50;
 
-type Props = CircuitNodePinoutProps & StateProps;
+type Props = CircuitNodeProps & StateProps;
 class CircuitNode extends React.Component<Props> {
   render() {
-    const { nodeId, node, onClick, onPinClick, ...groupProps } = this.props;
+    const {
+      nodeId,
+      node,
+      def,
+      isSelected,
+      onClick,
+      onPinClick,
+      ...groupProps
+    } = this.props;
 
-    const def = NodeTypes[node.type] || {};
     const inputs = def.inputs || [];
     const outputs = def.outputs || [];
 
@@ -75,6 +84,7 @@ class CircuitNode extends React.Component<Props> {
 
     return (
       <Group {...groupProps}>
+        {isSelected && <Rect width={10} height={10} fill="yellow" />}
         <Body nodeId={nodeId} onClick={onClick} />
         {inputPins}
         {outputPins}

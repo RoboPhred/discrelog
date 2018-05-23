@@ -32,3 +32,8 @@ declare module "react-sizeme" {
   ): SizemeDecorator<TProps>;
   export default sizeme;
 }
+
+declare module "svg-path-bounds" {
+  function getBounds(path: string): [number, number, number, number];
+  export = getBounds;
+}

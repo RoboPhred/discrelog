@@ -3,14 +3,16 @@ import * as React from "react";
 import styled from "styled-components";
 
 import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
 
 import { Stage, Layer, Rect } from "react-konva";
 
 import sizeme, { SizeProps } from "react-sizeme";
 
+import { normalizeRectangle, calcSize } from "@/geometry";
 import { Position } from "@/types";
 import { AppState } from "@/store";
+
+import { selectRegion } from "@/pages/CircuitEditor/actions";
 
 import WiresLayer from "./components/WiresLayer";
 import NodesLayer from "./components/NodesLayer";
@@ -19,14 +21,16 @@ export interface CircuitFieldProps {
   className?: string;
 }
 
-interface StateProps {}
-const mapStateToProps = createStructuredSelector<AppState, StateProps>({});
-
 const CircuitFieldContainer = styled.div`
   overflow: hidden;
 `;
 
-type Props = CircuitFieldProps & SizeProps & StateProps;
+const mapDispatchToProps = {
+  selectRegion
+};
+type DispatchProps = typeof mapDispatchToProps;
+
+type Props = CircuitFieldProps & SizeProps & DispatchProps;
 interface State {
   dragStart: Position | null;
   dragEnd: Position | null;
@@ -44,6 +48,7 @@ class CircuitField extends React.Component<Props, State> {
     this._onMouseMove = this._onMouseMove.bind(this);
     this._onMouseUp = this._onMouseUp.bind(this);
   }
+
   render() {
     const {
       className,
@@ -98,6 +103,8 @@ class CircuitField extends React.Component<Props, State> {
       return;
     }
 
+    console.log(e);
+
     this.setState({
       dragEnd: {
         x: e.evt.layerX,
@@ -107,13 +114,20 @@ class CircuitField extends React.Component<Props, State> {
   }
 
   private _onMouseUp(e: KonvaMouseEvent) {
+    const { dragStart, dragEnd } = this.state;
     this.setState({
       dragStart: null,
       dragEnd: null
     });
-
-    // TODO: select nodes by hit test
-    // https://www.npmjs.com/package/svg-path-bounds
+    if (!dragStart || !dragEnd) {
+      return;
+    }
+    const r = normalizeRectangle(dragStart, dragEnd);
+    const s = calcSize(r);
+    if (s.width < 5 || s.height < 5) {
+      return;
+    }
+    this.props.selectRegion({ p1: dragStart, p2: dragEnd });
   }
 }
 
@@ -121,4 +135,4 @@ export default sizeme({
   monitorWidth: true,
   monitorHeight: true,
   noPlaceholder: true
-})(connect(mapStateToProps)(CircuitField));
+})(connect(null, mapDispatchToProps)(CircuitField));
