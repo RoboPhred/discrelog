@@ -1,6 +1,6 @@
 import { NodeDefinition } from "./types";
 
-const orNodeDefinition: NodeDefinition = {
+const bufferNodeDefinition: NodeDefinition = {
   type: "not",
   visual: {
     hitPath: `
@@ -40,4 +40,4 @@ const orNodeDefinition: NodeDefinition = {
     };
   }
 };
-export default orNodeDefinition;
+export default bufferNodeDefinition;

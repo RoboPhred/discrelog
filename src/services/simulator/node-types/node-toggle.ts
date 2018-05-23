@@ -29,7 +29,7 @@ const toggleSwitchNodeDefinition: NodeDefinition = {
       toggleState: !state.toggleState
     };
   },
-  evolve(state, inputs, tick) {
+  evolve(state = defaultToggleState, inputs, tick) {
     return {
       transitions: {
         OUT: {

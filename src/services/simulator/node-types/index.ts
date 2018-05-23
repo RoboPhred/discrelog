@@ -12,6 +12,7 @@ export const NodeTypes = {
   or: require("./node-or").default as NodeDefinition,
   nor: require("./node-nor").default as NodeDefinition,
   not: require("./node-not").default as NodeDefinition,
+  buffer: require("./node-buffer").default as NodeDefinition,
   led: require("./node-led").default as NodeDefinition,
   toggle: require("./node-toggle").default as NodeDefinition,
   seg7: require("./node-seg7").default as NodeDefinition
