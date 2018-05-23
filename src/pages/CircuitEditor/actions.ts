@@ -9,12 +9,12 @@ export const mouseOverNode = (nodeId: string | null) => ({
 });
 export type MouseOverNodeAction = ReturnType<typeof mouseOverNode>;
 
-export const ACTION_NODE_MOVE = "@editor/node/move" as "@editor/node/move";
-export const moveNode = (nodeId: string, x: number, y: number) => ({
-  type: ACTION_NODE_MOVE,
-  payload: { nodeId, x, y }
+export const ACTION_MOVE_SELECTED = "@editor/move-selected" as "@editor/move-selected";
+export const moveSelected = (offsetX: number, offsetY: number) => ({
+  type: ACTION_MOVE_SELECTED,
+  payload: { offsetX, offsetY }
 });
-export type MoveNodeAction = ReturnType<typeof moveNode>;
+export type MoveNodeAction = ReturnType<typeof moveSelected>;
 
 export interface SelectActionModifiers {
   append?: boolean;

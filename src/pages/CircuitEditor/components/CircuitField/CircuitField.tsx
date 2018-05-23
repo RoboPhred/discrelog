@@ -12,7 +12,15 @@ import { normalizeRectangle, calcSize } from "@/geometry";
 import { Position } from "@/types";
 import { AppState } from "@/store";
 
-import { clearSelection, selectRegion } from "@/pages/CircuitEditor/actions";
+import {
+  moveSelected,
+  clearSelection,
+  selectNode,
+  selectRegion,
+  mouseOverNode
+} from "@/pages/CircuitEditor/actions";
+
+import { interactNode } from "@/services/simulator/actions";
 
 import WiresLayer from "./components/WiresLayer";
 import NodesLayer from "./components/NodesLayer";
@@ -26,13 +34,19 @@ const CircuitFieldContainer = styled.div`
 `;
 
 const mapDispatchToProps = {
-  clearSelection,
-  selectRegion
+  interactNode,
+  mouseOverNode,
+  moveSelected,
+  selectNode,
+  selectRegion,
+  clearSelection
 };
 type DispatchProps = typeof mapDispatchToProps;
 
 type Props = CircuitFieldProps & SizeProps & DispatchProps;
 interface State {
+  mouseDownNodeId: string | null;
+  isDragging: boolean;
   dragStart: Position | null;
   dragEnd: Position | null;
 }
@@ -41,14 +55,19 @@ class CircuitField extends React.Component<Props, State> {
     super(props);
 
     this.state = {
+      mouseDownNodeId: null,
+      isDragging: false,
       dragStart: null,
       dragEnd: null
     };
 
+    this._onNodeMouseDown = this._onNodeMouseDown.bind(this);
+    this._onNodeMouseOver = this._onNodeMouseOver.bind(this);
+    this._onNodeMouseLeave = this._onNodeMouseLeave.bind(this);
+
     this._onMouseDown = this._onMouseDown.bind(this);
     this._onMouseMove = this._onMouseMove.bind(this);
     this._onMouseUp = this._onMouseUp.bind(this);
-    this._onClick = this._onClick.bind(this);
   }
 
   render() {
@@ -66,7 +85,6 @@ class CircuitField extends React.Component<Props, State> {
           onMouseDown={this._onMouseDown}
           onMouseMove={this._onMouseMove}
           onMouseUp={this._onMouseUp}
-          onClick={this._onClick}
         >
           {dragStart &&
             dragEnd && (
@@ -81,10 +99,39 @@ class CircuitField extends React.Component<Props, State> {
               </Layer>
             )}
           <WiresLayer />
-          <NodesLayer />
+          <NodesLayer
+            onNodeMouseDown={this._onNodeMouseDown}
+            onNodeMouseOver={this._onNodeMouseOver}
+            onNodeMouseLeave={this._onNodeMouseLeave}
+          />
         </Stage>
       </CircuitFieldContainer>
     );
+  }
+
+  private _onNodeMouseDown(nodeId: string, e: KonvaMouseEvent) {
+    if (e.evt.defaultPrevented) {
+      return;
+    }
+
+    // Claim it so we do not start drag-selecting.
+    e.evt.preventDefault();
+
+    this.setState({
+      mouseDownNodeId: nodeId
+    });
+  }
+
+  private _onNodeMouseOver(nodeId: string, e: KonvaMouseEvent) {
+    if (e.evt.defaultPrevented) {
+      return;
+    }
+
+    this.props.mouseOverNode(nodeId);
+  }
+
+  private _onNodeMouseLeave(nodeId: string, e: KonvaMouseEvent) {
+    this.props.mouseOverNode(null);
   }
 
   private _onMouseDown(e: KonvaMouseEvent) {
@@ -96,25 +143,55 @@ class CircuitField extends React.Component<Props, State> {
       dragStart: {
         x: e.evt.layerX,
         y: e.evt.layerY
-      },
-      dragEnd: {
-        x: e.evt.layerX,
-        y: e.evt.layerY
       }
     });
   }
 
   private _onMouseMove(e: KonvaMouseEvent) {
-    if (!this.state.dragStart) {
-      return;
-    }
-
     if (e.evt.defaultPrevented) {
       return;
     }
+
+    console.log(e);
+
+    const { mouseDownNodeId, dragStart } = this.state;
+
+    if (mouseDownNodeId) {
+      // Dragging a node.
+      // Make sure node is selected.
+      this.props.selectNode(mouseDownNodeId, { append: true });
+      // Move things around.
+      this.props.moveSelected(e.evt.movementX, e.evt.movementY);
+      e.evt.preventDefault();
+      this.setState({
+        isDragging: true
+      });
+      return;
+    }
+
+    if (!dragStart) {
+      return;
+    }
+
     e.evt.preventDefault();
 
+    let dragEnd = this.state.dragEnd;
+    if (!dragEnd) {
+      dragEnd = {
+        x: e.evt.layerX,
+        y: e.evt.layerY
+      };
+
+      // Not dragging until we hit the thresh.
+      const r = normalizeRectangle(dragStart, dragEnd);
+      const s = calcSize(r);
+      if (s.width < 5 || s.height < 5) {
+        return;
+      }
+    }
+
     this.setState({
+      isDragging: true,
       dragEnd: {
         x: e.evt.layerX,
         y: e.evt.layerY
@@ -123,33 +200,32 @@ class CircuitField extends React.Component<Props, State> {
   }
 
   private _onMouseUp(e: KonvaMouseEvent) {
-    const { dragStart, dragEnd } = this.state;
+    const { mouseDownNodeId, isDragging, dragStart, dragEnd } = this.state;
     this.setState({
+      mouseDownNodeId: null,
+      isDragging: false,
       dragStart: null,
       dragEnd: null
     });
+
+    if (!isDragging) {
+      if (mouseDownNodeId) {
+        // Click on node
+        //  TODO: just use click; suppress with preventDefault if drag start.
+        this.props.interactNode(mouseDownNodeId);
+      } else {
+        this.props.clearSelection();
+      }
+      e.evt.preventDefault();
+      return;
+    }
 
     if (!dragStart || !dragEnd) {
       return;
     }
 
-    const r = normalizeRectangle(dragStart, dragEnd);
-    const s = calcSize(r);
-    if (s.width < 5 || s.height < 5) {
-      return;
-    }
-
     e.evt.preventDefault();
     this.props.selectRegion({ p1: dragStart, p2: dragEnd });
-  }
-
-  private _onClick(e: KonvaMouseEvent) {
-    if (e.evt.defaultPrevented) {
-      return;
-    }
-    e.evt.preventDefault();
-
-    this.props.clearSelection();
   }
 }
 

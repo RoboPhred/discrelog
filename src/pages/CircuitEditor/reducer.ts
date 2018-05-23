@@ -1,6 +1,6 @@
 import produce from "immer";
 
-import { forOwn, union, difference } from "lodash-es";
+import { forOwn, union, difference, mapValues, pick } from "lodash-es";
 
 import { intersects } from "@/geometry";
 
@@ -15,7 +15,7 @@ import {
 import {
   Actions as EditorActions,
   ACTION_NODE_MOUSEOVER,
-  ACTION_NODE_MOVE,
+  ACTION_MOVE_SELECTED,
   MouseOverNodeAction,
   MoveNodeAction,
   SelectRegionAction,
@@ -23,7 +23,8 @@ import {
   SelectActionModifiers,
   SelectNodeAction,
   ClearSelectionAction,
-  ACTION_SELECT_CLEAR
+  ACTION_SELECT_CLEAR,
+  ACTION_SELECT_NODE
 } from "./actions";
 import { nodeRectsById } from "./selectors";
 import { CircuitEditorState, defaultCircuitEditorState } from "./state";
@@ -44,15 +45,17 @@ const mouseOverNodeAction = produce(
   }
 );
 
-const moveNodeAction = produce(
+const moveSelectedAction = produce(
   (state: CircuitEditorState, action: MoveNodeAction) => {
-    const { nodeId, x, y } = action.payload;
-    const nodePosition = state.nodePositions[nodeId];
-    if (!nodePosition) {
-      return;
-    }
-    nodePosition.x = x;
-    nodePosition.y = y;
+    const { offsetX, offsetY } = action.payload;
+    const { nodePositions, selectedNodeIds } = state;
+    state.nodePositions = {
+      ...nodePositions,
+      ...mapValues(pick(nodePositions, selectedNodeIds), p => ({
+        x: p.x + offsetX,
+        y: p.y + offsetY
+      }))
+    };
   }
 );
 
@@ -111,8 +114,10 @@ export default function circuitEditorReducer(
       return addNodeAction(state, action);
     case ACTION_NODE_MOUSEOVER:
       return mouseOverNodeAction(state, action);
-    case ACTION_NODE_MOVE:
-      return moveNodeAction(state, action);
+    case ACTION_MOVE_SELECTED:
+      return moveSelectedAction(state, action);
+    case ACTION_SELECT_NODE:
+      return selectNodeAction(state, action);
     case ACTION_SELECT_REGION:
       return selectRegionAction(state, action, appState);
     case ACTION_SELECT_CLEAR:

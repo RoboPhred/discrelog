@@ -17,7 +17,6 @@ import NodeVisual from "../../NodeVisual";
 
 interface BodyProps extends ContainerConfig, KonvaNodeProps {
   nodeId: string;
-  onClick(e: KonvaMouseEvent): void;
 }
 
 interface StateProps {
@@ -40,27 +39,15 @@ class Body extends React.Component<Props> {
       nodeId,
       node: { type },
       nodeState,
-      onClick,
       ...groupProps
     } = this.props;
 
     let bodyElement: React.ReactChild;
     const def = NodeTypes[type];
     if (def) {
-      bodyElement = (
-        <NodeVisual visual={def.visual} state={nodeState} onClick={onClick} />
-      );
+      bodyElement = <NodeVisual visual={def.visual} state={nodeState} />;
     } else {
-      bodyElement = (
-        <Rect
-          x={0}
-          y={0}
-          width={25}
-          height={25}
-          fill="black"
-          onClick={onClick}
-        />
-      );
+      bodyElement = <Rect x={0} y={0} width={25} height={25} fill="black" />;
     }
 
     return <Group {...groupProps}>{bodyElement}</Group>;

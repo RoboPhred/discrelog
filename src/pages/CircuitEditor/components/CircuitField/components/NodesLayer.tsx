@@ -1,34 +1,35 @@
 import * as React from "react";
 
 import { connect } from "react-redux";
-import { createSelector, createStructuredSelector } from "reselect";
+import { createStructuredSelector } from "reselect";
 
 import { Layer } from "react-konva";
 
-import { interactNode, toggleWireNode } from "@/services/simulator/actions";
-import { isWired } from "@/services/simulator/helpers";
+import { toggleWireNode } from "@/services/simulator/actions";
 
 import { AppState } from "@/store";
 
-import { moveNode, mouseOverNode } from "../../../actions";
+import { nodePositionsById } from "@/pages/CircuitEditor/selectors";
 
 import CircuitNode from "../../CircuitNode";
 
-const nodePositionsSelector = (s: AppState) => s.ui.circuitEditor.nodePositions;
+export interface NodesLayerProps {
+  onNodeMouseDown?(node: string, e: KonvaMouseEvent): void;
+  onNodeMouseUp?(node: string, e: KonvaMouseEvent): void;
+  onNodeMouseOver?(node: string, e: KonvaMouseEvent): void;
+  onNodeMouseLeave?(node: string, e: KonvaMouseEvent): void;
+}
 
 interface StateProps {
-  nodePositions: ReturnType<typeof nodePositionsSelector>;
+  nodePositionsById: ReturnType<typeof nodePositionsById>;
 }
 
 const mapStateToProps = createStructuredSelector<AppState, StateProps>({
-  nodePositions: nodePositionsSelector
+  nodePositionsById
 });
 
 const mapDispatchToProps = {
-  interactNode,
-  moveNode,
-  toggleWireNode,
-  mouseOverNode
+  toggleWireNode
 };
 type DispatchProps = typeof mapDispatchToProps;
 
@@ -37,29 +38,35 @@ interface State {
   wireSourcePin: string | null;
 }
 
-type Props = StateProps & DispatchProps;
+type Props = NodesLayerProps & StateProps & DispatchProps;
 class NodesLayer extends React.Component<Props, State> {
   render() {
-    const { nodePositions, interactNode, moveNode, mouseOverNode } = this.props;
+    const {
+      nodePositionsById,
+      onNodeMouseDown,
+      onNodeMouseUp,
+      onNodeMouseOver,
+      onNodeMouseLeave
+    } = this.props;
 
-    const nodeElements = Object.keys(nodePositions).map(key => {
-      const { x, y } = nodePositions[key];
+    const nodeElements = Object.keys(nodePositionsById).map(key => {
+      const { x, y } = nodePositionsById[key];
       return (
         <CircuitNode
           key={key}
           nodeId={key}
           x={x}
           y={y}
-          draggable
-          onMouseOver={e => {
-            mouseOverNode(key);
-          }}
-          onMouseLeave={e => mouseOverNode(null)}
-          onDragMove={e => {
-            const pos = e.target.getAbsolutePosition();
-            moveNode(key, pos.x, pos.y);
-          }}
-          onClick={this._onClick.bind(this, key)}
+          onMouseDown={
+            onNodeMouseDown ? onNodeMouseDown.bind(null, key) : undefined
+          }
+          onMouseUp={onNodeMouseUp ? onNodeMouseUp.bind(null, key) : undefined}
+          onMouseOver={
+            onNodeMouseOver ? onNodeMouseOver.bind(null, key) : undefined
+          }
+          onMouseLeave={
+            onNodeMouseLeave ? onNodeMouseLeave.bind(null, key) : undefined
+          }
           onPinClick={this._onPinClick.bind(this, key)}
         />
       );
@@ -98,15 +105,6 @@ class NodesLayer extends React.Component<Props, State> {
       wireSourceNode: null,
       wireSourcePin: null
     });
-  }
-
-  private _onClick(nodeId: string, e: KonvaMouseEvent) {
-    if (e.evt.defaultPrevented) {
-      return;
-    }
-    e.evt.preventDefault();
-
-    this.props.interactNode(nodeId);
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(NodesLayer);
