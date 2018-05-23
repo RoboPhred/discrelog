@@ -81,9 +81,10 @@ class NodesLayer extends React.Component<Props, State> {
     pin: string,
     e: KonvaMouseEvent
   ) {
-    if (e.evt.defaultPrevented) {
-      return;
-    }
+    // TODO: Untangle this from mouse logic in CircuitField
+    // if (e.evt.defaultPrevented) {
+    //   return;
+    // }
     e.evt.preventDefault();
 
     if (direction === "output") {

@@ -21,6 +21,8 @@ export function evolveSimMutator(
 
   const endTick = tick + tickCount;
 
+  console.log("Ticking from", tick, "to", endTick);
+
   // For each window within our update range...
   const iterator = takeWhile(
     transitionWindows,
@@ -30,6 +32,7 @@ export function evolveSimMutator(
   let saftyCutoff = tickCount * 4;
 
   for (const window of iterator) {
+    console.log("Handling window with tick", window.tick);
     // Update the current tick, as it is referenced
     //  during transition collection.
     state.tick = window.tick;
@@ -82,13 +85,13 @@ function* takeWhile<T>(
   items: T[],
   predicate: (item: T) => boolean
 ): IterableIterator<T> {
-  let count = 0;
   while (items.length > 0) {
     const item = items[0];
     if (!predicate(item)) {
       break;
     }
-    yield items.pop()!;
+    const nextItem = items.shift()!;
+    yield nextItem;
   }
 }
 

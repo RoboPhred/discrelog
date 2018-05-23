@@ -12,8 +12,6 @@ export function collectNodeTransitionsMutator(
   state: SimulatorState,
   nodeId: string
 ) {
-  console.log("collecting transitions for", nodeId);
-
   const {
     tick,
     nodeStatesByNodeId,
@@ -66,8 +64,6 @@ export function collectNodeTransitionsMutator(
       if (nodeOutputs[outputId] !== value) {
         addTransitionMutator(state, node.id, outputId, transitionTick, value);
       }
-
-      console.log(`> tick ${transitionTick} pin ${outputId} = ${value}`);
     }
   }
 }
