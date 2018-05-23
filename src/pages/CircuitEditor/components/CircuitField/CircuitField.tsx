@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { createStructuredSelector } from "reselect";
+
 import styled from "styled-components";
 
 import { connect } from "react-redux";
@@ -20,6 +22,8 @@ import {
   mouseOverNode
 } from "@/pages/CircuitEditor/actions";
 
+import { selectedNodes } from "@/pages/CircuitEditor/selectors";
+
 import { interactNode } from "@/services/simulator/actions";
 
 import WiresLayer from "./components/WiresLayer";
@@ -33,6 +37,13 @@ const CircuitFieldContainer = styled.div`
   overflow: hidden;
 `;
 
+interface StateProps {
+  selectedNodes: ReturnType<typeof selectedNodes>;
+}
+const mapStateToProps = createStructuredSelector<AppState, StateProps>({
+  selectedNodes
+});
+
 const mapDispatchToProps = {
   interactNode,
   mouseOverNode,
@@ -43,7 +54,7 @@ const mapDispatchToProps = {
 };
 type DispatchProps = typeof mapDispatchToProps;
 
-type Props = CircuitFieldProps & SizeProps & DispatchProps;
+type Props = CircuitFieldProps & SizeProps & StateProps & DispatchProps;
 interface State {
   mouseDownNodeId: string | null;
   isDragging: boolean;
@@ -152,14 +163,18 @@ class CircuitField extends React.Component<Props, State> {
       return;
     }
 
-    console.log(e);
+    // TODO: Selection and drag logic should all be in the ui reducer.
 
     const { mouseDownNodeId, dragStart } = this.state;
 
     if (mouseDownNodeId) {
       // Dragging a node.
       // Make sure node is selected.
-      this.props.selectNode(mouseDownNodeId, { append: true });
+      if (this.props.selectedNodes.indexOf(mouseDownNodeId) === -1) {
+        // Not selected, add or set the selection.
+        const append = e.evt.shiftKey || e.evt.ctrlKey;
+        this.props.selectNode(mouseDownNodeId, { append });
+      }
       // Move things around.
       this.props.moveSelected(e.evt.movementX, e.evt.movementY);
       e.evt.preventDefault();
@@ -233,4 +248,4 @@ export default sizeme({
   monitorWidth: true,
   monitorHeight: true,
   noPlaceholder: true
-})(connect(null, mapDispatchToProps)(CircuitField));
+})(connect(mapStateToProps, mapDispatchToProps)(CircuitField));
