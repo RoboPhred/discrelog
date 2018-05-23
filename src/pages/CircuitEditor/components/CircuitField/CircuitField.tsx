@@ -225,9 +225,14 @@ class CircuitField extends React.Component<Props, State> {
 
     if (!isDragging) {
       if (mouseDownNodeId) {
-        // Click on node
-        //  TODO: just use click; suppress with preventDefault if drag start.
-        this.props.interactNode(mouseDownNodeId);
+        if (e.evt.altKey || e.evt.metaKey) {
+          // Click on node
+          //  TODO: just use click; suppress with preventDefault if drag start.
+          this.props.interactNode(mouseDownNodeId);
+        } else {
+          const append = e.evt.ctrlKey || e.evt.shiftKey;
+          this.props.selectNode(mouseDownNodeId, { append });
+        }
       } else {
         this.props.clearSelection();
       }
