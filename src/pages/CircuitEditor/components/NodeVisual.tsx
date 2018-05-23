@@ -11,7 +11,7 @@ import { normalizeVisuals } from "@/services/simulator/node-types/utils";
 export interface NodeVisualProps {
   visual: NodeVisualDefinition;
   state: any;
-  onClick?(): void;
+  onClick?(e: KonvaMouseEvent): void;
 }
 
 type Props = NodeVisualProps;

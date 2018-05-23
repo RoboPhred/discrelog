@@ -18,8 +18,12 @@ import Pin from "./components/Pin";
 
 export interface CircuitNodeProps extends ContainerConfig, KonvaNodeProps {
   nodeId: string;
-  onClick(): void;
-  onPinClick(direction: "input" | "output", pin: string): void;
+  onClick(e: KonvaMouseEvent): void;
+  onPinClick(
+    direction: "input" | "output",
+    pin: string,
+    e: KonvaMouseEvent
+  ): void;
 }
 
 interface StateProps {
@@ -84,10 +88,10 @@ class CircuitNode extends React.Component<Props> {
 
     return (
       <Group {...groupProps}>
-        {isSelected && <Rect width={10} height={10} fill="yellow" />}
         <Body nodeId={nodeId} onClick={onClick} />
         {inputPins}
         {outputPins}
+        {isSelected && <Rect width={10} height={10} fill="yellow" />}
       </Group>
     );
   }

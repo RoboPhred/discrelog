@@ -59,7 +59,7 @@ class NodesLayer extends React.Component<Props, State> {
             const pos = e.target.getAbsolutePosition();
             moveNode(key, pos.x, pos.y);
           }}
-          onClick={interactNode.bind(null, key)}
+          onClick={this._onClick.bind(this, key)}
           onPinClick={this._onPinClick.bind(this, key)}
         />
       );
@@ -71,8 +71,14 @@ class NodesLayer extends React.Component<Props, State> {
   private _onPinClick(
     nodeId: string,
     direction: "input" | "output",
-    pin: string
+    pin: string,
+    e: KonvaMouseEvent
   ) {
+    if (e.evt.defaultPrevented) {
+      return;
+    }
+    e.evt.preventDefault();
+
     if (direction === "output") {
       this.setState({
         wireSourceNode: nodeId,
@@ -92,6 +98,15 @@ class NodesLayer extends React.Component<Props, State> {
       wireSourceNode: null,
       wireSourcePin: null
     });
+  }
+
+  private _onClick(nodeId: string, e: KonvaMouseEvent) {
+    if (e.evt.defaultPrevented) {
+      return;
+    }
+    e.evt.preventDefault();
+
+    this.props.interactNode(nodeId);
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(NodesLayer);

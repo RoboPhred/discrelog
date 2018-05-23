@@ -17,7 +17,7 @@ import NodeVisual from "../../NodeVisual";
 
 interface BodyProps extends ContainerConfig, KonvaNodeProps {
   nodeId: string;
-  onClick(): void;
+  onClick(e: KonvaMouseEvent): void;
 }
 
 interface StateProps {

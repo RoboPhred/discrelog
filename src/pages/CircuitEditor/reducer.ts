@@ -1,6 +1,6 @@
 import produce from "immer";
 
-import { forOwn } from "lodash-es";
+import { forOwn, union, difference } from "lodash-es";
 
 import { intersects } from "@/geometry";
 
@@ -19,7 +19,11 @@ import {
   MouseOverNodeAction,
   MoveNodeAction,
   SelectRegionAction,
-  ACTION_SELECT_REGION
+  ACTION_SELECT_REGION,
+  SelectActionModifiers,
+  SelectNodeAction,
+  ClearSelectionAction,
+  ACTION_SELECT_CLEAR
 } from "./actions";
 import { nodeRectsById } from "./selectors";
 import { CircuitEditorState, defaultCircuitEditorState } from "./state";
@@ -52,18 +56,30 @@ const moveNodeAction = produce(
   }
 );
 
+const selectNodeAction = produce(
+  (state: CircuitEditorState, action: SelectNodeAction) => {
+    const { nodeId, modifiers = {} } = action.payload;
+    const nodeIds = nodeId != null ? [nodeId] : [];
+    state.selectedNodeIds = combineSelection(
+      state.selectedNodeIds,
+      nodeIds,
+      modifiers
+    );
+  }
+);
+
 function selectRegionAction(
   state: CircuitEditorState,
   action: SelectRegionAction,
   appState: AppState
 ) {
-  const { payload: selectRect } = action;
+  const { region, modifiers = {} } = action.payload;
 
   const rects = nodeRectsById(appState);
-  const selectedIds: string[] = [];
+  const chosenIds: string[] = [];
   forOwn(rects, (rect, id) => {
-    if (intersects(rect, selectRect)) {
-      selectedIds.push(id);
+    if (intersects(rect, region)) {
+      chosenIds.push(id);
     }
   });
 
@@ -71,9 +87,19 @@ function selectRegionAction(
   //  spread-clone here,
   //  but using immer for the freeze/seal behavior.
   return produce(state, state => {
-    state.selectedNodeIds = selectedIds;
+    state.selectedNodeIds = combineSelection(
+      state.selectedNodeIds,
+      chosenIds,
+      modifiers
+    );
   });
 }
+
+const clearSelectionAction = produce(
+  (state: CircuitEditorState, action: ClearSelectionAction) => {
+    state.selectedNodeIds = [];
+  }
+);
 
 export default function circuitEditorReducer(
   state: CircuitEditorState = defaultCircuitEditorState,
@@ -89,6 +115,23 @@ export default function circuitEditorReducer(
       return moveNodeAction(state, action);
     case ACTION_SELECT_REGION:
       return selectRegionAction(state, action, appState);
+    case ACTION_SELECT_CLEAR:
+      return clearSelectionAction(state, action);
   }
   return state;
+}
+
+function combineSelection(
+  selectedIds: string[],
+  chosenIds: string[],
+  modifiers: SelectActionModifiers
+) {
+  if (modifiers.append) {
+    return union(selectedIds, chosenIds);
+  }
+  if (modifiers.remove) {
+    return difference(selectedIds, chosenIds);
+  }
+
+  return chosenIds;
 }
