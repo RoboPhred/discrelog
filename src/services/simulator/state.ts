@@ -48,63 +48,9 @@ export interface SimulatorState {
 
 export const defaultSimulatorState: SimulatorState = {
   tick: 0,
-  nodesById: {
-    "toggle-a": {
-      id: "toggle-a",
-      type: "toggle",
-      inputConnectionsByPin: {},
-      outputConnectionsByPin: {
-        OUT: [{ nodeId: "and", pin: "A" }]
-      }
-    },
-    "toggle-b": {
-      id: "toggle-b",
-      type: "toggle",
-      inputConnectionsByPin: {},
-      outputConnectionsByPin: {
-        OUT: [{ nodeId: "and", pin: "B" }]
-      }
-    },
-    and: {
-      id: "and",
-      type: "and",
-      inputConnectionsByPin: {
-        A: { nodeId: "toggle-a", pin: "OUT" },
-        B: { nodeId: "toggle-b", pin: "OUT" }
-      },
-      outputConnectionsByPin: {
-        OUT: [{ nodeId: "out-led", pin: "IN" }]
-      }
-    },
-    "out-led": {
-      id: "out-led",
-      type: "led",
-      inputConnectionsByPin: {
-        IN: { nodeId: "and", pin: "OUT" }
-      },
-      outputConnectionsByPin: {}
-    }
-  },
-  nodeStatesByNodeId: {
-    "toggle-a": {
-      toggleState: false
-    },
-    "toggle-b": {
-      toggleState: false
-    }
-  },
-  nodeOutputValuesByNodeId: {
-    "toggle-a": {
-      OUT: false
-    },
-    "toggle-b": {
-      OUT: false
-    },
-    and: {
-      OUT: false
-    },
-    "out-led": {}
-  },
+  nodesById: {},
+  nodeStatesByNodeId: {},
+  nodeOutputValuesByNodeId: {},
   nodeOutputTransitionsByNodeId: {},
   transitionsById: {},
   transitionWindows: []
