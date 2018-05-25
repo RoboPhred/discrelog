@@ -3,7 +3,8 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { Layer } from "react-konva";
+import { ContainerConfig } from "konva";
+import { Layer, KonvaNodeProps } from "react-konva";
 
 import { toggleWireNode } from "@/services/simulator/actions";
 
@@ -52,22 +53,16 @@ class NodesLayer extends React.Component<Props, State> {
     const nodeElements = Object.keys(nodePositionsById).map(key => {
       const { x, y } = nodePositionsById[key];
       return (
-        <CircuitNode
+        <BoundCicrcuitNode
           key={key}
           nodeId={key}
           x={x}
           y={y}
-          onMouseDown={
-            onNodeMouseDown ? onNodeMouseDown.bind(null, key) : undefined
-          }
-          onMouseUp={onNodeMouseUp ? onNodeMouseUp.bind(null, key) : undefined}
-          onMouseOver={
-            onNodeMouseOver ? onNodeMouseOver.bind(null, key) : undefined
-          }
-          onMouseLeave={
-            onNodeMouseLeave ? onNodeMouseLeave.bind(null, key) : undefined
-          }
-          onPinClick={this._onPinClick.bind(this, key)}
+          onMouseDown={onNodeMouseDown}
+          onMouseUp={onNodeMouseUp}
+          onMouseOver={onNodeMouseOver}
+          onMouseLeave={onNodeMouseLeave}
+          onPinClick={this._onPinClick}
         />
       );
     });
@@ -109,3 +104,89 @@ class NodesLayer extends React.Component<Props, State> {
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(NodesLayer);
+
+interface BoundCicrcuitNodeProps extends ContainerConfig {
+  nodeId: string;
+  onMouseDown?(nodeId: string, e: KonvaMouseEvent): void;
+  onMouseUp?(nodeId: string, e: KonvaMouseEvent): void;
+  onMouseOver?(nodeId: string, e: KonvaMouseEvent): void;
+  onMouseLeave?(nodeId: string, e: KonvaMouseEvent): void;
+  onPinClick?(
+    nodeId: string,
+    direction: "input" | "output",
+    pin: string,
+    e: KonvaMouseEvent
+  ): void;
+}
+class BoundCicrcuitNode extends React.Component<BoundCicrcuitNodeProps> {
+  constructor(props: BoundCicrcuitNodeProps) {
+    super(props);
+
+    this._onMouseDown = this._onMouseDown.bind(this);
+    this._onMouseUp = this._onMouseUp.bind(this);
+    this._onMouseOver = this._onMouseOver.bind(this);
+    this._onMouseLeave = this._onMouseLeave.bind(this);
+    this._onPinClick = this._onPinClick.bind(this);
+  }
+  render() {
+    const {
+      nodeId,
+      onMouseDown,
+      onMouseUp,
+      onMouseOver,
+      onMouseLeave,
+      onPinClick,
+      ...otherProps
+    } = this.props;
+    return (
+      <CircuitNode
+        {...otherProps}
+        nodeId={nodeId}
+        onMouseDown={this._onMouseDown}
+        onMouseUp={this._onMouseUp}
+        onMouseOver={this._onMouseOver}
+        onMouseLeave={this._onMouseLeave}
+        onPinClick={this._onPinClick}
+      />
+    );
+  }
+
+  private _onMouseDown(e: KonvaMouseEvent) {
+    const { nodeId, onMouseDown } = this.props;
+    if (onMouseDown) {
+      onMouseDown(nodeId, e);
+    }
+  }
+
+  private _onMouseUp(e: KonvaMouseEvent) {
+    const { nodeId, onMouseUp } = this.props;
+    if (onMouseUp) {
+      onMouseUp(nodeId, e);
+    }
+  }
+
+  private _onMouseOver(e: KonvaMouseEvent) {
+    const { nodeId, onMouseOver } = this.props;
+    if (onMouseOver) {
+      onMouseOver(nodeId, e);
+    }
+  }
+
+  private _onMouseLeave(e: KonvaMouseEvent) {
+    const { nodeId, onMouseLeave } = this.props;
+    if (onMouseLeave) {
+      onMouseLeave(nodeId, e);
+    }
+  }
+
+  private _onPinClick(
+    direction: "input" | "output",
+    pin: string,
+    e: KonvaMouseEvent
+  ) {
+    const { nodeId, onPinClick } = this.props;
+    if (onPinClick) {
+      onPinClick(nodeId, direction, pin, e);
+    }
+  }
+}
