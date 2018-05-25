@@ -62,6 +62,10 @@ interface State {
   dragEnd: Position | null;
 }
 class CircuitField extends React.Component<Props, State> {
+
+  // Because we cannot rely on movementX / movementY
+  private _lastMousePos: Position | null = null;
+
   constructor(props: Props) {
     super(props);
 
@@ -131,6 +135,11 @@ class CircuitField extends React.Component<Props, State> {
     this.setState({
       mouseDownNodeId: nodeId
     });
+
+    this._lastMousePos = {
+      x: e.evt.clientX,
+      y: e.evt.clientY
+    };
   }
 
   private _onNodeMouseOver(nodeId: string, e: KonvaMouseEvent) {
@@ -175,8 +184,19 @@ class CircuitField extends React.Component<Props, State> {
         const append = e.evt.shiftKey || e.evt.ctrlKey;
         this.props.selectNode(mouseDownNodeId, { append });
       }
+
+      if (this._lastMousePos == null) {
+        return;
+      }
+
       // Move things around.
-      this.props.moveSelected(e.evt.movementX, e.evt.movementY);
+      this.props.moveSelected(e.evt.clientX - this._lastMousePos.x, e.evt.clientY - this._lastMousePos.y);
+
+      this._lastMousePos = {
+        x: e.evt.clientX,
+        y: e.evt.clientY
+      };
+
       e.evt.preventDefault();
       this.setState({
         isDragging: true
