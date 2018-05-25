@@ -31,7 +31,7 @@ const bufferNodeDefinition: NodeDefinition = {
     return {
       transitions: {
         OUT: {
-          tickOffset: 4,
+          tickOffset: 2,
           value: inputs.IN
         }
       }
