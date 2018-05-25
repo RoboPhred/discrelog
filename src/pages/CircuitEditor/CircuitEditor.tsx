@@ -10,12 +10,12 @@ import NodeInfo from "./ToolWindows/NodeInfo";
 import PendingTransitions from "./ToolWindows/PendingTransitions";
 import CircuitField from "./ContentViews/CircuitField";
 
-const FillParentEditorLayout = styled(EditorLayout) `
+const FillParentEditorLayout = styled(EditorLayout)`
   width: 100%;
   height: 100%;
 `;
 
-const FillParentCircuitField = styled(CircuitField) `
+const FillParentCircuitField = styled(CircuitField)`
   width: 100%;
   height: 100%;
 `;

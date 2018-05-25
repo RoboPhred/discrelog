@@ -13,7 +13,7 @@ const ledNodeDefinition: NodeDefinition = {
       genCirclePath(25, 25, 25),
       {
         path: genCirclePath(25, 25, 20),
-        fill: state => state.value ? "lightgreen" : "darkgreen"
+        fill: state => (state.value ? "lightgreen" : "darkgreen")
       }
     ]
   },

@@ -32,27 +32,24 @@ class EditorLayout extends React.Component<Props, State> {
   }
 
   render() {
-    const {
-      leftSidebar,
-      rightSidebar,
-      children
-    } = this.props;
-    const {
-      leftSidebarSize,
-      rightSidebarSize
-    } = this.state;
+    const { leftSidebar, rightSidebar, children } = this.props;
+    const { leftSidebarSize, rightSidebarSize } = this.state;
 
     return (
       <LayoutContainer className={this.props.className}>
-        {leftSidebar && <React.Fragment>
-          <SidebarPanel width={leftSidebarSize}>{leftSidebar}</SidebarPanel>
-          <ResizeHandle onResize={this._leftSidebarResize} />
-        </React.Fragment>}
+        {leftSidebar && (
+          <React.Fragment>
+            <SidebarPanel width={leftSidebarSize}>{leftSidebar}</SidebarPanel>
+            <ResizeHandle onResize={this._leftSidebarResize} />
+          </React.Fragment>
+        )}
         <ContentPanel>{children}</ContentPanel>
-        {rightSidebar && <React.Fragment>
-          <ResizeHandle onResize={this._rightSidebarResize} />
-          <SidebarPanel width={rightSidebarSize}>{rightSidebar}</SidebarPanel>
-        </React.Fragment>}
+        {rightSidebar && (
+          <React.Fragment>
+            <ResizeHandle onResize={this._rightSidebarResize} />
+            <SidebarPanel width={rightSidebarSize}>{rightSidebar}</SidebarPanel>
+          </React.Fragment>
+        )}
       </LayoutContainer>
     );
   }

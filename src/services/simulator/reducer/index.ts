@@ -1,7 +1,4 @@
-import {
-  SimulatorState,
-  defaultSimulatorState
-} from "../state";
+import { SimulatorState, defaultSimulatorState } from "../state";
 
 import {
   Actions,

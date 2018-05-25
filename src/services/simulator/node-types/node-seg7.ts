@@ -1,4 +1,3 @@
-
 import { typedKeys } from "@/utils";
 
 import { NodeDefinition, NodeVisualPathDefinition } from "./types";
@@ -12,17 +11,20 @@ const OFFSET = [15, 0];
  * @param name The state key to select color based on.  The key should represent a boolean value.
  * @param points An array of [x,y] pairs that make up the polygon.
  */
-function createSeg(name: string, points: [number, number][]): NodeVisualPathDefinition {
+function createSeg(
+  name: string,
+  points: [number, number][]
+): NodeVisualPathDefinition {
   const start = points[0];
   let path = `M${start[0] * SCALE + OFFSET[0]},${start[1] * SCALE + OFFSET[1]}`;
   for (let p of points.slice(1)) {
     const [x, y] = p;
-    path += `L${x * SCALE + OFFSET[0]},${y * SCALE + OFFSET[1]}`
+    path += `L${x * SCALE + OFFSET[0]},${y * SCALE + OFFSET[1]}`;
   }
-  path += 'z';
+  path += "z";
   return {
     path,
-    fill: state => state[name] ? "red" : "blue"
+    fill: state => (state[name] ? "red" : "blue")
   };
 }
 
@@ -76,7 +78,7 @@ const seg7NodeDefinition: NodeDefinition = {
       name: "G",
       x: 0,
       y: 65
-    },
+    }
   },
   outputs: {},
   evolve(state, inputs, tick) {

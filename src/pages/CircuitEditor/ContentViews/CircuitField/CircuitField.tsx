@@ -62,7 +62,6 @@ interface State {
   dragEnd: Position | null;
 }
 class CircuitField extends React.Component<Props, State> {
-
   // Because we cannot rely on movementX / movementY
   private _lastMousePos: Position | null = null;
 
@@ -190,7 +189,10 @@ class CircuitField extends React.Component<Props, State> {
       }
 
       // Move things around.
-      this.props.moveSelected(e.evt.clientX - this._lastMousePos.x, e.evt.clientY - this._lastMousePos.y);
+      this.props.moveSelected(
+        e.evt.clientX - this._lastMousePos.x,
+        e.evt.clientY - this._lastMousePos.y
+      );
 
       this._lastMousePos = {
         x: e.evt.clientX,

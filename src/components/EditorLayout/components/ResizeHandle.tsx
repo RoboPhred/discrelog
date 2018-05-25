@@ -25,9 +25,7 @@ class ResizeHandle extends React.Component<Props> {
 
   render() {
     return (
-      <DraggableCore
-        onDrag={this._onDrag}
-      >
+      <DraggableCore onDrag={this._onDrag}>
         <DragHandleDiv />
       </DraggableCore>
     );
