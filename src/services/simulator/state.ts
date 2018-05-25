@@ -32,9 +32,11 @@ export interface SimulatorState {
 
   // Not entirely happy having this on the state, since it is
   //  highly transient and has a lot of churn.
-  // However, thisthis greatly simplifies the one-transition-per-pin logic.
+  // However, this greatly simplifies the one-transition-per-pin logic.
   //  Without this, either the logic to add or logic to apply transitions would have
   //  to do a deep scan of the other's state data.
+  // Note: turns out one-transition-per-pin is "intertial" delay,
+  //  while some elements have a "buffer" delay.
   /**
    * A map of pending transitions by id.
    */

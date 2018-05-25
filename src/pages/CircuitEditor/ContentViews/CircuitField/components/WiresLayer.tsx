@@ -7,6 +7,8 @@ import { Layer, Line } from "react-konva";
 
 import { mapValues } from "lodash-es";
 
+import { Position } from "@/types";
+
 import { Node, NodesById, NodePin } from "@/services/simulator/types";
 import { NodeTypes } from "@/services/simulator/node-types";
 
@@ -88,7 +90,7 @@ class WiresLayer extends React.Component<Props> {
     const connectorElements = connections.map(c => (
       <Line
         key={c.key}
-        points={[c.source.x, c.source.y, c.target.x, c.target.y]}
+        points={getWirePoints(c.source, c.target)}
         stroke={c.value ? "green" : "black"}
       />
     ));
@@ -117,4 +119,21 @@ function aggregateOutputs(nodes: Node[]): Edge[] {
     }
     return a;
   }, []);
+}
+
+function getWirePoints(start: Position, end: Position): number[] {
+  const horizFirst = Math.abs(start.x - end.x) < Math.abs(start.y - end.y);
+  return [
+    start.x,
+    start.y,
+
+    start.x + (horizFirst ? 0 : (end.x - start.x) / 2),
+    start.y + (horizFirst ? (end.y - start.y) / 2 : 0),
+
+    end.x + (horizFirst ? 0 : (end.x - start.x) / 2),
+    start.y + (horizFirst ? (end.y - start.y) / 2 : 0),
+
+    end.x,
+    end.y
+  ];
 }
