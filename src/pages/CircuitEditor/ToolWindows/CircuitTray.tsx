@@ -9,7 +9,7 @@ import { NodeTypes, NodeType } from "@/services/simulator/node-types";
 
 import { typedKeys } from "@/utils";
 
-import NodeVisual from "./NodeVisual";
+import NodeVisual from "../components/NodeVisual";
 
 const mapDispatchToProps = {
   addNode

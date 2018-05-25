@@ -11,7 +11,7 @@ import { AppState } from "@/store";
 
 import { nodePositionsById } from "@/pages/CircuitEditor/selectors";
 
-import CircuitNode from "../../CircuitNode";
+import CircuitNode from "./CircuitNode";
 
 export interface NodesLayerProps {
   onNodeMouseDown?(node: string, e: KonvaMouseEvent): void;

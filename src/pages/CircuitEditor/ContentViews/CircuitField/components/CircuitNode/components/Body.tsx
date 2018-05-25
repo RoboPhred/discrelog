@@ -13,7 +13,7 @@ import {
 } from "@/services/simulator/node-types";
 import { AppState } from "@/store";
 
-import NodeVisual from "../../NodeVisual";
+import NodeVisual from "@/pages/CircuitEditor/components/NodeVisual";
 
 interface BodyProps extends ContainerConfig, KonvaNodeProps {
   nodeId: string;

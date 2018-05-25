@@ -4,11 +4,11 @@ import styled from "styled-components";
 
 import EditorLayout, { ToolWindow } from "@/components/EditorLayout";
 
-import CircuitTray from "./components/CircuitTray";
-import TimingControls from "./components/TimingControls";
-import NodeInfo from "./components/NodeInfo";
-import PendingTransitions from "./components/PendingTransitions";
-import CircuitField from "./components/CircuitField";
+import CircuitTray from "./ToolWindows/CircuitTray";
+import TimingControls from "./ToolWindows/TimingControls";
+import NodeInfo from "./ToolWindows/NodeInfo";
+import PendingTransitions from "./ToolWindows/PendingTransitions";
+import CircuitField from "./ContentViews/CircuitField";
 
 const FillParentEditorLayout = styled(EditorLayout) `
   width: 100%;
