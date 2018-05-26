@@ -1,26 +1,23 @@
 {
-    "compilerOptions": {
-        "target": "es6",
-        "module": "es2015",
-        "moduleResolution": "node",
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "jsx": "react",
-        "experimentalDecorators": true,
-        "strict": true,
-        "lib": [
-            "es6",
-            "dom"
-        ],
-        "baseUrl": ".",
-        "paths": {
-            "@/*": ["./*"]
-        },
-        "sourceMap": true,
-        "plugins": [
-            {
-                "name": "typescript-styled-plugin"
-            }
-        ]
-    }
+  "compilerOptions": {
+    "target": "es6",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "strict": true,
+    "lib": ["es6", "dom"],
+    "baseUrl": "../node_modules",
+    "paths": {
+      "@/*": ["../src/*"]
+    },
+    "sourceMap": true,
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin"
+      }
+    ]
+  }
 }
