@@ -50,7 +50,7 @@ export const clearSelection = () => ({
 });
 export type ClearSelectionAction = ReturnType<typeof clearSelection>;
 
-export type Actions =
+export type CircuitEditorAction =
   | MouseOverNodeAction
   | MoveNodeAction
   | SelectNodeAction

@@ -7,13 +7,13 @@ import { intersects } from "@/geometry";
 import { AppState } from "@/store";
 
 import {
-  Actions as SimActions,
+  SimulatorAction as SimActions,
   ACTION_NODE_ADD,
   AddNodeAction
 } from "@/services/simulator/actions";
 
 import {
-  Actions as EditorActions,
+  CircuitEditorAction as EditorActions,
   ACTION_NODE_MOUSEOVER,
   ACTION_MOVE_SELECTED,
   MouseOverNodeAction,

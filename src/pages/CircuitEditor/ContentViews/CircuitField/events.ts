@@ -1,3 +1,7 @@
+import { Dispatch } from "redux";
+
+import { normalizeRectangle, calcSize, positionSubtract } from "@/geometry";
+import { GetState } from "@/store";
 import { Position } from "@/types";
 
 import { interactNode } from "@/services/simulator/actions";
@@ -6,8 +10,19 @@ import {
   clearSelection,
   mouseOverNode,
   selectNode,
-  SelectionMode
+  SelectionMode,
+  selectRegion,
+  moveSelected
 } from "@/pages/CircuitEditor/actions";
+
+import {
+  startFieldDrag,
+  startNodeDrag,
+  continueDrag,
+  endDrag
+} from "./actions";
+
+import { circuitFieldState } from "./selectors";
 
 export interface ModifierKeys {
   ctrlKey: boolean;
@@ -20,16 +35,7 @@ export function onNodeClicked(nodeId: string, modifiers: ModifierKeys) {
     return interactNode(nodeId);
   }
 
-  let mode: SelectionMode = "set";
-  if (modifiers.shiftKey && modifiers.ctrlKey) {
-    mode = "remove";
-  }
-  if (modifiers.shiftKey) {
-    mode = "append";
-  } else if (modifiers.ctrlKey) {
-    mode = "toggle";
-  }
-
+  const mode = getSelectMode(modifiers);
   return selectNode(nodeId, mode);
 }
 
@@ -38,22 +44,53 @@ export function onFieldClicked(modifiers: ModifierKeys) {
 }
 
 export function onNodeDragStart(nodeId: string, p: Position) {
-  // TODO: Dispatch field action to prepare node drag preview.
+  return startNodeDrag(nodeId, p);
 }
 
 export function onFieldDragStart(p: Position) {
-  // TODO: Dispatch field action to prepare drag select box render.
+  return startFieldDrag(p);
 }
 
 export function onDragMove(p: Position) {
-  // TODO: Dispatch field action to update drag move location.
+  return continueDrag(p);
 }
 
 export function onDragEnd(p: Position, modifiers: ModifierKeys) {
-  // TODO: If node drag, dispatch CircuitEditor action to move node.
-  //  Else if field drag, dispatch CircuitEditor selectRegion action
+  return (dispatch: Dispatch, getState: GetState) => {
+    const fieldState = circuitFieldState(getState());
+    const { dragMode, dragStart, dragEnd } = fieldState;
+    if (dragStart && dragEnd) {
+      switch (dragMode) {
+        case "select": {
+          const rect = normalizeRectangle(dragStart, dragEnd);
+          const mode = getSelectMode(modifiers);
+          dispatch(selectRegion(rect, mode));
+          break;
+        }
+        case "move": {
+          const moveBy = positionSubtract(dragEnd, dragStart);
+          dispatch(moveSelected(moveBy.x, moveBy.y));
+          break;
+        }
+      }
+    }
+    dispatch(endDrag());
+  };
 }
 
 export function onNodeHover(nodeId: string | null) {
   return mouseOverNode(nodeId);
+}
+
+function getSelectMode(modifiers: ModifierKeys): SelectionMode {
+  if (modifiers.shiftKey && modifiers.ctrlKey) {
+    return "remove";
+  }
+  if (modifiers.shiftKey) {
+    return "append";
+  }
+  if (modifiers.ctrlKey) {
+    return "toggle";
+  }
+  return "set";
 }

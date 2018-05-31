@@ -1,10 +1,7 @@
-import {
-  SimulatorState,
-  defaultSimulatorState
-} from "../state";
+import { SimulatorState, defaultSimulatorState } from "../state";
 
 import {
-  Actions,
+  SimulatorAction,
   ACTION_WIRE,
   ACTION_UNWIRE,
   ACTION_TOGGLEWIRE,
@@ -23,7 +20,7 @@ import evolveSimAction from "./evolve-sim";
 
 export default function simulatorReducer(
   state: SimulatorState = defaultSimulatorState,
-  action: Actions
+  action: SimulatorAction
 ): SimulatorState {
   switch (action.type) {
     case ACTION_NODE_ADD:

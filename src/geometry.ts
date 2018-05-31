@@ -24,6 +24,13 @@ export function normalizeRectangle(...args: any[]): Rectangle {
   };
 }
 
+export function positionSubtract(p1: Position, p2: Position): Position {
+  return {
+    x: p1.x - p2.x,
+    y: p1.y - p2.y
+  };
+}
+
 export function calcSize(r: Rectangle): Size {
   r = normalizeRectangle(r);
   return {
