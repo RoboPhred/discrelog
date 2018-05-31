@@ -1,80 +1,38 @@
 import * as React from "react";
 
-import { createStructuredSelector } from "reselect";
-
-import styled from "styled-components";
-
 import { connect } from "react-redux";
 
-import { Stage, Layer, Rect } from "react-konva";
+import { Stage } from "react-konva";
 
 import sizeme, { SizeProps } from "react-sizeme";
 
-import { normalizeRectangle, calcSize } from "@/geometry";
 import { Position } from "@/types";
-import { AppState } from "@/store";
 
-import {
-  moveSelected,
-  clearSelection,
-  selectNode,
-  selectRegion,
-  mouseOverNode
-} from "@/pages/CircuitEditor/actions";
-
-import { selectedNodes } from "@/pages/CircuitEditor/selectors";
-
-import { interactNode } from "@/services/simulator/actions";
-
+import FieldContainer from "./components/FieldContainer";
 import WiresLayer from "./components/WiresLayer";
 import NodesLayer from "./components/NodesLayer";
+
+import * as events from "./events";
 
 export interface CircuitFieldProps {
   className?: string;
 }
 
-const CircuitFieldContainer = styled.div`
-  overflow: hidden;
-`;
-
-interface StateProps {
-  selectedNodes: ReturnType<typeof selectedNodes>;
-}
-const mapStateToProps = createStructuredSelector<AppState, StateProps>({
-  selectedNodes
-});
-
-const mapDispatchToProps = {
-  interactNode,
-  mouseOverNode,
-  moveSelected,
-  selectNode,
-  selectRegion,
-  clearSelection
-};
+const mapDispatchToProps = events;
 type DispatchProps = typeof mapDispatchToProps;
 
-type Props = CircuitFieldProps & SizeProps & StateProps & DispatchProps;
-interface State {
-  mouseDownNodeId: string | null;
-  isDragging: boolean;
-  dragStart: Position | null;
-  dragEnd: Position | null;
-}
-class CircuitField extends React.Component<Props, State> {
+const DRAG_THRESHOLD = 5;
 
-  // Because we cannot rely on movementX / movementY
+type Props = CircuitFieldProps & SizeProps & DispatchProps;
+class CircuitField extends React.Component<Props> {
+  // Instance props as we do not require a re-render when these change.
+  private _isDragging: boolean = false;
+  private _mouseDownNodeId: string | null = null;
+  private _startMousePos: Position | null = null;
   private _lastMousePos: Position | null = null;
 
   constructor(props: Props) {
     super(props);
-
-    this.state = {
-      mouseDownNodeId: null,
-      isDragging: false,
-      dragStart: null,
-      dragEnd: null
-    };
 
     this._onNodeMouseDown = this._onNodeMouseDown.bind(this);
     this._onNodeMouseOver = this._onNodeMouseOver.bind(this);
@@ -90,10 +48,9 @@ class CircuitField extends React.Component<Props, State> {
       className,
       size: { width, height }
     } = this.props;
-    const { dragStart, dragEnd } = this.state;
 
     return (
-      <CircuitFieldContainer className={className}>
+      <FieldContainer className={className}>
         <Stage
           width={width}
           height={height}
@@ -101,18 +58,6 @@ class CircuitField extends React.Component<Props, State> {
           onMouseMove={this._onMouseMove}
           onMouseUp={this._onMouseUp}
         >
-          {dragStart &&
-            dragEnd && (
-              <Layer>
-                <Rect
-                  x={Math.min(dragStart.x, dragEnd.x)}
-                  y={Math.min(dragStart.y, dragEnd.y)}
-                  width={Math.abs(dragEnd.x - dragStart.x)}
-                  height={Math.abs(dragEnd.y - dragStart.y)}
-                  fill="blue"
-                />
-              </Layer>
-            )}
           <WiresLayer />
           <NodesLayer
             onNodeMouseDown={this._onNodeMouseDown}
@@ -120,26 +65,8 @@ class CircuitField extends React.Component<Props, State> {
             onNodeMouseLeave={this._onNodeMouseLeave}
           />
         </Stage>
-      </CircuitFieldContainer>
+      </FieldContainer>
     );
-  }
-
-  private _onNodeMouseDown(nodeId: string, e: KonvaMouseEvent) {
-    if (e.evt.defaultPrevented) {
-      return;
-    }
-
-    // Claim it so we do not start drag-selecting.
-    e.evt.preventDefault();
-
-    this.setState({
-      mouseDownNodeId: nodeId
-    });
-
-    this._lastMousePos = {
-      x: e.evt.clientX,
-      y: e.evt.clientY
-    };
   }
 
   private _onNodeMouseOver(nodeId: string, e: KonvaMouseEvent) {
@@ -147,11 +74,19 @@ class CircuitField extends React.Component<Props, State> {
       return;
     }
 
-    this.props.mouseOverNode(nodeId);
+    this.props.onNodeHover(nodeId);
   }
 
   private _onNodeMouseLeave(nodeId: string, e: KonvaMouseEvent) {
-    this.props.mouseOverNode(null);
+    this.props.onNodeHover(null);
+  }
+
+  private _onNodeMouseDown(nodeId: string, e: KonvaMouseEvent) {
+    if (e.evt.defaultPrevented) {
+      return;
+    }
+
+    this._mouseDownNodeId = nodeId;
   }
 
   private _onMouseDown(e: KonvaMouseEvent) {
@@ -159,12 +94,10 @@ class CircuitField extends React.Component<Props, State> {
       return;
     }
 
-    this.setState({
-      dragStart: {
-        x: e.evt.layerX,
-        y: e.evt.layerY
-      }
-    });
+    this._startMousePos = {
+      x: e.evt.layerX,
+      y: e.evt.layerY
+    };
   }
 
   private _onMouseMove(e: KonvaMouseEvent) {
@@ -172,100 +105,59 @@ class CircuitField extends React.Component<Props, State> {
       return;
     }
 
-    // TODO: Selection and drag logic should all be in the ui reducer.
-
-    const { mouseDownNodeId, dragStart } = this.state;
-
-    if (mouseDownNodeId) {
-      // Dragging a node.
-      // Make sure node is selected.
-      if (this.props.selectedNodes.indexOf(mouseDownNodeId) === -1) {
-        // Not selected, add or set the selection.
-        const append = e.evt.shiftKey || e.evt.ctrlKey;
-        this.props.selectNode(mouseDownNodeId, { append });
-      }
-
-      if (this._lastMousePos == null) {
-        return;
-      }
-
-      // Move things around.
-      this.props.moveSelected(e.evt.clientX - this._lastMousePos.x, e.evt.clientY - this._lastMousePos.y);
-
-      this._lastMousePos = {
-        x: e.evt.clientX,
-        y: e.evt.clientY
-      };
-
-      e.evt.preventDefault();
-      this.setState({
-        isDragging: true
-      });
+    if (!this._startMousePos) {
       return;
     }
 
-    if (!dragStart) {
-      return;
-    }
+    const { x: sx, y: sy } = this._startMousePos;
 
-    e.evt.preventDefault();
+    const { layerX: x, layerY: y } = e.evt;
 
-    let dragEnd = this.state.dragEnd;
-    if (!dragEnd) {
-      dragEnd = {
-        x: e.evt.layerX,
-        y: e.evt.layerY
-      };
-
-      // Not dragging until we hit the thresh.
-      const r = normalizeRectangle(dragStart, dragEnd);
-      const s = calcSize(r);
-      if (s.width < 5 || s.height < 5) {
+    if (!this._isDragging) {
+      if (
+        Math.abs(x - sx) < DRAG_THRESHOLD &&
+        Math.abs(y - sy) < DRAG_THRESHOLD
+      ) {
         return;
       }
-    }
 
-    this.setState({
-      isDragging: true,
-      dragEnd: {
-        x: e.evt.layerX,
-        y: e.evt.layerY
+      this._isDragging = true;
+      if (this._mouseDownNodeId) {
+        this.props.onNodeDragStart(this._mouseDownNodeId, { x, y });
+      } else {
+        this.props.onFieldDragStart({ x, y });
       }
-    });
+    } else {
+      this.props.onDragMove({ x, y });
+    }
   }
 
   private _onMouseUp(e: KonvaMouseEvent) {
-    const { mouseDownNodeId, isDragging, dragStart, dragEnd } = this.state;
-    this.setState({
-      mouseDownNodeId: null,
-      isDragging: false,
-      dragStart: null,
-      dragEnd: null
-    });
-
-    if (!isDragging) {
-      if (mouseDownNodeId) {
-        if (e.evt.altKey || e.evt.metaKey) {
-          // Click on node
-          //  TODO: just use click; suppress with preventDefault if drag start.
-          this.props.interactNode(mouseDownNodeId);
-        } else {
-          const append = e.evt.ctrlKey || e.evt.shiftKey;
-          this.props.selectNode(mouseDownNodeId, { append });
-        }
-      } else {
-        this.props.clearSelection();
-      }
-      e.evt.preventDefault();
+    if (!e.evt.defaultPrevented) {
       return;
     }
 
-    if (!dragStart || !dragEnd) {
-      return;
+    const { layerX: x, layerY: y, ctrlKey, altKey, shiftKey } = e.evt;
+    const modifiers = {
+      ctrlKey,
+      altKey,
+      shiftKey
+    };
+
+    if (this._isDragging) {
+      this.props.onDragEnd({ x, y }, modifiers);
+    } else if (this._mouseDownNodeId) {
+      this.props.onNodeClicked(this._mouseDownNodeId, modifiers);
+    } else {
+      this.props.onFieldClicked(modifiers);
     }
 
     e.evt.preventDefault();
-    this.props.selectRegion({ p1: dragStart, p2: dragEnd });
+
+    this._isDragging = false;
+    this._mouseDownNodeId = null;
+    this._startMousePos = null;
+    this._lastMousePos = null;
   }
 }
 
@@ -273,4 +165,4 @@ export default sizeme({
   monitorWidth: true,
   monitorHeight: true,
   noPlaceholder: true
-})(connect(mapStateToProps, mapDispatchToProps)(CircuitField));
+})(connect(null, mapDispatchToProps)(CircuitField));

@@ -20,11 +20,11 @@ import {
   MoveNodeAction,
   SelectRegionAction,
   ACTION_SELECT_REGION,
-  SelectActionModifiers,
   SelectNodeAction,
   ClearSelectionAction,
   ACTION_SELECT_CLEAR,
-  ACTION_SELECT_NODE
+  ACTION_SELECT_NODES,
+  SelectionMode
 } from "./actions";
 import { nodeRectsById } from "./selectors";
 import { CircuitEditorState, defaultCircuitEditorState } from "./state";
@@ -61,12 +61,11 @@ const moveSelectedAction = produce(
 
 const selectNodeAction = produce(
   (state: CircuitEditorState, action: SelectNodeAction) => {
-    const { nodeId, modifiers = {} } = action.payload;
-    const nodeIds = nodeId != null ? [nodeId] : [];
+    const { nodeIds, mode } = action.payload;
     state.selectedNodeIds = combineSelection(
       state.selectedNodeIds,
       nodeIds,
-      modifiers
+      mode
     );
   }
 );
@@ -76,7 +75,7 @@ function selectRegionAction(
   action: SelectRegionAction,
   appState: AppState
 ) {
-  const { region, modifiers = {} } = action.payload;
+  const { region, mode } = action.payload;
 
   const rects = nodeRectsById(appState);
   const chosenIds: string[] = [];
@@ -94,7 +93,7 @@ function selectRegionAction(
     state.selectedNodeIds = combineSelection(
       state.selectedNodeIds,
       chosenIds,
-      modifiers
+      mode
     );
   });
 }
@@ -117,7 +116,7 @@ export default function circuitEditorReducer(
       return mouseOverNodeAction(state, action);
     case ACTION_MOVE_SELECTED:
       return moveSelectedAction(state, action);
-    case ACTION_SELECT_NODE:
+    case ACTION_SELECT_NODES:
       return selectNodeAction(state, action);
     case ACTION_SELECT_REGION:
       return selectRegionAction(state, action, appState);
@@ -130,13 +129,20 @@ export default function circuitEditorReducer(
 function combineSelection(
   selectedIds: string[],
   chosenIds: string[],
-  modifiers: SelectActionModifiers
+  mode: SelectionMode
 ) {
-  if (modifiers.append) {
-    return union(selectedIds, chosenIds);
-  }
-  if (modifiers.remove) {
-    return difference(selectedIds, chosenIds);
+  switch (mode) {
+    case "set":
+      return chosenIds;
+    case "append":
+      return union(selectedIds, chosenIds);
+    case "remove":
+      return difference(selectedIds, chosenIds);
+    case "toggle": {
+      return difference(selectedIds, chosenIds).concat(
+        difference(chosenIds, selectedIds)
+      );
+    }
   }
 
   return chosenIds;
