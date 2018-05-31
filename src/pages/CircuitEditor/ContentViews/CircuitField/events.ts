@@ -8,19 +8,14 @@ import { interactNode } from "@/services/simulator/actions";
 
 import {
   clearSelection,
-  mouseOverNode,
-  selectNode,
+  hoverNode,
+  selectNodes,
   SelectionMode,
   selectRegion,
   moveSelected
 } from "@/pages/CircuitEditor/actions";
 
-import {
-  startFieldDrag,
-  startNodeDrag,
-  continueDrag,
-  endDrag
-} from "./actions";
+import { startDrag, continueDrag, endDrag } from "./actions";
 
 import { circuitFieldState } from "./selectors";
 
@@ -36,19 +31,27 @@ export function onNodeClicked(nodeId: string, modifiers: ModifierKeys) {
   }
 
   const mode = getSelectMode(modifiers);
-  return selectNode(nodeId, mode);
+  return selectNodes(nodeId, mode);
 }
 
 export function onFieldClicked(modifiers: ModifierKeys) {
   return clearSelection();
 }
 
-export function onNodeDragStart(nodeId: string, p: Position) {
-  return startNodeDrag(nodeId, p);
+export function onNodeDragStart(
+  nodeId: string,
+  p: Position,
+  modifiers: ModifierKeys
+) {
+  return (dispatch: Dispatch) => {
+    const mode = getSelectMode(modifiers);
+    dispatch(selectNodes(nodeId, mode));
+    dispatch(startDrag(p, "move"));
+  };
 }
 
 export function onFieldDragStart(p: Position) {
-  return startFieldDrag(p);
+  return startDrag(p, "select");
 }
 
 export function onDragMove(p: Position) {
@@ -79,7 +82,7 @@ export function onDragEnd(p: Position, modifiers: ModifierKeys) {
 }
 
 export function onNodeHover(nodeId: string | null) {
-  return mouseOverNode(nodeId);
+  return hoverNode(nodeId);
 }
 
 function getSelectMode(modifiers: ModifierKeys): SelectionMode {

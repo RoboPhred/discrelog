@@ -9,6 +9,7 @@ import sizeme, { SizeProps } from "react-sizeme";
 import { Position } from "@/types";
 
 import FieldContainer from "./components/FieldContainer";
+import DragSelectLayer from "./components/DragSelectLayer";
 import WiresLayer from "./components/WiresLayer";
 import NodesLayer from "./components/NodesLayer";
 
@@ -58,6 +59,7 @@ class CircuitField extends React.Component<Props> {
           onMouseMove={this._onMouseMove}
           onMouseUp={this._onMouseUp}
         >
+          <DragSelectLayer />
           <WiresLayer />
           <NodesLayer
             onNodeMouseDown={this._onNodeMouseDown}
@@ -111,7 +113,12 @@ class CircuitField extends React.Component<Props> {
 
     const { x: sx, y: sy } = this._startMousePos;
 
-    const { layerX: x, layerY: y } = e.evt;
+    const { layerX: x, layerY: y, ctrlKey, altKey, shiftKey } = e.evt;
+    const modifiers = {
+      ctrlKey,
+      altKey,
+      shiftKey
+    };
 
     if (!this._isDragging) {
       if (
@@ -123,7 +130,7 @@ class CircuitField extends React.Component<Props> {
 
       this._isDragging = true;
       if (this._mouseDownNodeId) {
-        this.props.onNodeDragStart(this._mouseDownNodeId, { x, y });
+        this.props.onNodeDragStart(this._mouseDownNodeId, { x, y }, modifiers);
       } else {
         this.props.onFieldDragStart({ x, y });
       }
@@ -133,7 +140,8 @@ class CircuitField extends React.Component<Props> {
   }
 
   private _onMouseUp(e: KonvaMouseEvent) {
-    if (!e.evt.defaultPrevented) {
+    if (e.evt.defaultPrevented) {
+      this._resetMouseTracking();
       return;
     }
 
@@ -153,7 +161,10 @@ class CircuitField extends React.Component<Props> {
     }
 
     e.evt.preventDefault();
+    this._resetMouseTracking();
+  }
 
+  private _resetMouseTracking() {
     this._isDragging = false;
     this._mouseDownNodeId = null;
     this._startMousePos = null;

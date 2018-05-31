@@ -1,10 +1,16 @@
 interface Window {
   __REDUX_DEVTOOLS_EXTENSION__?(): any;
+  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: Function;
 }
 
 interface KonvaMouseEvent {
   evt: MouseEvent;
 }
+
+type IsFunction<T> = T extends (...args: any[]) => any ? T : never;
+type ObjectFunctionReturnTypes<T> = {
+  [P in keyof T]: ReturnType<IsFunction<T[P]>>
+};
 
 declare type Omit<T, K extends keyof T> = T extends any
   ? Pick<T, Exclude<keyof T, K>>
