@@ -11,7 +11,7 @@ import { NodeDefinition } from "@/services/simulator/node-types";
 import { nodesById, nodeDefsById } from "@/services/simulator/selectors";
 import { Node } from "@/services/simulator/types";
 
-import { selectedNodes } from "@/pages/CircuitEditor/selectors";
+import { selectedNodeIds } from "@/pages/CircuitEditor/selectors";
 
 import Body from "./components/Body";
 import Pin from "./components/Pin";
@@ -34,7 +34,7 @@ function mapStateToProps(state: AppState, props: CircuitNodeProps): StateProps {
   return {
     node: nodesById(state)[props.nodeId],
     def: nodeDefsById(state)[props.nodeId],
-    isSelected: selectedNodes(state).indexOf(props.nodeId) !== -1
+    isSelected: selectedNodeIds(state).indexOf(props.nodeId) !== -1
   };
 }
 

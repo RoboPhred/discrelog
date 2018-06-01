@@ -9,6 +9,7 @@ import sizeme, { SizeProps } from "react-sizeme";
 import { Position } from "@/types";
 
 import FieldContainer from "./components/FieldContainer";
+import DragPreviewLayer from "./components/DragPreviewLayer";
 import DragSelectLayer from "./components/DragSelectLayer";
 import WiresLayer from "./components/WiresLayer";
 import NodesLayer from "./components/NodesLayer";
@@ -60,6 +61,7 @@ class CircuitField extends React.Component<Props> {
           onMouseUp={this._onMouseUp}
         >
           <DragSelectLayer />
+          <DragPreviewLayer />
           <WiresLayer />
           <NodesLayer
             onNodeMouseDown={this._onNodeMouseDown}

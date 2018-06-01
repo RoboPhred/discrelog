@@ -1,4 +1,4 @@
-import { Position, Size } from "@/types";
+import { Position, Size, IDMap } from "@/types";
 
 import {
   CircuitFieldState,
@@ -6,9 +6,7 @@ import {
 } from "./ContentViews/CircuitField/state";
 
 export interface CircuitEditorState {
-  nodePositions: {
-    [key: string]: Position;
-  };
+  nodePositions: IDMap<Position>;
   mouseOverNodeId: string | null;
   selectedNodeIds: string[];
   circuitField: CircuitFieldState;

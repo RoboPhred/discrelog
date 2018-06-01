@@ -12,5 +12,5 @@ export const nodeDefsById = createSelector(nodesById, nodesById =>
   mapValues(nodesById, x => NodeTypes[x.type])
 );
 
-export const nodeStateById = (s: AppState) =>
+export const nodeStatesById = (s: AppState) =>
   s.services.simulator.nodeStatesByNodeId;

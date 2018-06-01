@@ -1,4 +1,4 @@
-import { Position } from "@/types";
+import { Position, IDMap } from "@/types";
 
 export interface CircuitFieldState {
   dragMode: null | "move" | "select";
