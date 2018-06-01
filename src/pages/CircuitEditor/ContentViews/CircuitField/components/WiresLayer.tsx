@@ -122,18 +122,33 @@ function aggregateOutputs(nodes: Node[]): Edge[] {
 }
 
 function getWirePoints(start: Position, end: Position): number[] {
-  const horizFirst = Math.abs(start.x - end.x) < Math.abs(start.y - end.y);
-  return [
-    start.x,
-    start.y,
+  if (Math.abs(start.x - end.x) > Math.abs(start.y - end.y)) {
+    return [
+      start.x,
+      start.y,
 
-    start.x + (horizFirst ? 0 : (end.x - start.x) / 2),
-    start.y + (horizFirst ? (end.y - start.y) / 2 : 0),
+      start.x + (end.x - start.x) / 2,
+      start.y,
 
-    end.x + (horizFirst ? 0 : (end.x - start.x) / 2),
-    start.y + (horizFirst ? (end.y - start.y) / 2 : 0),
+      start.x + (end.x - start.x) / 2,
+      end.y,
 
-    end.x,
-    end.y
-  ];
+      end.x,
+      end.y
+    ];
+  } else {
+    return [
+      start.x,
+      start.y,
+
+      start.x,
+      start.y + (end.y - start.y) / 2,
+
+      end.x,
+      start.y + (end.y - start.y) / 2,
+
+      end.x,
+      end.y
+    ];
+  }
 }
