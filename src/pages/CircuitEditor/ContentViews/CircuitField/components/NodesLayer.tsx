@@ -41,6 +41,12 @@ interface State {
 
 type Props = NodesLayerProps & StateProps & DispatchProps;
 class NodesLayer extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
+    this._onPinClick = this._onPinClick.bind(this);
+  }
+
   render() {
     const {
       nodePositionsById,
