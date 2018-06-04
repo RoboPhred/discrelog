@@ -38,11 +38,6 @@ function mapStateToProps(state: AppState, props: CircuitNodeProps): StateProps {
   };
 }
 
-const PIN_LENGTH = 15;
-const PIN_PADDING = 12;
-const BODY_WIDTH = 50;
-const BODY_HEIGHT = 50;
-
 type Props = CircuitNodeProps & StateProps;
 class CircuitNode extends React.Component<Props> {
   render() {
@@ -57,8 +52,6 @@ class CircuitNode extends React.Component<Props> {
 
     const inputs = def.inputs || [];
     const outputs = def.outputs || [];
-
-    const yCenter = BODY_HEIGHT / 2;
 
     const inputPins = Object.keys(inputs).map(key => {
       const input = inputs[key];
