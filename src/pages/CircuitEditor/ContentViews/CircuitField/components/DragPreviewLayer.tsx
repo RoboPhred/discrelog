@@ -7,50 +7,75 @@ import { createStructuredSelector, createSelector } from "reselect";
 
 import { Layer, Group } from "react-konva";
 
-import { Position } from "@/types";
-
 import { AppState } from "@/store";
+import { IDMap, Position } from "@/types";
+
+import { nodeTypesById, nodeStatesById } from "@/services/simulator/selectors";
+import { NodeType } from "@/services/simulator/node-types";
 
 import {
   selectedNodeIds,
   nodePositionsById
 } from "@/pages/CircuitEditor/selectors";
 
-import Body from "./CircuitNode/components/Body";
+import NodeVisual from "@/pages/CircuitEditor/components/NodeVisual";
 
 import { dragMoveOffset } from "../selectors";
-import { IDMap } from "@/types";
+
+const selectedNodePositionsById = createSelector(
+  selectedNodeIds,
+  nodePositionsById,
+  (selectedNodeIds, nodePositionsById) =>
+    pick(nodePositionsById, selectedNodeIds)
+);
+
+const selectedNodeTypesById = createSelector(
+  selectedNodeIds,
+  nodeTypesById,
+  (selectedNodeIds, nodeTypesById) => pick(nodeTypesById, selectedNodeIds)
+);
+
+const selectedNodeStatesById = createSelector(
+  selectedNodeIds,
+  nodeStatesById,
+  (selectedNodeIds, nodeStatesById) => pick(nodeStatesById, selectedNodeIds)
+);
 
 // TODO: Pretty sure we can just pass an object in with these.
 //  react-redux was not accepting it though, need to figure out why.
 const mapStateToProps = createStructuredSelector<AppState, StateProps>({
-  selectedNodePositionsById: createSelector(
-    selectedNodeIds,
-    nodePositionsById,
-    (selectedNodeIds, nodePositionsById) =>
-      pick(nodePositionsById, selectedNodeIds)
-  ),
+  selectedNodePositionsById,
+  selectedNodeTypesById,
+  selectedNodeStatesById,
   dragMoveOffset
 });
 interface StateProps {
   selectedNodePositionsById: IDMap<Position>;
+  selectedNodeTypesById: IDMap<NodeType>;
+  selectedNodeStatesById: IDMap<any>;
   dragMoveOffset: Position | null;
 }
 
 type Props = StateProps;
 class DragPreviewLayer extends React.Component<Props> {
   render() {
-    const { selectedNodePositionsById, dragMoveOffset } = this.props;
+    const {
+      selectedNodePositionsById,
+      selectedNodeTypesById,
+      selectedNodeStatesById,
+      dragMoveOffset
+    } = this.props;
 
     let elements: React.ReactNode | null = null;
     if (dragMoveOffset) {
       elements = values(
         mapValues(selectedNodePositionsById, (p, nodeId) => (
-          <Body
+          <NodeVisual
             key={nodeId}
+            nodeType={selectedNodeTypesById[nodeId]}
+            nodeState={selectedNodeStatesById[nodeId]}
             x={p.x + dragMoveOffset.x}
             y={p.y + dragMoveOffset.y}
-            nodeId={nodeId}
           />
         ))
       );

@@ -4,7 +4,7 @@ import { ContainerConfig } from "konva";
 import { KonvaNodeProps, Group, Circle, Line } from "react-konva";
 
 export interface PinProps extends ContainerConfig, KonvaNodeProps {
-  onClick(): void;
+  onClick?(e: KonvaMouseEvent): void;
 }
 
 const PIN_CIRCLE_RADIUS = 6;

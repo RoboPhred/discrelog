@@ -28,6 +28,8 @@ export interface NodePin {
   pin: string;
 }
 
+export type NodePinDirection = "input" | "output";
+
 export type PinValueMap = IDMap<boolean>;
 
 export interface NodePinTransition {

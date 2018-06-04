@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { Stage, Layer } from "react-konva";
 
 import { addNode } from "@/services/simulator/actions";
-import { NodeTypes, NodeType } from "@/services/simulator/node-types";
+import { NodeTypes } from "@/services/simulator/node-types";
 
 import { typedKeys } from "@/utils";
 
@@ -21,13 +21,12 @@ class CircuitTray extends React.Component<Props> {
   render() {
     const { addNode } = this.props;
 
-    const elements = typedKeys(NodeTypes).map(typeKey => {
-      const type = NodeTypes[typeKey as NodeType];
+    const elements = typedKeys(NodeTypes).map(type => {
       return (
-        <div key={typeKey} onClick={() => addNode(typeKey)}>
+        <div key={type} onClick={() => addNode(type)}>
           <Stage width={110} height={110}>
             <Layer>
-              <NodeVisual visual={type.visual} state={{}} />
+              <NodeVisual nodeType={type} nodeState={{}} />
             </Layer>
           </Stage>
         </div>
