@@ -2,12 +2,14 @@ import { Action } from "redux";
 
 import { Rectangle } from "@/types";
 
-export const ACTION_NODE_MOUSEOVER = "@editor/node/mouseover" as "@editor/node/mouseover";
-export const mouseOverNode = (nodeId: string | null) => ({
-  type: ACTION_NODE_MOUSEOVER,
+export type SelectionMode = "set" | "append" | "remove" | "toggle";
+
+export const ACTION_NODE_HOVER = "@editor/node/hover" as "@editor/node/hover";
+export const hoverNode = (nodeId: string | null) => ({
+  type: ACTION_NODE_HOVER,
   payload: { nodeId }
 });
-export type MouseOverNodeAction = ReturnType<typeof mouseOverNode>;
+export type HoverNodeAction = ReturnType<typeof hoverNode>;
 
 export const ACTION_MOVE_SELECTED = "@editor/move-selected" as "@editor/move-selected";
 export const moveSelected = (offsetX: number, offsetY: number) => ({
@@ -16,32 +18,28 @@ export const moveSelected = (offsetX: number, offsetY: number) => ({
 });
 export type MoveNodeAction = ReturnType<typeof moveSelected>;
 
-export interface SelectActionModifiers {
-  append?: boolean;
-  remove?: boolean;
-}
-export const ACTION_SELECT_NODE = "@editor/select/node" as "@editor/select/node";
-export const selectNode = (
-  nodeId: string,
-  modifiers?: SelectActionModifiers
+export const ACTION_SELECT_NODES = "@editor/select/nodes" as "@editor/select/nodes";
+export const selectNodes = (
+  nodeId: string | string[],
+  mode: SelectionMode = "set"
 ) => ({
-  type: ACTION_SELECT_NODE,
+  type: ACTION_SELECT_NODES,
   payload: {
-    nodeId,
-    modifiers
+    nodeIds: Array.isArray(nodeId) ? nodeId : [nodeId],
+    mode
   }
 });
-export type SelectNodeAction = ReturnType<typeof selectNode>;
+export type SelectNodesAction = ReturnType<typeof selectNodes>;
 
 export const ACTION_SELECT_REGION = "@editor/select/region" as "@editor/select/region";
 export const selectRegion = (
   region: Rectangle,
-  modifiers?: SelectActionModifiers
+  mode: SelectionMode = "set"
 ) => ({
   type: ACTION_SELECT_REGION,
   payload: {
     region,
-    modifiers
+    mode
   }
 });
 export type SelectRegionAction = ReturnType<typeof selectRegion>;
@@ -52,9 +50,9 @@ export const clearSelection = () => ({
 });
 export type ClearSelectionAction = ReturnType<typeof clearSelection>;
 
-export type Actions =
-  | MouseOverNodeAction
+export type CircuitEditorAction =
+  | HoverNodeAction
   | MoveNodeAction
-  | SelectNodeAction
+  | SelectNodesAction
   | SelectRegionAction
   | ClearSelectionAction;

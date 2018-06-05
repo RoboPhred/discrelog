@@ -8,6 +8,8 @@ import {
   defaultCircuitEditorState
 } from "@/pages/CircuitEditor/state";
 
+export type GetState = () => AppState;
+
 export interface AppState {
   services: {
     simulator: SimulatorState;

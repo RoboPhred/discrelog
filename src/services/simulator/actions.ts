@@ -78,7 +78,7 @@ export const toggleWireNode = (
 });
 export type ToggleWireNodeAction = ReturnType<typeof toggleWireNode>;
 
-export type Actions =
+export type SimulatorAction =
   | EvolveSimAction
   | AddNodeAction
   | InteractNodeAction

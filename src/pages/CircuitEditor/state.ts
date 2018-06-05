@@ -1,15 +1,20 @@
-import { Position, Size } from "@/types";
+import { Position, Size, IDMap } from "@/types";
+
+import {
+  CircuitFieldState,
+  defaultCircuitFieldState
+} from "./ContentViews/CircuitField/state";
 
 export interface CircuitEditorState {
-  nodePositions: {
-    [key: string]: Position;
-  };
+  nodePositions: IDMap<Position>;
   mouseOverNodeId: string | null;
   selectedNodeIds: string[];
+  circuitField: CircuitFieldState;
 }
 
 export const defaultCircuitEditorState: CircuitEditorState = {
   nodePositions: {},
   mouseOverNodeId: null,
-  selectedNodeIds: []
+  selectedNodeIds: [],
+  circuitField: defaultCircuitFieldState
 };

@@ -7,6 +7,7 @@ import { ContainerConfig } from "konva";
 import { Layer, KonvaNodeProps } from "react-konva";
 
 import { toggleWireNode } from "@/services/simulator/actions";
+import { NodePinDirection } from "@/services/simulator/types";
 
 import { AppState } from "@/store";
 
@@ -41,6 +42,12 @@ interface State {
 
 type Props = NodesLayerProps & StateProps & DispatchProps;
 class NodesLayer extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
+    this._onPinClick = this._onPinClick.bind(this);
+  }
+
   render() {
     const {
       nodePositionsById,
@@ -72,14 +79,10 @@ class NodesLayer extends React.Component<Props, State> {
 
   private _onPinClick(
     nodeId: string,
-    direction: "input" | "output",
+    direction: NodePinDirection,
     pin: string,
     e: KonvaMouseEvent
   ) {
-    // TODO: Untangle this from mouse logic in CircuitField
-    // if (e.evt.defaultPrevented) {
-    //   return;
-    // }
     e.evt.preventDefault();
 
     if (direction === "output") {
@@ -113,7 +116,7 @@ interface BoundCicrcuitNodeProps extends ContainerConfig {
   onMouseLeave?(nodeId: string, e: KonvaMouseEvent): void;
   onPinClick?(
     nodeId: string,
-    direction: "input" | "output",
+    direction: NodePinDirection,
     pin: string,
     e: KonvaMouseEvent
   ): void;
@@ -130,7 +133,6 @@ class BoundCicrcuitNode extends React.Component<BoundCicrcuitNodeProps> {
   }
   render() {
     const {
-      nodeId,
       onMouseDown,
       onMouseUp,
       onMouseOver,
@@ -141,7 +143,6 @@ class BoundCicrcuitNode extends React.Component<BoundCicrcuitNodeProps> {
     return (
       <CircuitNode
         {...otherProps}
-        nodeId={nodeId}
         onMouseDown={this._onMouseDown}
         onMouseUp={this._onMouseUp}
         onMouseOver={this._onMouseOver}
@@ -180,7 +181,7 @@ class BoundCicrcuitNode extends React.Component<BoundCicrcuitNodeProps> {
   }
 
   private _onPinClick(
-    direction: "input" | "output",
+    direction: NodePinDirection,
     pin: string,
     e: KonvaMouseEvent
   ) {

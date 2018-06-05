@@ -2,13 +2,17 @@ import { createSelector } from "reselect";
 
 import getBounds from "svg-path-bounds";
 
-import { mapValues } from "lodash-es";
+import { mapValues, pick } from "lodash-es";
 
 import { normalizeRectangle } from "@/geometry";
 
 import { AppState } from "@/store";
 
-import { nodeDefsById, nodeStateById } from "@/services/simulator/selectors";
+import {
+  nodeDefsById,
+  nodeStatesById,
+  nodesById
+} from "@/services/simulator/selectors";
 import { normalizeVisuals } from "@/services/simulator/node-types/utils";
 
 export const nodePositionsById = (s: AppState) =>
@@ -16,7 +20,7 @@ export const nodePositionsById = (s: AppState) =>
 
 export const nodeBoundsById = createSelector(
   nodeDefsById,
-  nodeStateById,
+  nodeStatesById,
   (nodeDefsById, nodeStateById) =>
     mapValues(nodeDefsById, (x, id) => {
       if (x.visual.hitPath) {
@@ -52,5 +56,11 @@ export const nodeRectsById = createSelector(
     })
 );
 
-export const selectedNodes = (s: AppState) =>
+export const selectedNodeIds = (s: AppState) =>
   s.ui.circuitEditor.selectedNodeIds;
+
+export const selectedNodesById = createSelector(
+  nodesById,
+  selectedNodeIds,
+  (nodesById, selectedNodeIds) => pick(nodesById, selectedNodeIds)
+);
