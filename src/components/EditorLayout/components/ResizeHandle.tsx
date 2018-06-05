@@ -4,13 +4,6 @@ import styled from "styled-components";
 
 import { DraggableCore, DraggableData } from "react-draggable";
 
-const DragHandleDiv = styled.div`
-  width: 5px;
-  height: 100%;
-  background: black;
-  flex: none;
-`;
-
 export interface ResizeHandleProps {
   onResize(delta: number): void;
 }
@@ -37,3 +30,11 @@ class ResizeHandle extends React.Component<Props> {
   }
 }
 export default ResizeHandle;
+
+const DragHandleDiv = styled.div`
+  width: 5px;
+  height: 100%;
+  background: black;
+  flex: none;
+  cursor: ew-resize;
+`;
