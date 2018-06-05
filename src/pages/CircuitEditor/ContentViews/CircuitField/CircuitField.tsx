@@ -9,7 +9,11 @@ import { HotKeys, FocusTrap } from "react-hotkeys";
 import { Position } from "@/types";
 import { bindFuncMap } from "@/utils";
 
-import keymap, { KeymapHandler, KEYMAP_STEPSIM } from "./keymap";
+import keymap, {
+  KeymapHandler,
+  KEYMAP_SIM_STEP,
+  KEYMAP_SIM_FASTFORWARD
+} from "./keymap";
 
 import FieldContainer from "./components/FieldContainer";
 import DragPreviewLayer from "./components/DragPreviewLayer";
@@ -86,7 +90,8 @@ class CircuitField extends React.Component<Props> {
   }
 
   private _keyHandlers: KeymapHandler = {
-    [KEYMAP_STEPSIM]: () => this.props.onHotkeyStep()
+    [KEYMAP_SIM_STEP]: () => this.props.onHotkeyStep(),
+    [KEYMAP_SIM_FASTFORWARD]: () => this.props.onHotkeyFastForward()
   };
 
   private _onNodeMouseOver(nodeId: string, e: KonvaMouseEvent) {

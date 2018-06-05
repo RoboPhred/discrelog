@@ -11,6 +11,12 @@ export const evolveSim = (tickCount: number) => ({
 });
 export type EvolveSimAction = ReturnType<typeof evolveSim>;
 
+export const ACTION_FASTFORWARD = "@sim/fastforward" as "@sim/fastforward";
+export const fastForwardSim = () => ({
+  type: ACTION_FASTFORWARD
+});
+export type FastForwardSimAction = ReturnType<typeof fastForwardSim>;
+
 export const ACTION_NODE_ADD = "@sim/node/add" as "@sim/node/add";
 // TODO: Including x and y pos in simulator logic, which so far has tried to not concern itself with this.
 //  Probably a sign that these actions need to be at a higher level.
@@ -80,6 +86,7 @@ export type ToggleWireNodeAction = ReturnType<typeof toggleWireNode>;
 
 export type SimulatorAction =
   | EvolveSimAction
+  | FastForwardSimAction
   | AddNodeAction
   | InteractNodeAction
   | WireNodeAction

@@ -6,17 +6,19 @@ import {
   ACTION_UNWIRE,
   ACTION_TOGGLEWIRE,
   ACTION_EVOLVE,
+  ACTION_FASTFORWARD,
   ACTION_INTERACT,
   ACTION_NODE_ADD
 } from "../actions";
 
 import { isWired } from "../helpers";
 
-import addNodeAction from "./add-node";
-import wireNodeAction from "./wire-node";
-import unwireNodeAction from "./unwire-node";
-import interactNodeAction from "./interact-node";
-import evolveSimAction from "./evolve-sim";
+import addNodeReducer from "./add-node";
+import wireNodeReducer from "./wire-node";
+import unwireNodeReducer from "./unwire-node";
+import interactNodeReducer from "./interact-node";
+import evolveSimReducer from "./evolve-sim";
+import fastForwardReducer from "./fast-forward-sim";
 
 export default function simulatorReducer(
   state: SimulatorState = defaultSimulatorState,
@@ -24,11 +26,11 @@ export default function simulatorReducer(
 ): SimulatorState {
   switch (action.type) {
     case ACTION_NODE_ADD:
-      return addNodeAction(state, action);
+      return addNodeReducer(state, action);
     case ACTION_WIRE:
-      return wireNodeAction(state, action);
+      return wireNodeReducer(state, action);
     case ACTION_UNWIRE:
-      return unwireNodeAction(state, action);
+      return unwireNodeReducer(state, action);
     case ACTION_TOGGLEWIRE:
       const {
         sourceNodeId,
@@ -43,20 +45,22 @@ export default function simulatorReducer(
           { nodeId: targetNodeId, pin: targetPin }
         )
       ) {
-        return unwireNodeAction(state, {
+        return unwireNodeReducer(state, {
           type: ACTION_UNWIRE,
           payload: action.payload
         });
       } else {
-        return wireNodeAction(state, {
+        return wireNodeReducer(state, {
           type: ACTION_WIRE,
           payload: action.payload
         });
       }
     case ACTION_INTERACT:
-      return interactNodeAction(state, action);
+      return interactNodeReducer(state, action);
     case ACTION_EVOLVE:
-      return evolveSimAction(state, action);
+      return evolveSimReducer(state, action);
+    case ACTION_FASTFORWARD:
+      return fastForwardReducer(state, action);
   }
   return state;
 }

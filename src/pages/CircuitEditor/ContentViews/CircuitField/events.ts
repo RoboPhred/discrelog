@@ -4,7 +4,11 @@ import { normalizeRectangle, calcSize, positionSubtract } from "@/geometry";
 import { GetState } from "@/store";
 import { Position } from "@/types";
 
-import { interactNode, evolveSim } from "@/services/simulator/actions";
+import {
+  interactNode,
+  evolveSim,
+  fastForwardSim
+} from "@/services/simulator/actions";
 
 import {
   clearSelection,
@@ -87,6 +91,10 @@ export function onNodeHover(nodeId: string | null) {
 
 export function onHotkeyStep() {
   return evolveSim(1);
+}
+
+export function onHotkeyFastForward() {
+  return fastForwardSim();
 }
 
 function getSelectMode(modifiers: ModifierKeys): SelectionMode {
