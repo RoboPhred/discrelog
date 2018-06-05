@@ -4,7 +4,7 @@ import { normalizeRectangle, calcSize, positionSubtract } from "@/geometry";
 import { GetState } from "@/store";
 import { Position } from "@/types";
 
-import { interactNode } from "@/services/simulator/actions";
+import { interactNode, evolveSim } from "@/services/simulator/actions";
 
 import {
   clearSelection,
@@ -22,11 +22,11 @@ import { circuitFieldState } from "./selectors";
 export interface ModifierKeys {
   ctrlKey: boolean;
   shiftKey: boolean;
-  altKey: boolean;
+  altMetaKey: boolean;
 }
 
 export function onNodeClicked(nodeId: string, modifiers: ModifierKeys) {
-  if (modifiers.altKey) {
+  if (modifiers.altMetaKey) {
     return interactNode(nodeId);
   }
 
@@ -83,6 +83,10 @@ export function onDragEnd(p: Position, modifiers: ModifierKeys) {
 
 export function onNodeHover(nodeId: string | null) {
   return hoverNode(nodeId);
+}
+
+export function onHotkeyStep() {
+  return evolveSim(1);
 }
 
 function getSelectMode(modifiers: ModifierKeys): SelectionMode {

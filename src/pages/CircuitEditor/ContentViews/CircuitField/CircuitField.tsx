@@ -3,10 +3,13 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import { Stage } from "react-konva";
-
 import sizeme, { SizeProps } from "react-sizeme";
+import { HotKeys, FocusTrap } from "react-hotkeys";
 
 import { Position } from "@/types";
+import { bindFuncMap } from "@/utils";
+
+import keymap, { KeymapHandler, KEYMAP_STEPSIM } from "./keymap";
 
 import FieldContainer from "./components/FieldContainer";
 import DragPreviewLayer from "./components/DragPreviewLayer";
@@ -33,6 +36,8 @@ class CircuitField extends React.Component<Props> {
   private _startMousePos: Position | null = null;
   private _lastMousePos: Position | null = null;
 
+  private _hotkeysRef = React.createRef<HTMLDivElement>();
+
   constructor(props: Props) {
     super(props);
 
@@ -43,6 +48,8 @@ class CircuitField extends React.Component<Props> {
     this._onMouseDown = this._onMouseDown.bind(this);
     this._onMouseMove = this._onMouseMove.bind(this);
     this._onMouseUp = this._onMouseUp.bind(this);
+
+    this._keyHandlers = bindFuncMap(this._keyHandlers, this);
   }
 
   render() {
@@ -53,25 +60,39 @@ class CircuitField extends React.Component<Props> {
 
     return (
       <FieldContainer className={className}>
-        <Stage
-          width={width}
-          height={height}
-          onMouseDown={this._onMouseDown}
-          onMouseMove={this._onMouseMove}
-          onMouseUp={this._onMouseUp}
-        >
-          <DragSelectLayer />
-          <DragPreviewLayer />
-          <WiresLayer />
-          <NodesLayer
-            onNodeMouseDown={this._onNodeMouseDown}
-            onNodeMouseOver={this._onNodeMouseOver}
-            onNodeMouseLeave={this._onNodeMouseLeave}
-          />
-        </Stage>
+        <HotKeys keyMap={keymap} handlers={this._keyHandlers}>
+          <div
+            tabIndex={-1}
+            ref={this._hotkeysRef}
+            onFocus={() => console.log("focus")}
+            onBlur={() => console.log("onblur")}
+            onKeyDown={e => console.log("keydown", e)}
+          >
+            <Stage
+              width={width}
+              height={height}
+              onMouseDown={this._onMouseDown}
+              onMouseMove={this._onMouseMove}
+              onMouseUp={this._onMouseUp}
+            >
+              <DragSelectLayer />
+              <DragPreviewLayer />
+              <WiresLayer />
+              <NodesLayer
+                onNodeMouseDown={this._onNodeMouseDown}
+                onNodeMouseOver={this._onNodeMouseOver}
+                onNodeMouseLeave={this._onNodeMouseLeave}
+              />
+            </Stage>
+          </div>
+        </HotKeys>
       </FieldContainer>
     );
   }
+
+  private _keyHandlers: KeymapHandler = {
+    [KEYMAP_STEPSIM]: () => this.props.onHotkeyStep()
+  };
 
   private _onNodeMouseOver(nodeId: string, e: KonvaMouseEvent) {
     if (e.evt.defaultPrevented) {
@@ -98,6 +119,10 @@ class CircuitField extends React.Component<Props> {
       return;
     }
 
+    if (this._hotkeysRef.current) {
+      this._hotkeysRef.current.focus();
+    }
+
     this._startMousePos = {
       x: e.evt.layerX,
       y: e.evt.layerY
@@ -115,10 +140,10 @@ class CircuitField extends React.Component<Props> {
 
     const { x: sx, y: sy } = this._startMousePos;
 
-    const { layerX: x, layerY: y, ctrlKey, altKey, shiftKey } = e.evt;
+    const { layerX: x, layerY: y, ctrlKey, altKey, shiftKey, metaKey } = e.evt;
     const modifiers = {
       ctrlKey,
-      altKey,
+      altMetaKey: altKey || metaKey,
       shiftKey
     };
 
@@ -147,10 +172,10 @@ class CircuitField extends React.Component<Props> {
       return;
     }
 
-    const { layerX: x, layerY: y, ctrlKey, altKey, shiftKey } = e.evt;
+    const { layerX: x, layerY: y, ctrlKey, altKey, metaKey, shiftKey } = e.evt;
     const modifiers = {
       ctrlKey,
-      altKey,
+      altMetaKey: altKey || metaKey,
       shiftKey
     };
 
@@ -162,7 +187,6 @@ class CircuitField extends React.Component<Props> {
       this.props.onFieldClicked(modifiers);
     }
 
-    e.evt.preventDefault();
     this._resetMouseTracking();
   }
 

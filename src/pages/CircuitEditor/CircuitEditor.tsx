@@ -2,6 +2,8 @@ import * as React from "react";
 
 import styled from "styled-components";
 
+import Hotkeys from "react-hotkeys";
+
 import EditorLayout, { ToolWindow } from "@/components/EditorLayout";
 
 import CircuitTray from "./ToolWindows/CircuitTray";
@@ -9,16 +11,6 @@ import TimingControls from "./ToolWindows/TimingControls";
 import NodeInfo from "./ToolWindows/NodeInfo";
 import PendingTransitions from "./ToolWindows/PendingTransitions";
 import CircuitField from "./ContentViews/CircuitField";
-
-const FillParentEditorLayout = styled(EditorLayout)`
-  width: 100%;
-  height: 100%;
-`;
-
-const FillParentCircuitField = styled(CircuitField)`
-  width: 100%;
-  height: 100%;
-`;
 
 export default class CircuitEditor extends React.Component {
   render() {
@@ -50,3 +42,13 @@ export default class CircuitEditor extends React.Component {
     );
   }
 }
+
+const FillParentEditorLayout = styled(EditorLayout)`
+  width: 100%;
+  height: 100%;
+`;
+
+const FillParentCircuitField = styled(CircuitField)`
+  width: 100%;
+  height: 100%;
+`;

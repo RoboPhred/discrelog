@@ -7,6 +7,8 @@ interface KonvaMouseEvent {
   evt: MouseEvent;
 }
 
+declare type HotkeyHandler = (keyEvent?: KeyboardEvent) => void;
+
 type IsFunction<T> = T extends (...args: any[]) => any ? T : never;
 type ObjectFunctionReturnTypes<T> = {
   [P in keyof T]: ReturnType<IsFunction<T[P]>>
