@@ -61,13 +61,7 @@ class CircuitField extends React.Component<Props> {
     return (
       <FieldContainer className={className}>
         <HotKeys keyMap={keymap} handlers={this._keyHandlers}>
-          <div
-            tabIndex={-1}
-            ref={this._hotkeysRef}
-            onFocus={() => console.log("focus")}
-            onBlur={() => console.log("onblur")}
-            onKeyDown={e => console.log("keydown", e)}
-          >
+          <div tabIndex={-1} ref={this._hotkeysRef}>
             <Stage
               width={width}
               height={height}

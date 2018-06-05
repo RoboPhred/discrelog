@@ -21,8 +21,6 @@ export function evolveSimMutator(
 
   const endTick = tick + tickCount;
 
-  console.log("Ticking from", tick, "to", endTick);
-
   // For each window within our update range...
   const iterator = takeWhile(
     transitionWindows,
@@ -32,7 +30,6 @@ export function evolveSimMutator(
   let saftyCutoff = tickCount * 4;
 
   for (const window of iterator) {
-    console.log("Handling window with tick", window.tick);
     // Update the current tick, as it is referenced
     //  during transition collection.
     state.tick = window.tick;
