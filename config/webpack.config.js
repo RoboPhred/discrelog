@@ -79,6 +79,12 @@ module.exports = {
       {
         test: /\.css$/,
         use: ["style-loader", "css-loader"]
+      },
+
+      // Pull in text and markdown files raw.
+      {
+        test: /\.(txt|md)$/,
+        use: "raw-loader"
       }
     ]
   },

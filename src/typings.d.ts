@@ -16,6 +16,11 @@ declare type Omit<T, K extends keyof T> = T extends any
   ? Pick<T, Exclude<keyof T, K>>
   : never;
 
+declare module "*.md" {
+  const value: string;
+  export = value;
+}
+
 declare module "react-sizeme" {
   export interface SizeConfig {
     monitorWidth?: boolean;
