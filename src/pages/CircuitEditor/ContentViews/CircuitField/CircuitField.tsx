@@ -18,6 +18,7 @@ import WiresLayer from "./components/WiresLayer";
 import NodesLayer from "./components/NodesLayer";
 
 import * as events from "./events";
+import { keyboardIsMac } from "@/runtime-env";
 
 export interface CircuitFieldProps {
   className?: string;
@@ -136,8 +137,8 @@ class CircuitField extends React.Component<Props> {
 
     const { layerX: x, layerY: y, ctrlKey, altKey, shiftKey, metaKey } = e.evt;
     const modifiers = {
-      ctrlKey,
-      altMetaKey: altKey || metaKey,
+      ctrlMetaKey: keyboardIsMac ? metaKey : ctrlKey,
+      altKey: altKey,
       shiftKey
     };
 
@@ -168,8 +169,8 @@ class CircuitField extends React.Component<Props> {
 
     const { layerX: x, layerY: y, ctrlKey, altKey, metaKey, shiftKey } = e.evt;
     const modifiers = {
-      ctrlKey,
-      altMetaKey: altKey || metaKey,
+      ctrlMetaKey: keyboardIsMac ? metaKey : ctrlKey,
+      altKey: altKey,
       shiftKey
     };
 

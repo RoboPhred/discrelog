@@ -20,13 +20,13 @@ import { startDrag, continueDrag, endDrag } from "./actions";
 import { circuitFieldState } from "./selectors";
 
 export interface ModifierKeys {
-  ctrlKey: boolean;
+  ctrlMetaKey: boolean;
   shiftKey: boolean;
-  altMetaKey: boolean;
+  altKey: boolean;
 }
 
 export function onNodeClicked(nodeId: string, modifiers: ModifierKeys) {
-  if (modifiers.altMetaKey) {
+  if (modifiers.altKey) {
     return interactNode(nodeId);
   }
 
@@ -90,13 +90,13 @@ export function onHotkeyStep() {
 }
 
 function getSelectMode(modifiers: ModifierKeys): SelectionMode {
-  if (modifiers.shiftKey && modifiers.ctrlKey) {
+  if (modifiers.shiftKey && modifiers.ctrlMetaKey) {
     return "remove";
   }
   if (modifiers.shiftKey) {
     return "append";
   }
-  if (modifiers.ctrlKey) {
+  if (modifiers.ctrlMetaKey) {
     return "toggle";
   }
   return "set";

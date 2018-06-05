@@ -1,4 +1,4 @@
-import { keyboardCommandCtrl } from "@/runtime-env";
+import { keyboardCtrlMeta } from "@/runtime-env";
 
 export const KEYMAP_STEPSIM = "keymap:CircuitEditor/SimStep" as "keymap:CircuitEditor/SimStep";
 
