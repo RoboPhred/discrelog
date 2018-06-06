@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import styled from "styled-components";
+
 import { connect } from "react-redux";
 
 import { Stage, Layer } from "react-konva";
@@ -33,12 +35,14 @@ class CircuitTray extends React.Component<Props> {
       );
     });
 
-    // TODO: styled component?
-    const style: React.CSSProperties = {
-      display: "flex",
-      flexDirection: "column"
-    };
-    return <div style={style}>{elements}</div>;
+    return <CircuitTrayContainer>{elements}</CircuitTrayContainer>;
   }
 }
 export default connect(null, mapDispatchToProps)(CircuitTray);
+
+const CircuitTrayContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
