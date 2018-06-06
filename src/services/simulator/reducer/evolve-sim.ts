@@ -48,7 +48,7 @@ export function evolveSimMutator(
       delete transitionsById[tid];
 
       // This should be safe if everything stays in sync.
-      //  We only allow one transition per id, and this to be it.
+      //  We only allow one transition per id, and this should be it.
       delete nodeOutputTransitionsByNodeId[nodeId][outputId];
 
       nodeOutputValuesByNodeId[nodeId][outputId] = value;
