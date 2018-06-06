@@ -9,7 +9,6 @@ import { typedKeys } from "@/utils";
 
 function deleteNodeMutator(state: SimulatorState, action: DeleteNodeAction) {
   const { nodeIds } = action.payload;
-
   nodeIds.forEach(id => deleteNodeById(state, id));
 }
 export default produce(deleteNodeMutator);
@@ -42,6 +41,7 @@ function deleteNodeById(state: SimulatorState, nodeId: string) {
     if (!target) {
       continue;
     }
+
     const conns = target.outputConnectionsByPin[input.pin];
     if (!conns) {
       continue;

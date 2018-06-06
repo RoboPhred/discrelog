@@ -7,10 +7,7 @@ import { SimulatorState } from "../state";
 import { Node, TransitionWindow } from "../types";
 import { NodeTypes, EvolutionResult } from "../node-types";
 
-import {
-  addTransitionMutator,
-  removeTransitionByPinMutator
-} from "./transition-utils";
+import { addTransition, removeTransitionByPin } from "./transition-utils";
 
 export function collectNodeTransitionsMutator(
   state: SimulatorState,
@@ -63,10 +60,10 @@ export function collectNodeTransitionsMutator(
       // Sanity check that we are not producing transitions for the past or current tick.
       const transitionTick = tick + (tickOffset > 0 ? tickOffset : 1);
 
-      removeTransitionByPinMutator(state, { nodeId: node.id, pin: outputId });
+      removeTransitionByPin(state, { nodeId: node.id, pin: outputId });
 
       if (nodeOutputs[outputId] !== value) {
-        addTransitionMutator(state, node.id, outputId, transitionTick, value);
+        addTransition(state, node.id, outputId, transitionTick, value);
       }
     }
   }

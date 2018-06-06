@@ -5,10 +5,7 @@ import { SimulatorState } from "../state";
 
 import { collectNodeTransitionsMutator } from "./collect-transitions";
 
-export function evolveSimMutator(
-  state: SimulatorState,
-  action: EvolveSimAction
-) {
+function evolveSimMutator(state: SimulatorState, action: EvolveSimAction) {
   const { tickCount } = action.payload;
   const {
     tick,
@@ -27,7 +24,7 @@ export function evolveSimMutator(
     window => window.tick <= endTick
   );
 
-  let saftyCutoff = tickCount * 4;
+  let saftyCutoff = tickCount;
 
   for (const window of iterator) {
     // Update the current tick, as it is referenced
@@ -90,18 +87,4 @@ function* takeWhile<T>(
     const nextItem = items.shift()!;
     yield nextItem;
   }
-}
-
-function popWhile<T>(items: T[], pickWhile: (item: T) => boolean): T[] {
-  const result = [];
-  for (const item of items) {
-    if (!pickWhile(item)) {
-      break;
-    }
-    result.push(item);
-  }
-
-  items.splice(0, result.length);
-
-  return result;
 }

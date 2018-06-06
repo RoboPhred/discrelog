@@ -4,7 +4,7 @@ import uuidV4 from "uuid/v4";
 import { SimulatorState } from "@/services/simulator/state";
 import { TransitionWindow, NodePin } from "@/services/simulator/types";
 
-export function addTransitionMutator(
+export function addTransition(
   state: SimulatorState,
   nodeId: string,
   outputId: string,
@@ -23,22 +23,19 @@ export function addTransitionMutator(
     value
   };
 
-  let nodeTransitions = nodeOutputTransitionsByNodeId[nodeId];
-  if (!nodeTransitions) {
-    nodeTransitions = {};
-    nodeOutputTransitionsByNodeId[nodeId] = nodeTransitions;
+  const outputTransitions = nodeOutputTransitionsByNodeId[nodeId];
+  if (!outputTransitions) {
+    // Node does not exist?
+    return;
   }
 
-  nodeTransitions[outputId] = transitionId;
+  outputTransitions[outputId] = transitionId;
 
-  const transitionWindow = getTransitionWindowMutator(state, tick);
+  const transitionWindow = getOrCreateWindow(state, tick);
   transitionWindow.transitionIds.push(transitionId);
 }
 
-export function removeTransitionByPinMutator(
-  state: SimulatorState,
-  pin: NodePin
-) {
+export function removeTransitionByPin(state: SimulatorState, pin: NodePin) {
   const { nodeId, pin: outputId } = pin;
 
   const {
@@ -91,7 +88,7 @@ export function removeTransitionByPinMutator(
   }
 }
 
-function getTransitionWindowMutator(
+function getOrCreateWindow(
   state: SimulatorState,
   tick: number
 ): TransitionWindow {
