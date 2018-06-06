@@ -2,15 +2,17 @@ const { resolve: resolvePath, join: joinPath } = require("path");
 
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const UglifyJsWebpackPlugin = require("uglifyjs-webpack-plugin");
 
 const isDev = process.env["NODE_ENV"] === "development";
+const isProd = process.env["NODE_ENV"] === "production";
 
 const ROOT = resolvePath(__dirname, "..");
 const PATHS = {
   src: resolvePath(ROOT, "./src"),
   dist: resolvePath(ROOT, "./dist"),
   node_modules: resolvePath(ROOT, "./node_modules"),
-  publicUrl: "/"
+  publicUrl: isProd ? "/discrelog/" : "/"
 };
 
 module.exports = {
@@ -29,7 +31,7 @@ module.exports = {
   output: {
     filename: "[name].[hash].bundle.js",
     path: PATHS.dist,
-    publicPath: isDev ? "/" : PATHS.publicUrl
+    publicPath: PATHS.publicUrl
   },
 
   resolve: {
@@ -102,7 +104,12 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       template: resolvePath(PATHS.src, "index.ejs")
-    })
+    }),
+
+    isProd &&
+      new UglifyJsWebpackPlugin({
+        sourceMap: true
+      })
   ].filter(truthy),
 
   optimization: {
