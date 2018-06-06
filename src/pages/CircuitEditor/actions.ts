@@ -47,8 +47,6 @@ export const paste = () => (dispatch: Dispatch, getState: GetState) => {
     map(clipboardNodes, () => uuidV4())
   );
 
-  console.log(pasteIds);
-
   // Two passes: Create and Wire.
 
   // Create the nodes.
