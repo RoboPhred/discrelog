@@ -5,17 +5,8 @@ import { NodeType } from "./node-types";
 export interface Node {
   id: string;
   type: NodeType;
-  inputConnectionsByPin: IDMap<NodePinConnection | null>;
-  outputConnectionsByPin: IDMap<NodePinConnection[]>;
-}
-
-/**
- * Identifies the remote node and pin connected to
- * by a node's local pin.
- */
-export interface NodePinConnection {
-  nodeId: string;
-  pin: string;
+  inputConnectionsByPin: IDMap<NodePin | null>;
+  outputConnectionsByPin: IDMap<NodePin[]>;
 }
 
 export type NodesById = IDMap<Node>;

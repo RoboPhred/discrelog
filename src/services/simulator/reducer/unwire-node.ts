@@ -5,10 +5,7 @@ import { UnwireNodeAction } from "../actions";
 
 import { collectNodeTransitionsMutator } from "./collect-transitions";
 
-export function unwireNodeMutator(
-  state: SimulatorState,
-  action: UnwireNodeAction
-) {
+function unwireNodeMutator(state: SimulatorState, action: UnwireNodeAction) {
   const { sourceNodeId, sourcePin, targetNodeId, targetPin } = action.payload;
 
   const sourceNode = state.nodesById[sourceNodeId];

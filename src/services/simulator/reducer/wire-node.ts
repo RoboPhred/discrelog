@@ -5,7 +5,7 @@ import { WireNodeAction } from "../actions";
 
 import { collectNodeTransitionsMutator } from "./collect-transitions";
 
-export function wireNodeMutator(state: SimulatorState, action: WireNodeAction) {
+function wireNodeMutator(state: SimulatorState, action: WireNodeAction) {
   const { sourceNodeId, sourcePin, targetNodeId, targetPin } = action.payload;
 
   const sourceNode = state.nodesById[sourceNodeId];

@@ -6,7 +6,7 @@ import { NodeTypes } from "../node-types";
 
 import { collectNodeTransitionsMutator } from "./collect-transitions";
 
-export function interactNodeMutator(
+function interactNodeMutator(
   state: SimulatorState,
   action: InteractNodeAction
 ) {
@@ -25,5 +25,4 @@ export function interactNodeMutator(
 
   collectNodeTransitionsMutator(state, nodeId);
 }
-
 export default produce(interactNodeMutator);
