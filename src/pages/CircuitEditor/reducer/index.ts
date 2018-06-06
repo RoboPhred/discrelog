@@ -11,8 +11,8 @@ import {
 import {
   CircuitEditorAction,
   ACTION_NODE_HOVER,
-  ACTION_MOVE_SELECTED,
-  ACTION_COPY_SELECTED,
+  ACTION_NODE_MOVE,
+  ACTION_COPY_NODES,
   ACTION_SELECT_REGION,
   ACTION_SELECT_CLEAR,
   ACTION_SELECT_NODES
@@ -24,8 +24,8 @@ import circuitFieldReducer from "../ContentViews/CircuitField/reducer";
 import addNodeReducer from "./add-node";
 import deleteNodeReducer from "./delete-node";
 import mouseOverNodeReducer from "./hover-node";
-import moveSelectedNodesReducer from "./move-selected-nodes";
-import copySelectedNodesReducer from "./copy-selected-nodes";
+import moveNodeReducer from "./move-node";
+import copySelectedNodesReducer from "./copy-nodes";
 import selectNodesReducer from "./select-nodes";
 import selectRegionReducer from "./select-region";
 import clearSelectionReducer from "./clear-selection";
@@ -54,9 +54,9 @@ export default function circuitEditorReducer(
       return deleteNodeReducer(state, action);
     case ACTION_NODE_HOVER:
       return mouseOverNodeReducer(state, action);
-    case ACTION_MOVE_SELECTED:
-      return moveSelectedNodesReducer(state, action);
-    case ACTION_COPY_SELECTED:
+    case ACTION_NODE_MOVE:
+      return moveNodeReducer(state, action);
+    case ACTION_COPY_NODES:
       return copySelectedNodesReducer(state, action, appState);
     case ACTION_SELECT_NODES:
       return selectNodesReducer(state, action);

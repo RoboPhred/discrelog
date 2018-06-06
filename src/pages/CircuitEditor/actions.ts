@@ -22,18 +22,29 @@ export const hoverNode = (nodeId: string | null) => ({
 });
 export type HoverNodeAction = ReturnType<typeof hoverNode>;
 
-export const ACTION_MOVE_SELECTED = "@editor/move-selected" as "@editor/move-selected";
-export const moveSelected = (offsetX: number, offsetY: number) => ({
-  type: ACTION_MOVE_SELECTED,
-  payload: { offsetX, offsetY }
+export const ACTION_NODE_MOVE = "@editor/node/move" as "@editor/node/move";
+export const moveNodes = (
+  nodeId: string | string[],
+  offsetX: number,
+  offsetY: number
+) => ({
+  type: ACTION_NODE_MOVE,
+  payload: {
+    nodeIds: Array.isArray(nodeId) ? nodeId : [nodeId],
+    offsetX,
+    offsetY
+  }
 });
-export type MoveNodeAction = ReturnType<typeof moveSelected>;
+export type MoveNodesAction = ReturnType<typeof moveNodes>;
 
-export const ACTION_COPY_SELECTED = "@editor/copy-selected" as "@editor/copy-selected";
-export const copySelected = () => ({
-  type: ACTION_COPY_SELECTED
+export const ACTION_COPY_NODES = "@editor/copy" as "@editor/copy";
+export const copyNodes = (nodeId: string | string[]) => ({
+  type: ACTION_COPY_NODES,
+  payload: {
+    nodeIds: Array.isArray(nodeId) ? nodeId : [nodeId]
+  }
 });
-export type CopySelectedAction = ReturnType<typeof copySelected>;
+export type CopyNodesAction = ReturnType<typeof copyNodes>;
 
 export const ACTION_PASTE = "@editor/paste" as "@editor/paste";
 export const paste = () => (dispatch: Dispatch, getState: GetState) => {
@@ -110,8 +121,8 @@ export type ClearSelectionAction = ReturnType<typeof clearSelection>;
 
 export type CircuitEditorAction =
   | HoverNodeAction
-  | MoveNodeAction
-  | CopySelectedAction
+  | MoveNodesAction
+  | CopyNodesAction
   | SelectNodesAction
   | SelectRegionAction
   | ClearSelectionAction;
