@@ -21,12 +21,13 @@ export default class IntroPage extends React.Component<Props> {
           <HeaderContainer>
             <h3>
               <b>UNDER CONSTRUCTION</b>
-              <p>https://github.com/RoboPhred/discrelog</p>
               <p>
                 This is an as-yet-unfinished experiment.  The user interface is frustrating at best,
                 and you cannot save your work.  It is made available as a playground for the
                 current state of the project.
               </p>
+              <p>Scan through the readme below, and click the button at the bottom to enter</p>
+              <p>The source can be found at <a href="https://github.com/RoboPhred/discrelog">https://github.com/RoboPhred/discrelog</a></p>
             </h3>
           </HeaderContainer>
           <MarkdownContainer>
@@ -73,5 +74,5 @@ const MarkdownContainer = styled.div`
 `;
 
 const DismissButton = styled.button`
-  height: 30px;
+  min-height: 10em;
 `
