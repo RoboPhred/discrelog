@@ -12,7 +12,9 @@ import { bindFuncMap } from "@/utils";
 import keymap, {
   KeymapHandler,
   KEYMAP_SIM_STEP,
-  KEYMAP_SIM_FASTFORWARD
+  KEYMAP_SIM_FASTFORWARD,
+  KEYMAP_NODE_COPY,
+  KEYMAP_NODE_PASTE
 } from "./keymap";
 
 import FieldContainer from "./components/FieldContainer";
@@ -91,7 +93,9 @@ class CircuitField extends React.Component<Props> {
 
   private _keyHandlers: KeymapHandler = {
     [KEYMAP_SIM_STEP]: () => this.props.onHotkeyStep(),
-    [KEYMAP_SIM_FASTFORWARD]: () => this.props.onHotkeyFastForward()
+    [KEYMAP_SIM_FASTFORWARD]: () => this.props.onHotkeyFastForward(),
+    [KEYMAP_NODE_COPY]: () => this.props.onHotkeyCopy(),
+    [KEYMAP_NODE_PASTE]: () => this.props.onHotkeyPaste()
   };
 
   private _onNodeMouseOver(nodeId: string, e: KonvaMouseEvent) {

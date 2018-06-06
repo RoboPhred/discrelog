@@ -5,7 +5,10 @@ import {
   defaultCircuitFieldState
 } from "./ContentViews/CircuitField/state";
 
+import { ClipboardNode } from "./types";
+
 export interface CircuitEditorState {
+  clipboardContent: ClipboardNode[];
   nodePositions: IDMap<Position>;
   mouseOverNodeId: string | null;
   selectedNodeIds: string[];
@@ -13,6 +16,7 @@ export interface CircuitEditorState {
 }
 
 export const defaultCircuitEditorState: CircuitEditorState = {
+  clipboardContent: [],
   nodePositions: {},
   mouseOverNodeId: null,
   selectedNodeIds: [],

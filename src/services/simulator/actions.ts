@@ -20,9 +20,14 @@ export type FastForwardSimAction = ReturnType<typeof fastForwardSim>;
 export const ACTION_NODE_ADD = "@sim/node/add" as "@sim/node/add";
 // TODO: Including x and y pos in simulator logic, which so far has tried to not concern itself with this.
 //  Probably a sign that these actions need to be at a higher level.
-export const addNode = (nodeType: NodeType, x?: number, y?: number) => ({
+export const addNode = (
+  nodeType: NodeType,
+  x?: number,
+  y?: number,
+  nodeId?: string
+) => ({
   type: ACTION_NODE_ADD,
-  payload: { nodeId: uuidV4(), nodeType, x, y }
+  payload: { nodeId: nodeId || uuidV4(), nodeType, x, y }
 });
 export type AddNodeAction = ReturnType<typeof addNode>;
 

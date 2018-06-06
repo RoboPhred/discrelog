@@ -24,7 +24,6 @@ export default function selectRegionReducer(
   const chosenIds: string[] = [];
   forOwn(rects, (rect, id) => {
     if (intersects(rect, region)) {
-      console.log("rect", rect, "intersects", region);
       chosenIds.push(id);
     }
   });

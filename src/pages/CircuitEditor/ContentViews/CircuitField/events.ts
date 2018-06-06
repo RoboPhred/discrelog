@@ -16,7 +16,9 @@ import {
   selectNodes,
   SelectionMode,
   selectRegion,
-  moveSelected
+  moveSelected,
+  copySelected,
+  paste
 } from "@/pages/CircuitEditor/actions";
 
 import { startDrag, continueDrag, endDrag } from "./actions";
@@ -47,9 +49,15 @@ export function onNodeDragStart(
   p: Position,
   modifiers: ModifierKeys
 ) {
-  return (dispatch: Dispatch) => {
-    const mode = getSelectMode(modifiers);
-    dispatch(selectNodes(nodeId, mode));
+  return (dispatch: Dispatch, getState: GetState) => {
+    // TODO: Move logic into reducer.
+    const state = getState();
+    const isNodeSelected =
+      state.ui.circuitEditor.selectedNodeIds.indexOf(nodeId) !== -1;
+    if (!isNodeSelected) {
+      const mode = getSelectMode(modifiers);
+      dispatch(selectNodes(nodeId, mode));
+    }
     dispatch(startDrag(p, "move"));
   };
 }
@@ -95,6 +103,14 @@ export function onHotkeyStep() {
 
 export function onHotkeyFastForward() {
   return fastForwardSim();
+}
+
+export function onHotkeyCopy() {
+  return copySelected();
+}
+
+export function onHotkeyPaste() {
+  return paste();
 }
 
 function getSelectMode(modifiers: ModifierKeys): SelectionMode {
