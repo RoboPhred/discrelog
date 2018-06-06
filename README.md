@@ -4,6 +4,32 @@ A discrete logic / circuit editor and simulator written in React and Redux.
 
 _This is a work in progress, and will be for some time. It is not suitable for use as of this time._
 
+## Live work-in-progress
+
+_The interface is very much a prototype. The current incarnation is under heavy development and is not final._
+
+http://robophred.github.io/discrelog
+
+### Usage:
+
+Click circuit elements on the left to create them. They will appear in the top-left corner.
+Click an element to select it. Click-drag an element to move it, and click-drag the field to select multiple elements.
+
+Selected elements appear with a small yellow square in the top left.
+
+Connect components by clicking an output pin, then clicking an input pin. Only output-to-input clicks work, and an output must be re-clicked when connecting multiple inputs to an output.
+
+### Controls:
+
+* Select element: `left-click`
+* Toggle element in current selection: `ctrl + left-click`
+* Add element to current selection: `shift + left-click`
+* Use element (buttons): `alt + left-click` or `option + left-click`
+* Copy Selected: `ctrl + c` or `command + c`
+* Paste: `ctrl + v` or `command + v`
+* Next tick: `spacebar`
+* Fast forward to next transition: `shift + spacebar`
+
 ## Circuit structure and Simulation
 
 Circuits are built by connecting component output pins to input pins on a one-to-many relationship. A single output pin can connect to many input pins, but an input pin can only have a single output pin.
