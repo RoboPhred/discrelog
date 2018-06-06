@@ -7,13 +7,15 @@ import {
   ACTION_TOGGLEWIRE,
   ACTION_EVOLVE,
   ACTION_FASTFORWARD,
-  ACTION_INTERACT,
-  ACTION_NODE_ADD
+  ACTION_NODE_INTERACT,
+  ACTION_NODE_ADD,
+  ACTION_NODE_DELETE
 } from "../actions";
 
 import { isWired } from "../helpers";
 
 import addNodeReducer from "./add-node";
+import deleteNodeReducer from "./delete-node";
 import wireNodeReducer from "./wire-node";
 import unwireNodeReducer from "./unwire-node";
 import interactNodeReducer from "./interact-node";
@@ -27,6 +29,8 @@ export default function simulatorReducer(
   switch (action.type) {
     case ACTION_NODE_ADD:
       return addNodeReducer(state, action);
+    case ACTION_NODE_DELETE:
+      return deleteNodeReducer(state, action);
     case ACTION_WIRE:
       return wireNodeReducer(state, action);
     case ACTION_UNWIRE:
@@ -55,7 +59,7 @@ export default function simulatorReducer(
           payload: action.payload
         });
       }
-    case ACTION_INTERACT:
+    case ACTION_NODE_INTERACT:
       return interactNodeReducer(state, action);
     case ACTION_EVOLVE:
       return evolveSimReducer(state, action);

@@ -2,7 +2,11 @@ import produce from "immer";
 
 import { AppState } from "@/store";
 
-import { SimulatorAction, ACTION_NODE_ADD } from "@/services/simulator/actions";
+import {
+  SimulatorAction,
+  ACTION_NODE_ADD,
+  ACTION_NODE_DELETE
+} from "@/services/simulator/actions";
 
 import {
   CircuitEditorAction,
@@ -18,6 +22,7 @@ import { CircuitEditorState, defaultCircuitEditorState } from "../state";
 import circuitFieldReducer from "../ContentViews/CircuitField/reducer";
 
 import addNodeReducer from "./add-node";
+import deleteNodeReducer from "./delete-node";
 import mouseOverNodeReducer from "./hover-node";
 import moveSelectedNodesReducer from "./move-selected-nodes";
 import copySelectedNodesReducer from "./copy-selected-nodes";
@@ -45,6 +50,8 @@ export default function circuitEditorReducer(
   switch (action.type) {
     case ACTION_NODE_ADD:
       return addNodeReducer(state, action);
+    case ACTION_NODE_DELETE:
+      return deleteNodeReducer(state, action);
     case ACTION_NODE_HOVER:
       return mouseOverNodeReducer(state, action);
     case ACTION_MOVE_SELECTED:

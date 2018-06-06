@@ -28,7 +28,7 @@ export interface SimulatorState {
   /**
    * A map of the the ids of the pending transitions for a node by node id.
    */
-  nodeOutputTransitionsByNodeId: IDMap<IDMap<string>>;
+  nodeOutputTransitionsByNodeId: IDMap<IDMap<string | null>>;
 
   // Not entirely happy having this on the state, since it is
   //  highly transient and has a lot of churn.

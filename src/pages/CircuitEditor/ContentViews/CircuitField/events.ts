@@ -7,7 +7,8 @@ import { Point } from "@/types";
 import {
   interactNode,
   evolveSim,
-  fastForwardSim
+  fastForwardSim,
+  deleteNode
 } from "@/services/simulator/actions";
 
 import {
@@ -24,6 +25,7 @@ import {
 import { startDrag, continueDrag, endDrag } from "./actions";
 
 import { circuitFieldState } from "./selectors";
+import { selectedNodeIds } from "@/pages/CircuitEditor/selectors";
 
 export interface ModifierKeys {
   ctrlMetaKey: boolean;
@@ -111,6 +113,17 @@ export function onHotkeyCopy() {
 
 export function onHotkeyPaste() {
   return paste();
+}
+
+export function onHotkeyDelete() {
+  return (dispatch: Dispatch, getState: GetState) => {
+    const state = getState();
+    const selectedIds = selectedNodeIds(state);
+    if (selectedIds.length === 0) {
+      return;
+    }
+    dispatch(deleteNode(selectedIds));
+  };
 }
 
 function getSelectMode(modifiers: ModifierKeys): SelectionMode {

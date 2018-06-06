@@ -24,7 +24,8 @@ Connect components by clicking an output pin, then clicking an input pin. Only o
 * Select element: `left-click`
 * Toggle element in current selection: `ctrl + left-click`
 * Add element to current selection: `shift + left-click`
-* Use element (buttons): `alt + left-click` or `option + left-click`
+* Activate Button: `alt + left-click` or `option + left-click`
+* Delete Element: `backspace` or `delete`
 * Copy Selected: `ctrl + c` or `command + c`
 * Paste: `ctrl + v` or `command + v`
 * Next tick: `spacebar`

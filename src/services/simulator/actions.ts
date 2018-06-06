@@ -31,9 +31,16 @@ export const addNode = (
 });
 export type AddNodeAction = ReturnType<typeof addNode>;
 
-export const ACTION_INTERACT = "@sim/interact" as "@sim/interact";
+export const ACTION_NODE_DELETE = "@sim/node/delete" as "@sim/node/delete";
+export const deleteNode = (nodeId: string | string[]) => ({
+  type: ACTION_NODE_DELETE,
+  payload: { nodeIds: Array.isArray(nodeId) ? nodeId : [nodeId] }
+});
+export type DeleteNodeAction = ReturnType<typeof deleteNode>;
+
+export const ACTION_NODE_INTERACT = "@sim/node/interact" as "@sim/node/interact";
 export const interactNode = (nodeId: string) => ({
-  type: ACTION_INTERACT,
+  type: ACTION_NODE_INTERACT,
   payload: { nodeId }
 });
 export type InteractNodeAction = ReturnType<typeof interactNode>;
@@ -93,6 +100,7 @@ export type SimulatorAction =
   | EvolveSimAction
   | FastForwardSimAction
   | AddNodeAction
+  | DeleteNodeAction
   | InteractNodeAction
   | WireNodeAction
   | UnwireNodeAction
