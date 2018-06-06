@@ -8,7 +8,7 @@ import { createStructuredSelector, createSelector } from "reselect";
 import { Layer, Group } from "react-konva";
 
 import { AppState } from "@/store";
-import { IDMap, Position } from "@/types";
+import { IDMap, Point } from "@/types";
 
 import { nodeTypesById, nodeStatesById } from "@/services/simulator/selectors";
 import { NodeType } from "@/services/simulator/node-types";
@@ -50,10 +50,10 @@ const mapStateToProps = createStructuredSelector<AppState, StateProps>({
   dragMoveOffset
 });
 interface StateProps {
-  selectedNodePositionsById: IDMap<Position>;
+  selectedNodePositionsById: IDMap<Point>;
   selectedNodeTypesById: IDMap<NodeType>;
   selectedNodeStatesById: IDMap<any>;
-  dragMoveOffset: Position | null;
+  dragMoveOffset: Point | null;
 }
 
 type Props = StateProps;

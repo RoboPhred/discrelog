@@ -6,7 +6,7 @@ import { Stage } from "react-konva";
 import sizeme, { SizeProps } from "react-sizeme";
 import { HotKeys, FocusTrap } from "react-hotkeys";
 
-import { Position } from "@/types";
+import { Point } from "@/types";
 import { bindFuncMap } from "@/utils";
 
 import keymap, {
@@ -40,8 +40,8 @@ class CircuitField extends React.Component<Props> {
   // Instance props as we do not require a re-render when these change.
   private _isDragging: boolean = false;
   private _mouseDownNodeId: string | null = null;
-  private _startMousePos: Position | null = null;
-  private _lastMousePos: Position | null = null;
+  private _startMousePos: Point | null = null;
+  private _lastMousePos: Point | null = null;
 
   private _hotkeysRef = React.createRef<HTMLDivElement>();
 

@@ -1,4 +1,4 @@
-import { Position, Size, IDMap } from "@/types";
+import { Point, Size, IDMap } from "@/types";
 
 import {
   CircuitFieldState,
@@ -9,7 +9,7 @@ import { ClipboardNode } from "./types";
 
 export interface CircuitEditorState {
   clipboardContent: ClipboardNode[];
-  nodePositions: IDMap<Position>;
+  nodePositions: IDMap<Point>;
   mouseOverNodeId: string | null;
   selectedNodeIds: string[];
   circuitField: CircuitFieldState;

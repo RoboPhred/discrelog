@@ -1,9 +1,9 @@
-import { Position, IDMap } from "@/types";
+import { Point, IDMap } from "@/types";
 
 export interface CircuitFieldState {
   dragMode: null | "move" | "select";
-  dragStart: Position | null;
-  dragEnd: Position | null;
+  dragStart: Point | null;
+  dragEnd: Point | null;
 }
 
 export const defaultCircuitFieldState: CircuitFieldState = {

@@ -1,4 +1,4 @@
-export interface Position {
+export interface Point {
   x: number;
   y: number;
 }
@@ -9,8 +9,8 @@ export interface Size {
 }
 
 export interface Rectangle {
-  p1: Position;
-  p2: Position;
+  p1: Point;
+  p2: Point;
 }
 
 export interface IDMap<T> {

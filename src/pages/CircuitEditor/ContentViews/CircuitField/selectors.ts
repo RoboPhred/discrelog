@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 
 import { AppState } from "@/store";
-import { normalizeRectangle, positionSubtract } from "@/geometry";
+import { normalizeRectangle, pointSubtract } from "@/geometry";
 
 import { CircuitFieldState } from "./state";
 
@@ -20,6 +20,6 @@ export const dragMoveOffset = createSelector(
   circuitFieldState,
   (s: CircuitFieldState) =>
     s.dragMode === "move" && s.dragStart && s.dragEnd
-      ? positionSubtract(s.dragEnd, s.dragStart)
+      ? pointSubtract(s.dragEnd, s.dragStart)
       : null
 );

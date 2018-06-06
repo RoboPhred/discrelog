@@ -4,9 +4,9 @@ import { map, mapValues, zipObject } from "lodash-es";
 import uuidV4 from "uuid/v4";
 
 import { AppState } from "@/store";
-import { positionSubtract } from "@/geometry";
+import { pointSubtract } from "@/geometry";
 import { typedKeys } from "@/utils";
-import { Position } from "@/types";
+import { Point } from "@/types";
 
 import { CircuitEditorState, defaultCircuitEditorState } from "../state";
 import { CopySelectedAction } from "../actions";
@@ -41,7 +41,7 @@ function copySelectedMutator(
     const copyNode: ClipboardNode = {
       id: copyIds[id],
       type: node.type,
-      offset: positionSubtract(nodePositions[id], rootPosition),
+      offset: pointSubtract(nodePositions[id], rootPosition),
       outputs: mapValues(node.outputConnectionsByPin, conns =>
         conns
           .filter(x => nodeIsSelected)

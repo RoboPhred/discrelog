@@ -1,8 +1,8 @@
 import { Dispatch } from "redux";
 
-import { normalizeRectangle, calcSize, positionSubtract } from "@/geometry";
+import { normalizeRectangle, calcSize, pointSubtract } from "@/geometry";
 import { GetState } from "@/store";
-import { Position } from "@/types";
+import { Point } from "@/types";
 
 import {
   interactNode,
@@ -46,7 +46,7 @@ export function onFieldClicked(modifiers: ModifierKeys) {
 
 export function onNodeDragStart(
   nodeId: string,
-  p: Position,
+  p: Point,
   modifiers: ModifierKeys
 ) {
   return (dispatch: Dispatch, getState: GetState) => {
@@ -62,15 +62,15 @@ export function onNodeDragStart(
   };
 }
 
-export function onFieldDragStart(p: Position) {
+export function onFieldDragStart(p: Point) {
   return startDrag(p, "select");
 }
 
-export function onDragMove(p: Position) {
+export function onDragMove(p: Point) {
   return continueDrag(p);
 }
 
-export function onDragEnd(p: Position, modifiers: ModifierKeys) {
+export function onDragEnd(p: Point, modifiers: ModifierKeys) {
   return (dispatch: Dispatch, getState: GetState) => {
     const fieldState = circuitFieldState(getState());
     const { dragMode, dragStart, dragEnd } = fieldState;
@@ -83,7 +83,7 @@ export function onDragEnd(p: Position, modifiers: ModifierKeys) {
           break;
         }
         case "move": {
-          const moveBy = positionSubtract(dragEnd, dragStart);
+          const moveBy = pointSubtract(dragEnd, dragStart);
           dispatch(moveSelected(moveBy.x, moveBy.y));
           break;
         }

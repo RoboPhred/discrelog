@@ -1,16 +1,16 @@
-import { Position, Size, Rectangle } from "@/types";
+import { Point, Size, Rectangle } from "@/types";
 
-export function normalizeRectangle(p1: Position, p2: Position): Rectangle;
+export function normalizeRectangle(p1: Point, p2: Point): Rectangle;
 export function normalizeRectangle(r: Rectangle): Rectangle;
 export function normalizeRectangle(...args: any[]): Rectangle {
-  let p1: Position;
-  let p2: Position;
+  let p1: Point;
+  let p2: Point;
   if (args.length === 1) {
     const r = args[0] as Rectangle;
     (p1 = r.p1), (p2 = r.p2);
   } else {
-    p1 = args[0] as Position;
-    p2 = args[1] as Position;
+    p1 = args[0] as Point;
+    p2 = args[1] as Point;
   }
   return {
     p1: {
@@ -24,7 +24,7 @@ export function normalizeRectangle(...args: any[]): Rectangle {
   };
 }
 
-export function positionSubtract(p1: Position, p2: Position): Position {
+export function pointSubtract(p1: Point, p2: Point): Point {
   return {
     x: p1.x - p2.x,
     y: p1.y - p2.y

@@ -7,7 +7,7 @@ import { Layer, Line } from "react-konva";
 
 import { mapValues } from "lodash-es";
 
-import { Position } from "@/types";
+import { Point } from "@/types";
 
 import { Node, NodesById, NodePin } from "@/services/simulator/types";
 import { NodeTypes } from "@/services/simulator/node-types";
@@ -121,7 +121,7 @@ function aggregateOutputs(nodes: Node[]): Edge[] {
   }, []);
 }
 
-function getWirePoints(start: Position, end: Position): number[] {
+function getWirePoints(start: Point, end: Point): number[] {
   if (Math.abs(start.x - end.x) > Math.abs(start.y - end.y)) {
     return [
       start.x,

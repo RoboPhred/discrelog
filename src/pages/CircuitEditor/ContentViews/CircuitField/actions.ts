@@ -1,7 +1,7 @@
-import { Position } from "@/types";
+import { Point } from "@/types";
 
 export const ACTION_DRAG_START = "@editor/field/drag/start" as "@editor/field/drag/start";
-export const startDrag = (p: Position, dragMode: "select" | "move") => ({
+export const startDrag = (p: Point, dragMode: "select" | "move") => ({
   type: ACTION_DRAG_START,
   payload: {
     ...p,
@@ -11,7 +11,7 @@ export const startDrag = (p: Position, dragMode: "select" | "move") => ({
 export type StartDragAction = ReturnType<typeof startDrag>;
 
 export const ACTION_DRAG_CONTINUE = "@editor/field/drag/continue" as "@editor/field/drag/continue";
-export const continueDrag = (p: Position) => ({
+export const continueDrag = (p: Point) => ({
   type: ACTION_DRAG_CONTINUE,
   payload: p
 });
