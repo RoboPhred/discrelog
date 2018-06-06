@@ -74,5 +74,5 @@ const MarkdownContainer = styled.div`
 `;
 
 const DismissButton = styled.button`
-  min-height: 10em;
+  min-height: 2em;
 `
