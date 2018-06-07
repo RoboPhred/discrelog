@@ -49,12 +49,13 @@ interface Edge {
 function aggregateOutputs(nodes: Node[]): Edge[] {
   return nodes.reduce<Edge[]>((a, node) => {
     for (const outputPin of Object.keys(node.outputConnectionsByPin)) {
+      const source = {
+        nodeId: node.id,
+        pin: outputPin
+      };
       for (const outputConn of node.outputConnectionsByPin[outputPin]) {
         a.push({
-          source: {
-            nodeId: node.id,
-            pin: outputPin
-          },
+          source,
           target: outputConn
         });
       }
