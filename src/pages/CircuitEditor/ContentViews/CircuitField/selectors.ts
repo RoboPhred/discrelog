@@ -19,7 +19,7 @@ export const selectionRect = createSelector(
 export const dragMoveOffset = createSelector(
   circuitFieldState,
   (s: CircuitFieldState) =>
-    s.dragMode === "move" && s.dragStart && s.dragEnd
+    s.dragMode === "move-node" && s.dragStart && s.dragEnd
       ? pointSubtract(s.dragEnd, s.dragStart)
       : null
 );

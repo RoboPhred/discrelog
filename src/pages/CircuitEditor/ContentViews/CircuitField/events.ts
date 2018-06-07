@@ -60,7 +60,7 @@ export function onNodeDragStart(
       const mode = getSelectMode(modifiers);
       dispatch(selectNodes(nodeId, mode));
     }
-    dispatch(startDrag(p, "move"));
+    dispatch(startDrag(p, "move-node"));
   };
 }
 
@@ -84,7 +84,7 @@ export function onDragEnd(p: Point, modifiers: ModifierKeys) {
           dispatch(selectRegion(rect, mode));
           break;
         }
-        case "move": {
+        case "move-node": {
           const moveBy = pointSubtract(dragEnd, dragStart);
           dispatch(moveSelected(moveBy.x, moveBy.y));
           break;
