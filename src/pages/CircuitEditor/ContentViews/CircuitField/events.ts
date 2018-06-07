@@ -15,17 +15,17 @@ import {
   clearSelection,
   hoverNode,
   selectNodes,
-  SelectionMode,
   selectRegion,
   moveSelected,
   copySelected,
   paste
 } from "@/pages/CircuitEditor/actions";
+import { selectedNodeIds } from "@/pages/CircuitEditor/selectors";
+import { SelectionMode } from "@/pages/CircuitEditor/types";
 
 import { startDrag, continueDrag, endDrag } from "./actions";
 
 import { circuitFieldState } from "./selectors";
-import { selectedNodeIds } from "@/pages/CircuitEditor/selectors";
 
 export interface ModifierKeys {
   ctrlMetaKey: boolean;

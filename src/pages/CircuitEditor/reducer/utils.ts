@@ -1,6 +1,6 @@
 import { union, difference } from "lodash-es";
 
-import { SelectionMode } from "../actions";
+import { SelectionMode } from "../types";
 
 export function combineSelection(
   selectedIds: string[],
