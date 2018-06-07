@@ -77,7 +77,7 @@ class Wire extends React.Component<Props, State> {
     return (
       <Group>
         <Line points={points} stroke={value ? "green" : "black"} />
-        {testPoint && (
+        {/* {testPoint && (
           <Circle x={testPoint.x} y={testPoint.y} radius={4} fill="yellow" />
         )}
         <Line
@@ -86,7 +86,7 @@ class Wire extends React.Component<Props, State> {
           strokeWidth={5}
           onMouseMove={this._onTestMouseMove}
           onMouseLeave={this._onTestMouseLeave}
-        />
+        /> */}
       </Group>
     );
   }
