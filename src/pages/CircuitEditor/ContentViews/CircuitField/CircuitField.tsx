@@ -42,7 +42,6 @@ class CircuitField extends React.Component<Props> {
   private _isDragging: boolean = false;
   private _mouseDownNodeId: string | null = null;
   private _startMousePos: Point | null = null;
-  private _lastMousePos: Point | null = null;
 
   private _hotkeysRef = React.createRef<HTMLDivElement>();
 
@@ -200,7 +199,6 @@ class CircuitField extends React.Component<Props> {
     this._isDragging = false;
     this._mouseDownNodeId = null;
     this._startMousePos = null;
-    this._lastMousePos = null;
   }
 }
 
