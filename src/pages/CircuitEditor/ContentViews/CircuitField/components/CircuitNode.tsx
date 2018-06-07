@@ -81,14 +81,15 @@ class CircuitNode extends React.Component<Props> {
 
   private _renderPin(props: RenderPinProps): React.ReactElement<any> {
     const { onPinMouseDown, onPinMouseUp } = this.props;
+    const { id, ...pinProps } = props;
     return (
       <CircuitNodePin
-        key={props.id}
+        key={id}
         nodeId={this.props.nodeId}
-        pinId={props.id}
+        pinId={id}
         onPinMouseDown={onPinMouseDown}
         onPinMouseUp={onPinMouseUp}
-        {...props}
+        {...pinProps}
       />
     );
   }
