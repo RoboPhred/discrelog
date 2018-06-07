@@ -53,6 +53,11 @@ function deleteNodeById(state: SimulatorState, nodeId: string) {
   for (const outputId of typedKeys(outputConnectionsByPin)) {
     const outputSet = outputConnectionsByPin[outputId];
     for (const conn of outputSet) {
+      if (conn.nodeId === nodeId) {
+        // Connected to self.
+        continue;
+      }
+
       const target = nodesById[conn.nodeId];
       const targetConn = target.inputConnectionsByPin[conn.pin];
       if (
