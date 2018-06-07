@@ -10,7 +10,6 @@ const PIN_CIRCLE_RADIUS = 6;
 export interface CircuitNodePinProps extends ContainerConfig, KonvaNodeProps {
   id: string;
   direction: NodePinDirection;
-  onClick?(e: KonvaMouseEvent): void;
   onPinClick?(
     direction: NodePinDirection,
     pin: string,
@@ -27,7 +26,7 @@ export default class CircuitNodePin extends React.Component<
   }
 
   render() {
-    const { id, direction, onClick, onPinClick, ...groupProps } = this.props;
+    const { id, direction, onClick, ...groupProps } = this.props;
     return (
       <Group {...groupProps}>
         <Circle
@@ -35,16 +34,19 @@ export default class CircuitNodePin extends React.Component<
           y={0}
           radius={PIN_CIRCLE_RADIUS}
           fill="black"
-          onClick={onClick}
+          onClick={this._onClick}
         />
       </Group>
     );
   }
 
   private _onClick(e: KonvaMouseEvent) {
-    const { direction, id, onPinClick } = this.props;
+    const { direction, id, onClick, onPinClick } = this.props;
     if (onPinClick) {
       onPinClick(direction, id, e);
+    }
+    if (onClick) {
+      onClick(e);
     }
   }
 }
