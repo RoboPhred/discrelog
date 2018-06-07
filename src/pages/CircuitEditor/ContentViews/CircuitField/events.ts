@@ -8,7 +8,8 @@ import {
   interactNode,
   evolveSim,
   fastForwardSim,
-  deleteNode
+  deleteNode,
+  toggleWireNode
 } from "@/services/simulator/actions";
 
 import {
@@ -23,7 +24,8 @@ import {
 import { selectedNodeIds } from "@/pages/CircuitEditor/selectors";
 import { SelectionMode } from "@/pages/CircuitEditor/types";
 
-import { startDrag, continueDrag, endDrag } from "./actions";
+import { selectPin, startDrag, continueDrag, endDrag } from "./actions";
+import { NodePinDirection } from "@/services/simulator/types";
 
 export interface ModifierKeys {
   ctrlMetaKey: boolean;
@@ -38,6 +40,32 @@ export function onNodeClicked(nodeId: string, modifiers: ModifierKeys) {
 
   const mode = getSelectMode(modifiers);
   return selectNodes(nodeId, mode);
+}
+
+export function onNodePinClicked(
+  nodeId: string,
+  pinDirection: NodePinDirection,
+  pinId: string
+) {
+  return function(dispatch: Dispatch, getState: GetState) {
+    const state = getState();
+    const selectedPin = state.ui.circuitEditor.circuitField.selectedPin;
+    if (selectedPin && selectedPin.direction !== pinDirection) {
+      // TODO: We should not care about direction like this.
+      //  Make pins unambiguous on a node, and handle any order in toggleWire
+      if (selectedPin.direction === "output") {
+        dispatch(
+          toggleWireNode(selectedPin.nodeId, selectedPin.pin, nodeId, pinId)
+        );
+      } else {
+        dispatch(
+          toggleWireNode(nodeId, pinId, selectedPin.nodeId, selectedPin.pin)
+        );
+      }
+    } else {
+      dispatch(selectPin(nodeId, pinDirection, pinId));
+    }
+  };
 }
 
 export function onFieldClicked(modifiers: ModifierKeys) {

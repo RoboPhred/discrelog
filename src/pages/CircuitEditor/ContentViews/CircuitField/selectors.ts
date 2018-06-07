@@ -23,3 +23,8 @@ export const dragMoveOffset = createSelector(
       ? pointSubtract(s.dragEnd, s.dragStart)
       : null
 );
+
+export const selectedPin = createSelector(
+  circuitFieldState,
+  (s: CircuitFieldState) => s.selectedPin
+);

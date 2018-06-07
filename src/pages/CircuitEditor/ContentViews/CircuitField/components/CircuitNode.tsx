@@ -20,7 +20,12 @@ import CircuitNodePin from "./CircuitNodePin";
 
 export interface CircuitNodeProps extends ContainerConfig, KonvaNodeProps {
   nodeId: string;
-  onPinClick(
+  onPinMouseDown?(
+    direction: NodePinDirection,
+    pin: string,
+    e: KonvaMouseEvent
+  ): void;
+  onPinMouseUp?(
     direction: NodePinDirection,
     pin: string,
     e: KonvaMouseEvent
@@ -50,12 +55,14 @@ class CircuitNode extends React.Component<Props> {
 
   render() {
     const {
+      // Pull out all of our props to avoid passing them to group.
       nodeId,
       nodeType,
       nodeState,
       isSelected,
       onClick,
-      onPinClick,
+      onPinMouseDown,
+      onPinMouseUp,
       ...groupProps
     } = this.props;
 
@@ -73,10 +80,14 @@ class CircuitNode extends React.Component<Props> {
   }
 
   private _renderPin(props: RenderPinProps): React.ReactElement<any> {
+    const { onPinMouseDown, onPinMouseUp } = this.props;
     return (
       <CircuitNodePin
         key={props.id}
-        onPinClick={this.props.onPinClick}
+        nodeId={this.props.nodeId}
+        pinId={props.id}
+        onPinMouseDown={onPinMouseDown}
+        onPinMouseUp={onPinMouseUp}
         {...props}
       />
     );

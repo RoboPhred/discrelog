@@ -1,6 +1,22 @@
 import { Point } from "@/types";
 
 import { DragModeType } from "./types";
+import { NodePinDirection } from "@/services/simulator/types";
+
+export const ACTION_SELECT_PIN = "@editor/field/select-pin" as "@editor/field/select-pin";
+export const selectPin = (
+  nodeId: string,
+  pinDirection: NodePinDirection,
+  pinId: string
+) => ({
+  type: ACTION_SELECT_PIN,
+  payload: {
+    nodeId,
+    pinDirection,
+    pinId
+  }
+});
+export type SelectPinAction = ReturnType<typeof selectPin>;
 
 export const ACTION_DRAG_START = "@editor/field/drag/start" as "@editor/field/drag/start";
 export const startDrag = (p: Point, dragMode: DragModeType) => ({
@@ -26,6 +42,7 @@ export const endDrag = () => ({
 export type EndDragAction = ReturnType<typeof endDrag>;
 
 export type CircuitFieldAction =
+  | SelectPinAction
   | StartDragAction
   | ContinueDragAction
   | EndDragAction;

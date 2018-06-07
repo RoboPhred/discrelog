@@ -1,52 +1,104 @@
 import * as React from "react";
+import { connect } from "react-redux";
+
 import { Group, Circle, KonvaNodeProps } from "react-konva";
 
 import { ContainerConfig } from "konva";
 
-import { NodePinDirection } from "@/services/simulator/types";
+import { AppState } from "@/store";
 
-const PIN_CIRCLE_RADIUS = 6;
+import { NodePinDirection } from "@/services/simulator/types";
+import { selectedPin } from "@/pages/CircuitEditor/ContentViews/CircuitField/selectors";
+import CircuitNode from "@/pages/CircuitEditor/ContentViews/CircuitField/components/CircuitNode";
+
+const PIN_CIRCLE_RADIUS_UNSELECTED = 4;
+const PIN_CIRCLE_RADIUS_SELECTED = 6;
 
 export interface CircuitNodePinProps extends ContainerConfig, KonvaNodeProps {
-  id: string;
+  nodeId: string;
+  pinId: string;
   direction: NodePinDirection;
-  onPinClick?(
+  onPinMouseDown?(
+    direction: NodePinDirection,
+    pin: string,
+    e: KonvaMouseEvent
+  ): void;
+  onPinMouseUp?(
     direction: NodePinDirection,
     pin: string,
     e: KonvaMouseEvent
   ): void;
 }
-export default class CircuitNodePin extends React.Component<
-  CircuitNodePinProps
-> {
-  constructor(props: CircuitNodePinProps) {
+
+function mapStateToProps(state: AppState, props: CircuitNodePinProps) {
+  const selected = selectedPin(state);
+  const { nodeId, pinId, direction } = props;
+  return {
+    isSelected:
+      selected &&
+      selected.nodeId === nodeId &&
+      selected.direction === direction &&
+      selected.pin === pinId
+  };
+}
+type StateProps = ReturnType<typeof mapStateToProps>;
+
+type Props = CircuitNodePinProps & StateProps;
+class CircuitNodePin extends React.Component<Props> {
+  constructor(props: Props) {
     super(props);
 
-    this._onClick = this._onClick.bind(this);
+    this._onMouseDown = this._onMouseDown.bind(this);
+    this._onMouseUp = this._onMouseUp.bind(this);
   }
 
   render() {
-    const { id, direction, onClick, ...groupProps } = this.props;
+    const {
+      // All of our props are pulled out to prevent them
+      //  being included in groupProps
+      nodeId,
+      pinId,
+      direction,
+      isSelected,
+      onClick,
+      ...groupProps
+    } = this.props;
     return (
       <Group {...groupProps}>
         <Circle
           x={0}
           y={0}
-          radius={PIN_CIRCLE_RADIUS}
-          fill="black"
-          onClick={this._onClick}
+          radius={
+            isSelected
+              ? PIN_CIRCLE_RADIUS_SELECTED
+              : PIN_CIRCLE_RADIUS_UNSELECTED
+          }
+          fill={isSelected ? "yellow" : "blue"}
+          onMouseDown={this._onMouseDown}
+          onMouseUp={this._onMouseUp}
         />
       </Group>
     );
   }
 
-  private _onClick(e: KonvaMouseEvent) {
-    const { direction, id, onClick, onPinClick } = this.props;
-    if (onPinClick) {
-      onPinClick(direction, id, e);
+  private _onMouseDown(e: KonvaMouseEvent) {
+    const { direction, pinId, onMouseDown, onPinMouseDown } = this.props;
+    if (onPinMouseDown) {
+      onPinMouseDown(direction, pinId, e);
     }
-    if (onClick) {
-      onClick(e);
+    if (onMouseDown) {
+      onMouseDown(e);
+    }
+  }
+
+  private _onMouseUp(e: KonvaMouseEvent) {
+    const { direction, pinId, onMouseUp, onPinMouseUp } = this.props;
+    if (onPinMouseUp) {
+      onPinMouseUp(direction, pinId, e);
+    }
+    if (onMouseUp) {
+      onMouseUp(e);
     }
   }
 }
+export default connect(mapStateToProps)(CircuitNodePin);
