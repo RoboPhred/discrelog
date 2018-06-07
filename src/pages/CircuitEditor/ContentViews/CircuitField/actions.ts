@@ -1,7 +1,7 @@
 import { Point } from "@/types";
 
 import { DragModeType } from "./types";
-import { NodePinDirection } from "@/services/simulator/types";
+import { NodePinDirection } from "@/services/simulator";
 
 export const ACTION_SELECT_PIN = "@editor/field/select-pin" as "@editor/field/select-pin";
 export const selectPin = (

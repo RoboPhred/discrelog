@@ -2,23 +2,15 @@ import * as React from "react";
 
 import { ContainerConfig } from "konva";
 
-import {
-  Path,
-  Group,
-  Rect,
-  KonvaNodeComponent,
-  KonvaNodeProps
-} from "react-konva";
+import { Path, Group, Rect, KonvaNodeProps } from "react-konva";
 
+import { NodePinDirection } from "@/services/simulator";
 import {
-  NodeVisualDefinition,
-  NodeVisualPath,
   NodeType,
   NodeTypes,
   NodePinDefinition
 } from "@/services/simulator/node-types";
 import { normalizeVisuals } from "@/services/simulator/node-types/utils";
-import { NodePinDirection } from "@/services/simulator/types";
 
 export interface RenderPinProps extends NodePinDefinition {
   id: string;
@@ -61,31 +53,17 @@ class NodeVisual extends React.Component<Props> {
       />
     ));
 
-    const inputs = def.inputs || [];
-    const outputs = def.outputs || [];
-
-    let inputPins: React.ReactNode = null;
-    let outputPins: React.ReactNode = null;
+    let pins: React.ReactNode = null;
 
     if (renderPin) {
-      inputPins = Object.keys(inputs).map(key => {
-        const input = inputs[key];
+      pins = Object.keys(def.pins).map(key => {
+        const pin = def.pins[key];
         let element = renderPin({
-          direction: "input",
+          direction: pin.direction,
           id: key,
-          ...input
+          ...pin
         });
         return React.cloneElement(element, { key: `input-${key}` });
-      });
-
-      outputPins = Object.keys(outputs).map(key => {
-        const output = outputs[key];
-        let element = renderPin({
-          direction: "output",
-          id: key,
-          ...output
-        });
-        return React.cloneElement(element, { key: `output-${key}` });
       });
     }
 
@@ -95,8 +73,7 @@ class NodeVisual extends React.Component<Props> {
           <Path data={hitPath} fill="transparent" onClick={onClick} />
         )}
         {pathElements}
-        {inputPins}
-        {outputPins}
+        {pins}
       </Group>
     );
   }

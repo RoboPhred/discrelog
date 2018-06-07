@@ -4,6 +4,7 @@ import { normalizeRectangle, calcSize, pointSubtract } from "@/geometry";
 import { GetState } from "@/store";
 import { Point } from "@/types";
 
+import { NodePinDirection } from "@/services/simulator";
 import {
   interactNode,
   evolveSim,
@@ -25,7 +26,6 @@ import { selectedNodeIds } from "@/pages/CircuitEditor/selectors";
 import { SelectionMode } from "@/pages/CircuitEditor/types";
 
 import { selectPin, startDrag, continueDrag, endDrag } from "./actions";
-import { NodePinDirection } from "@/services/simulator/types";
 
 export interface ModifierKeys {
   ctrlMetaKey: boolean;

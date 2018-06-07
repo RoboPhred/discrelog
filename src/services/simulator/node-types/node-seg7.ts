@@ -43,44 +43,50 @@ const seg7NodeDefinition: NodeDefinition = {
       createSeg("G", [[1, 9], [2, 8], [8, 8], [9, 9], [8, 10], [2, 10]])
     ]
   },
-  inputs: {
+  pins: {
     A: {
       name: "A",
+      direction: "input",
       x: 0,
       y: 5
     },
     B: {
       name: "B",
+      direction: "input",
       x: 0,
       y: 15
     },
     C: {
       name: "C",
+      direction: "input",
       x: 0,
       y: 25
     },
     D: {
       name: "D",
+      direction: "input",
       x: 0,
       y: 35
     },
     E: {
       name: "E",
+      direction: "input",
       x: 0,
       y: 45
     },
     F: {
       name: "F",
+      direction: "input",
       x: 0,
       y: 55
     },
     G: {
       name: "G",
+      direction: "input",
       x: 0,
       y: 65
     }
   },
-  outputs: {},
   evolve(state, inputs, tick) {
     return {
       state: { ...inputs }

@@ -15,16 +15,16 @@ const bufferNodeDefinition: NodeDefinition = {
       M79 25a4 4 0 1 1-8 0 4 4 0 1 1 8 0z
     `
   },
-  inputs: {
+  pins: {
     IN: {
       name: "IN",
+      direction: "input",
       x: 0,
       y: 25
-    }
-  },
-  outputs: {
+    },
     OUT: {
       name: "OUT",
+      direction: "output",
       x: 100,
       y: 25
     }

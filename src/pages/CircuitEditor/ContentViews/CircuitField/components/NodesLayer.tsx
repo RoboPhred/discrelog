@@ -8,7 +8,7 @@ import { Layer } from "react-konva";
 
 import { AppState } from "@/store";
 
-import { NodePinDirection } from "@/services/simulator/types";
+import { NodePinDirection } from "@/services/simulator";
 
 import { nodePositionsById } from "@/pages/CircuitEditor/selectors";
 

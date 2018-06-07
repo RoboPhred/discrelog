@@ -15,21 +15,22 @@ const norNodeDefinition: NodeDefinition = {
       M79 25a4 4 0 1 1-8 0 4 4 0 1 1 8 0z
     `
   },
-  inputs: {
+  pins: {
     A: {
       name: "A",
+      direction: "input",
       x: 0,
       y: 14.5
     },
     B: {
       name: "B",
+      direction: "input",
       x: 0,
       y: 35
-    }
-  },
-  outputs: {
+    },
     OUT: {
       name: "OUT",
+      direction: "output",
       x: 100,
       y: 25
     }

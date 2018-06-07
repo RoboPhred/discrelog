@@ -7,9 +7,8 @@ import { ContainerConfig } from "konva";
 
 import { AppState } from "@/store";
 
-import { NodePinDirection } from "@/services/simulator/types";
+import { NodePinDirection } from "@/services/simulator";
 import { selectedPin } from "@/pages/CircuitEditor/ContentViews/CircuitField/selectors";
-import CircuitNode from "@/pages/CircuitEditor/ContentViews/CircuitField/components/CircuitNode";
 
 const PIN_CIRCLE_RADIUS_UNSELECTED = 4;
 const PIN_CIRCLE_RADIUS_SELECTED = 6;

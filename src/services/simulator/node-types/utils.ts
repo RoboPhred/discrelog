@@ -1,4 +1,8 @@
-import { NodeVisualPath } from "./types";
+import { pickBy } from "lodash-es";
+
+import { IDMap } from "@/types";
+
+import { NodeVisualPath, NodeDefinition, NodePinDefinition } from "./types";
 
 export function normalizeVisuals(
   v: NodeVisualPath | NodeVisualPath[],
@@ -29,4 +33,16 @@ export function normalizeVisuals(
       strokeWidth
     };
   });
+}
+
+export function inputsOf(def: NodeDefinition): IDMap<NodePinDefinition> {
+  return pickBy(def.pins, value => value.direction === "input") as IDMap<
+    NodePinDefinition
+  >;
+}
+
+export function outputsOf(def: NodeDefinition): IDMap<NodePinDefinition> {
+  return pickBy(def.pins, value => value.direction === "output") as IDMap<
+    NodePinDefinition
+  >;
 }

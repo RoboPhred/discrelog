@@ -15,10 +15,10 @@ const toggleSwitchNodeDefinition: NodeDefinition = {
       fill: (state: ToggleState) => (state.toggleState ? "green" : "red")
     }
   },
-  inputs: {},
-  outputs: {
+  pins: {
     OUT: {
       name: "OUT",
+      direction: "output",
       x: 25,
       y: 25
     }

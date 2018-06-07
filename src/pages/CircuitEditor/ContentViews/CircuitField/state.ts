@@ -1,7 +1,7 @@
 import { Point } from "@/types";
 
 import { DragModeType } from "./types";
-import { NodePin, NodePinDirection } from "@/services/simulator/types";
+import { NodePin, NodePinDirection } from "@/services/simulator";
 
 export interface SelectedPinState extends NodePin {
   direction: NodePinDirection;

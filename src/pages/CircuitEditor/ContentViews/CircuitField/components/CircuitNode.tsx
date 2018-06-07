@@ -7,9 +7,9 @@ import { KonvaNodeProps, Group, Rect } from "react-konva";
 
 import { AppState } from "@/store";
 
+import { NodePinDirection } from "@/services/simulator";
 import { NodeType } from "@/services/simulator/node-types";
 import { nodeTypesById, nodeStatesById } from "@/services/simulator/selectors";
-import { NodePinDirection } from "@/services/simulator/types";
 
 import { selectedNodeIds } from "@/pages/CircuitEditor/selectors";
 import NodeVisual, {

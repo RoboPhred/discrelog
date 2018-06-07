@@ -1,9 +1,12 @@
 import { IDMap } from "@/types";
 
-import { PinValueMap, TransitionWindow } from "../types";
+import { PinValueMap } from "../types";
+
+export type NodePinDirection = "input" | "output";
 
 export interface NodePinDefinition {
   name: string;
+  direction: NodePinDirection;
   x: number;
   y: number;
 }
@@ -56,8 +59,7 @@ export interface NodeDefinition {
   //  of the service?
   visual: NodeVisualDefinition;
 
-  inputs: IDMap<NodePinDefinition>;
-  outputs: IDMap<NodePinDefinition>;
+  pins: IDMap<NodePinDefinition>;
 
   interact?: NodeInteractFunction;
   evolve?: NodeEvolverFunction;

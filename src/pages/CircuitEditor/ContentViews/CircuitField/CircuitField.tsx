@@ -4,10 +4,14 @@ import { connect } from "react-redux";
 
 import { Stage } from "react-konva";
 import sizeme, { SizeProps } from "react-sizeme";
-import { HotKeys, FocusTrap } from "react-hotkeys";
+import { HotKeys } from "react-hotkeys";
+
+import { keyboardIsMac } from "@/runtime-env";
 
 import { Point } from "@/types";
 import { bindFuncMap } from "@/utils";
+
+import { NodePinDirection } from "@/services/simulator";
 
 import keymap, {
   KeymapHandler,
@@ -25,8 +29,6 @@ import WiresLayer from "./components/WiresLayer";
 import NodesLayer from "./components/NodesLayer";
 
 import * as events from "./events";
-import { keyboardIsMac } from "@/runtime-env";
-import { NodePinDirection } from "@/services/simulator/types";
 
 export interface CircuitFieldProps {
   className?: string;

@@ -15,21 +15,22 @@ const andNodeDefinition: NodeDefinition = {
       m2.857143 2.857143H50.47619c9.760663 0 16.666667 7.639955 16.666667 17.142857 0 9.502902-7.382195 17.142857-17.142857 17.142857H32.857143V7.857143z
     `
   },
-  inputs: {
+  pins: {
     A: {
       name: "A",
+      direction: "input",
       x: 0,
       y: 14.5
     },
     B: {
       name: "B",
+      direction: "input",
       x: 0,
       y: 35
-    }
-  },
-  outputs: {
+    },
     OUT: {
       name: "OUT",
+      direction: "output",
       x: 100,
       y: 25
     }

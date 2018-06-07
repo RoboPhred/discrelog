@@ -17,14 +17,14 @@ const ledNodeDefinition: NodeDefinition = {
       }
     ]
   },
-  inputs: {
+  pins: {
     IN: {
       name: "IN",
+      direction: "input",
       x: 0,
       y: 25
     }
   },
-  outputs: {},
   evolve(state, inputs, tick) {
     return {
       state: {

@@ -24,22 +24,25 @@ function mapStateToProps(state: AppState, props: WireProps) {
   } = props;
 
   const sourceDef = nodeDefsById(state)[sourceNodeId];
-  const targetDef = nodeDefsById(state)[targetNodeId];
   let sourceOffset = ZeroPoint;
-  let targetOffset = ZeroPoint;
   let value = false;
+
   if (sourceDef) {
-    if (sourceDef.outputs[sourcePin]) {
-      sourceOffset = sourceDef.outputs[sourcePin];
+    if (sourceDef.pins[sourcePin]) {
+      sourceOffset = sourceDef.pins[sourcePin];
     }
     value =
       state.services.simulator.nodeOutputValuesByNodeId[sourceNodeId][
         sourcePin
       ];
   }
-  if (targetDef && targetDef.inputs[targetPin]) {
-    targetOffset = targetDef.inputs[targetPin];
+
+  const targetDef = nodeDefsById(state)[targetNodeId];
+  let targetOffset = ZeroPoint;
+  if (targetDef && targetDef.pins[targetPin]) {
+    targetOffset = targetDef.pins[targetPin];
   }
+
   return {
     start: pointAdd(
       nodePositionsById(state)[sourceNodeId] || ZeroPoint,
