@@ -73,7 +73,8 @@ The UI renderer is React, with Redux providing the backing store.
 ## License
 
 This project is licenced under AGPL-3.0.
-The SVG paths that make up some node types are public domain and sourced from wikimedia commons. These have been called out where used.
+
+Some logic symbol artwork has been provided by wikimedia commons under the public domain license.  These have been called out where used.
 
 ## Alternatives
 
