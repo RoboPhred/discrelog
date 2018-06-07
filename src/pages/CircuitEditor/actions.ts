@@ -1,5 +1,3 @@
-import { Action } from "redux";
-
 import { Dispatch } from "react-redux";
 
 import uuidV4 from "uuid/v4";
@@ -7,13 +5,33 @@ import { values, zipObject, map } from "lodash-es";
 
 import { Rectangle } from "@/types";
 import { GetState } from "@/store";
-import { typedKeys } from "@/utils";
 
-import { addNode, wireNode } from "@/services/simulator/actions";
+import {
+  addNode as simulatorAddNode,
+  wireNode
+} from "@/services/simulator/actions";
 
-import { selectedNodeIds } from "./selectors";
+import { NodeType } from "@/services/simulator/node-types";
+import { SelectionMode } from "@/pages/CircuitEditor/types";
 
-export type SelectionMode = "set" | "append" | "remove" | "toggle";
+export { ACTION_NODE_ADD } from "@/services/simulator/actions";
+export const addNode = (
+  nodeType: NodeType,
+  x: number,
+  y: number,
+  nodeId?: string
+) => {
+  const simAddNode = simulatorAddNode(nodeType, nodeId);
+  return {
+    ...simAddNode,
+    payload: {
+      ...simAddNode.payload,
+      x,
+      y
+    }
+  };
+};
+export type AddNodeAction = ReturnType<typeof addNode>;
 
 export const ACTION_NODE_HOVER = "@editor/node/hover" as "@editor/node/hover";
 export const hoverNode = (nodeId: string | null) => ({
@@ -74,7 +92,7 @@ export const paste = () => (dispatch: Dispatch, getState: GetState) => {
   for (let node of clipboardNodes) {
     const { id, outputs } = node;
     const sourceId = pasteIds[id];
-    for (let outputPin of typedKeys(outputs)) {
+    for (let outputPin of Object.keys(outputs)) {
       for (let output of outputs[outputPin]) {
         const { nodeId: targetCopyId, pin: targetPin } = output;
         const targetId = pasteIds[targetCopyId];
@@ -120,6 +138,7 @@ export const clearSelection = () => ({
 export type ClearSelectionAction = ReturnType<typeof clearSelection>;
 
 export type CircuitEditorAction =
+  | AddNodeAction
   | HoverNodeAction
   | MoveNodesAction
   | CopyNodesAction

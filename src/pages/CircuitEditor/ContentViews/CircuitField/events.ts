@@ -15,13 +15,13 @@ import {
   clearSelection,
   hoverNode,
   selectNodes,
-  SelectionMode,
   selectRegion,
   moveNodes,
   copyNodes,
   paste
 } from "@/pages/CircuitEditor/actions";
 import { selectedNodeIds } from "@/pages/CircuitEditor/selectors";
+import { SelectionMode } from "@/pages/CircuitEditor/types";
 
 import { startDrag, continueDrag, endDrag } from "./actions";
 
@@ -58,7 +58,7 @@ export function onNodeDragStart(
       const mode = getSelectMode(modifiers);
       dispatch(selectNodes(nodeId, mode));
     }
-    dispatch(startDrag(p, "move"));
+    dispatch(startDrag(p, "move-node"));
   };
 }
 
@@ -88,7 +88,7 @@ export function onDragEnd(p: Point, modifiers: ModifierKeys) {
           dispatch(selectRegion(rect, mode));
           break;
         }
-        case "move": {
+        case "move-node": {
           const moveBy = pointSubtract(dragEnd, dragStart);
           dispatch(moveNodes(selectedNodeIds, moveBy.x, moveBy.y));
           break;

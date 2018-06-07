@@ -3,13 +3,13 @@ import produce from "immer";
 import { AppState } from "@/store";
 
 import {
-  SimulatorAction,
-  ACTION_NODE_ADD,
-  ACTION_NODE_DELETE
+  ACTION_NODE_DELETE,
+  DeleteNodeAction
 } from "@/services/simulator/actions";
 
 import {
   CircuitEditorAction,
+  ACTION_NODE_ADD,
   ACTION_NODE_HOVER,
   ACTION_NODE_MOVE,
   ACTION_COPY_NODES,
@@ -33,7 +33,7 @@ import { AnyAction } from "redux";
 
 export default function circuitEditorReducer(
   state: CircuitEditorState = defaultCircuitEditorState,
-  action: CircuitEditorAction | SimulatorAction,
+  action: CircuitEditorAction | DeleteNodeAction,
   appState: AppState
 ): CircuitEditorState {
   const newCircuitFieldState = circuitFieldReducer(

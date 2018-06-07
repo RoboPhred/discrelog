@@ -1,6 +1,6 @@
 import produce from "immer";
 
-import { AddNodeAction } from "@/services/simulator/actions";
+import { AddNodeAction } from "../actions";
 
 import { CircuitEditorState } from "../state";
 

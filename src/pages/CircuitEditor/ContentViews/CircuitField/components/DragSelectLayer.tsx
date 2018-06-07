@@ -1,5 +1,5 @@
 import * as React from "react";
-import { connect, MapStateToProps } from "react-redux";
+import { connect } from "react-redux";
 
 import { FastLayer, Rect } from "react-konva";
 

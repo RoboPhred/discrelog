@@ -1,7 +1,9 @@
-import { Point, IDMap } from "@/types";
+import { Point } from "@/types";
+
+import { DragModeType } from "./types";
 
 export interface CircuitFieldState {
-  dragMode: null | "move" | "select";
+  dragMode: DragModeType | null;
   dragStart: Point | null;
   dragEnd: Point | null;
 }

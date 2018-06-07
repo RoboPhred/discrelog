@@ -7,17 +7,16 @@ import { KonvaNodeProps, Group, Rect } from "react-konva";
 
 import { AppState } from "@/store";
 
-import { NodeDefinition, NodeType } from "@/services/simulator/node-types";
+import { NodeType } from "@/services/simulator/node-types";
 import { nodeTypesById, nodeStatesById } from "@/services/simulator/selectors";
-import { Node, NodePinDirection } from "@/services/simulator/types";
+import { NodePinDirection } from "@/services/simulator/types";
 
 import { selectedNodeIds } from "@/pages/CircuitEditor/selectors";
 import NodeVisual, {
   RenderPinProps
 } from "@/pages/CircuitEditor/components/NodeVisual";
 
-import NodePin from "./NodePin";
-import { ClipPathProperty } from "csstype";
+import CircuitNodePin from "./CircuitNodePin";
 
 export interface CircuitNodeProps extends ContainerConfig, KonvaNodeProps {
   nodeId: string;
@@ -84,30 +83,3 @@ class CircuitNode extends React.Component<Props> {
   }
 }
 export default connect(mapStateToProps)(CircuitNode);
-
-type CircuitNodePinProps = RenderPinProps & {
-  onPinClick?(
-    direction: NodePinDirection,
-    pin: string,
-    e: KonvaMouseEvent
-  ): void;
-};
-class CircuitNodePin extends React.Component<CircuitNodePinProps> {
-  constructor(props: CircuitNodePinProps) {
-    super(props);
-
-    this._onClick = this._onClick.bind(this);
-  }
-
-  render() {
-    const { x, y } = this.props;
-    return <NodePin x={x} y={y} onClick={this._onClick} />;
-  }
-
-  private _onClick(e: KonvaMouseEvent) {
-    const { direction, id, onPinClick } = this.props;
-    if (onPinClick) {
-      onPinClick(direction, id, e);
-    }
-  }
-}
