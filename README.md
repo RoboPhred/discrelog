@@ -17,7 +17,7 @@ Click an element to select it. Click-drag an element to move it, and click-drag 
 
 Selected elements appear with a small yellow square in the top left.
 
-Connect components by clicking an output pin, then clicking an input pin. Only output-to-input clicks work, and an output must be re-clicked when connecting multiple inputs to an output.
+Click on pins to select them. While a pin is selected, click on other pins to connect them. Output pins can only connect to input pins, and that input pins can only have one connection. Output pins can connect to more than one input pin.
 
 ### Controls:
 

@@ -1,4 +1,4 @@
-import { Point, Size, IDMap } from "@/types";
+import { Point, IDMap } from "@/types";
 
 import {
   CircuitFieldState,

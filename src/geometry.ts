@@ -1,5 +1,7 @@
 import { Point, Size, Rectangle } from "@/types";
 
+export const ZeroPoint = Object.freeze({ x: 0, y: 0 });
+
 export function normalizeRectangle(p1: Point, p2: Point): Rectangle;
 export function normalizeRectangle(r: Rectangle): Rectangle;
 export function normalizeRectangle(...args: any[]): Rectangle {
@@ -24,6 +26,12 @@ export function normalizeRectangle(...args: any[]): Rectangle {
   };
 }
 
+export function pointAdd(p1: Point, p2: Point): Point {
+  return {
+    x: p1.x + p2.x,
+    y: p1.y + p2.y
+  };
+}
 export function pointSubtract(p1: Point, p2: Point): Point {
   return {
     x: p1.x - p2.x,

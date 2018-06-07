@@ -2,8 +2,6 @@ import * as React from "react";
 
 import styled from "styled-components";
 
-import Hotkeys from "react-hotkeys";
-
 import EditorLayout, { ToolWindow } from "@/components/EditorLayout";
 
 import CircuitTray from "./ToolWindows/CircuitTray";

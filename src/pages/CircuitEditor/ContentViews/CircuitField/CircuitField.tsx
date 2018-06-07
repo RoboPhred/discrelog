@@ -26,6 +26,7 @@ import NodesLayer from "./components/NodesLayer";
 
 import * as events from "./events";
 import { keyboardIsMac } from "@/runtime-env";
+import { NodePinDirection } from "@/services/simulator/types";
 
 export interface CircuitFieldProps {
   className?: string;
@@ -41,8 +42,8 @@ class CircuitField extends React.Component<Props> {
   // Instance props as we do not require a re-render when these change.
   private _isDragging: boolean = false;
   private _mouseDownNodeId: string | null = null;
+  private _mouseDownPinId: string | null = null;
   private _startMousePos: Point | null = null;
-  private _lastMousePos: Point | null = null;
 
   private _hotkeysRef = React.createRef<HTMLDivElement>();
 
@@ -52,6 +53,8 @@ class CircuitField extends React.Component<Props> {
     this._onNodeMouseDown = this._onNodeMouseDown.bind(this);
     this._onNodeMouseOver = this._onNodeMouseOver.bind(this);
     this._onNodeMouseLeave = this._onNodeMouseLeave.bind(this);
+    this._onNodePinMouseDown = this._onNodePinMouseDown.bind(this);
+    this._onNodePinMouseUp = this._onNodePinMouseUp.bind(this);
 
     this._onMouseDown = this._onMouseDown.bind(this);
     this._onMouseMove = this._onMouseMove.bind(this);
@@ -84,6 +87,8 @@ class CircuitField extends React.Component<Props> {
                 onNodeMouseDown={this._onNodeMouseDown}
                 onNodeMouseOver={this._onNodeMouseOver}
                 onNodeMouseLeave={this._onNodeMouseLeave}
+                onNodePinMouseDown={this._onNodePinMouseDown}
+                onNodePinMouseUp={this._onNodePinMouseUp}
               />
             </Stage>
           </div>
@@ -118,6 +123,46 @@ class CircuitField extends React.Component<Props> {
     }
 
     this._mouseDownNodeId = nodeId;
+  }
+
+  private _onNodePinMouseDown(
+    nodeId: string,
+    pinDirection: NodePinDirection,
+    pinId: string,
+    e: KonvaMouseEvent
+  ) {
+    if (e.evt.defaultPrevented) {
+      return;
+    }
+    this._mouseDownNodeId = nodeId;
+    this._mouseDownPinId = pinId;
+    e.evt.preventDefault();
+  }
+
+  private _onNodePinMouseUp(
+    nodeId: string,
+    pinDirection: NodePinDirection,
+    pinId: string,
+    e: KonvaMouseEvent
+  ) {
+    if (this._isDragging) {
+      return;
+    }
+
+    if (e.evt.defaultPrevented) {
+      this._resetMouseTracking();
+      return;
+    }
+
+    if (this._mouseDownNodeId !== nodeId || this._mouseDownPinId !== pinId) {
+      this._resetMouseTracking();
+      return;
+    }
+
+    const { onNodePinClicked } = this.props;
+    onNodePinClicked(nodeId, pinDirection, pinId);
+    this._resetMouseTracking();
+    e.evt.preventDefault();
   }
 
   private _onMouseDown(e: KonvaMouseEvent) {
@@ -199,8 +244,8 @@ class CircuitField extends React.Component<Props> {
   private _resetMouseTracking() {
     this._isDragging = false;
     this._mouseDownNodeId = null;
+    this._mouseDownPinId = null;
     this._startMousePos = null;
-    this._lastMousePos = null;
   }
 }
 

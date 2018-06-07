@@ -7,21 +7,25 @@ import { KonvaNodeProps, Group, Rect } from "react-konva";
 
 import { AppState } from "@/store";
 
-import { NodeDefinition, NodeType } from "@/services/simulator/node-types";
+import { NodeType } from "@/services/simulator/node-types";
 import { nodeTypesById, nodeStatesById } from "@/services/simulator/selectors";
-import { Node, NodePinDirection } from "@/services/simulator/types";
+import { NodePinDirection } from "@/services/simulator/types";
 
 import { selectedNodeIds } from "@/pages/CircuitEditor/selectors";
 import NodeVisual, {
   RenderPinProps
 } from "@/pages/CircuitEditor/components/NodeVisual";
 
-import NodePin from "./NodePin";
-import { ClipPathProperty } from "csstype";
+import CircuitNodePin from "./CircuitNodePin";
 
 export interface CircuitNodeProps extends ContainerConfig, KonvaNodeProps {
   nodeId: string;
-  onPinClick(
+  onPinMouseDown?(
+    direction: NodePinDirection,
+    pin: string,
+    e: KonvaMouseEvent
+  ): void;
+  onPinMouseUp?(
     direction: NodePinDirection,
     pin: string,
     e: KonvaMouseEvent
@@ -51,12 +55,14 @@ class CircuitNode extends React.Component<Props> {
 
   render() {
     const {
+      // Pull out all of our props to avoid passing them to group.
       nodeId,
       nodeType,
       nodeState,
       isSelected,
       onClick,
-      onPinClick,
+      onPinMouseDown,
+      onPinMouseUp,
       ...groupProps
     } = this.props;
 
@@ -74,40 +80,17 @@ class CircuitNode extends React.Component<Props> {
   }
 
   private _renderPin(props: RenderPinProps): React.ReactElement<any> {
+    const { onPinMouseDown, onPinMouseUp } = this.props;
     return (
       <CircuitNodePin
         key={props.id}
-        onPinClick={this.props.onPinClick}
+        nodeId={this.props.nodeId}
+        pinId={props.id}
+        onPinMouseDown={onPinMouseDown}
+        onPinMouseUp={onPinMouseUp}
         {...props}
       />
     );
   }
 }
 export default connect(mapStateToProps)(CircuitNode);
-
-type CircuitNodePinProps = RenderPinProps & {
-  onPinClick?(
-    direction: NodePinDirection,
-    pin: string,
-    e: KonvaMouseEvent
-  ): void;
-};
-class CircuitNodePin extends React.Component<CircuitNodePinProps> {
-  constructor(props: CircuitNodePinProps) {
-    super(props);
-
-    this._onClick = this._onClick.bind(this);
-  }
-
-  render() {
-    const { x, y } = this.props;
-    return <NodePin x={x} y={y} onClick={this._onClick} />;
-  }
-
-  private _onClick(e: KonvaMouseEvent) {
-    const { direction, id, onPinClick } = this.props;
-    if (onPinClick) {
-      onPinClick(direction, id, e);
-    }
-  }
-}
