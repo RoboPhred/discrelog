@@ -1,6 +1,6 @@
 {
   "name": "discrelog",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Logic simulator in React",
   "main": "dist/index.jsx",
   "scripts": {
