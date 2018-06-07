@@ -5,13 +5,11 @@ import { pick, mapValues, values } from "lodash-es";
 
 import { createStructuredSelector, createSelector } from "reselect";
 
-import { Layer, Group } from "react-konva";
+import { Layer } from "react-konva";
 
 import { AppState } from "@/store";
-import { IDMap, Point } from "@/types";
 
 import { nodeTypesById, nodeStatesById } from "@/services/simulator/selectors";
-import { NodeType } from "@/services/simulator/node-types";
 
 import {
   selectedNodeIds,
@@ -41,20 +39,16 @@ const selectedNodeStatesById = createSelector(
   (selectedNodeIds, nodeStatesById) => pick(nodeStatesById, selectedNodeIds)
 );
 
-// TODO: Pretty sure we can just pass an object in with these.
-//  react-redux was not accepting it though, need to figure out why.
-const mapStateToProps = createStructuredSelector<AppState, StateProps>({
+const stateSelectors = {
   selectedNodePositionsById,
   selectedNodeTypesById,
   selectedNodeStatesById,
   dragMoveOffset
-});
-interface StateProps {
-  selectedNodePositionsById: IDMap<Point>;
-  selectedNodeTypesById: IDMap<NodeType>;
-  selectedNodeStatesById: IDMap<any>;
-  dragMoveOffset: Point | null;
-}
+};
+type StateProps = ObjectValueReturnTypes<typeof stateSelectors>;
+const mapStateToProps = createStructuredSelector<AppState, StateProps>(
+  stateSelectors
+);
 
 type Props = StateProps;
 class DragPreviewLayer extends React.Component<Props> {

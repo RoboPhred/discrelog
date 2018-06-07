@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { ContainerConfig } from "konva";
-import { Layer, KonvaNodeProps } from "react-konva";
+import { Layer } from "react-konva";
 
 import { toggleWireNode } from "@/services/simulator/actions";
 import { NodePinDirection } from "@/services/simulator/types";
@@ -22,13 +22,13 @@ export interface NodesLayerProps {
   onNodeMouseLeave?(node: string, e: KonvaMouseEvent): void;
 }
 
-interface StateProps {
-  nodePositionsById: ReturnType<typeof nodePositionsById>;
-}
-
-const mapStateToProps = createStructuredSelector<AppState, StateProps>({
+const stateSelectors = {
   nodePositionsById
-});
+};
+type StateProps = ObjectValueReturnTypes<typeof stateSelectors>;
+const mapStateToProps = createStructuredSelector<AppState, StateProps>(
+  stateSelectors
+);
 
 const mapDispatchToProps = {
   toggleWireNode
@@ -131,6 +131,7 @@ class BoundCicrcuitNode extends React.Component<BoundCicrcuitNodeProps> {
     this._onMouseLeave = this._onMouseLeave.bind(this);
     this._onPinClick = this._onPinClick.bind(this);
   }
+
   render() {
     const {
       onMouseDown,
