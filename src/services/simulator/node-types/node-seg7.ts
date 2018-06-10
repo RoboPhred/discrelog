@@ -24,7 +24,7 @@ function createSeg(
   path += "z";
   return {
     path,
-    fill: state => (state[name] ? "red" : "blue")
+    fill: state => (state[name] ? "red" : "gray")
   };
 }
 
