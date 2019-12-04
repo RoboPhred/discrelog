@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { ContainerConfig } from "konva";
 
-import { Path, Group, Rect, KonvaNodeProps } from "react-konva";
+import { Path, Group, Rect } from "react-konva";
 
 import { NodePinDirection } from "@/services/simulator";
 import {
@@ -16,7 +16,7 @@ export interface RenderPinProps extends NodePinDefinition {
   id: string;
   direction: NodePinDirection;
 }
-export interface NodeVisualProps extends ContainerConfig, KonvaNodeProps {
+export interface NodeVisualProps extends ContainerConfig {
   nodeType: NodeType;
   nodeState: any;
   renderPin?(props: RenderPinProps): React.ReactElement<any>;

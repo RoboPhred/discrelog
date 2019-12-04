@@ -3,7 +3,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 
 import { ContainerConfig } from "konva";
-import { KonvaNodeProps, Group, Rect } from "react-konva";
+import { Group, Rect } from "react-konva";
 
 import { AppState } from "@/store";
 
@@ -18,8 +18,13 @@ import NodeVisual, {
 
 import CircuitNodePin from "./CircuitNodePin";
 
-export interface CircuitNodeProps extends ContainerConfig, KonvaNodeProps {
+export interface CircuitNodeProps extends ContainerConfig {
   nodeId: string;
+  onClick?(e: KonvaMouseEvent): void;
+  onMouseDown?(e: KonvaMouseEvent): void;
+  onMouseOver?(e: KonvaMouseEvent): void;
+  onMouseUp?(e: KonvaMouseEvent): void;
+  onMouseLeave?(e: KonvaMouseEvent): void;
   onPinMouseDown?(
     direction: NodePinDirection,
     pin: string,

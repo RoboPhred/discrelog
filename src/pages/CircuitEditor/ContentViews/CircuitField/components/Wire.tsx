@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { Line, Circle, Group } from "react-konva";
+import { Line, Group } from "react-konva";
 
 import { ZeroPoint, pointAdd } from "@/geometry";
 import { AppState } from "@/store";
@@ -33,7 +33,7 @@ function mapStateToProps(state: AppState, props: WireProps) {
     }
     value =
       state.services.simulator.nodeOutputValuesByNodeId[sourceNodeId][
-        sourcePin
+      sourcePin
       ];
   }
 
@@ -58,55 +58,23 @@ function mapStateToProps(state: AppState, props: WireProps) {
 type StateProps = ReturnType<typeof mapStateToProps>;
 
 type Props = StateProps & WireProps;
-interface State {
-  testPoint: Point | null;
-}
-class Wire extends React.Component<Props, State> {
+class Wire extends React.Component<Props> {
   constructor(props: Props) {
     super(props);
 
     this.state = {
       testPoint: null
     };
-
-    this._onTestMouseMove = this._onTestMouseMove.bind(this);
-    this._onTestMouseLeave = this._onTestMouseLeave.bind(this);
   }
 
   render() {
     const { start, end, value } = this.props;
-    const { testPoint } = this.state;
     const points = getWirePoints(start, end);
     return (
       <Group>
         <Line points={points} stroke={value ? "green" : "black"} />
-        {/* {testPoint && (
-          <Circle x={testPoint.x} y={testPoint.y} radius={4} fill="yellow" />
-        )}
-        <Line
-          points={points}
-          stroke="transparent"
-          strokeWidth={5}
-          onMouseMove={this._onTestMouseMove}
-          onMouseLeave={this._onTestMouseLeave}
-        /> */}
       </Group>
     );
-  }
-
-  private _onTestMouseMove(e: KonvaMouseEvent) {
-    this.setState({
-      testPoint: {
-        x: e.evt.layerX,
-        y: e.evt.layerY
-      }
-    });
-  }
-
-  private _onTestMouseLeave() {
-    this.setState({
-      testPoint: null
-    });
   }
 }
 export default connect(mapStateToProps)(Wire);

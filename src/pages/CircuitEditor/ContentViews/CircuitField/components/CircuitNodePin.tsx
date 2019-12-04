@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { Group, Circle, KonvaNodeProps } from "react-konva";
+import { Group, Circle } from "react-konva";
 
 import { ContainerConfig } from "konva";
 
@@ -13,7 +13,7 @@ import { selectedPin } from "@/pages/CircuitEditor/ContentViews/CircuitField/sel
 const PIN_CIRCLE_RADIUS_UNSELECTED = 4;
 const PIN_CIRCLE_RADIUS_SELECTED = 6;
 
-export interface CircuitNodePinProps extends ContainerConfig, KonvaNodeProps {
+export interface CircuitNodePinProps extends ContainerConfig {
   nodeId: string;
   pinId: string;
   direction: NodePinDirection;
@@ -27,6 +27,9 @@ export interface CircuitNodePinProps extends ContainerConfig, KonvaNodeProps {
     pin: string,
     e: KonvaMouseEvent
   ): void;
+  onClick?(e: KonvaMouseEvent): void;
+  onMouseDown?(e: KonvaMouseEvent): void;
+  onMouseUp?(e: KonvaMouseEvent): void;
 }
 
 function mapStateToProps(state: AppState, props: CircuitNodePinProps) {

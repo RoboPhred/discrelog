@@ -8,27 +8,20 @@ export interface ResizeHandleProps {
   onResize(delta: number): void;
 }
 
-type Props = ResizeHandleProps;
-class ResizeHandle extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
+const ResizeHandle: React.FC<ResizeHandleProps> = ({ onResize }) => {
+  const onDrag = React.useCallback(
+    (_: any, d: DraggableData) => {
+      onResize(d.deltaX);
+    },
+    [onResize]
+  );
 
-    this._onDrag = this._onDrag.bind(this);
-  }
-
-  render() {
-    return (
-      <DraggableCore onDrag={this._onDrag}>
-        <DragHandleDiv />
-      </DraggableCore>
-    );
-  }
-
-  private _onDrag(e: MouseEvent, d: DraggableData) {
-    const { onResize } = this.props;
-    onResize(d.deltaX);
-  }
-}
+  return (
+    <DraggableCore onDrag={onDrag}>
+      <DragHandleDiv />
+    </DraggableCore>
+  );
+};
 export default ResizeHandle;
 
 const DragHandleDiv = styled.div`

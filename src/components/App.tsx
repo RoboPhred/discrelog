@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import { hot } from "react-hot-loader";
-
 import { isDev } from "@/env";
 
 import CircuitEditor from "@/pages/CircuitEditor";
@@ -36,4 +34,4 @@ class App extends React.Component<Props, State> {
   }
 }
 
-export default hot(module)(App);
+export default App;

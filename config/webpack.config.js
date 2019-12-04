@@ -21,7 +21,6 @@ module.exports = {
 
   devServer: {
     contentBase: PATHS.dist,
-    hot: true
   },
 
   entry: {
@@ -59,20 +58,11 @@ module.exports = {
         loader: "source-map-loader"
       },
 
-      //  Run typescript through react-hot-loader to rewrite react components for hot loading.
+      // Enable TS file support
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: [
-          {
-            loader: "babel-loader",
-            options: {
-              babelrc: false,
-              plugins: ["react-hot-loader/babel"]
-            }
-          },
-          "ts-loader"
-        ]
+        loader: "ts-loader",
       },
 
       // css support.
@@ -107,9 +97,9 @@ module.exports = {
     }),
 
     isProd &&
-      new UglifyJsWebpackPlugin({
-        sourceMap: true
-      })
+    new UglifyJsWebpackPlugin({
+      sourceMap: true
+    })
   ].filter(truthy),
 
   optimization: {

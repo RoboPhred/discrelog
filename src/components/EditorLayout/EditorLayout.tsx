@@ -13,57 +13,36 @@ export interface EditorPanelProps {
   defaultLeftSidebarWidth?: number;
   defaultRightSidebarWidth?: number;
 }
-type Props = EditorPanelProps;
-interface State {
-  leftSidebarSize: number;
-  rightSidebarSize: number;
+
+const EditorLayout: React.FC<EditorPanelProps> = ({ className, defaultLeftSidebarWidth, defaultRightSidebarWidth, leftSidebar, rightSidebar, children }) => {
+  const [leftSidebarSize, setLeftSidebarSize] = React.useState(defaultLeftSidebarWidth || 100);
+  const [rightSidebarSize, setRightSidebarSize] = React.useState(defaultRightSidebarWidth || 100);
+
+  const onLeftSidebarResize = React.useCallback((delta: number) => {
+    setLeftSidebarSize(leftSidebarSize + delta)
+  }, [leftSidebarSize]);
+
+  const onRightSidebarResize = React.useCallback((delta: number) => {
+    setRightSidebarSize(rightSidebarSize + delta)
+  }, [rightSidebarSize]);
+
+  return (
+    <LayoutContainer className={className}>
+      {leftSidebar && (
+        <React.Fragment>
+          <SidebarPanel width={leftSidebarSize}>{leftSidebar}</SidebarPanel>
+          <ResizeHandle onResize={onLeftSidebarResize} />
+        </React.Fragment>
+      )}
+      <ContentPanel>{children}</ContentPanel>
+      {rightSidebar && (
+        <React.Fragment>
+          <ResizeHandle onResize={onRightSidebarResize} />
+          <SidebarPanel width={rightSidebarSize}>{rightSidebar}</SidebarPanel>
+        </React.Fragment>
+      )}
+    </LayoutContainer>
+  );
 }
-class EditorLayout extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
 
-    this.state = {
-      leftSidebarSize: props.defaultLeftSidebarWidth || 100,
-      rightSidebarSize: props.defaultRightSidebarWidth || 100
-    };
-
-    this._leftSidebarResize = this._leftSidebarResize.bind(this);
-    this._rightSidebarResize = this._rightSidebarResize.bind(this);
-  }
-
-  render() {
-    const { leftSidebar, rightSidebar, children } = this.props;
-    const { leftSidebarSize, rightSidebarSize } = this.state;
-
-    return (
-      <LayoutContainer className={this.props.className}>
-        {leftSidebar && (
-          <React.Fragment>
-            <SidebarPanel width={leftSidebarSize}>{leftSidebar}</SidebarPanel>
-            <ResizeHandle onResize={this._leftSidebarResize} />
-          </React.Fragment>
-        )}
-        <ContentPanel>{children}</ContentPanel>
-        {rightSidebar && (
-          <React.Fragment>
-            <ResizeHandle onResize={this._rightSidebarResize} />
-            <SidebarPanel width={rightSidebarSize}>{rightSidebar}</SidebarPanel>
-          </React.Fragment>
-        )}
-      </LayoutContainer>
-    );
-  }
-
-  private _leftSidebarResize(delta: number) {
-    this.setState(s => ({
-      leftSidebarSize: s.leftSidebarSize + delta
-    }));
-  }
-
-  private _rightSidebarResize(delta: number) {
-    this.setState(s => ({
-      rightSidebarSize: s.rightSidebarSize - delta
-    }));
-  }
-}
 export default EditorLayout;

@@ -4,7 +4,7 @@ export interface SidebarPanelProps {
   width?: number;
   height?: number;
 }
-const SidebarPanel = styled<SidebarPanelProps, any>("div")`
+const SidebarPanel = styled("div") <SidebarPanelProps>`
   flex: none;
   display: flex;
   flex-direction: column;
