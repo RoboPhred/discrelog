@@ -1,4 +1,5 @@
-import { union, difference } from "lodash-es";
+import union from "lodash/union";
+import difference from "lodash/difference";
 
 import { SelectionMode } from "../types";
 

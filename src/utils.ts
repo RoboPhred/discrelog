@@ -1,4 +1,4 @@
-import { mapValues } from "lodash-es";
+import mapValues from "lodash/mapValues";
 
 export function typedKeys<T extends object>(obj: T): (keyof T)[] {
   return Object.keys(obj) as (keyof T)[];
@@ -14,7 +14,7 @@ export function bindFuncMap<T extends FunctionKeyedObject>(
   return mapValues(obj, v => v.bind(target)) as T;
 }
 
-export function* takeWhile<T>(
+export function* iterateTakeWhile<T>(
   items: T[],
   predicate: (item: T) => boolean
 ): IterableIterator<T> {

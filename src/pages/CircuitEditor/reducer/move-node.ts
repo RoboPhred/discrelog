@@ -1,5 +1,7 @@
 import produce from "immer";
-import { mapValues, pick } from "lodash-es";
+
+import mapValues from "lodash/mapValues";
+import pick from "lodash/pick";
 
 import { MoveNodesAction } from "../actions";
 import { CircuitEditorState } from "../state";

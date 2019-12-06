@@ -1,4 +1,4 @@
-import { pickBy } from "lodash-es";
+import pickBy from "lodash/pickBy";
 
 import { IDMap } from "@/types";
 

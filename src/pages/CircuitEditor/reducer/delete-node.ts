@@ -1,6 +1,6 @@
 import produce from "immer";
 
-import { pull } from "lodash-es";
+import pull from "lodash/pull";
 
 import { DeleteNodeAction } from "@/services/simulator/actions";
 import { CircuitEditorState } from "@/pages/CircuitEditor/state";

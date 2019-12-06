@@ -1,6 +1,6 @@
 import binarySearch from "binary-search";
 import uuidV4 from "uuid/v4";
-import { findIndex } from "lodash-es";
+import findIndex from "lodash/findIndex";
 
 import { SimulatorState } from "@/services/simulator/state";
 import { TransitionWindow, NodePin } from "@/services/simulator/types";
@@ -66,7 +66,8 @@ export function removeTransitionByPin(state: SimulatorState, pin: NodePin) {
   // Remove the transition from the transitions map.
   delete transitionsById[transitionId];
 
-  const transitionWindowIndex = findIndex(transitionWindows,
+  const transitionWindowIndex = findIndex(
+    transitionWindows,
     x => x.tick === transition.tick
   );
   if (transitionWindowIndex === -1) {

@@ -3,7 +3,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector, createSelector } from "reselect";
 
-import { mapValues } from "lodash-es";
+import mapValues from "lodash/mapValues";
 
 import { AppState } from "@/store";
 

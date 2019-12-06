@@ -1,6 +1,4 @@
-import { createSelector } from "reselect";
-
-import { mapValues, mapKeys } from "lodash-es";
+import mapValues from "lodash/mapValues";
 
 import { AppState } from "@/store";
 

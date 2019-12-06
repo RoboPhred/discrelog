@@ -1,16 +1,15 @@
 import produce from "immer";
 
-import { map, mapValues, zipObject } from "lodash-es";
 import uuidV4 from "uuid/v4";
+import map from "lodash/map";
+import mapValues from "lodash/mapValues";
+import zipObject from "lodash/zipObject";
 
 import { AppState } from "@/store";
 import { pointSubtract } from "@/geometry";
-import { typedKeys } from "@/utils";
-import { Point } from "@/types";
 
 import { CircuitEditorState, defaultCircuitEditorState } from "../state";
 import { CopyNodesAction } from "../actions";
-import { selectedNodesById as selectedNodesByIdSelector } from "../selectors";
 import { ClipboardNode } from "../types";
 
 function copyNodesMutator(
@@ -26,7 +25,10 @@ function copyNodesMutator(
     return;
   }
 
-  const copyIds = zipObject(nodeIds, map(nodeIds, () => uuidV4()));
+  const copyIds = zipObject(
+    nodeIds,
+    map(nodeIds, () => uuidV4())
+  );
 
   function nodeIsSelected(id: string): boolean {
     return nodeIds.findIndex(x => x === id) !== -1;

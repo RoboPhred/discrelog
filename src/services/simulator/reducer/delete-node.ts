@@ -1,7 +1,7 @@
 import produce from "immer";
 
 import binarySearch from "binary-search";
-import { remove } from "lodash-es";
+import remove from "lodash/remove";
 
 import { SimulatorState } from "@/services/simulator/state";
 import { DeleteNodeAction } from "@/services/simulator/actions";

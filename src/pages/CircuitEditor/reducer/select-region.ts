@@ -1,6 +1,6 @@
 import produce from "immer";
 
-import { forOwn } from "lodash-es";
+import forOwn from "lodash/forOwn";
 
 import { AppState } from "@/store";
 

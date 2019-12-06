@@ -1,7 +1,9 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { pick, mapValues, values } from "lodash-es";
+import pick from "lodash/pick";
+import mapValues from "lodash/mapValues";
+import values from "lodash/values";
 
 import { createStructuredSelector, createSelector } from "reselect";
 

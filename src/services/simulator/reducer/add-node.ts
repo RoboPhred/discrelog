@@ -1,5 +1,5 @@
-import { mapValues } from "lodash-es";
 import produce from "immer";
+import mapValues from "lodash/mapValues";
 
 import { AddNodeAction } from "../actions";
 import { NodeTypes } from "../node-types";
@@ -32,7 +32,11 @@ export function addNodeMutator(state: SimulatorState, action: AddNodeAction) {
   };
 
   const result = def.evolve
-    ? def.evolve(undefined, mapValues(inputs, () => false), state.tick)
+    ? def.evolve(
+        undefined,
+        mapValues(inputs, () => false),
+        state.tick
+      )
     : {};
 
   nodeStatesByNodeId[id] = result.state || {};

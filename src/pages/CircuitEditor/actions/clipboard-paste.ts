@@ -1,7 +1,9 @@
 import { Dispatch } from "redux";
 
 import uuidV4 from "uuid/v4";
-import { zipObject, map, values } from "lodash-es";
+import zipObject from "lodash/zipObject";
+import map from "lodash/map";
+import values from "lodash/values";
 
 import { GetState } from "@/store";
 

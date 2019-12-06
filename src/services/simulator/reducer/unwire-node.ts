@@ -1,5 +1,5 @@
 import produce from "immer";
-import { findIndex } from "lodash-es";
+import findIndex from "lodash/findIndex";
 
 import { SimulatorState } from "../state";
 import { UnwireNodeAction } from "../actions";
@@ -31,7 +31,8 @@ function unwireNodeMutator(state: SimulatorState, action: UnwireNodeAction) {
     return;
   }
 
-  const sourceConnIndex = findIndex(outConns,
+  const sourceConnIndex = findIndex(
+    outConns,
     c => c.nodeId === targetNodeId && c.pin === targetPin
   );
   if (sourceConnIndex === -1) {

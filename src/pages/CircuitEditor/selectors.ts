@@ -2,7 +2,8 @@ import { createSelector } from "reselect";
 
 import getBounds from "svg-path-bounds";
 
-import { mapValues, pick } from "lodash-es";
+import mapValues from "lodash/mapValues";
+import pick from "lodash/pick";
 
 import { normalizeRectangle } from "@/geometry";
 

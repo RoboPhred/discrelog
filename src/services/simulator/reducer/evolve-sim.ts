@@ -1,6 +1,6 @@
 import produce from "immer";
 
-import { takeWhile } from "@/utils";
+import { iterateTakeWhile } from "@/utils";
 
 import { EvolveSimAction } from "../actions";
 import { SimulatorState } from "../state";
@@ -21,7 +21,7 @@ function evolveSimMutator(state: SimulatorState, action: EvolveSimAction) {
   const endTick = tick + tickCount;
 
   // For each window within our update range...
-  const iterator = takeWhile(
+  const iterator = iterateTakeWhile(
     transitionWindows,
     window => window.tick <= endTick
   );
