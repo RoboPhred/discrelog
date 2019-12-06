@@ -2,7 +2,7 @@ import produce from "immer";
 
 import pull from "lodash/pull";
 
-import { DeleteNodeAction } from "@/services/simulator/actions";
+import { DeleteNodeAction } from "@/services/simulator/actions/node-delete";
 import { CircuitEditorState } from "@/pages/CircuitEditor/state";
 
 export default produce(

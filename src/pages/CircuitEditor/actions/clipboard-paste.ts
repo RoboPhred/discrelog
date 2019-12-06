@@ -7,7 +7,7 @@ import values from "lodash/values";
 
 import { GetState } from "@/store";
 
-import { wireNode } from "@/services/simulator/actions";
+import { attachWire } from "@/services/simulator/actions/wire-attach";
 
 import { addNode } from "./node-add";
 import { selectNodes } from "./select-node";
@@ -44,7 +44,7 @@ export const paste = () => (dispatch: Dispatch, getState: GetState) => {
       for (let output of outputs[outputPin]) {
         const { nodeId: targetCopyId, pin: targetPin } = output;
         const targetId = pasteIds[targetCopyId];
-        dispatch(wireNode(sourceId, outputPin, targetId, targetPin));
+        dispatch(attachWire(sourceId, outputPin, targetId, targetPin));
       }
     }
 

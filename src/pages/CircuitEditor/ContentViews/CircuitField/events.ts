@@ -1,17 +1,15 @@
 import { Dispatch } from "redux";
 
-import { normalizeRectangle, calcSize, pointSubtract } from "@/geometry";
+import { normalizeRectangle, pointSubtract } from "@/geometry";
 import { GetState } from "@/store";
 import { Point } from "@/types";
 
 import { NodePinDirection } from "@/services/simulator";
-import {
-  interactNode,
-  evolveSim,
-  fastForwardSim,
-  deleteNode,
-  toggleWireNode
-} from "@/services/simulator/actions";
+import { interactNode } from "@/services/simulator/actions/node-interact";
+import { toggleWire } from "@/services/simulator/actions/wire-toggle";
+import { evolveSim } from "@/services/simulator/actions/sim-evolve";
+import { fastForwardSim } from "@/services/simulator/actions/sim-fastforward";
+import { deleteNode } from "@/services/simulator/actions/node-delete";
 
 import {
   clearSelection,
@@ -55,11 +53,11 @@ export function onNodePinClicked(
       //  Make pins unambiguous on a node, and handle any order in toggleWire
       if (selectedPin.direction === "output") {
         dispatch(
-          toggleWireNode(selectedPin.nodeId, selectedPin.pin, nodeId, pinId)
+          toggleWire(selectedPin.nodeId, selectedPin.pin, nodeId, pinId)
         );
       } else {
         dispatch(
-          toggleWireNode(nodeId, pinId, selectedPin.nodeId, selectedPin.pin)
+          toggleWire(nodeId, pinId, selectedPin.nodeId, selectedPin.pin)
         );
       }
     } else {

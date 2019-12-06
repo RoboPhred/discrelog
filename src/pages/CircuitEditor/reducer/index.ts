@@ -1,11 +1,11 @@
-import produce from "immer";
+import { AnyAction } from "redux";
 
 import { AppState } from "@/store";
 
 import {
   ACTION_NODE_DELETE,
   DeleteNodeAction
-} from "@/services/simulator/actions";
+} from "@/services/simulator/actions/node-delete";
 
 import {
   CircuitEditorAction,
@@ -29,7 +29,6 @@ import copySelectedNodesReducer from "./copy-nodes";
 import selectNodesReducer from "./select-nodes";
 import selectRegionReducer from "./select-region";
 import clearSelectionReducer from "./clear-selection";
-import { AnyAction } from "redux";
 
 export default function circuitEditorReducer(
   state: CircuitEditorState = defaultCircuitEditorState,

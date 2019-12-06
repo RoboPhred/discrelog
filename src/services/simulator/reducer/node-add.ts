@@ -1,12 +1,24 @@
+import { AnyAction } from "redux";
 import produce from "immer";
 import mapValues from "lodash/mapValues";
 
-import { AddNodeAction } from "../actions";
 import { NodeTypes } from "../node-types";
 import { inputsOf, outputsOf } from "../node-types/utils";
-import { SimulatorState } from "../state";
+import { SimulatorState, defaultSimulatorState } from "../state";
+import { isAddNodeAction } from "../actions/node-add";
 
-export function addNodeMutator(state: SimulatorState, action: AddNodeAction) {
+export default function nodeAddReducer(
+  state: SimulatorState = defaultSimulatorState,
+  action: AnyAction
+): SimulatorState {
+  return produce(state, draft => addNodeMutator(draft, action));
+}
+
+function addNodeMutator(state: SimulatorState, action: AnyAction) {
+  if (!isAddNodeAction(action)) {
+    return;
+  }
+
   const { nodeId: id, nodeType: type } = action.payload;
 
   const def = NodeTypes[type];
@@ -37,5 +49,3 @@ export function addNodeMutator(state: SimulatorState, action: AddNodeAction) {
     ? mapValues(result.transitions, x => x.value)
     : mapValues(outputs, () => false);
 }
-
-export default produce(addNodeMutator);

@@ -5,7 +5,7 @@ import { createStructuredSelector } from "reselect";
 
 import { AppState } from "@/store";
 
-import { evolveSim } from "@/services/simulator/actions";
+import { evolveSim } from "@/services/simulator/actions/sim-evolve";
 
 interface StateProps {
   tick: number;

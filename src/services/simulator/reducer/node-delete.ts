@@ -1,18 +1,27 @@
+import { AnyAction } from "redux";
 import produce from "immer";
 
 import binarySearch from "binary-search";
-import find from "lodash/find";
 import remove from "lodash/remove";
 
-import { SimulatorState } from "@/services/simulator/state";
-import { DeleteNodeAction } from "@/services/simulator/actions";
-import { typedKeys } from "@/utils";
+import { SimulatorState, defaultSimulatorState } from "../state";
+import { isDeleteNodeAction } from "../actions/node-delete";
 
-function deleteNodeMutator(state: SimulatorState, action: DeleteNodeAction) {
+export default function nodeDeleteReducer(
+  state: SimulatorState = defaultSimulatorState,
+  action: AnyAction
+): SimulatorState {
+  return produce(state, draft => deleteNodeMutator(draft, action));
+}
+
+function deleteNodeMutator(state: SimulatorState, action: AnyAction) {
+  if (!isDeleteNodeAction(action)) {
+    return;
+  }
+
   const { nodeIds } = action.payload;
   nodeIds.forEach(id => deleteNodeById(state, id));
 }
-export default produce(deleteNodeMutator);
 
 function deleteNodeById(state: SimulatorState, nodeId: string) {
   const {

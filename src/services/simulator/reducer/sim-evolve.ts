@@ -1,13 +1,25 @@
+import { AnyAction } from "redux";
 import produce from "immer";
 
 import { iterateTakeWhile } from "@/utils";
 
-import { EvolveSimAction } from "../actions";
-import { SimulatorState } from "../state";
+import { SimulatorState, defaultSimulatorState } from "../state";
 
-import { collectNodeTransitionsMutator } from "./collect-transitions";
+import { collectNodeTransitionsMutator } from "./transition-utils";
+import { isEvolveSimAction } from "../actions/sim-evolve";
 
-function evolveSimMutator(state: SimulatorState, action: EvolveSimAction) {
+export default function simEvolveReducer(
+  state: SimulatorState = defaultSimulatorState,
+  action: AnyAction
+): SimulatorState {
+  return produce(state, draft => evolveSimMutator(draft, action));
+}
+
+function evolveSimMutator(state: SimulatorState, action: AnyAction) {
+  if (!isEvolveSimAction(action)) {
+    return;
+  }
+
   const { tickCount } = action.payload;
   const {
     tick,
@@ -73,5 +85,3 @@ function evolveSimMutator(state: SimulatorState, action: EvolveSimAction) {
   //  between our last tick and desired end tick.
   state.tick = endTick;
 }
-
-export default produce(evolveSimMutator);
