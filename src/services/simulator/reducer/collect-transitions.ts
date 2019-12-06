@@ -1,11 +1,8 @@
-import uuidV4 from "uuid/v4";
-
 import { IDMap } from "@/types";
 
 import { SimulatorState } from "../state";
 
-import { Node, TransitionWindow } from "../types";
-import { NodeTypes, EvolutionResult } from "../node-types";
+import { NodeTypes } from "../node-types";
 
 import { addTransition, removeTransitionByPin } from "./transition-utils";
 
@@ -13,12 +10,7 @@ export function collectNodeTransitionsMutator(
   state: SimulatorState,
   nodeId: string
 ) {
-  const {
-    tick,
-    nodeStatesByNodeId,
-    nodeOutputValuesByNodeId,
-    transitionWindows
-  } = state;
+  const { tick, nodeStatesByNodeId, nodeOutputValuesByNodeId } = state;
 
   const node = state.nodesById[nodeId];
   if (!node) {

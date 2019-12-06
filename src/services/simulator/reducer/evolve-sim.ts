@@ -1,5 +1,7 @@
 import produce from "immer";
 
+import { takeWhile } from "@/utils";
+
 import { EvolveSimAction } from "../actions";
 import { SimulatorState } from "../state";
 
@@ -74,17 +76,3 @@ function evolveSimMutator(state: SimulatorState, action: EvolveSimAction) {
 }
 
 export default produce(evolveSimMutator);
-
-function* takeWhile<T>(
-  items: T[],
-  predicate: (item: T) => boolean
-): IterableIterator<T> {
-  while (items.length > 0) {
-    const item = items[0];
-    if (!predicate(item)) {
-      break;
-    }
-    const nextItem = items.shift()!;
-    yield nextItem;
-  }
-}

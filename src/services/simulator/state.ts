@@ -1,8 +1,6 @@
 import { IDMap } from "@/types";
 
-import { Node, NodesById, NodePinTransition, TransitionWindow } from "./types";
-
-import { NodeType } from "./node-types";
+import { NodesById, NodePinTransition, TransitionWindow } from "./types";
 
 export interface SimulatorState {
   /**

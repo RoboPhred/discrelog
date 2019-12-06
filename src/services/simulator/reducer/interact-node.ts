@@ -20,7 +20,7 @@ function interactNodeMutator(
   }
 
   const nodeState = nodeStatesByNodeId[nodeId];
-  const newState = type.interact(nodeStatesByNodeId[nodeId]);
+  const newState = type.interact(nodeState);
   nodeStatesByNodeId[nodeId] = newState;
 
   collectNodeTransitionsMutator(state, nodeId);

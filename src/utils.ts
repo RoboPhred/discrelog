@@ -13,3 +13,17 @@ export function bindFuncMap<T extends FunctionKeyedObject>(
 ): T {
   return mapValues(obj, v => v.bind(target)) as T;
 }
+
+export function* takeWhile<T>(
+  items: T[],
+  predicate: (item: T) => boolean
+): IterableIterator<T> {
+  while (items.length > 0) {
+    const item = items[0];
+    if (!predicate(item)) {
+      break;
+    }
+    const nextItem = items.shift()!;
+    yield nextItem;
+  }
+}
