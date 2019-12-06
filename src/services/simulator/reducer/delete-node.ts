@@ -1,6 +1,7 @@
 import produce from "immer";
 
 import binarySearch from "binary-search";
+import find from "lodash/find";
 import remove from "lodash/remove";
 
 import { SimulatorState } from "@/services/simulator/state";
@@ -18,7 +19,6 @@ function deleteNodeById(state: SimulatorState, nodeId: string) {
     nodesById,
     nodeStatesByNodeId,
     nodeOutputValuesByNodeId,
-    nodeOutputTransitionsByNodeId,
     transitionsById,
     transitionWindows
   } = state;
@@ -73,17 +73,11 @@ function deleteNodeById(state: SimulatorState, nodeId: string) {
   delete nodeStatesByNodeId[nodeId];
   delete nodeOutputValuesByNodeId[nodeId];
 
-  const transitionsByPin = nodeOutputTransitionsByNodeId[nodeId];
-  for (const outputId of typedKeys(transitionsByPin)) {
-    const transitionId = transitionsByPin[outputId];
-    if (!transitionId) {
-      continue;
-    }
-
+  const nodeTransitionIds = Object.keys(transitionsById).filter(
+    id => transitionsById[id].nodeId === nodeId
+  );
+  for (const transitionId of nodeTransitionIds) {
     const transition = transitionsById[transitionId];
-    if (!transition) {
-      continue;
-    }
 
     // Remove transition
     delete transitionsById[transitionId];
@@ -106,5 +100,4 @@ function deleteNodeById(state: SimulatorState, nodeId: string) {
       }
     }
   }
-  delete nodeOutputTransitionsByNodeId[nodeId];
 }

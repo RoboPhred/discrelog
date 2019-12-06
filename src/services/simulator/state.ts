@@ -23,11 +23,6 @@ export interface SimulatorState {
    */
   nodeOutputValuesByNodeId: IDMap<IDMap<boolean>>;
 
-  /**
-   * A map of the the ids of the pending transitions for a node by node id.
-   */
-  nodeOutputTransitionsByNodeId: IDMap<IDMap<string | null>>;
-
   // Not entirely happy having this on the state, since it is
   //  highly transient and has a lot of churn.
   // However, this greatly simplifies the one-transition-per-pin logic.
@@ -51,7 +46,6 @@ export const defaultSimulatorState: SimulatorState = {
   nodesById: {},
   nodeStatesByNodeId: {},
   nodeOutputValuesByNodeId: {},
-  nodeOutputTransitionsByNodeId: {},
   transitionsById: {},
   transitionWindows: []
 };

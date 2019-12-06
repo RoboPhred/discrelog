@@ -14,12 +14,7 @@ export function addNodeMutator(state: SimulatorState, action: AddNodeAction) {
     return;
   }
 
-  const {
-    nodesById,
-    nodeStatesByNodeId,
-    nodeOutputValuesByNodeId,
-    nodeOutputTransitionsByNodeId
-  } = state;
+  const { nodesById, nodeStatesByNodeId, nodeOutputValuesByNodeId } = state;
 
   const inputs = inputsOf(def);
   const outputs = outputsOf(def);
@@ -43,8 +38,6 @@ export function addNodeMutator(state: SimulatorState, action: AddNodeAction) {
   nodeOutputValuesByNodeId[id] = result.transitions
     ? mapValues(result.transitions, x => x.value)
     : mapValues(outputs, () => false);
-
-  nodeOutputTransitionsByNodeId[id] = mapValues(outputs, () => null);
 }
 
 export default produce(addNodeMutator);

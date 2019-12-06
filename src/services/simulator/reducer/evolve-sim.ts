@@ -12,7 +12,6 @@ function evolveSimMutator(state: SimulatorState, action: EvolveSimAction) {
   const {
     tick,
     nodesById,
-    nodeOutputTransitionsByNodeId,
     nodeOutputValuesByNodeId,
     transitionsById,
     transitionWindows
@@ -45,10 +44,6 @@ function evolveSimMutator(state: SimulatorState, action: EvolveSimAction) {
 
       // Transition is now applied and no longer tracked, remove it from the list.
       delete transitionsById[tid];
-
-      // This should be safe if everything stays in sync.
-      //  We only allow one transition per id, and this should be it.
-      delete nodeOutputTransitionsByNodeId[nodeId][outputId];
 
       nodeOutputValuesByNodeId[nodeId][outputId] = value;
 

@@ -1,5 +1,6 @@
 import binarySearch from "binary-search";
 import uuidV4 from "uuid/v4";
+import find from "lodash/find";
 import findIndex from "lodash/findIndex";
 
 import { SimulatorState } from "@/services/simulator/state";
@@ -12,7 +13,7 @@ export function addTransition(
   tick: number,
   value: boolean
 ) {
-  const { nodeOutputTransitionsByNodeId, transitionsById } = state;
+  const { transitionsById } = state;
 
   const transitionId = uuidV4();
 
@@ -24,14 +25,6 @@ export function addTransition(
     value
   };
 
-  const outputTransitions = nodeOutputTransitionsByNodeId[nodeId];
-  if (!outputTransitions) {
-    // Node does not exist?
-    return;
-  }
-
-  outputTransitions[outputId] = transitionId;
-
   const transitionWindow = getOrCreateWindow(state, tick);
   transitionWindow.transitionIds.push(transitionId);
 }
@@ -39,29 +32,17 @@ export function addTransition(
 export function removeTransitionByPin(state: SimulatorState, pin: NodePin) {
   const { nodeId, pin: outputId } = pin;
 
-  const {
-    nodeOutputTransitionsByNodeId,
+  const { transitionsById, transitionWindows } = state;
+
+  const transition = find(
     transitionsById,
-    transitionWindows
-  } = state;
-
-  const pinTransitions = nodeOutputTransitionsByNodeId[nodeId];
-  if (!pinTransitions) {
-    return;
-  }
-
-  const transitionId = pinTransitions[outputId];
-  if (!transitionId) {
-    return;
-  }
-
-  // Remove the transition from the node output transitions
-  delete pinTransitions[outputId];
-
-  const transition = transitionsById[transitionId];
+    t => t.nodeId === nodeId && t.outputId === outputId
+  );
   if (!transition) {
     return;
   }
+
+  const { id: transitionId } = transition;
 
   // Remove the transition from the transitions map.
   delete transitionsById[transitionId];
@@ -100,6 +81,8 @@ function getOrCreateWindow(
     return transitionWindows[index];
   }
 
+  // When binarySeach cannot find a value, it returns the next highest index negated.
+  //  We can insert the value at the proper point by flipping the negation and subtracting 1.
   const insertAt = -index - 1;
   const result: TransitionWindow = {
     tick,
