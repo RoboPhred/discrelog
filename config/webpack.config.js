@@ -1,26 +1,23 @@
 const { resolve: resolvePath, join: joinPath } = require("path");
 
-const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const UglifyJsWebpackPlugin = require("uglifyjs-webpack-plugin");
 
-const isDev = process.env["NODE_ENV"] === "development";
 const isProd = process.env["NODE_ENV"] === "production";
+const isDev = !isProd;
 
 const ROOT = resolvePath(__dirname, "..");
 const PATHS = {
   src: resolvePath(ROOT, "./src"),
   dist: resolvePath(ROOT, "./dist"),
-  node_modules: resolvePath(ROOT, "./node_modules"),
-  publicUrl: isProd ? "/discrelog/" : "/"
+  node_modules: resolvePath(ROOT, "./node_modules")
 };
+const PUBLIC_URL = isProd ? "/discrelog/" : "/";
 
 module.exports = {
   mode: isDev ? "development" : "production",
-  devtool: "source-map",
 
   devServer: {
-    contentBase: PATHS.dist,
+    contentBase: PATHS.dist
   },
 
   entry: {
@@ -30,7 +27,7 @@ module.exports = {
   output: {
     filename: "[name].[hash].bundle.js",
     path: PATHS.dist,
-    publicPath: PATHS.publicUrl
+    publicPath: PUBLIC_URL
   },
 
   resolve: {
@@ -62,7 +59,7 @@ module.exports = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        loader: "ts-loader",
+        loader: "ts-loader"
       },
 
       // css support.
@@ -82,23 +79,9 @@ module.exports = {
   },
 
   plugins: [
-    isDev && new webpack.NamedModulesPlugin(),
-    isDev && new webpack.HotModuleReplacementPlugin(),
-
-    new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: JSON.stringify(isDev ? "development" : "production")
-      }
-    }),
-
     new HtmlWebpackPlugin({
       inject: true,
       template: resolvePath(PATHS.src, "index.ejs")
-    }),
-
-    isProd &&
-    new UglifyJsWebpackPlugin({
-      sourceMap: true
     })
   ].filter(truthy),
 
