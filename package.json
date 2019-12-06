@@ -7,7 +7,7 @@
     "clean": "rimraf dist",
     "build": "npm run clean && cross-env NODE_ENV=production webpack --config ./config/webpack.config.js",
     "start": "cross-env NODE_ENV=development webpack-dev-server --config ./config/webpack.config.js",
-    "format": "prettier --spaces=2 --write \"src/**/*.{ts,tsx}\"",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "deploy": "npm run build && git subtree push --prefix dist origin gh-pages"
   },
   "repository": {

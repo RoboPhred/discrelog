@@ -17,7 +17,7 @@ declare type HotkeyHandler = (keyEvent?: KeyboardEvent) => void;
 
 type IsFunction<T> = T extends (...args: any[]) => any ? T : never;
 type ObjectValueReturnTypes<T> = {
-  [P in keyof T]: ReturnType<IsFunction<T[P]>>
+  [P in keyof T]: ReturnType<IsFunction<T[P]>>;
 };
 
 declare module "*.md" {

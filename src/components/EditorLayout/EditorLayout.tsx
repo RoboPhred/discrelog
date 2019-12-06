@@ -14,17 +14,34 @@ export interface EditorPanelProps {
   defaultRightSidebarWidth?: number;
 }
 
-const EditorLayout: React.FC<EditorPanelProps> = ({ className, defaultLeftSidebarWidth, defaultRightSidebarWidth, leftSidebar, rightSidebar, children }) => {
-  const [leftSidebarSize, setLeftSidebarSize] = React.useState(defaultLeftSidebarWidth || 100);
-  const [rightSidebarSize, setRightSidebarSize] = React.useState(defaultRightSidebarWidth || 100);
+const EditorLayout: React.FC<EditorPanelProps> = ({
+  className,
+  defaultLeftSidebarWidth,
+  defaultRightSidebarWidth,
+  leftSidebar,
+  rightSidebar,
+  children
+}) => {
+  const [leftSidebarSize, setLeftSidebarSize] = React.useState(
+    defaultLeftSidebarWidth || 100
+  );
+  const [rightSidebarSize, setRightSidebarSize] = React.useState(
+    defaultRightSidebarWidth || 100
+  );
 
-  const onLeftSidebarResize = React.useCallback((delta: number) => {
-    setLeftSidebarSize(leftSidebarSize + delta)
-  }, [leftSidebarSize]);
+  const onLeftSidebarResize = React.useCallback(
+    (delta: number) => {
+      setLeftSidebarSize(leftSidebarSize + delta);
+    },
+    [leftSidebarSize]
+  );
 
-  const onRightSidebarResize = React.useCallback((delta: number) => {
-    setRightSidebarSize(rightSidebarSize + delta)
-  }, [rightSidebarSize]);
+  const onRightSidebarResize = React.useCallback(
+    (delta: number) => {
+      setRightSidebarSize(rightSidebarSize + delta);
+    },
+    [rightSidebarSize]
+  );
 
   return (
     <LayoutContainer className={className}>
@@ -43,6 +60,6 @@ const EditorLayout: React.FC<EditorPanelProps> = ({ className, defaultLeftSideba
       )}
     </LayoutContainer>
   );
-}
+};
 
 export default EditorLayout;
