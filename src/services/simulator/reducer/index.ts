@@ -36,19 +36,8 @@ export default function simulatorReducer(
     case ACTION_UNWIRE:
       return unwireNodeReducer(state, action);
     case ACTION_TOGGLEWIRE:
-      const {
-        sourceNodeId,
-        sourcePin,
-        targetNodeId,
-        targetPin
-      } = action.payload;
-      if (
-        isWired(
-          state.nodesById,
-          { nodeId: sourceNodeId, pin: sourcePin },
-          { nodeId: targetNodeId, pin: targetPin }
-        )
-      ) {
+      const { inputPin, outputPin } = action.payload;
+      if (isWired(state, outputPin, inputPin)) {
         return unwireNodeReducer(state, {
           type: ACTION_UNWIRE,
           payload: action.payload

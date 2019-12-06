@@ -5,42 +5,23 @@ import { SimulatorState } from "../state";
 import { UnwireNodeAction } from "../actions";
 
 import { collectNodeTransitionsMutator } from "./collect-transitions";
+import { nodePinEquals } from "../types";
 
 function unwireNodeMutator(state: SimulatorState, action: UnwireNodeAction) {
-  const { sourceNodeId, sourcePin, targetNodeId, targetPin } = action.payload;
+  const { outputPin, inputPin } = action.payload;
 
-  const sourceNode = state.nodesById[sourceNodeId];
-  const targetNode = state.nodesById[targetNodeId];
-
-  if (!sourceNode || !targetNode) {
-    return;
-  }
-
-  const targetConn = targetNode.inputConnectionsByPin[targetPin];
-  if (!targetConn) {
-    return;
-  }
-
-  if (targetConn.nodeId !== sourceNodeId || targetConn.pin !== sourcePin) {
-    return;
-  }
-  targetNode.inputConnectionsByPin[targetPin] = null;
-
-  const outConns = sourceNode.outputConnectionsByPin[sourcePin];
-  if (!outConns) {
-    return;
-  }
-
-  const sourceConnIndex = findIndex(
-    outConns,
-    c => c.nodeId === targetNodeId && c.pin === targetPin
+  const connectionIndex = findIndex(
+    state.connections,
+    c =>
+      nodePinEquals(c.inputPin, inputPin) &&
+      nodePinEquals(c.outputPin, outputPin)
   );
-  if (sourceConnIndex === -1) {
-    return;
-  }
-  outConns.splice(sourceConnIndex, 1);
 
-  collectNodeTransitionsMutator(state, targetNodeId);
+  if (connectionIndex !== -1) {
+    state.connections.splice(connectionIndex, 1);
+  }
+
+  collectNodeTransitionsMutator(state, inputPin.nodeId);
 }
 
 export default produce(unwireNodeMutator);

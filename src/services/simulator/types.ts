@@ -5,8 +5,6 @@ import { NodeType } from "./node-types";
 export interface Node {
   id: string;
   type: NodeType;
-  inputConnectionsByPin: IDMap<NodePin | null>;
-  outputConnectionsByPin: IDMap<NodePin[]>;
 }
 
 export type NodesById = IDMap<Node>;
@@ -17,6 +15,17 @@ export type NodesById = IDMap<Node>;
 export interface NodePin {
   nodeId: string;
   pin: string;
+}
+export function nodePinEquals(a: NodePin, b: NodePin) {
+  return a.nodeId === b.nodeId && a.pin === b.pin;
+}
+
+/**
+ * A connection from a node input to a node output.
+ */
+export interface Connection {
+  outputPin: NodePin;
+  inputPin: NodePin;
 }
 
 export type PinValueMap = IDMap<boolean>;

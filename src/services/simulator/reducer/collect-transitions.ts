@@ -5,6 +5,7 @@ import { SimulatorState } from "../state";
 import { NodeTypes } from "../node-types";
 
 import { addTransition, removeTransitionByPin } from "./transition-utils";
+import { nodeInputConnectionsByPinSelector } from "../selectors";
 
 export function collectNodeTransitionsMutator(
   state: SimulatorState,
@@ -25,8 +26,9 @@ export function collectNodeTransitionsMutator(
 
   // Build the current input state from the connected pins.
   const inputs: IDMap<boolean> = {};
-  for (const inputPin of Object.keys(node.inputConnectionsByPin)) {
-    const inputConn = node.inputConnectionsByPin[inputPin];
+  const inputConnectionsByPin = nodeInputConnectionsByPinSelector.local(state, nodeId);
+  for (const inputPin of Object.keys(inputConnectionsByPin)) {
+    const inputConn = inputConnectionsByPin[inputPin];
     if (!inputConn) {
       inputs[inputPin] = false;
       continue;

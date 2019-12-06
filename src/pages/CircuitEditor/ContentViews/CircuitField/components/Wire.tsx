@@ -7,23 +7,23 @@ import { ZeroPoint, pointAdd } from "@/geometry";
 import { AppState } from "@/store";
 import { Point } from "@/types";
 
-import { nodeDefsById } from "@/services/simulator/selectors";
+import { nodeDefsByIdSelector } from "@/services/simulator/selectors";
 import { NodePin } from "@/services/simulator/types";
 
 import { nodePositionsById } from "@/pages/CircuitEditor/selectors";
 
 export interface WireProps {
-  source: NodePin;
-  target: NodePin;
+  output: NodePin;
+  input: NodePin;
 }
 
 function mapStateToProps(state: AppState, props: WireProps) {
   const {
-    source: { nodeId: sourceNodeId, pin: sourcePin },
-    target: { nodeId: targetNodeId, pin: targetPin }
+    output: { nodeId: sourceNodeId, pin: sourcePin },
+    input: { nodeId: targetNodeId, pin: targetPin }
   } = props;
 
-  const sourceDef = nodeDefsById(state)[sourceNodeId];
+  const sourceDef = nodeDefsByIdSelector(state)[sourceNodeId];
   let sourceOffset = ZeroPoint;
   let value = false;
 
@@ -33,11 +33,11 @@ function mapStateToProps(state: AppState, props: WireProps) {
     }
     value =
       state.services.simulator.nodeOutputValuesByNodeId[sourceNodeId][
-      sourcePin
+        sourcePin
       ];
   }
 
-  const targetDef = nodeDefsById(state)[targetNodeId];
+  const targetDef = nodeDefsByIdSelector(state)[targetNodeId];
   let targetOffset = ZeroPoint;
   if (targetDef && targetDef.pins[targetPin]) {
     targetOffset = targetDef.pins[targetPin];

@@ -6,6 +6,10 @@ import { createStructuredSelector, createSelector } from "reselect";
 import mapValues from "lodash/mapValues";
 
 import { AppState } from "@/store";
+import {
+  nodeOutputValuesByNodeIdSelector,
+  nodeInputConnectionsByPinSelector
+} from "@/services/simulator/selectors";
 
 const mouseOverNode = createSelector(
   (s: AppState) => s.ui.circuitEditor.mouseOverNodeId,
@@ -15,16 +19,23 @@ const mouseOverNode = createSelector(
 
 const mouseOverNodeInputsSelector = createSelector(
   mouseOverNode,
-  (s: AppState) => s.services.simulator.nodeOutputValuesByNodeId,
-  (node, outputsByNodeId) =>
-    node
-      ? mapValues(node.inputConnectionsByPin, (v, k) => {
-          if (!v) {
-            return null;
-          }
-          return outputsByNodeId[v.nodeId][v.pin];
-        })
-      : {}
+  nodeOutputValuesByNodeIdSelector,
+  s => s, // TODO: This state selector busts the createSelector cache.  Memoize this better.
+  (node, outputsByNodeId, s) => {
+    if (!node) {
+      return {};
+    }
+
+    const nodeInputs = nodeInputConnectionsByPinSelector(s, node.id);
+
+    return mapValues(nodeInputs, sourcePin => {
+      if (!sourcePin) {
+        return null;
+      }
+      const { nodeId, pin } = sourcePin;
+      return outputsByNodeId[nodeId][pin];
+    });
+  }
 );
 
 const mouseOverNodeOutputsSelector = createSelector(

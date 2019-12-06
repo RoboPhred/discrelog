@@ -3,6 +3,7 @@ import produce from "immer";
 import uuidV4 from "uuid/v4";
 import map from "lodash/map";
 import mapValues from "lodash/mapValues";
+import findIndex from "lodash/findIndex";
 import zipObject from "lodash/zipObject";
 
 import { AppState } from "@/store";
@@ -11,6 +12,11 @@ import { pointSubtract } from "@/geometry";
 import { CircuitEditorState, defaultCircuitEditorState } from "../state";
 import { CopyNodesAction } from "../actions";
 import { ClipboardNode } from "../types";
+import {
+  nodeOutputConnectionsByPinSelector,
+  nodesByIdSelector,
+  nodeSelector
+} from "@/services/simulator/selectors";
 
 function copyNodesMutator(
   state: CircuitEditorState = defaultCircuitEditorState,
@@ -19,7 +25,6 @@ function copyNodesMutator(
 ) {
   const { nodeIds } = action.payload;
   const { nodePositions } = state;
-  const { nodesById } = appState.services.simulator;
 
   if (nodeIds.length === 0) {
     return;
@@ -31,20 +36,21 @@ function copyNodesMutator(
   );
 
   function nodeIsSelected(id: string): boolean {
-    return nodeIds.findIndex(x => x === id) !== -1;
+    return findIndex(nodeIds, x => x === id) !== -1;
   }
 
   const rootPosition = nodePositions[nodeIds[0]];
 
-  const copyNodes: ClipboardNode[] = nodeIds.map(id => {
-    const node = nodesById[id];
+  const copyNodes: ClipboardNode[] = nodeIds.map(nodeId => {
+    const node = nodeSelector(appState, nodeId);
+    const outputs = nodeOutputConnectionsByPinSelector(appState, nodeId);
     const copyNode: ClipboardNode = {
-      id: copyIds[id],
+      id: copyIds[nodeId],
       type: node.type,
-      offset: pointSubtract(nodePositions[id], rootPosition),
-      outputs: mapValues(node.outputConnectionsByPin, conns =>
+      offset: pointSubtract(nodePositions[nodeId], rootPosition),
+      outputs: mapValues(outputs, conns =>
         conns
-          .filter(x => nodeIsSelected)
+          .filter(x => nodeIsSelected(x.nodeId))
           .map(c => ({ nodeId: copyIds[c.nodeId], pin: c.pin }))
       )
     };

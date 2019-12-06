@@ -47,8 +47,12 @@ function evolveSimMutator(state: SimulatorState, action: EvolveSimAction) {
 
       nodeOutputValuesByNodeId[nodeId][outputId] = value;
 
-      for (const outConn of node.outputConnectionsByPin[outputId]) {
-        updateNodes.add(outConn.nodeId);
+      // Add each node we output to, to the output list.
+      const outputConnections = state.connections.filter(
+        x => x.outputPin.nodeId === nodeId
+      );
+      for (const outConn of outputConnections) {
+        updateNodes.add(outConn.inputPin.nodeId);
       }
     }
 

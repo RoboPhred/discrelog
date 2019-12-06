@@ -10,9 +10,9 @@ import { normalizeRectangle } from "@/geometry";
 import { AppState } from "@/store";
 
 import {
-  nodeDefsById,
-  nodeStatesById,
-  nodesById
+  nodeDefsByIdSelector,
+  nodeStatesByIdSelector,
+  nodesByIdSelector
 } from "@/services/simulator/selectors";
 import { normalizeVisuals } from "@/services/simulator/node-types/utils";
 
@@ -20,8 +20,8 @@ export const nodePositionsById = (s: AppState) =>
   s.ui.circuitEditor.nodePositions;
 
 export const nodeBoundsById = createSelector(
-  nodeDefsById,
-  nodeStatesById,
+  nodeDefsByIdSelector,
+  nodeStatesByIdSelector,
   (nodeDefsById, nodeStateById) =>
     mapValues(nodeDefsById, (x, id) => {
       if (x.visual.hitPath) {
@@ -61,7 +61,7 @@ export const selectedNodeIds = (s: AppState) =>
   s.ui.circuitEditor.selectedNodeIds;
 
 export const selectedNodesById = createSelector(
-  nodesById,
+  nodesByIdSelector,
   selectedNodeIds,
   (nodesById, selectedNodeIds) => pick(nodesById, selectedNodeIds)
 );

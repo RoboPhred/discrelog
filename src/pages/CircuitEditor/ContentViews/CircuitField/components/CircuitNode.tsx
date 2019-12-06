@@ -9,7 +9,10 @@ import { AppState } from "@/store";
 
 import { NodePinDirection } from "@/services/simulator";
 import { NodeType } from "@/services/simulator/node-types";
-import { nodeTypesById, nodeStatesById } from "@/services/simulator/selectors";
+import {
+  nodeTypesByIdSelector,
+  nodeStatesByIdSelector
+} from "@/services/simulator/selectors";
 
 import { selectedNodeIds } from "@/pages/CircuitEditor/selectors";
 import NodeVisual, {
@@ -44,8 +47,8 @@ interface StateProps {
 }
 function mapStateToProps(state: AppState, props: CircuitNodeProps): StateProps {
   return {
-    nodeType: nodeTypesById(state)[props.nodeId],
-    nodeState: nodeStatesById(state)[props.nodeId],
+    nodeType: nodeTypesByIdSelector(state)[props.nodeId],
+    nodeState: nodeStatesByIdSelector(state)[props.nodeId],
     isSelected: selectedNodeIds(state).indexOf(props.nodeId) !== -1
   };
 }

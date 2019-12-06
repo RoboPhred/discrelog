@@ -11,7 +11,10 @@ import { Layer } from "react-konva";
 
 import { AppState } from "@/store";
 
-import { nodeTypesById, nodeStatesById } from "@/services/simulator/selectors";
+import {
+  nodeTypesByIdSelector,
+  nodeStatesByIdSelector
+} from "@/services/simulator/selectors";
 
 import {
   selectedNodeIds,
@@ -31,13 +34,13 @@ const selectedNodePositionsById = createSelector(
 
 const selectedNodeTypesById = createSelector(
   selectedNodeIds,
-  nodeTypesById,
+  nodeTypesByIdSelector,
   (selectedNodeIds, nodeTypesById) => pick(nodeTypesById, selectedNodeIds)
 );
 
 const selectedNodeStatesById = createSelector(
   selectedNodeIds,
-  nodeStatesById,
+  nodeStatesByIdSelector,
   (selectedNodeIds, nodeStatesById) => pick(nodeStatesById, selectedNodeIds)
 );
 

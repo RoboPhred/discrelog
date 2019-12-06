@@ -1,35 +1,34 @@
 import * as React from "react";
-import { createSelector, createStructuredSelector } from "reselect";
+import { createStructuredSelector } from "reselect";
 
 import { connect } from "react-redux";
 
 import { Layer } from "react-konva";
 
-import { Node, NodePin } from "@/services/simulator/types";
-
 import { AppState } from "@/store";
+import { connectionsSelector } from "@/services/simulator/selectors";
 
 import Wire from "./Wire";
-
-const nodesSelector = (s: AppState) => s.services.simulator.nodesById;
-const edgeSelector = createSelector(nodesSelector, nodes =>
-  aggregateOutputs(Object.keys(nodes).map(k => nodes[k]))
-);
+import { Connection } from "@/services/simulator";
 
 interface StateProps {
-  edges: ReturnType<typeof edgeSelector>;
+  connections: ReturnType<typeof connectionsSelector>;
 }
 const mapStateToProps = createStructuredSelector<AppState, StateProps>({
-  edges: edgeSelector
+  connections: connectionsSelector
 });
 
 type Props = StateProps;
 class WiresLayer extends React.Component<Props> {
   render() {
-    const { edges } = this.props;
+    const { connections } = this.props;
 
-    const connectorElements = edges.map(edge => (
-      <Wire key={edgeKey(edge)} {...edge} />
+    const connectorElements = connections.map(connection => (
+      <Wire
+        key={connectionKey(connection)}
+        output={connection.outputPin}
+        input={connection.inputPin}
+      />
     ));
 
     return <Layer>{connectorElements}</Layer>;
@@ -37,29 +36,7 @@ class WiresLayer extends React.Component<Props> {
 }
 export default connect(mapStateToProps)(WiresLayer);
 
-function edgeKey(edge: Edge): string {
-  const { source, target } = edge;
-  return `${source.nodeId}:${source.pin}-${target.nodeId}:${target.pin}`;
-}
-
-interface Edge {
-  source: NodePin;
-  target: NodePin;
-}
-function aggregateOutputs(nodes: Node[]): Edge[] {
-  return nodes.reduce<Edge[]>((a, node) => {
-    for (const outputPin of Object.keys(node.outputConnectionsByPin)) {
-      const source = {
-        nodeId: node.id,
-        pin: outputPin
-      };
-      for (const outputConn of node.outputConnectionsByPin[outputPin]) {
-        a.push({
-          source,
-          target: outputConn
-        });
-      }
-    }
-    return a;
-  }, []);
+function connectionKey(connection: Connection): string {
+  const { outputPin, inputPin } = connection;
+  return `${outputPin.nodeId}:${outputPin.pin}-${inputPin.nodeId}:${inputPin.pin}`;
 }

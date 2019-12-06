@@ -21,9 +21,7 @@ export function addNodeMutator(state: SimulatorState, action: AddNodeAction) {
 
   nodesById[id] = {
     id,
-    type,
-    inputConnectionsByPin: mapValues(inputs, () => null),
-    outputConnectionsByPin: mapValues(outputs, () => [])
+    type
   };
 
   const result = def.evolve

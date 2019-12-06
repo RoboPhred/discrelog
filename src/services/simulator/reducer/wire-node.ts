@@ -1,38 +1,28 @@
 import produce from "immer";
+import find from "lodash/find";
 
 import { SimulatorState } from "../state";
 import { WireNodeAction } from "../actions";
 
 import { collectNodeTransitionsMutator } from "./collect-transitions";
+import { nodePinEquals } from "../types";
 
 function wireNodeMutator(state: SimulatorState, action: WireNodeAction) {
-  const { sourceNodeId, sourcePin, targetNodeId, targetPin } = action.payload;
+  const { outputPin, inputPin } = action.payload;
 
-  const sourceNode = state.nodesById[sourceNodeId];
-  const targetNode = state.nodesById[targetNodeId];
+  const outputNode = state.nodesById[outputPin.nodeId];
+  const inputNode = state.nodesById[inputPin.nodeId];
 
-  if (!sourceNode || !targetNode) {
+  if (!outputNode || !inputNode) {
     return;
   }
 
   // Only one source per input.
-  if (targetNode.inputConnectionsByPin[targetPin]) {
+  if (find(state.connections, c => nodePinEquals(c.inputPin, inputPin))) {
     return;
   }
 
-  // Tell the target about the source.
-  targetNode.inputConnectionsByPin[targetPin] = {
-    nodeId: sourceNodeId,
-    pin: sourcePin
-  };
-
-  // Tell the source about the target.
-  sourceNode.outputConnectionsByPin[sourcePin].push({
-    nodeId: targetNodeId,
-    pin: targetPin
-  });
-
-  collectNodeTransitionsMutator(state, targetNodeId);
+  collectNodeTransitionsMutator(state, inputPin.nodeId);
 }
 
 export default produce(wireNodeMutator);

@@ -28,50 +28,14 @@ function deleteNodeById(state: SimulatorState, nodeId: string) {
     return;
   }
   delete nodesById[nodeId];
-
-  const { inputConnectionsByPin, outputConnectionsByPin } = node;
-
-  for (const inputId of typedKeys(inputConnectionsByPin)) {
-    const input = inputConnectionsByPin[inputId];
-    if (!input) {
-      continue;
-    }
-
-    const target = nodesById[input.nodeId];
-    if (!target) {
-      continue;
-    }
-
-    const conns = target.outputConnectionsByPin[input.pin];
-    if (!conns) {
-      continue;
-    }
-
-    remove(conns, x => x.nodeId === nodeId && x.pin === inputId);
-  }
-
-  for (const outputId of typedKeys(outputConnectionsByPin)) {
-    const outputSet = outputConnectionsByPin[outputId];
-    for (const conn of outputSet) {
-      if (conn.nodeId === nodeId) {
-        // Connected to self.
-        continue;
-      }
-
-      const target = nodesById[conn.nodeId];
-      const targetConn = target.inputConnectionsByPin[conn.pin];
-      if (
-        targetConn &&
-        targetConn.nodeId === nodeId &&
-        targetConn.pin === outputId
-      ) {
-        target.inputConnectionsByPin[conn.pin] = null;
-      }
-    }
-  }
-
   delete nodeStatesByNodeId[nodeId];
   delete nodeOutputValuesByNodeId[nodeId];
+
+  // Remove outputs connecting to us.
+  remove(state.connections, c => c.outputPin.nodeId === nodeId);
+
+  // Remove inputs fed by us
+  remove(state.connections, c => c.inputPin.nodeId === nodeId);
 
   const nodeTransitionIds = Object.keys(transitionsById).filter(
     id => transitionsById[id].nodeId === nodeId

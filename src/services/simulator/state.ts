@@ -1,6 +1,11 @@
 import { IDMap } from "@/types";
 
-import { NodesById, NodePinTransition, TransitionWindow } from "./types";
+import {
+  NodesById,
+  NodePinTransition,
+  TransitionWindow,
+  Connection
+} from "./types";
 
 export interface SimulatorState {
   /**
@@ -19,17 +24,15 @@ export interface SimulatorState {
   nodeStatesByNodeId: IDMap<any>;
 
   /**
+   * A list of node pin to node pin connections.
+   */
+  connections: Connection[];
+
+  /**
    * A map of output-to-value maps by node id.
    */
   nodeOutputValuesByNodeId: IDMap<IDMap<boolean>>;
 
-  // Not entirely happy having this on the state, since it is
-  //  highly transient and has a lot of churn.
-  // However, this greatly simplifies the one-transition-per-pin logic.
-  //  Without this, either the logic to add or logic to apply transitions would have
-  //  to do a deep scan of the other's state data.
-  // Note: turns out one-transition-per-pin is "intertial" delay,
-  //  while some elements have a "buffer" delay.
   /**
    * A map of pending transitions by id.
    */
@@ -46,6 +49,7 @@ export const defaultSimulatorState: SimulatorState = {
   nodesById: {},
   nodeStatesByNodeId: {},
   nodeOutputValuesByNodeId: {},
+  connections: [],
   transitionsById: {},
   transitionWindows: []
 };
