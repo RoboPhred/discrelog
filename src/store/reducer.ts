@@ -12,7 +12,7 @@ export default function appStateReducer(
 ) {
   return {
     services: {
-      simulator: simulatorReducer(state.services.simulator, action)
+      simulator: simulatorReducer(state.services.simulator, action, state)
     },
     ui: {
       circuitEditor: circuitEditorReducer(state.ui.circuitEditor, action, state)

@@ -1,10 +1,25 @@
 import { createStore, compose, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
+import freeze from "redux-freeze";
+
+import {
+  actionSanitizer,
+  stateSanitizer,
+  actionsBlacklist
+} from "./devtool-sanitizer";
 
 import reducer from "./reducer";
 
-const storeComposer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers =
+  (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+      actionSanitizer,
+      stateSanitizer,
+      actionsBlacklist
+    })) ||
+  compose;
+
 export const store = createStore(
   reducer,
-  storeComposer(applyMiddleware(thunk))
+  composeEnhancers(applyMiddleware(freeze, thunk))
 );

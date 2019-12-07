@@ -1,15 +1,17 @@
-import { Reducer, AnyAction } from "redux";
+import { AnyAction } from "redux";
 
-export interface EnhancedReducer<TState, TArgs> {
-  (state: TState | undefined, action: AnyAction, ...args: TArgs[]): TState;
+import { AppState } from "./state";
+
+export interface EnhancedReducer<TState> {
+  (state: TState | undefined, action: AnyAction, appState: AppState): TState;
 }
 
-export function combineReducers<TState, TArgs>(
-  ...reducers: EnhancedReducer<TState, TArgs>[]
-): EnhancedReducer<TState, TArgs> {
-  return (state: TState | undefined, action: AnyAction) => {
+export function combineReducers<TState>(
+  ...reducers: EnhancedReducer<TState>[]
+): EnhancedReducer<TState> {
+  return (state: TState | undefined, action: AnyAction, appState: AppState) => {
     return reducers.reduce<TState>(
-      (state, reducer) => reducer(state, action),
+      (state, reducer) => reducer(state, action, appState),
       state as any
     );
   };

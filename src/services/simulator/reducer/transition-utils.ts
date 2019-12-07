@@ -2,30 +2,28 @@ import binarySearch from "binary-search";
 import uuidV4 from "uuid/v4";
 import find from "lodash/find";
 import findIndex from "lodash/findIndex";
+import pick from "lodash/pick";
 
 import { IDMap } from "@/types";
 
 import { SimulatorState } from "../state";
-import { TransitionWindow, NodePin } from "../types";
+import { TransitionWindow, NodePin, NodePinTransition } from "../types";
 import { NodeTypes } from "../node-types";
 
 import { nodeInputConnectionsByPinSelector } from "../selectors/connections";
 
-export function collectNodeTransitionsMutator(
+export function collectNodeTransitions(
   state: SimulatorState,
   nodeId: string
-) {
-  const { tick, nodeStatesByNodeId, nodeOutputValuesByNodeId } = state;
-
+): SimulatorState {
   const node = state.nodesById[nodeId];
   if (!node) {
-    return;
+    return state;
   }
 
-  // Evolve with the new inputs.
   const type = NodeTypes[node.type];
   if (!type || !type.evolve) {
-    return;
+    return state;
   }
 
   // Build the current input state from the connected pins.
@@ -42,46 +40,52 @@ export function collectNodeTransitionsMutator(
     }
     const { nodeId: sourceNodeId, pinId: sourcePin } = inputConn;
 
-    inputs[inputPin] = nodeOutputValuesByNodeId[sourceNodeId][sourcePin];
+    inputs[inputPin] = state.nodeOutputValuesByNodeId[sourceNodeId][sourcePin];
   }
 
   // TODO: Provide frozen state.  The state passed to this is currently
   //  the immer mutable record.
-  const result = type.evolve(nodeStatesByNodeId[node.id], inputs, tick);
+  const result = type.evolve(state.nodeStatesByNodeId[node.id], inputs, state.tick);
 
   if (result.state) {
-    nodeStatesByNodeId[node.id] = result.state;
+    state = {
+      ...state,
+      nodeStatesByNodeId: {
+        ...state.nodeStatesByNodeId,
+        [node.id]: result.state
+      }
+    }
   }
 
   if (result.transitions) {
-    const nodeOutputs = nodeOutputValuesByNodeId[node.id] || {};
+    const nodeOutputs = state.nodeOutputValuesByNodeId[node.id] || {};
     for (const outputId of Object.keys(result.transitions)) {
       const { tickOffset, value } = result.transitions[outputId];
 
       // Sanity check that we are not producing transitions for the past or current tick.
-      const transitionTick = tick + (tickOffset > 0 ? tickOffset : 1);
+      const transitionTick = state.tick + (tickOffset > 0 ? tickOffset : 1);
 
-      removeTransitionByPin(state, { nodeId: node.id, pinId: outputId });
+      state = removeTransitionByPin(state, { nodeId: node.id, pinId: outputId });
 
       if (nodeOutputs[outputId] !== value) {
-        addTransition(state, node.id, outputId, transitionTick, value);
+        state = addTransition(state, node.id, outputId, transitionTick, value);
       }
     }
   }
+
+  return state;
 }
 
 function addTransition(
-  state: SimulatorState,
+  state: Readonly<SimulatorState>,
   nodeId: string,
   outputId: string,
   tick: number,
   value: boolean
-) {
-  const { transitionsById } = state;
-
+): SimulatorState {
   const transitionId = uuidV4();
 
-  transitionsById[transitionId] = {
+  const newTransition: NodePinTransition = {
     id: transitionId,
     nodeId,
     outputId,
@@ -89,69 +93,90 @@ function addTransition(
     value
   };
 
-  const transitionWindow = getOrCreateWindow(state, tick);
-  transitionWindow.transitionIds.push(transitionId);
+  // Add the transition to the state, and clone transitionWindows for mutation below.
+  state = {
+    ...state,
+    transitionsById: {
+      ...state.transitionsById,
+      [transitionId]: newTransition
+    },
+    transitionWindows: [...state.transitionWindows]
+  };
+
+  let index = binarySearch(state.transitionWindows, tick, (a, b) => a.tick - b);
+  if (index < 0) {
+    // Need to create a new window
+    index = -index - 1;
+    const newWindow: TransitionWindow = {
+      tick,
+      transitionIds: []
+    };
+    // Mutation is safe here as we cloned the array above.
+    state.transitionWindows.splice(index, 0, newWindow);
+  }
+
+  // Mutation is safe here as we cloned the array above.
+  state.transitionWindows[index] = {
+    ...state.transitionWindows[index],
+    transitionIds: [
+      ...state.transitionWindows[index].transitionIds,
+      transitionId
+    ]
+  }
+  return state;
 }
 
-function removeTransitionByPin(state: SimulatorState, pin: NodePin) {
+function removeTransitionByPin(state: Readonly<SimulatorState>, pin: NodePin): SimulatorState {
   const { nodeId, pinId: outputId } = pin;
 
-  const { transitionsById, transitionWindows } = state;
-
   const transition = find(
-    transitionsById,
+    state.transitionsById,
     t => t.nodeId === nodeId && t.outputId === outputId
   );
   if (!transition) {
-    return;
+    return state;
   }
 
   const { id: transitionId } = transition;
 
-  // Remove the transition from the transitions map.
-  delete transitionsById[transitionId];
+  const transitionsById = pick(state.transitionsById, Object.keys(state.transitionsById).filter(x => x !== transitionId));
+  let transitionWindows = state.transitionWindows;
 
   const transitionWindowIndex = findIndex(
     transitionWindows,
     x => x.tick === transition.tick
   );
-  if (transitionWindowIndex === -1) {
-    return;
-  }
-  const transitionWindow = transitionWindows[transitionWindowIndex];
+  if (transitionWindowIndex !== -1) {
+    const transitionWindow = transitionWindows[transitionWindowIndex];
 
-  const tickWindowTransitionIndex = transitionWindow.transitionIds.indexOf(
-    transitionId
-  );
-  if (tickWindowTransitionIndex === -1) {
-    return;
-  }
-  if (transitionWindow.transitionIds.length === 1) {
-    // Only one element left, remove the window.
-    transitionWindows.splice(transitionWindowIndex, 1);
-  } else {
-    // Remove the transition from the tick window.
-    transitionWindow.transitionIds.splice(tickWindowTransitionIndex, 1);
-  }
-}
-
-function getOrCreateWindow(
-  state: SimulatorState,
-  tick: number
-): TransitionWindow {
-  const { transitionWindows } = state;
-  const index = binarySearch(transitionWindows, tick, (a, b) => a.tick - b);
-  if (index >= 0) {
-    return transitionWindows[index];
+    const tickWindowTransitionIndex = transitionWindow.transitionIds.indexOf(
+      transitionId
+    );
+    if (tickWindowTransitionIndex !== -1) {
+      if (transitionWindow.transitionIds.length === 1) {
+        // Only one element left, remove the window.
+        transitionWindows = [
+          ...transitionWindows.slice(0, transitionWindowIndex),
+          ...transitionWindows.slice(transitionWindowIndex + 1)
+        ]
+      } else {
+        // Remove the transition from the tick window.
+        transitionWindows = [...transitionWindows];
+        const transitionIds = transitionWindows[transitionWindowIndex].transitionIds;
+        transitionWindows[transitionWindowIndex] = {
+          ...transitionWindows[transitionWindowIndex],
+          transitionIds: [
+            ...transitionIds.slice(0, tickWindowTransitionIndex),
+            ...transitionIds.slice(tickWindowTransitionIndex, 1),
+          ]
+        }
+      }
+    }
   }
 
-  // When binarySeach cannot find a value, it returns the next highest index negated.
-  //  We can insert the value at the proper point by flipping the negation and subtracting 1.
-  const insertAt = -index - 1;
-  const result: TransitionWindow = {
-    tick,
-    transitionIds: []
-  };
-  transitionWindows.splice(insertAt, 0, result);
-  return result;
+  return {
+    ...state,
+    transitionsById,
+    transitionWindows
+  }
 }

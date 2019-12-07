@@ -1,10 +1,9 @@
 import { AnyAction } from "redux";
-import produce from "immer";
 import find from "lodash/find";
 
 import { SimulatorState, defaultSimulatorState } from "../state";
 
-import { collectNodeTransitionsMutator } from "./transition-utils";
+import { collectNodeTransitions } from "./transition-utils";
 import { nodePinEquals } from "../types";
 import { isAttachWireAction } from "../actions/wire-attach";
 
@@ -36,7 +35,5 @@ export default function wireAttachReducer(
     connections: [...state.connections, conn]
   };
 
-  return produce(state, draft =>
-    collectNodeTransitionsMutator(draft, inputPin.nodeId)
-  );
+  return collectNodeTransitions(state, inputPin.nodeId);
 }

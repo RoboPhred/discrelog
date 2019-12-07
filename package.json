@@ -62,6 +62,7 @@
     "react-redux": "^5.0.7",
     "react-sizeme": "^2.6.10",
     "redux": "^4.0.4",
+    "redux-freeze": "^0.1.7",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "svg-path-bounds": "^1.0.1",

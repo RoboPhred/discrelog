@@ -16,10 +16,7 @@ import selectNodesReducer from "./select-nodes";
 import selectRegionReducer from "./select-region";
 import clearSelectionReducer from "./select-clear";
 
-const circuitEditorCombinedReducer = combineReducers<
-  CircuitEditorState,
-  AppState
->(
+const circuitEditorCombinedReducer = combineReducers(
   addNodeReducer,
   deleteNodeReducer,
   mouseOverNodeReducer,

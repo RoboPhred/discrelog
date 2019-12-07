@@ -1,9 +1,8 @@
 import { AnyAction } from "redux";
-import produce from "immer";
 
 import { SimulatorState, defaultSimulatorState } from "../state";
 
-import { collectNodeTransitionsMutator } from "./transition-utils";
+import { collectNodeTransitions } from "./transition-utils";
 import { nodePinEquals } from "../types";
 import { isDetatchWireNodeAction } from "../actions/wire-detatch";
 
@@ -36,7 +35,5 @@ export default function wireDetatchReducer(
     )
   };
 
-  return produce(state, draft =>
-    collectNodeTransitionsMutator(draft, inputPin.nodeId)
-  );
+  return collectNodeTransitions(state, inputPin.nodeId)
 }
