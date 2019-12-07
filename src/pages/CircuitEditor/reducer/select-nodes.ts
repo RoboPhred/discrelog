@@ -1,18 +1,22 @@
-import produce from "immer";
+import { AnyAction } from "redux";
 
-import { SelectNodesAction } from "../actions";
-import { CircuitEditorState } from "../state";
+import { CircuitEditorState, defaultCircuitEditorState } from "../state";
+import { isSelectNodesAction } from "../actions/select-nodes";
 
 import { combineSelection } from "./utils";
 
-const selectNodesReducer = produce(
-  (state: CircuitEditorState, action: SelectNodesAction) => {
-    const { nodeIds, mode } = action.payload;
-    state.selectedNodeIds = combineSelection(
-      state.selectedNodeIds,
-      nodeIds,
-      mode
-    );
+export default function selectNodesReducer(
+  state: CircuitEditorState = defaultCircuitEditorState,
+  action: AnyAction
+): CircuitEditorState {
+  if (!isSelectNodesAction(action)) {
+    return state;
   }
-);
-export default selectNodesReducer;
+
+  const { nodeIds, mode } = action.payload;
+
+  return {
+    ...state,
+    selectedNodeIds: combineSelection(state.selectedNodeIds, nodeIds, mode)
+  };
+}

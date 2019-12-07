@@ -1,6 +1,13 @@
-import { addNode as simulatorAddNode } from "@/services/simulator/actions/node-add";
+import { AnyAction } from "redux";
+
+import {
+  addNode as simulatorAddNode,
+  ACTION_NODE_ADD
+} from "@/services/simulator/actions/node-add";
 import { NodeType } from "@/services/simulator/node-types";
 
+// TODO: Rather than hyjacking the existing action, make this its own distinct
+//  action and invoke the simulator action in the reducer.
 export { ACTION_NODE_ADD } from "@/services/simulator/actions/node-add";
 export const addNode = (
   nodeType: NodeType,
@@ -19,3 +26,6 @@ export const addNode = (
   };
 };
 export type AddNodeAction = ReturnType<typeof addNode>;
+export function isAddNodeAction(action: AnyAction): action is AddNodeAction {
+  return action.type === ACTION_NODE_ADD;
+}

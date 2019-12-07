@@ -1,3 +1,5 @@
+import { AnyAction } from "redux";
+
 import { Rectangle } from "@/types";
 
 import { SelectionMode } from "../types";
@@ -14,3 +16,8 @@ export const selectRegion = (
   }
 });
 export type SelectRegionAction = ReturnType<typeof selectRegion>;
+export function isSelectRegionAction(
+  action: AnyAction
+): action is SelectRegionAction {
+  return action.type === ACTION_SELECT_REGION;
+}

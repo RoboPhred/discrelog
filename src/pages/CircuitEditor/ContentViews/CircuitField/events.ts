@@ -11,17 +11,15 @@ import { evolveSim } from "@/services/simulator/actions/sim-evolve";
 import { fastForwardSim } from "@/services/simulator/actions/sim-fastforward";
 import { deleteNode } from "@/services/simulator/actions/node-delete";
 
-import {
-  clearSelection,
-  hoverNode,
-  selectNodes,
-  selectRegion,
-  moveNodes,
-  copyNodes,
-  paste
-} from "@/pages/CircuitEditor/actions";
 import { selectedNodeIds } from "@/pages/CircuitEditor/selectors";
 import { SelectionMode } from "@/pages/CircuitEditor/types";
+import { selectNodes } from "@/pages/CircuitEditor/actions/select-nodes";
+import { clearSelection } from "@/pages/CircuitEditor/actions/select-clear";
+import { selectRegion } from "@/pages/CircuitEditor/actions/select-region";
+import { moveNodes } from "@/pages/CircuitEditor/actions/node-move";
+import { hoverNode } from "@/pages/CircuitEditor/actions/node-hover";
+import { copyNodes } from "@/pages/CircuitEditor/actions/clipboard-copy";
+import { paste } from "@/pages/CircuitEditor/actions/clipboard-paste";
 
 import { selectPin, startDrag, continueDrag, endDrag } from "./actions";
 

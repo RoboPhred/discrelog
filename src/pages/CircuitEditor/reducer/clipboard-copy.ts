@@ -1,4 +1,5 @@
 import produce from "immer";
+import { AnyAction } from "redux";
 
 import uuidV4 from "uuid/v4";
 import map from "lodash/map";
@@ -9,14 +10,14 @@ import zipObject from "lodash/zipObject";
 import { AppState } from "@/store";
 import { pointSubtract } from "@/geometry";
 
-import { CircuitEditorState, defaultCircuitEditorState } from "../state";
-import { CopyNodesAction } from "../actions";
-import { ClipboardNode } from "../types";
 import {
   nodeOutputConnectionsByPinSelector,
-  nodesByIdSelector,
   nodeSelector
 } from "@/services/simulator/selectors";
+
+import { CircuitEditorState, defaultCircuitEditorState } from "../state";
+import { ClipboardNode } from "../types";
+import { isCopyNodesAction, CopyNodesAction } from "../actions/clipboard-copy";
 
 function copyNodesMutator(
   state: CircuitEditorState = defaultCircuitEditorState,
@@ -62,8 +63,11 @@ function copyNodesMutator(
 
 export default function copySelectedReduxcer(
   state: CircuitEditorState = defaultCircuitEditorState,
-  action: CopyNodesAction,
+  action: AnyAction,
   appState: AppState
 ) {
+  if (!isCopyNodesAction(action)) {
+    return state;
+  }
   return produce(state, s => copyNodesMutator(s, action, appState));
 }

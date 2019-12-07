@@ -1,3 +1,5 @@
+import { AnyAction } from "redux";
+
 export const ACTION_NODE_MOVE = "@editor/node/move" as "@editor/node/move";
 export const moveNodes = (
   nodeId: string | string[],
@@ -12,3 +14,8 @@ export const moveNodes = (
   }
 });
 export type MoveNodesAction = ReturnType<typeof moveNodes>;
+export function isMoveNodesAction(
+  action: AnyAction
+): action is MoveNodesAction {
+  return action.type === ACTION_NODE_MOVE;
+}

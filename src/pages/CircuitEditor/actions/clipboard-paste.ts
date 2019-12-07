@@ -10,7 +10,7 @@ import { GetState } from "@/store";
 import { attachWire } from "@/services/simulator/actions/wire-attach";
 
 import { addNode } from "./node-add";
-import { selectNodes } from "./select-node";
+import { selectNodes } from "./select-nodes";
 
 export const ACTION_PASTE = "@editor/paste" as "@editor/paste";
 export const paste = () => (dispatch: Dispatch, getState: GetState) => {

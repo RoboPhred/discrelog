@@ -1,11 +1,15 @@
 import {
-  ACTION_SELECT_NODES,
-  ACTION_SELECT_CLEAR,
-  ACTION_SELECT_REGION,
   SelectNodesAction,
+  ACTION_SELECT_NODES
+} from "../../actions/select-nodes";
+import {
+  ClearSelectionAction,
+  ACTION_SELECT_CLEAR
+} from "../../actions/select-clear";
+import {
   SelectRegionAction,
-  ClearSelectionAction
-} from "@/pages/CircuitEditor/actions";
+  ACTION_SELECT_REGION
+} from "../../actions/select-region";
 
 import {
   CircuitFieldAction,

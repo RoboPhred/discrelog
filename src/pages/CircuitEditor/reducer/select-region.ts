@@ -1,4 +1,4 @@
-import produce from "immer";
+import { AnyAction } from "redux";
 
 import forOwn from "lodash/forOwn";
 
@@ -8,16 +8,20 @@ import { intersects } from "@/geometry";
 
 import { nodeRectsById } from "../selectors";
 
-import { SelectRegionAction } from "../actions";
-import { CircuitEditorState } from "../state";
+import { CircuitEditorState, defaultCircuitEditorState } from "../state";
+import { isSelectRegionAction } from "../actions/select-region";
 
 import { combineSelection } from "./utils";
 
 export default function selectRegionReducer(
-  state: CircuitEditorState,
-  action: SelectRegionAction,
+  state: CircuitEditorState = defaultCircuitEditorState,
+  action: AnyAction,
   appState: AppState
 ) {
+  if (!isSelectRegionAction(action)) {
+    return state;
+  }
+
   const { region, mode } = action.payload;
 
   const rects = nodeRectsById(appState);
@@ -28,14 +32,8 @@ export default function selectRegionReducer(
     }
   });
 
-  // State is simple enough that we could
-  //  spread-clone here,
-  //  but using immer for the freeze/seal behavior.
-  return produce(state, state => {
-    state.selectedNodeIds = combineSelection(
-      state.selectedNodeIds,
-      chosenIds,
-      mode
-    );
-  });
+  return {
+    ...state,
+    selectedNodeIds: combineSelection(state.selectedNodeIds, chosenIds, mode)
+  };
 }
