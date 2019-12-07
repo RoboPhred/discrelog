@@ -3,8 +3,6 @@ import { createStructuredSelector } from "reselect";
 
 import { connect } from "react-redux";
 
-import { Layer } from "react-konva";
-
 import { AppState } from "@/store";
 
 import { Connection } from "@/services/simulator";
@@ -32,7 +30,7 @@ class WiresLayer extends React.Component<Props> {
       />
     ));
 
-    return <Layer>{connectorElements}</Layer>;
+    return <g id="wires-layer">{connectorElements}</g>;
   }
 }
 export default connect(mapStateToProps)(WiresLayer);

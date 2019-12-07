@@ -1,10 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { Group, Circle } from "react-konva";
-
-import { ContainerConfig } from "konva";
-
 import { AppState } from "@/store";
 
 import { selectedPinSelector } from "@/pages/CircuitEditor/ContentViews/CircuitField/selectors";
@@ -12,14 +8,16 @@ import { selectedPinSelector } from "@/pages/CircuitEditor/ContentViews/CircuitF
 const PIN_CIRCLE_RADIUS_UNSELECTED = 4;
 const PIN_CIRCLE_RADIUS_SELECTED = 6;
 
-export interface CircuitNodePinProps extends ContainerConfig {
+export interface CircuitNodePinProps {
   nodeId: string;
   pinId: string;
-  onPinMouseDown?(pin: string, e: KonvaMouseEvent): void;
-  onPinMouseUp?(pin: string, e: KonvaMouseEvent): void;
-  onClick?(e: KonvaMouseEvent): void;
-  onMouseDown?(e: KonvaMouseEvent): void;
-  onMouseUp?(e: KonvaMouseEvent): void;
+  x: number;
+  y: number;
+  onPinMouseDown?(pin: string, e: React.MouseEvent): void;
+  onPinMouseUp?(pin: string, e: React.MouseEvent): void;
+  onClick?(e: React.MouseEvent): void;
+  onMouseDown?(e: React.MouseEvent): void;
+  onMouseUp?(e: React.MouseEvent): void;
 }
 
 function mapStateToProps(state: AppState, props: CircuitNodePinProps) {
@@ -43,33 +41,29 @@ class CircuitNodePin extends React.Component<Props> {
 
   render() {
     const {
-      // All of our props are pulled out to prevent them
-      //  being included in groupProps
-      nodeId,
-      pinId,
+      x,
+      y,
       isSelected,
       onClick,
-      ...groupProps
     } = this.props;
     return (
-      <Group {...groupProps}>
-        <Circle
-          x={0}
-          y={0}
-          radius={
-            isSelected
-              ? PIN_CIRCLE_RADIUS_SELECTED
-              : PIN_CIRCLE_RADIUS_UNSELECTED
-          }
-          fill={isSelected ? "yellow" : "blue"}
-          onMouseDown={this._onMouseDown}
-          onMouseUp={this._onMouseUp}
-        />
-      </Group>
+      <circle
+        cx={x}
+        cy={y}
+        r={
+          isSelected
+            ? PIN_CIRCLE_RADIUS_SELECTED
+            : PIN_CIRCLE_RADIUS_UNSELECTED
+        }
+        fill={isSelected ? "yellow" : "blue"}
+        onClick={onClick}
+        onMouseDown={this._onMouseDown}
+        onMouseUp={this._onMouseUp}
+      />
     );
   }
 
-  private _onMouseDown(e: KonvaMouseEvent) {
+  private _onMouseDown(e: React.MouseEvent) {
     const { pinId, onMouseDown, onPinMouseDown } = this.props;
     if (onPinMouseDown) {
       onPinMouseDown(pinId, e);
@@ -79,7 +73,7 @@ class CircuitNodePin extends React.Component<Props> {
     }
   }
 
-  private _onMouseUp(e: KonvaMouseEvent) {
+  private _onMouseUp(e: React.MouseEvent) {
     const { pinId, onMouseUp, onPinMouseUp } = this.props;
     if (onPinMouseUp) {
       onPinMouseUp(pinId, e);

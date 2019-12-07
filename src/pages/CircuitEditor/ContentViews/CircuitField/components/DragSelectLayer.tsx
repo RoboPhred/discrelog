@@ -1,8 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { FastLayer, Rect } from "react-konva";
-
 import { AppState } from "@/store";
 
 import { selectionRectSelector } from "../selectors";
@@ -18,18 +16,17 @@ type Props = StateProps;
 class DragSelectLayer extends React.Component<Props> {
   render() {
     const { selectionRect: rect } = this.props;
+    if (!rect) {
+      return null;
+    }
     return (
-      <FastLayer>
-        {rect && (
-          <Rect
-            x={rect.p1.x}
-            y={rect.p1.y}
-            width={rect.p2.x - rect.p1.x}
-            height={rect.p2.y - rect.p1.y}
-            fill="blue"
-          />
-        )}
-      </FastLayer>
+      <g transform={`translate(${rect.p1.x}, ${rect.p1.y})`}>
+        <rect
+          width={rect.p2.x - rect.p1.x}
+          height={rect.p2.y - rect.p1.y}
+          fill="blue"
+        />
+      </g>
     );
   }
 }

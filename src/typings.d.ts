@@ -3,16 +3,6 @@ interface Window {
   __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: Function;
 }
 
-interface KonvaMouseEvent {
-  evt: MouseEvent;
-}
-
-// FIXME: Chrome only.  Do not use.
-interface MouseEvent {
-  layerX: number;
-  layerY: number;
-}
-
 declare type HotkeyHandler = (keyEvent?: KeyboardEvent) => void;
 
 type IsFunction<T> = T extends (...args: any[]) => any ? T : never;

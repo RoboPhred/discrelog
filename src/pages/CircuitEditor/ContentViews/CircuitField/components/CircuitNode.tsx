@@ -2,9 +2,6 @@ import * as React from "react";
 
 import { connect } from "react-redux";
 
-import { ContainerConfig } from "konva";
-import { Group, Rect } from "react-konva";
-
 import { AppState } from "@/store";
 
 import { NodeType } from "@/services/simulator/node-types";
@@ -20,15 +17,17 @@ import NodeVisual, {
 
 import CircuitNodePin from "./CircuitNodePin";
 
-export interface CircuitNodeProps extends ContainerConfig {
+export interface CircuitNodeProps {
   nodeId: string;
-  onClick?(e: KonvaMouseEvent): void;
-  onMouseDown?(e: KonvaMouseEvent): void;
-  onMouseOver?(e: KonvaMouseEvent): void;
-  onMouseUp?(e: KonvaMouseEvent): void;
-  onMouseLeave?(e: KonvaMouseEvent): void;
-  onPinMouseDown?(pin: string, e: KonvaMouseEvent): void;
-  onPinMouseUp?(pin: string, e: KonvaMouseEvent): void;
+  x: number;
+  y: number;
+  onClick?(e: React.MouseEvent): void;
+  onMouseDown?(e: React.MouseEvent): void;
+  onMouseOver?(e: React.MouseEvent): void;
+  onMouseUp?(e: React.MouseEvent): void;
+  onMouseLeave?(e: React.MouseEvent): void;
+  onPinMouseDown?(pin: string, e: React.MouseEvent): void;
+  onPinMouseUp?(pin: string, e: React.MouseEvent): void;
 }
 
 interface StateProps {
@@ -54,41 +53,48 @@ class CircuitNode extends React.Component<Props> {
 
   render() {
     const {
-      // Pull out all of our props to avoid passing them to group.
       nodeId,
+      x,
+      y,
       nodeType,
       nodeState,
       isSelected,
       onClick,
-      onPinMouseDown,
-      onPinMouseUp,
-      ...groupProps
+      onMouseDown,
+      onMouseLeave,
+      onMouseOver,
+      onMouseUp,
     } = this.props;
 
     return (
-      <Group {...groupProps}>
+      <g id={`circuit-node-${nodeId}`} transform={`translate(${x}, ${y})`}>
         <NodeVisual
           nodeType={nodeType}
           nodeState={nodeState}
           onClick={onClick}
           renderPin={this._renderPin}
+          onMouseDown={onMouseDown}
+          onMouseLeave={onMouseLeave}
+          onMouseOver={onMouseOver}
+          onMouseUp={onMouseUp}
         />
-        {isSelected && <Rect width={10} height={10} fill="yellow" />}
-      </Group>
+        {isSelected && <rect width={10} height={10} fill="yellow" />}
+      </g>
     );
   }
 
   private _renderPin(props: RenderPinProps): React.ReactElement<any> {
     const { onPinMouseDown, onPinMouseUp } = this.props;
-    const { id, ...pinProps } = props;
+    const { id, x, y } = props;
     return (
       <CircuitNodePin
         key={id}
         nodeId={this.props.nodeId}
         pinId={id}
+        x={x}
+        y={y}
         onPinMouseDown={onPinMouseDown}
         onPinMouseUp={onPinMouseUp}
-        {...pinProps}
       />
     );
   }

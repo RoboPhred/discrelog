@@ -1,9 +1,5 @@
 import * as React from "react";
 
-import { ContainerConfig } from "konva";
-
-import { Path, Group, Rect } from "react-konva";
-
 import { NodePinDirection } from "@/services/simulator";
 import {
   NodeType,
@@ -16,42 +12,56 @@ export interface RenderPinProps extends NodePinDefinition {
   id: string;
   direction: NodePinDirection;
 }
-export interface NodeVisualProps extends ContainerConfig {
+export interface NodeVisualProps {
+  x?: number;
+  y?: number;
   nodeType: NodeType;
   nodeState: any;
   renderPin?(props: RenderPinProps): React.ReactElement<any>;
-  onClick?(e: KonvaMouseEvent): void;
+  onClick?(e: React.MouseEvent): void;
+  onMouseDown?(e: React.MouseEvent): void;
+  onMouseOver?(e: React.MouseEvent): void;
+  onMouseUp?(e: React.MouseEvent): void;
+  onMouseLeave?(e: React.MouseEvent): void;
 }
 
 type Props = NodeVisualProps;
 class NodeVisual extends React.Component<Props> {
   render() {
     const {
+      x = 0,
+      y = 0,
       nodeType,
       nodeState,
       renderPin,
       onClick,
-      ...konvaProps
+      onMouseDown,
+      onMouseOver,
+      onMouseUp,
+      onMouseLeave
     } = this.props;
 
     const def = NodeTypes[nodeType];
-    if (!def) {
-      return <Rect width={50} height={50} fill="red" />;
-    }
-    const { hitPath, shapePath } = def.visual;
 
-    const visualOnClick = hitPath ? undefined : onClick;
-    const visuals = normalizeVisuals(shapePath, nodeState);
-    const pathElements = visuals.map((v, i) => (
-      <Path
-        key={i}
-        data={v.path}
-        fill={v.fill}
-        stroke={v.stroke}
-        strokeWidth={v.strokeWidth}
-        onClick={visualOnClick}
-      />
-    ));
+    let body: React.ReactNode;
+    if (!def) {
+      body = <rect x={x} y={y} width={50} height={50} fill="red" />;
+    }
+    else {
+      const { shapePath } = def.visual;
+      const visuals = normalizeVisuals(shapePath, nodeState);
+      body = visuals.map((v, i) => (
+        <path
+          key={i}
+          d={v.path}
+          fill={v.fill}
+          stroke={v.stroke}
+          strokeWidth={v.strokeWidth}
+        />
+      ));
+    }
+
+    const { hitPath } = def.visual;
 
     let pins: React.ReactNode = null;
 
@@ -67,14 +77,23 @@ class NodeVisual extends React.Component<Props> {
       });
     }
 
+    const transform = (x != 0 || y != 0) ? `translate(${x}, ${y})` : undefined;
     return (
-      <Group {...konvaProps}>
+      <g
+        className="node-visual"
+        transform={transform}
+        onClick={onClick}
+        onMouseDown={onMouseDown}
+        onMouseOver={onMouseOver}
+        onMouseUp={onMouseUp}
+        onMouseLeave={onMouseLeave}
+      >
         {hitPath && (
-          <Path data={hitPath} fill="transparent" onClick={onClick} />
+          <path d={hitPath} fill="transparent" onClick={onClick} />
         )}
-        {pathElements}
+        {body}
         {pins}
-      </Group>
+      </g>
     );
   }
 }

@@ -2,7 +2,6 @@ import * as React from "react";
 
 import { connect } from "react-redux";
 
-import { Stage } from "react-konva";
 import sizeme, { SizeProps } from "react-sizeme";
 import { HotKeys } from "react-hotkeys";
 
@@ -27,6 +26,7 @@ import WiresLayer from "./components/WiresLayer";
 import NodesLayer from "./components/NodesLayer";
 
 import * as events from "./events";
+import { getFieldCoord } from "./utils";
 
 export interface CircuitFieldProps {
   className?: string;
@@ -46,6 +46,7 @@ class CircuitField extends React.Component<Props> {
   private _startMousePos: Point | null = null;
 
   private _hotkeysRef = React.createRef<HTMLDivElement>();
+  private _svgRef = React.createRef<SVGSVGElement>();
 
   constructor(props: Props) {
     super(props);
@@ -73,7 +74,8 @@ class CircuitField extends React.Component<Props> {
       <FieldContainer className={className}>
         <HotKeys keyMap={keymap} handlers={this._keyHandlers}>
           <div tabIndex={-1} ref={this._hotkeysRef}>
-            <Stage
+            <svg
+              ref={this._svgRef}
               width={width}
               height={height}
               onMouseDown={this._onMouseDown}
@@ -90,7 +92,7 @@ class CircuitField extends React.Component<Props> {
                 onNodePinMouseDown={this._onNodePinMouseDown}
                 onNodePinMouseUp={this._onNodePinMouseUp}
               />
-            </Stage>
+            </svg>
           </div>
         </HotKeys>
       </FieldContainer>
@@ -105,20 +107,20 @@ class CircuitField extends React.Component<Props> {
     [KEYMAP_NODE_DELETE]: () => this.props.onHotkeyDelete()
   };
 
-  private _onNodeMouseOver(nodeId: string, e: KonvaMouseEvent) {
-    if (e.evt.defaultPrevented) {
+  private _onNodeMouseOver(nodeId: string, e: React.MouseEvent) {
+    if (e.defaultPrevented) {
       return;
     }
 
     this.props.onNodeHover(nodeId);
   }
 
-  private _onNodeMouseLeave(nodeId: string, e: KonvaMouseEvent) {
+  private _onNodeMouseLeave(nodeId: string, e: React.MouseEvent) {
     this.props.onNodeHover(null);
   }
 
-  private _onNodeMouseDown(nodeId: string, e: KonvaMouseEvent) {
-    if (e.evt.defaultPrevented) {
+  private _onNodeMouseDown(nodeId: string, e: React.MouseEvent) {
+    if (e.defaultPrevented) {
       return;
     }
 
@@ -128,22 +130,22 @@ class CircuitField extends React.Component<Props> {
   private _onNodePinMouseDown(
     nodeId: string,
     pinId: string,
-    e: KonvaMouseEvent
+    e: React.MouseEvent
   ) {
-    if (e.evt.defaultPrevented) {
+    if (e.defaultPrevented) {
       return;
     }
     this._mouseDownNodeId = nodeId;
     this._mouseDownPinId = pinId;
-    e.evt.preventDefault();
+    e.preventDefault();
   }
 
-  private _onNodePinMouseUp(nodeId: string, pinId: string, e: KonvaMouseEvent) {
+  private _onNodePinMouseUp(nodeId: string, pinId: string, e: React.MouseEvent) {
     if (this._isDragging) {
       return;
     }
 
-    if (e.evt.defaultPrevented) {
+    if (e.defaultPrevented) {
       this._resetMouseTracking();
       return;
     }
@@ -156,11 +158,11 @@ class CircuitField extends React.Component<Props> {
     const { onNodePinClicked } = this.props;
     onNodePinClicked(nodeId, pinId);
     this._resetMouseTracking();
-    e.evt.preventDefault();
+    e.preventDefault();
   }
 
-  private _onMouseDown(e: KonvaMouseEvent) {
-    if (e.evt.defaultPrevented) {
+  private _onMouseDown(e: React.MouseEvent) {
+    if (e.defaultPrevented) {
       return;
     }
 
@@ -168,14 +170,17 @@ class CircuitField extends React.Component<Props> {
       this._hotkeysRef.current.focus();
     }
 
-    this._startMousePos = {
-      x: e.evt.layerX,
-      y: e.evt.layerY
-    };
+    if (!this._svgRef.current) {
+      return;
+    }
+
+    const p = getFieldCoord(this._svgRef.current, { x: e.clientX, y: e.clientY });
+
+    this._startMousePos = p;
   }
 
-  private _onMouseMove(e: KonvaMouseEvent) {
-    if (e.evt.defaultPrevented) {
+  private _onMouseMove(e: React.MouseEvent) {
+    if (e.defaultPrevented) {
       return;
     }
 
@@ -183,9 +188,15 @@ class CircuitField extends React.Component<Props> {
       return;
     }
 
+    if (!this._svgRef.current) {
+      return;
+    }
+
     const { x: sx, y: sy } = this._startMousePos;
 
-    const { layerX: x, layerY: y, ctrlKey, altKey, shiftKey, metaKey } = e.evt;
+    const { ctrlKey, altKey, shiftKey, metaKey } = e;
+    const { x, y } = getFieldCoord(this._svgRef.current, { x: e.clientX, y: e.clientY });
+
     const modifiers = {
       ctrlMetaKey: keyboardIsMac ? metaKey : ctrlKey,
       altKey: altKey,
@@ -211,13 +222,19 @@ class CircuitField extends React.Component<Props> {
     }
   }
 
-  private _onMouseUp(e: KonvaMouseEvent) {
-    if (e.evt.defaultPrevented) {
+  private _onMouseUp(e: React.MouseEvent) {
+    if (e.defaultPrevented) {
       this._resetMouseTracking();
       return;
     }
 
-    const { layerX: x, layerY: y, ctrlKey, altKey, metaKey, shiftKey } = e.evt;
+    if (!this._svgRef.current) {
+      return;
+    }
+
+    const { ctrlKey, altKey, metaKey, shiftKey } = e;
+    const { x, y } = getFieldCoord(this._svgRef.current, { x: e.clientX, y: e.clientY });
+
     const modifiers = {
       ctrlMetaKey: keyboardIsMac ? metaKey : ctrlKey,
       altKey: altKey,

@@ -1,8 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { Line, Group } from "react-konva";
-
 import { ZeroPoint, pointAdd } from "@/geometry";
 import { AppState } from "@/store";
 import { Point } from "@/types";
@@ -33,7 +31,7 @@ function mapStateToProps(state: AppState, props: WireProps) {
     }
     value =
       state.services.simulator.nodeOutputValuesByNodeId[sourceNodeId][
-        sourcePin
+      sourcePin
       ];
   }
 
@@ -69,44 +67,45 @@ class Wire extends React.Component<Props> {
 
   render() {
     const { start, end, value } = this.props;
-    const points = getWirePoints(start, end);
+    // TODO: Style lines again
+    // const points = getWirePoints(start, end);
     return (
-      <Group>
-        <Line points={points} stroke={value ? "green" : "black"} />
-      </Group>
+      <g>
+        <line x1={start.x} y1={start.y} x2={end.x} y2={end.y} stroke={value ? "green" : "black"} />
+      </g>
     );
   }
 }
 export default connect(mapStateToProps)(Wire);
 
-function getWirePoints(start: Point, end: Point): number[] {
-  if (Math.abs(start.x - end.x) > Math.abs(start.y - end.y)) {
-    return [
-      start.x,
-      start.y,
+// function getWirePoints(start: Point, end: Point): number[] {
+//   if (Math.abs(start.x - end.x) > Math.abs(start.y - end.y)) {
+//     return [
+//       start.x,
+//       start.y,
 
-      start.x + (end.x - start.x) / 2,
-      start.y,
+//       start.x + (end.x - start.x) / 2,
+//       start.y,
 
-      start.x + (end.x - start.x) / 2,
-      end.y,
+//       start.x + (end.x - start.x) / 2,
+//       end.y,
 
-      end.x,
-      end.y
-    ];
-  } else {
-    return [
-      start.x,
-      start.y,
+//       end.x,
+//       end.y
+//     ];
+//   } else {
+//     return [
+//       start.x,
+//       start.y,
 
-      start.x,
-      start.y + (end.y - start.y) / 2,
+//       start.x,
+//       start.y + (end.y - start.y) / 2,
 
-      end.x,
-      start.y + (end.y - start.y) / 2,
+//       end.x,
+//       start.y + (end.y - start.y) / 2,
 
-      end.x,
-      end.y
-    ];
-  }
-}
+//       end.x,
+//       end.y
+//     ];
+//   }
+// }

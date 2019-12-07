@@ -1,10 +1,10 @@
 import { keyboardCommandModifier } from "@/runtime-env";
 
-export const KEYMAP_SIM_STEP = "keymap:CircuitEditor/SimStep" as "keymap:CircuitEditor/SimStep";
-export const KEYMAP_SIM_FASTFORWARD = "keymap:CircuitEditor/SimFastForward" as "keymap:CircuitEditor/SimFastForward";
-export const KEYMAP_NODE_COPY = "keymap:CircuitEditor/Copy" as "keymap:CircuitEditor/Copy";
-export const KEYMAP_NODE_PASTE = "keymap:CircuitEditor/Paste" as "keymap:CircuitEditor/Paste";
-export const KEYMAP_NODE_DELETE = "keymap:CircuitEditor/Delete" as "keymap:CircuitEditor/Delete";
+export const KEYMAP_SIM_STEP = "keymap:CircuitEditor/SimStep" as const;
+export const KEYMAP_SIM_FASTFORWARD = "keymap:CircuitEditor/SimFastForward" as const;
+export const KEYMAP_NODE_COPY = "keymap:CircuitEditor/Copy" as const;
+export const KEYMAP_NODE_PASTE = "keymap:CircuitEditor/Paste" as const;
+export const KEYMAP_NODE_DELETE = "keymap:CircuitEditor/Delete" as const;
 
 const keymap = {
   [KEYMAP_SIM_STEP]: "space",

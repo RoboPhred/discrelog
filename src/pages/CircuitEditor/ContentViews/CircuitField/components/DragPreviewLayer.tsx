@@ -7,8 +7,6 @@ import values from "lodash/values";
 
 import { createStructuredSelector, createSelector } from "reselect";
 
-import { Layer } from "react-konva";
-
 import { AppState } from "@/store";
 
 import {
@@ -79,7 +77,7 @@ class DragPreviewLayer extends React.Component<Props> {
         ))
       );
     }
-    return <Layer>{elements}</Layer>;
+    return <g id="drag-preview-layer" opacity={0.3}>{elements}</g>;
   }
 }
 export default connect(mapStateToProps)(DragPreviewLayer);

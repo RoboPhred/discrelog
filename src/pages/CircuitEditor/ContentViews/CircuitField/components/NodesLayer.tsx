@@ -3,9 +3,6 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
-import { ContainerConfig } from "konva";
-import { Layer } from "react-konva";
-
 import { AppState } from "@/store";
 
 import { nodePositionsByIdSelector } from "@/pages/CircuitEditor/selectors";
@@ -13,12 +10,12 @@ import { nodePositionsByIdSelector } from "@/pages/CircuitEditor/selectors";
 import CircuitNode from "./CircuitNode";
 
 export interface NodesLayerProps {
-  onNodeMouseDown?(node: string, e: KonvaMouseEvent): void;
-  onNodeMouseUp?(node: string, e: KonvaMouseEvent): void;
-  onNodeMouseOver?(node: string, e: KonvaMouseEvent): void;
-  onNodeMouseLeave?(node: string, e: KonvaMouseEvent): void;
-  onNodePinMouseDown?(nodeId: string, pinId: string, e: KonvaMouseEvent): void;
-  onNodePinMouseUp?(nodeId: string, pinId: string, e: KonvaMouseEvent): void;
+  onNodeMouseDown?(node: string, e: React.MouseEvent): void;
+  onNodeMouseUp?(node: string, e: React.MouseEvent): void;
+  onNodeMouseOver?(node: string, e: React.MouseEvent): void;
+  onNodeMouseLeave?(node: string, e: React.MouseEvent): void;
+  onNodePinMouseDown?(nodeId: string, pinId: string, e: React.MouseEvent): void;
+  onNodePinMouseUp?(nodeId: string, pinId: string, e: React.MouseEvent): void;
 }
 
 const stateSelectors = {
@@ -65,11 +62,11 @@ class NodesLayer extends React.Component<Props> {
       );
     });
 
-    return <Layer>{nodeElements}</Layer>;
+    return <g id="nodes-layer">{nodeElements}</g>;
   }
 
-  private _onPinMouseDown(nodeId: string, pin: string, e: KonvaMouseEvent) {
-    e.evt.stopPropagation();
+  private _onPinMouseDown(nodeId: string, pin: string, e: React.MouseEvent) {
+    e.stopPropagation();
 
     const { onNodePinMouseDown } = this.props;
     if (onNodePinMouseDown) {
@@ -77,7 +74,7 @@ class NodesLayer extends React.Component<Props> {
     }
   }
 
-  private _onPinMouseUp(nodeId: string, pin: string, e: KonvaMouseEvent) {
+  private _onPinMouseUp(nodeId: string, pin: string, e: React.MouseEvent) {
     const { onNodePinMouseUp } = this.props;
     if (onNodePinMouseUp) {
       onNodePinMouseUp(nodeId, pin, e);
@@ -86,17 +83,19 @@ class NodesLayer extends React.Component<Props> {
 }
 export default connect(mapStateToProps)(NodesLayer);
 
-interface BoundCicrcuitNodeProps extends ContainerConfig {
+interface BoundCicrcuitNodeProps {
   nodeId: string;
+  x: number;
+  y: number;
   // TODO: Passing these down the hierarchy is silly.
   //  Some of them can be handled in their originating element
   //  with their own event actions.
-  onMouseDown?(nodeId: string, e: KonvaMouseEvent): void;
-  onMouseUp?(nodeId: string, e: KonvaMouseEvent): void;
-  onMouseOver?(nodeId: string, e: KonvaMouseEvent): void;
-  onMouseLeave?(nodeId: string, e: KonvaMouseEvent): void;
-  onPinMouseDown?(nodeId: string, pin: string, e: KonvaMouseEvent): void;
-  onPinMouseUp?(nodeId: string, pin: string, e: KonvaMouseEvent): void;
+  onMouseDown?(nodeId: string, e: React.MouseEvent): void;
+  onMouseUp?(nodeId: string, e: React.MouseEvent): void;
+  onMouseOver?(nodeId: string, e: React.MouseEvent): void;
+  onMouseLeave?(nodeId: string, e: React.MouseEvent): void;
+  onPinMouseDown?(nodeId: string, pin: string, e: React.MouseEvent): void;
+  onPinMouseUp?(nodeId: string, pin: string, e: React.MouseEvent): void;
 }
 class BoundCicrcuitNode extends React.Component<BoundCicrcuitNodeProps> {
   constructor(props: BoundCicrcuitNodeProps) {
@@ -112,17 +111,15 @@ class BoundCicrcuitNode extends React.Component<BoundCicrcuitNodeProps> {
 
   render() {
     const {
-      onMouseDown,
-      onMouseUp,
-      onMouseOver,
-      onMouseLeave,
-      onPinMouseDown,
-      onPinMouseUp,
-      ...otherProps
+      nodeId,
+      x,
+      y
     } = this.props;
     return (
       <CircuitNode
-        {...otherProps}
+        nodeId={nodeId}
+        x={x}
+        y={y}
         onMouseDown={this._onMouseDown}
         onMouseUp={this._onMouseUp}
         onMouseOver={this._onMouseOver}
@@ -133,42 +130,42 @@ class BoundCicrcuitNode extends React.Component<BoundCicrcuitNodeProps> {
     );
   }
 
-  private _onMouseDown(e: KonvaMouseEvent) {
+  private _onMouseDown(e: React.MouseEvent) {
     const { nodeId, onMouseDown } = this.props;
     if (onMouseDown) {
       onMouseDown(nodeId, e);
     }
   }
 
-  private _onMouseUp(e: KonvaMouseEvent) {
+  private _onMouseUp(e: React.MouseEvent) {
     const { nodeId, onMouseUp } = this.props;
     if (onMouseUp) {
       onMouseUp(nodeId, e);
     }
   }
 
-  private _onMouseOver(e: KonvaMouseEvent) {
+  private _onMouseOver(e: React.MouseEvent) {
     const { nodeId, onMouseOver } = this.props;
     if (onMouseOver) {
       onMouseOver(nodeId, e);
     }
   }
 
-  private _onMouseLeave(e: KonvaMouseEvent) {
+  private _onMouseLeave(e: React.MouseEvent) {
     const { nodeId, onMouseLeave } = this.props;
     if (onMouseLeave) {
       onMouseLeave(nodeId, e);
     }
   }
 
-  private _onPinMouseDown(pin: string, e: KonvaMouseEvent) {
+  private _onPinMouseDown(pin: string, e: React.MouseEvent) {
     const { nodeId, onPinMouseDown } = this.props;
     if (onPinMouseDown) {
       onPinMouseDown(nodeId, pin, e);
     }
   }
 
-  private _onPinMouseUp(pin: string, e: KonvaMouseEvent) {
+  private _onPinMouseUp(pin: string, e: React.MouseEvent) {
     const { nodeId, onPinMouseUp } = this.props;
     if (onPinMouseUp) {
       onPinMouseUp(nodeId, pin, e);

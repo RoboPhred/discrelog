@@ -4,8 +4,6 @@ import styled from "styled-components";
 
 import { connect } from "react-redux";
 
-import { Stage, Layer } from "react-konva";
-
 import { addNode } from "@/services/simulator/actions/node-add";
 import { NodeTypes } from "@/services/simulator/node-types";
 
@@ -26,11 +24,9 @@ class CircuitTray extends React.Component<Props> {
     const elements = typedKeys(NodeTypes).map(type => {
       return (
         <div key={type} onClick={() => addNode(type)}>
-          <Stage width={110} height={110}>
-            <Layer>
-              <NodeVisual nodeType={type} nodeState={{}} />
-            </Layer>
-          </Stage>
+          <svg width={110} height={110}>
+            <NodeVisual nodeType={type} nodeState={{}} />
+          </svg>
         </div>
       );
     });
