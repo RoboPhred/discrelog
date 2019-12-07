@@ -4,14 +4,14 @@ import { normalizeRectangle, pointSubtract } from "@/geometry";
 import { GetState } from "@/store";
 import { Point } from "@/types";
 
-import { NodePinDirection } from "@/services/simulator";
+import { nodePinDirectionSelector } from "@/services/simulator/selectors/connections";
 import { interactNode } from "@/services/simulator/actions/node-interact";
 import { toggleWire } from "@/services/simulator/actions/wire-toggle";
 import { evolveSim } from "@/services/simulator/actions/sim-evolve";
 import { fastForwardSim } from "@/services/simulator/actions/sim-fastforward";
 import { deleteNode } from "@/services/simulator/actions/node-delete";
 
-import { selectedNodeIds } from "@/pages/CircuitEditor/selectors";
+import { selectedNodeIdsSelector } from "@/pages/CircuitEditor/selectors";
 import { SelectionMode } from "@/pages/CircuitEditor/types";
 import { selectNodes } from "@/pages/CircuitEditor/actions/select-nodes";
 import { clearSelection } from "@/pages/CircuitEditor/actions/select-clear";
@@ -22,6 +22,7 @@ import { copyNodes } from "@/pages/CircuitEditor/actions/clipboard-copy";
 import { paste } from "@/pages/CircuitEditor/actions/clipboard-paste";
 
 import { selectPin, startDrag, continueDrag, endDrag } from "./actions";
+import { selectedPinSelector } from "./selectors";
 
 export interface ModifierKeys {
   ctrlMetaKey: boolean;
@@ -38,28 +39,34 @@ export function onNodeClicked(nodeId: string, modifiers: ModifierKeys) {
   return selectNodes(nodeId, mode);
 }
 
-export function onNodePinClicked(
-  nodeId: string,
-  pinDirection: NodePinDirection,
-  pinId: string
-) {
+export function onNodePinClicked(nodeId: string, pinId: string) {
   return function(dispatch: Dispatch, getState: GetState) {
     const state = getState();
-    const selectedPin = state.ui.circuitEditor.circuitField.selectedPin;
-    if (selectedPin && selectedPin.direction !== pinDirection) {
-      // TODO: We should not care about direction like this.
-      //  Make pins unambiguous on a node, and handle any order in toggleWire
-      if (selectedPin.direction === "output") {
-        dispatch(
-          toggleWire(selectedPin.nodeId, selectedPin.pin, nodeId, pinId)
-        );
-      } else {
-        dispatch(
-          toggleWire(nodeId, pinId, selectedPin.nodeId, selectedPin.pin)
-        );
-      }
+
+    const clickedPinDirection = nodePinDirectionSelector(state, {
+      nodeId,
+      pinId
+    });
+    if (!clickedPinDirection) {
+      return;
+    }
+
+    const selectedPin = selectedPinSelector(state);
+    if (!selectedPin) {
+      dispatch(selectPin(nodeId, pinId));
+      return;
+    }
+
+    const selectedPinDirection = nodePinDirectionSelector(state, selectedPin);
+    if (!selectedPinDirection) {
+      dispatch(selectPin(nodeId, pinId));
+      return;
+    }
+
+    if (selectedPinDirection !== clickedPinDirection) {
+      dispatch(toggleWire(selectedPin, { nodeId, pinId }));
     } else {
-      dispatch(selectPin(nodeId, pinDirection, pinId));
+      dispatch(selectPin(nodeId, pinId));
     }
   };
 }
@@ -138,7 +145,7 @@ export function onHotkeyFastForward() {
 export function onHotkeyCopy() {
   return (dispatch: Dispatch, getState: GetState) => {
     const state = getState();
-    const selectedIds = selectedNodeIds(state);
+    const selectedIds = selectedNodeIdsSelector(state);
     if (selectedIds.length === 0) {
       return;
     }
@@ -153,7 +160,7 @@ export function onHotkeyPaste() {
 export function onHotkeyDelete() {
   return (dispatch: Dispatch, getState: GetState) => {
     const state = getState();
-    const selectedIds = selectedNodeIds(state);
+    const selectedIds = selectedNodeIdsSelector(state);
     if (selectedIds.length === 0) {
       return;
     }

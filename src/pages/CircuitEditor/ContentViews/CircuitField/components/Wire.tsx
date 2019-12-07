@@ -7,10 +7,10 @@ import { ZeroPoint, pointAdd } from "@/geometry";
 import { AppState } from "@/store";
 import { Point } from "@/types";
 
-import { nodeDefsByIdSelector } from "@/services/simulator/selectors";
 import { NodePin } from "@/services/simulator/types";
+import { nodeDefsByIdSelector } from "@/services/simulator/selectors/nodes";
 
-import { nodePositionsById } from "@/pages/CircuitEditor/selectors";
+import { nodePositionsByIdSelector } from "@/pages/CircuitEditor/selectors";
 
 export interface WireProps {
   output: NodePin;
@@ -19,8 +19,8 @@ export interface WireProps {
 
 function mapStateToProps(state: AppState, props: WireProps) {
   const {
-    output: { nodeId: sourceNodeId, pin: sourcePin },
-    input: { nodeId: targetNodeId, pin: targetPin }
+    output: { nodeId: sourceNodeId, pinId: sourcePin },
+    input: { nodeId: targetNodeId, pinId: targetPin }
   } = props;
 
   const sourceDef = nodeDefsByIdSelector(state)[sourceNodeId];
@@ -45,11 +45,11 @@ function mapStateToProps(state: AppState, props: WireProps) {
 
   return {
     start: pointAdd(
-      nodePositionsById(state)[sourceNodeId] || ZeroPoint,
+      nodePositionsByIdSelector(state)[sourceNodeId] || ZeroPoint,
       sourceOffset
     ),
     end: pointAdd(
-      nodePositionsById(state)[targetNodeId] || ZeroPoint,
+      nodePositionsByIdSelector(state)[targetNodeId] || ZeroPoint,
       targetOffset
     ),
     value

@@ -11,8 +11,6 @@ import { keyboardIsMac } from "@/runtime-env";
 import { Point } from "@/types";
 import { bindFuncMap } from "@/utils";
 
-import { NodePinDirection } from "@/services/simulator";
-
 import keymap, {
   KeymapHandler,
   KEYMAP_SIM_STEP,
@@ -129,7 +127,6 @@ class CircuitField extends React.Component<Props> {
 
   private _onNodePinMouseDown(
     nodeId: string,
-    pinDirection: NodePinDirection,
     pinId: string,
     e: KonvaMouseEvent
   ) {
@@ -141,12 +138,7 @@ class CircuitField extends React.Component<Props> {
     e.evt.preventDefault();
   }
 
-  private _onNodePinMouseUp(
-    nodeId: string,
-    pinDirection: NodePinDirection,
-    pinId: string,
-    e: KonvaMouseEvent
-  ) {
+  private _onNodePinMouseUp(nodeId: string, pinId: string, e: KonvaMouseEvent) {
     if (this._isDragging) {
       return;
     }
@@ -162,7 +154,7 @@ class CircuitField extends React.Component<Props> {
     }
 
     const { onNodePinClicked } = this.props;
-    onNodePinClicked(nodeId, pinDirection, pinId);
+    onNodePinClicked(nodeId, pinId);
     this._resetMouseTracking();
     e.evt.preventDefault();
   }

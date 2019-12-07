@@ -8,7 +8,8 @@ import { IDMap } from "@/types";
 import { SimulatorState } from "../state";
 import { TransitionWindow, NodePin } from "../types";
 import { NodeTypes } from "../node-types";
-import { nodeInputConnectionsByPinSelector } from "../selectors";
+
+import { nodeInputConnectionsByPinSelector } from "../selectors/connections";
 
 export function collectNodeTransitionsMutator(
   state: SimulatorState,
@@ -39,7 +40,7 @@ export function collectNodeTransitionsMutator(
       inputs[inputPin] = false;
       continue;
     }
-    const { nodeId: sourceNodeId, pin: sourcePin } = inputConn;
+    const { nodeId: sourceNodeId, pinId: sourcePin } = inputConn;
 
     inputs[inputPin] = nodeOutputValuesByNodeId[sourceNodeId][sourcePin];
   }
@@ -60,7 +61,7 @@ export function collectNodeTransitionsMutator(
       // Sanity check that we are not producing transitions for the past or current tick.
       const transitionTick = tick + (tickOffset > 0 ? tickOffset : 1);
 
-      removeTransitionByPin(state, { nodeId: node.id, pin: outputId });
+      removeTransitionByPin(state, { nodeId: node.id, pinId: outputId });
 
       if (nodeOutputs[outputId] !== value) {
         addTransition(state, node.id, outputId, transitionTick, value);
@@ -93,7 +94,7 @@ function addTransition(
 }
 
 function removeTransitionByPin(state: SimulatorState, pin: NodePin) {
-  const { nodeId, pin: outputId } = pin;
+  const { nodeId, pinId: outputId } = pin;
 
   const { transitionsById, transitionWindows } = state;
 

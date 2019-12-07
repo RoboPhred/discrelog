@@ -1,5 +1,3 @@
-import { typedKeys } from "@/utils";
-
 import { NodeDefinition, NodeVisualPathDefinition } from "./types";
 
 const SCALE = 3;

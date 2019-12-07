@@ -1,6 +1,5 @@
 import { AnyAction } from "redux";
 import produce from "immer";
-import findIndex from "lodash/findIndex";
 
 import { SimulatorState, defaultSimulatorState } from "../state";
 
@@ -8,30 +7,36 @@ import { collectNodeTransitionsMutator } from "./transition-utils";
 import { nodePinEquals } from "../types";
 import { isDetatchWireNodeAction } from "../actions/wire-detatch";
 
+import { pinsToConnection } from "./utils";
+
 export default function wireDetatchReducer(
   state: SimulatorState = defaultSimulatorState,
   action: AnyAction
 ): SimulatorState {
-  return produce(state, draft => unwireNodeMutator(draft, action));
-}
-
-function unwireNodeMutator(state: SimulatorState, action: AnyAction) {
   if (!isDetatchWireNodeAction(action)) {
-    return;
+    return state;
   }
 
-  const { outputPin, inputPin } = action.payload;
+  const { p1, p2 } = action.payload;
+  const conn = pinsToConnection(state, p1, p2);
+  if (!conn) {
+    return state;
+  }
 
-  const connectionIndex = findIndex(
-    state.connections,
-    c =>
-      nodePinEquals(c.inputPin, inputPin) &&
-      nodePinEquals(c.outputPin, outputPin)
+  const { outputPin, inputPin } = conn;
+
+  state = {
+    ...state,
+    connections: state.connections.filter(
+      conn =>
+        !(
+          nodePinEquals(conn.inputPin, inputPin) &&
+          nodePinEquals(conn.outputPin, outputPin)
+        )
+    )
+  };
+
+  return produce(state, draft =>
+    collectNodeTransitionsMutator(draft, inputPin.nodeId)
   );
-
-  if (connectionIndex !== -1) {
-    state.connections.splice(connectionIndex, 1);
-  }
-
-  collectNodeTransitionsMutator(state, inputPin.nodeId);
 }

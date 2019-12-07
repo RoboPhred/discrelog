@@ -8,7 +8,7 @@ import { CircuitFieldState } from "./state";
 export const circuitFieldState = (state: AppState) =>
   state.ui.circuitEditor.circuitField;
 
-export const selectionRect = createSelector(
+export const selectionRectSelector = createSelector(
   circuitFieldState,
   (s: CircuitFieldState) =>
     s.dragMode === "select" && s.dragStart && s.dragEnd
@@ -16,7 +16,7 @@ export const selectionRect = createSelector(
       : null
 );
 
-export const dragMoveOffset = createSelector(
+export const dragMoveOffsetSelector = createSelector(
   circuitFieldState,
   (s: CircuitFieldState) =>
     s.dragMode === "move-node" && s.dragStart && s.dragEnd
@@ -24,7 +24,7 @@ export const dragMoveOffset = createSelector(
       : null
 );
 
-export const selectedPin = createSelector(
+export const selectedPinSelector = createSelector(
   circuitFieldState,
   (s: CircuitFieldState) => s.selectedPin
 );

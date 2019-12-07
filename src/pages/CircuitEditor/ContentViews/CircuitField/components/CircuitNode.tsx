@@ -7,14 +7,13 @@ import { Group, Rect } from "react-konva";
 
 import { AppState } from "@/store";
 
-import { NodePinDirection } from "@/services/simulator";
 import { NodeType } from "@/services/simulator/node-types";
 import {
   nodeTypesByIdSelector,
   nodeStatesByIdSelector
-} from "@/services/simulator/selectors";
+} from "@/services/simulator/selectors/nodes";
 
-import { selectedNodeIds } from "@/pages/CircuitEditor/selectors";
+import { selectedNodeIdsSelector } from "@/pages/CircuitEditor/selectors";
 import NodeVisual, {
   RenderPinProps
 } from "@/pages/CircuitEditor/components/NodeVisual";
@@ -28,16 +27,8 @@ export interface CircuitNodeProps extends ContainerConfig {
   onMouseOver?(e: KonvaMouseEvent): void;
   onMouseUp?(e: KonvaMouseEvent): void;
   onMouseLeave?(e: KonvaMouseEvent): void;
-  onPinMouseDown?(
-    direction: NodePinDirection,
-    pin: string,
-    e: KonvaMouseEvent
-  ): void;
-  onPinMouseUp?(
-    direction: NodePinDirection,
-    pin: string,
-    e: KonvaMouseEvent
-  ): void;
+  onPinMouseDown?(pin: string, e: KonvaMouseEvent): void;
+  onPinMouseUp?(pin: string, e: KonvaMouseEvent): void;
 }
 
 interface StateProps {
@@ -49,7 +40,7 @@ function mapStateToProps(state: AppState, props: CircuitNodeProps): StateProps {
   return {
     nodeType: nodeTypesByIdSelector(state)[props.nodeId],
     nodeState: nodeStatesByIdSelector(state)[props.nodeId],
-    isSelected: selectedNodeIds(state).indexOf(props.nodeId) !== -1
+    isSelected: selectedNodeIdsSelector(state).indexOf(props.nodeId) !== -1
   };
 }
 

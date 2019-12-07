@@ -4,15 +4,10 @@ import { DragModeType } from "./types";
 import { NodePinDirection } from "@/services/simulator";
 
 export const ACTION_SELECT_PIN = "@editor/field/select-pin" as "@editor/field/select-pin";
-export const selectPin = (
-  nodeId: string,
-  pinDirection: NodePinDirection,
-  pinId: string
-) => ({
+export const selectPin = (nodeId: string, pinId: string) => ({
   type: ACTION_SELECT_PIN,
   payload: {
     nodeId,
-    pinDirection,
     pinId
   }
 });

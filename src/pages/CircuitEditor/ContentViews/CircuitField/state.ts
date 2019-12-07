@@ -1,17 +1,13 @@
 import { Point } from "@/types";
 
 import { DragModeType } from "./types";
-import { NodePin, NodePinDirection } from "@/services/simulator";
-
-export interface SelectedPinState extends NodePin {
-  direction: NodePinDirection;
-}
+import { NodePin } from "@/services/simulator";
 
 export interface CircuitFieldState {
   dragMode: DragModeType | null;
   dragStart: Point | null;
   dragEnd: Point | null;
-  selectedPin: SelectedPinState | null;
+  selectedPin: NodePin | null;
 }
 
 export const defaultCircuitFieldState: CircuitFieldState = {

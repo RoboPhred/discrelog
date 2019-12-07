@@ -6,14 +6,18 @@ import { createStructuredSelector, createSelector } from "reselect";
 import mapValues from "lodash/mapValues";
 
 import { AppState } from "@/store";
+
+import { nodeInputConnectionsByPinSelector } from "@/services/simulator/selectors/connections";
 import {
-  nodeOutputValuesByNodeIdSelector,
-  nodeInputConnectionsByPinSelector
-} from "@/services/simulator/selectors";
+  nodesByIdSelector,
+  nodeOutputValuesByNodeIdSelector
+} from "@/services/simulator/selectors/nodes";
+
+import { mouseOverNodeIdSelector } from "../selectors";
 
 const mouseOverNode = createSelector(
-  (s: AppState) => s.ui.circuitEditor.mouseOverNodeId,
-  (s: AppState) => s.services.simulator.nodesById,
+  mouseOverNodeIdSelector,
+  nodesByIdSelector,
   (id, nodesById) => (id ? nodesById[id] : null)
 );
 
@@ -32,15 +36,15 @@ const mouseOverNodeInputsSelector = createSelector(
       if (!sourcePin) {
         return null;
       }
-      const { nodeId, pin } = sourcePin;
-      return outputsByNodeId[nodeId][pin];
+      const { nodeId, pinId } = sourcePin;
+      return outputsByNodeId[nodeId][pinId];
     });
   }
 );
 
 const mouseOverNodeOutputsSelector = createSelector(
   (s: AppState) => s.services.simulator.nodeOutputValuesByNodeId,
-  (s: AppState) => s.ui.circuitEditor.mouseOverNodeId,
+  mouseOverNodeIdSelector,
   (outputs, nodeId) => (nodeId != null ? outputs[nodeId] : {})
 );
 

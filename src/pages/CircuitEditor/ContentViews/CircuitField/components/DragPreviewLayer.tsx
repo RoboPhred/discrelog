@@ -14,32 +14,32 @@ import { AppState } from "@/store";
 import {
   nodeTypesByIdSelector,
   nodeStatesByIdSelector
-} from "@/services/simulator/selectors";
+} from "@/services/simulator/selectors/nodes";
 
 import {
-  selectedNodeIds,
-  nodePositionsById
+  selectedNodeIdsSelector,
+  nodePositionsByIdSelector
 } from "@/pages/CircuitEditor/selectors";
 
 import NodeVisual from "@/pages/CircuitEditor/components/NodeVisual";
 
-import { dragMoveOffset } from "../selectors";
+import { dragMoveOffsetSelector } from "../selectors";
 
 const selectedNodePositionsById = createSelector(
-  selectedNodeIds,
-  nodePositionsById,
+  selectedNodeIdsSelector,
+  nodePositionsByIdSelector,
   (selectedNodeIds, nodePositionsById) =>
     pick(nodePositionsById, selectedNodeIds)
 );
 
 const selectedNodeTypesById = createSelector(
-  selectedNodeIds,
+  selectedNodeIdsSelector,
   nodeTypesByIdSelector,
   (selectedNodeIds, nodeTypesById) => pick(nodeTypesById, selectedNodeIds)
 );
 
 const selectedNodeStatesById = createSelector(
-  selectedNodeIds,
+  selectedNodeIdsSelector,
   nodeStatesByIdSelector,
   (selectedNodeIds, nodeStatesById) => pick(nodeStatesById, selectedNodeIds)
 );
@@ -48,7 +48,7 @@ const stateSelectors = {
   selectedNodePositionsById,
   selectedNodeTypesById,
   selectedNodeStatesById,
-  dragMoveOffset
+  dragMoveOffset: dragMoveOffsetSelector
 };
 type StateProps = ObjectValueReturnTypes<typeof stateSelectors>;
 const mapStateToProps = createStructuredSelector<AppState, StateProps>(

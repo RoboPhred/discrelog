@@ -5,11 +5,11 @@ import { FastLayer, Rect } from "react-konva";
 
 import { AppState } from "@/store";
 
-import { selectionRect } from "../selectors";
+import { selectionRectSelector } from "../selectors";
 
 function mapStateToProps(state: AppState) {
   return {
-    selectionRect: selectionRect(state)
+    selectionRect: selectionRectSelector(state)
   };
 }
 type StateProps = ReturnType<typeof mapStateToProps>;

@@ -6,7 +6,7 @@ import { AppState } from "@/store";
 
 import { intersects } from "@/geometry";
 
-import { nodeRectsById } from "../selectors";
+import { nodeRectsByIdSelector } from "../selectors";
 
 import { CircuitEditorState, defaultCircuitEditorState } from "../state";
 import { isSelectRegionAction } from "../actions/select-region";
@@ -24,7 +24,7 @@ export default function selectRegionReducer(
 
   const { region, mode } = action.payload;
 
-  const rects = nodeRectsById(appState);
+  const rects = nodeRectsByIdSelector(appState);
   const chosenIds: string[] = [];
   forOwn(rects, (rect, id) => {
     if (intersects(rect, region)) {

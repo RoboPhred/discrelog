@@ -8,36 +8,35 @@ import { collectNodeTransitionsMutator } from "./transition-utils";
 import { nodePinEquals } from "../types";
 import { isAttachWireAction } from "../actions/wire-attach";
 
+import { pinsToConnection } from "./utils";
+
 export default function wireAttachReducer(
   state: SimulatorState = defaultSimulatorState,
   action: AnyAction
 ): SimulatorState {
-  return produce(state, draft => wireNodeMutator(draft, action));
-}
-
-function wireNodeMutator(state: SimulatorState, action: AnyAction) {
   if (!isAttachWireAction(action)) {
-    return;
+    return state;
   }
 
-  const { outputPin, inputPin } = action.payload;
-
-  const outputNode = state.nodesById[outputPin.nodeId];
-  const inputNode = state.nodesById[inputPin.nodeId];
-
-  if (!outputNode || !inputNode) {
-    return;
+  const { p1, p2 } = action.payload;
+  const conn = pinsToConnection(state, p1, p2);
+  if (!conn) {
+    return state;
   }
+
+  const { inputPin } = conn;
 
   // Only one source per input.
   if (find(state.connections, c => nodePinEquals(c.inputPin, inputPin))) {
-    return;
+    return state;
   }
 
-  state.connections.push({
-    inputPin,
-    outputPin
-  });
+  state = {
+    ...state,
+    connections: [...state.connections, conn]
+  };
 
-  collectNodeTransitionsMutator(state, inputPin.nodeId);
+  return produce(state, draft =>
+    collectNodeTransitionsMutator(draft, inputPin.nodeId)
+  );
 }

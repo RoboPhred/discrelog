@@ -8,9 +8,7 @@ import { Layer } from "react-konva";
 
 import { AppState } from "@/store";
 
-import { NodePinDirection } from "@/services/simulator";
-
-import { nodePositionsById } from "@/pages/CircuitEditor/selectors";
+import { nodePositionsByIdSelector } from "@/pages/CircuitEditor/selectors";
 
 import CircuitNode from "./CircuitNode";
 
@@ -19,22 +17,12 @@ export interface NodesLayerProps {
   onNodeMouseUp?(node: string, e: KonvaMouseEvent): void;
   onNodeMouseOver?(node: string, e: KonvaMouseEvent): void;
   onNodeMouseLeave?(node: string, e: KonvaMouseEvent): void;
-  onNodePinMouseDown?(
-    nodeId: string,
-    pinDirection: NodePinDirection,
-    pinId: string,
-    e: KonvaMouseEvent
-  ): void;
-  onNodePinMouseUp?(
-    nodeId: string,
-    pinDirection: NodePinDirection,
-    pinId: string,
-    e: KonvaMouseEvent
-  ): void;
+  onNodePinMouseDown?(nodeId: string, pinId: string, e: KonvaMouseEvent): void;
+  onNodePinMouseUp?(nodeId: string, pinId: string, e: KonvaMouseEvent): void;
 }
 
 const stateSelectors = {
-  nodePositionsById
+  nodePositionsById: nodePositionsByIdSelector
 };
 type StateProps = ObjectValueReturnTypes<typeof stateSelectors>;
 const mapStateToProps = createStructuredSelector<AppState, StateProps>(
@@ -80,29 +68,19 @@ class NodesLayer extends React.Component<Props> {
     return <Layer>{nodeElements}</Layer>;
   }
 
-  private _onPinMouseDown(
-    nodeId: string,
-    direction: NodePinDirection,
-    pin: string,
-    e: KonvaMouseEvent
-  ) {
+  private _onPinMouseDown(nodeId: string, pin: string, e: KonvaMouseEvent) {
     e.evt.stopPropagation();
 
     const { onNodePinMouseDown } = this.props;
     if (onNodePinMouseDown) {
-      onNodePinMouseDown(nodeId, direction, pin, e);
+      onNodePinMouseDown(nodeId, pin, e);
     }
   }
 
-  private _onPinMouseUp(
-    nodeId: string,
-    direction: NodePinDirection,
-    pin: string,
-    e: KonvaMouseEvent
-  ) {
+  private _onPinMouseUp(nodeId: string, pin: string, e: KonvaMouseEvent) {
     const { onNodePinMouseUp } = this.props;
     if (onNodePinMouseUp) {
-      onNodePinMouseUp(nodeId, direction, pin, e);
+      onNodePinMouseUp(nodeId, pin, e);
     }
   }
 }
@@ -117,18 +95,8 @@ interface BoundCicrcuitNodeProps extends ContainerConfig {
   onMouseUp?(nodeId: string, e: KonvaMouseEvent): void;
   onMouseOver?(nodeId: string, e: KonvaMouseEvent): void;
   onMouseLeave?(nodeId: string, e: KonvaMouseEvent): void;
-  onPinMouseDown?(
-    nodeId: string,
-    direction: NodePinDirection,
-    pin: string,
-    e: KonvaMouseEvent
-  ): void;
-  onPinMouseUp?(
-    nodeId: string,
-    direction: NodePinDirection,
-    pin: string,
-    e: KonvaMouseEvent
-  ): void;
+  onPinMouseDown?(nodeId: string, pin: string, e: KonvaMouseEvent): void;
+  onPinMouseUp?(nodeId: string, pin: string, e: KonvaMouseEvent): void;
 }
 class BoundCicrcuitNode extends React.Component<BoundCicrcuitNodeProps> {
   constructor(props: BoundCicrcuitNodeProps) {
@@ -193,25 +161,17 @@ class BoundCicrcuitNode extends React.Component<BoundCicrcuitNodeProps> {
     }
   }
 
-  private _onPinMouseDown(
-    direction: NodePinDirection,
-    pin: string,
-    e: KonvaMouseEvent
-  ) {
+  private _onPinMouseDown(pin: string, e: KonvaMouseEvent) {
     const { nodeId, onPinMouseDown } = this.props;
     if (onPinMouseDown) {
-      onPinMouseDown(nodeId, direction, pin, e);
+      onPinMouseDown(nodeId, pin, e);
     }
   }
 
-  private _onPinMouseUp(
-    direction: NodePinDirection,
-    pin: string,
-    e: KonvaMouseEvent
-  ) {
+  private _onPinMouseUp(pin: string, e: KonvaMouseEvent) {
     const { nodeId, onPinMouseUp } = this.props;
     if (onPinMouseUp) {
-      onPinMouseUp(nodeId, direction, pin, e);
+      onPinMouseUp(nodeId, pin, e);
     }
   }
 }

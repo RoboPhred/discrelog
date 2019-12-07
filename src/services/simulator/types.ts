@@ -14,10 +14,10 @@ export type NodesById = IDMap<Node>;
  */
 export interface NodePin {
   nodeId: string;
-  pin: string;
+  pinId: string;
 }
 export function nodePinEquals(a: NodePin, b: NodePin) {
-  return a.nodeId === b.nodeId && a.pin === b.pin;
+  return a.nodeId === b.nodeId && a.pinId === b.pinId;
 }
 
 /**

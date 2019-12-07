@@ -38,13 +38,12 @@ export default function circuitFieldReducer(
       };
     }
     case ACTION_SELECT_PIN: {
-      const { nodeId, pinDirection, pinId } = action.payload;
+      const { nodeId, pinId } = action.payload;
       return {
         ...state,
         selectedPin: {
           nodeId,
-          direction: pinDirection,
-          pin: pinId
+          pinId
         }
       };
     }

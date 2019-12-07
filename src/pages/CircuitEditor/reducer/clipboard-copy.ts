@@ -10,10 +10,8 @@ import zipObject from "lodash/zipObject";
 import { AppState } from "@/store";
 import { pointSubtract } from "@/geometry";
 
-import {
-  nodeOutputConnectionsByPinSelector,
-  nodeSelector
-} from "@/services/simulator/selectors";
+import { nodeSelector } from "@/services/simulator/selectors/nodes";
+import { nodeOutputConnectionsByPinSelector } from "@/services/simulator/selectors/connections";
 
 import { CircuitEditorState, defaultCircuitEditorState } from "../state";
 import { ClipboardNode } from "../types";
@@ -52,7 +50,7 @@ function copyNodesMutator(
       outputs: mapValues(outputs, conns =>
         conns
           .filter(x => nodeIsSelected(x.nodeId))
-          .map(c => ({ nodeId: copyIds[c.nodeId], pin: c.pin }))
+          .map(c => ({ nodeId: copyIds[c.nodeId], pinId: c.pinId }))
       )
     };
     return copyNode;

@@ -9,6 +9,7 @@ import { ACTION_WIRE_ATTACH } from "../actions/wire-attach";
 
 import wireDetatchReducer from "./wire-detatch";
 import wireAttachReducer from "./wire-attach";
+import { pinsToConnection } from "./utils";
 
 export default function toggleWireReducer(
   state: SimulatorState = defaultSimulatorState,
@@ -18,7 +19,13 @@ export default function toggleWireReducer(
     return state;
   }
 
-  const { inputPin, outputPin } = action.payload;
+  const { p1, p2 } = action.payload;
+  const conn = pinsToConnection(state, p1, p2);
+  if (!conn) {
+    return state;
+  }
+
+  const { outputPin, inputPin } = conn;
 
   const isWired =
     find(

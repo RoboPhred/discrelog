@@ -6,10 +6,11 @@ import { connect } from "react-redux";
 import { Layer } from "react-konva";
 
 import { AppState } from "@/store";
-import { connectionsSelector } from "@/services/simulator/selectors";
+
+import { Connection } from "@/services/simulator";
+import { connectionsSelector } from "@/services/simulator/selectors/connections";
 
 import Wire from "./Wire";
-import { Connection } from "@/services/simulator";
 
 interface StateProps {
   connections: ReturnType<typeof connectionsSelector>;
@@ -38,5 +39,5 @@ export default connect(mapStateToProps)(WiresLayer);
 
 function connectionKey(connection: Connection): string {
   const { outputPin, inputPin } = connection;
-  return `${outputPin.nodeId}:${outputPin.pin}-${inputPin.nodeId}:${inputPin.pin}`;
+  return `${outputPin.nodeId}:${outputPin.pinId}-${inputPin.nodeId}:${inputPin.pinId}`;
 }

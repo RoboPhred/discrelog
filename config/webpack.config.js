@@ -20,6 +20,8 @@ module.exports = {
     contentBase: PATHS.dist
   },
 
+  devtool: "source-map",
+
   entry: {
     client: [joinPath(PATHS.src, "./index.tsx")]
   },

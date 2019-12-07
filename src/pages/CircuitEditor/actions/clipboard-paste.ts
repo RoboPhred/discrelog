@@ -42,9 +42,14 @@ export const paste = () => (dispatch: Dispatch, getState: GetState) => {
     const sourceId = pasteIds[id];
     for (let outputPin of Object.keys(outputs)) {
       for (let output of outputs[outputPin]) {
-        const { nodeId: targetCopyId, pin: targetPin } = output;
+        const { nodeId: targetCopyId, pinId: targetPin } = output;
         const targetId = pasteIds[targetCopyId];
-        dispatch(attachWire(sourceId, outputPin, targetId, targetPin));
+        dispatch(
+          attachWire(
+            { nodeId: sourceId, pinId: outputPin },
+            { nodeId: targetId, pinId: targetPin }
+          )
+        );
       }
     }
 
