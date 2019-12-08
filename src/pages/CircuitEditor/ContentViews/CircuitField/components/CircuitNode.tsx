@@ -67,19 +67,19 @@ class CircuitNode extends React.Component<Props> {
     } = this.props;
 
     return (
-      <g id={`circuit-node-${nodeId}`} transform={`translate(${x}, ${y})`}>
-        <NodeVisual
-          nodeType={nodeType}
-          nodeState={nodeState}
-          onClick={onClick}
-          renderPin={this._renderPin}
-          onMouseDown={onMouseDown}
-          onMouseLeave={onMouseLeave}
-          onMouseOver={onMouseOver}
-          onMouseUp={onMouseUp}
-        />
-        {isSelected && <rect width={10} height={10} fill="yellow" />}
-      </g>
+      <NodeVisual
+        x={x}
+        y={y}
+        nodeType={nodeType}
+        nodeState={nodeState}
+        onClick={onClick}
+        colorOverride={isSelected ? "yellow" : undefined}
+        renderPin={this._renderPin}
+        onMouseDown={onMouseDown}
+        onMouseLeave={onMouseLeave}
+        onMouseOver={onMouseOver}
+        onMouseUp={onMouseUp}
+      />
     );
   }
 

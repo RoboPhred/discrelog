@@ -38,7 +38,7 @@ const EditorLayout: React.FC<EditorPanelProps> = ({
 
   const onRightSidebarResize = React.useCallback(
     (delta: number) => {
-      setRightSidebarSize(rightSidebarSize + delta);
+      setRightSidebarSize(rightSidebarSize - delta);
     },
     [rightSidebarSize]
   );

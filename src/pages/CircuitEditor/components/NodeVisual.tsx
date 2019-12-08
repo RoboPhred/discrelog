@@ -17,6 +17,7 @@ export interface NodeVisualProps {
   y?: number;
   nodeType: NodeType;
   nodeState: any;
+  colorOverride?: string;
   renderPin?(props: RenderPinProps): React.ReactElement<any>;
   onClick?(e: React.MouseEvent): void;
   onMouseDown?(e: React.MouseEvent): void;
@@ -33,6 +34,7 @@ class NodeVisual extends React.Component<Props> {
       y = 0,
       nodeType,
       nodeState,
+      colorOverride,
       renderPin,
       onClick,
       onMouseDown,
@@ -54,8 +56,8 @@ class NodeVisual extends React.Component<Props> {
         <path
           key={i}
           d={v.path}
-          fill={v.fill}
-          stroke={v.stroke}
+          fill={colorOverride || v.fill}
+          stroke={colorOverride || v.stroke}
           strokeWidth={v.strokeWidth}
         />
       ));

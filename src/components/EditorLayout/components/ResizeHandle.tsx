@@ -28,6 +28,5 @@ const DragHandleDiv = styled.div`
   width: 5px;
   height: 100%;
   background: black;
-  flex: none;
   cursor: ew-resize;
 `;
