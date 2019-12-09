@@ -9,17 +9,16 @@ import { interactNode } from "@/services/simulator/actions/node-interact";
 import { toggleWire } from "@/services/simulator/actions/wire-toggle";
 import { evolveSim } from "@/services/simulator/actions/sim-evolve";
 import { fastForwardSim } from "@/services/simulator/actions/sim-fastforward";
-import { deleteNode } from "@/services/simulator/actions/node-delete";
 
-import { selectedNodeIdsSelector } from "@/pages/CircuitEditor/selectors";
 import { SelectionMode } from "@/pages/CircuitEditor/types";
 import { selectNodes } from "@/pages/CircuitEditor/actions/select-nodes";
 import { clearSelection } from "@/pages/CircuitEditor/actions/select-clear";
 import { selectRegion } from "@/pages/CircuitEditor/actions/select-region";
 import { moveNodes } from "@/pages/CircuitEditor/actions/node-move";
 import { hoverNode } from "@/pages/CircuitEditor/actions/node-hover";
-import { copyNodes } from "@/pages/CircuitEditor/actions/clipboard-copy";
 import { paste } from "@/pages/CircuitEditor/actions/clipboard-paste";
+import { selectionDelete } from "@/pages/CircuitEditor/actions/selection-delete";
+import { selectionCopy } from "@/pages/CircuitEditor/actions/selection-copy";
 
 import { selectPin, startDrag, continueDrag, endDrag } from "./actions";
 import { selectedPinSelector } from "./selectors";
@@ -143,14 +142,7 @@ export function onHotkeyFastForward() {
 }
 
 export function onHotkeyCopy() {
-  return (dispatch: Dispatch, getState: GetState) => {
-    const state = getState();
-    const selectedIds = selectedNodeIdsSelector(state);
-    if (selectedIds.length === 0) {
-      return;
-    }
-    dispatch(copyNodes(selectedIds));
-  };
+  return selectionCopy();
 }
 
 export function onHotkeyPaste() {
@@ -158,14 +150,7 @@ export function onHotkeyPaste() {
 }
 
 export function onHotkeyDelete() {
-  return (dispatch: Dispatch, getState: GetState) => {
-    const state = getState();
-    const selectedIds = selectedNodeIdsSelector(state);
-    if (selectedIds.length === 0) {
-      return;
-    }
-    dispatch(deleteNode(selectedIds));
-  };
+  return selectionDelete();
 }
 
 function getSelectMode(modifiers: ModifierKeys): SelectionMode {

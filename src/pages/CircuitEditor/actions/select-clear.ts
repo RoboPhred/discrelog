@@ -1,6 +1,6 @@
 import { AnyAction } from "redux";
 
-export const ACTION_SELECT_CLEAR = "@editor/select/clear" as "@editor/select/clear";
+export const ACTION_SELECT_CLEAR = "@editor/select/clear" as const;
 export const clearSelection = () => ({
   type: ACTION_SELECT_CLEAR
 });

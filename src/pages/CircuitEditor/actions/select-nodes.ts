@@ -2,7 +2,7 @@ import { AnyAction } from "redux";
 
 import { SelectionMode } from "../types";
 
-export const ACTION_SELECT_NODES = "@editor/select/nodes" as "@editor/select/nodes";
+export const ACTION_SELECT_NODES = "@editor/select/nodes" as const;
 export const selectNodes = (
   nodeId: string | string[],
   mode: SelectionMode = "set"

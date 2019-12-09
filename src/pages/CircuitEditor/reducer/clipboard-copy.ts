@@ -58,6 +58,7 @@ function copyNodesMutator(
   });
 
   state.clipboardContent = copyNodes;
+  state.clipboardOrigin = rootPosition;
 }
 
 export default createEditorReducer((state, action, appState) => {

@@ -2,23 +2,29 @@ import { combineReducers } from "@/store/utils";
 
 import circuitFieldReducer from "../ContentViews/CircuitField/reducer";
 
-import addNodeReducer from "./node-add";
-import deleteNodeReducer from "./node-delete";
-import mouseOverNodeReducer from "./node-hover";
-import moveNodeReducer from "./node-move";
-import copySelectedNodesReducer from "./clipboard-copy";
+import clipboardCopyReducer from "./clipboard-copy";
+import clipboardPasteReducer from "./clipboard-paste";
+import nodeAddReducer from "./node-add";
+import nodeDeleteReducer from "./node-delete";
+import nodeHoverReducer from "./node-hover";
+import nodeMoveReducer from "./node-move";
+import selectClearReducer from "./select-clear";
 import selectNodesReducer from "./select-nodes";
 import selectRegionReducer from "./select-region";
-import clearSelectionReducer from "./select-clear";
+import selectionCopyReducer from "./selection-copy";
+import selectionDeleteReducer from "./selection-delete";
 
 export default combineReducers(
+  clipboardCopyReducer,
+  clipboardPasteReducer,
   circuitFieldReducer,
-  addNodeReducer,
-  deleteNodeReducer,
-  mouseOverNodeReducer,
-  moveNodeReducer,
-  copySelectedNodesReducer,
+  nodeAddReducer,
+  nodeDeleteReducer,
+  nodeHoverReducer,
+  nodeMoveReducer,
+  selectClearReducer,
   selectNodesReducer,
   selectRegionReducer,
-  clearSelectionReducer
+  selectionCopyReducer,
+  selectionDeleteReducer
 );
