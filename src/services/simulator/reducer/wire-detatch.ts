@@ -1,17 +1,10 @@
-import { AnyAction } from "redux";
-
-import { SimulatorState, defaultSimulatorState } from "../state";
-
 import { collectNodeTransitions } from "./transition-utils";
 import { nodePinEquals } from "../types";
 import { isDetatchWireNodeAction } from "../actions/wire-detatch";
 
-import { pinsToConnection } from "./utils";
+import { pinsToConnection, createSimulatorReducer } from "./utils";
 
-export default function wireDetatchReducer(
-  state: SimulatorState = defaultSimulatorState,
-  action: AnyAction
-): SimulatorState {
+export default createSimulatorReducer((state, action) => {
   if (!isDetatchWireNodeAction(action)) {
     return state;
   }
@@ -35,5 +28,5 @@ export default function wireDetatchReducer(
     )
   };
 
-  return collectNodeTransitions(state, inputPin.nodeId)
-}
+  return collectNodeTransitions(state, inputPin.nodeId);
+});

@@ -1,12 +1,8 @@
-import { AnyAction } from "redux";
-
-import { CircuitEditorState, defaultCircuitEditorState } from "../state";
 import { isHoverNodeAction } from "../actions/node-hover";
 
-export default function nodeHoverReducer(
-  state: CircuitEditorState = defaultCircuitEditorState,
-  action: AnyAction
-): CircuitEditorState {
+import { createEditorReducer } from "./utils";
+
+export default createEditorReducer((state, action) => {
   if (!isHoverNodeAction(action)) {
     return state;
   }
@@ -16,4 +12,4 @@ export default function nodeHoverReducer(
     ...state,
     mouseOverNodeId: nodeId
   };
-}
+});

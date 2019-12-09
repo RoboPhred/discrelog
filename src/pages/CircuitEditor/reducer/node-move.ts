@@ -1,15 +1,11 @@
-import { AnyAction } from "redux";
-
 import mapValues from "lodash/mapValues";
 import pick from "lodash/pick";
 
-import { CircuitEditorState, defaultCircuitEditorState } from "../state";
 import { isMoveNodesAction } from "../actions/node-move";
 
-export default function moveNodeReducer(
-  state: CircuitEditorState = defaultCircuitEditorState,
-  action: AnyAction
-) {
+import { createEditorReducer } from "./utils";
+
+export default createEditorReducer((state, action) => {
   if (!isMoveNodesAction(action)) {
     return state;
   }
@@ -24,4 +20,4 @@ export default function moveNodeReducer(
       }))
     }
   };
-}
+});

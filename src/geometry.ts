@@ -9,7 +9,8 @@ export function normalizeRectangle(...args: any[]): Rectangle {
   let p2: Point;
   if (args.length === 1) {
     const r = args[0] as Rectangle;
-    (p1 = r.p1), (p2 = r.p2);
+    p1 = r.p1;
+    p2 = r.p2;
   } else {
     p1 = args[0] as Point;
     p2 = args[1] as Point;

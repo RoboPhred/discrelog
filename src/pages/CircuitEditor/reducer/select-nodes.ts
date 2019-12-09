@@ -1,14 +1,8 @@
-import { AnyAction } from "redux";
-
-import { CircuitEditorState, defaultCircuitEditorState } from "../state";
 import { isSelectNodesAction } from "../actions/select-nodes";
 
-import { combineSelection } from "./utils";
+import { combineSelection, createEditorReducer } from "./utils";
 
-export default function selectNodesReducer(
-  state: CircuitEditorState = defaultCircuitEditorState,
-  action: AnyAction
-): CircuitEditorState {
+export default createEditorReducer((state, action) => {
   if (!isSelectNodesAction(action)) {
     return state;
   }
@@ -19,4 +13,4 @@ export default function selectNodesReducer(
     ...state,
     selectedNodeIds: combineSelection(state.selectedNodeIds, nodeIds, mode)
   };
-}
+});

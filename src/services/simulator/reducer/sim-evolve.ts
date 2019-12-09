@@ -1,19 +1,14 @@
-import { AnyAction } from "redux";
 import pick from "lodash/pick";
 import difference from "lodash/difference";
-import takeWhile from "lodash/takeWhile";
 
-import { SimulatorState, defaultSimulatorState } from "../state";
-
+import { SimulatorState } from "../state";
 import { isEvolveSimAction } from "../actions/sim-evolve";
-
-import { collectNodeTransitions } from "./transition-utils";
 import { TransitionWindow } from "../types";
 
-export default function simEvolveReducer(
-  state: SimulatorState = defaultSimulatorState,
-  action: AnyAction
-): SimulatorState {
+import { collectNodeTransitions } from "./transition-utils";
+import { createSimulatorReducer } from "./utils";
+
+export default createSimulatorReducer((state, action) => {
   if (!isEvolveSimAction(action)) {
     return state;
   }
@@ -32,10 +27,15 @@ export default function simEvolveReducer(
   };
 
   let saftyCount = tickCount + 1;
-  while (state.transitionWindows.length > 0 && state.transitionWindows[0].tick <= endTick) {
+  while (
+    state.transitionWindows.length > 0 &&
+    state.transitionWindows[0].tick <= endTick
+  ) {
     if (--saftyCount === 0) {
       // If we have seen more windows than ticks, something is creating windows for past ticks.
-      throw new Error(`Maximum ticks per sim evolution exceeded.  This is an indication that windows are being generated for past ticks.`)
+      throw new Error(
+        `Maximum ticks per sim evolution exceeded.  This is an indication that windows are being generated for past ticks.`
+      );
     }
 
     // We can safely mutate here, as even if the array is regenerated
@@ -49,15 +49,17 @@ export default function simEvolveReducer(
   if (state.tick != endTick) {
     state = {
       ...state,
-      tick: endTick,
-    }
+      tick: endTick
+    };
   }
 
   return state;
-}
+});
 
-
-function tickWindow(state: SimulatorState, window: TransitionWindow): SimulatorState {
+function tickWindow(
+  state: SimulatorState,
+  window: TransitionWindow
+): SimulatorState {
   // Update the current tick, as it is referenced
   //  during transition collection.
   state = {
@@ -67,7 +69,7 @@ function tickWindow(state: SimulatorState, window: TransitionWindow): SimulatorS
     nodeOutputValuesByNodeId: {
       ...state.nodeOutputValuesByNodeId
     }
-  }
+  };
 
   let updatedNodes = [];
   for (const tid of window.transitionIds) {
@@ -82,7 +84,7 @@ function tickWindow(state: SimulatorState, window: TransitionWindow): SimulatorS
     state.nodeOutputValuesByNodeId[nodeId] = {
       ...state.nodeOutputValuesByNodeId[nodeId],
       [outputId]: value
-    }
+    };
 
     // Add each node we output to, to the output list.
     const outputConnections = state.connections.filter(
@@ -102,7 +104,10 @@ function tickWindow(state: SimulatorState, window: TransitionWindow): SimulatorS
 
   // Remove all window transitions as they have been consumed.
   // State is cloned above
-  state.transitionsById = pick(state.transitionsById, difference(Object.keys(state.transitionsById), window.transitionIds));
+  state.transitionsById = pick(
+    state.transitionsById,
+    difference(Object.keys(state.transitionsById), window.transitionIds)
+  );
 
   return state;
 }

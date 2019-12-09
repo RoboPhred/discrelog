@@ -1,3 +1,8 @@
+import { AnyAction } from "redux";
+
+import { AppState, defaultAppState } from "@/store";
+import { fpSet } from "@/utils";
+
 import {
   SelectNodesAction,
   ACTION_SELECT_NODES
@@ -21,6 +26,21 @@ import {
 import { CircuitFieldState, defaultCircuitFieldState } from "./state";
 
 export default function circuitFieldReducer(
+  state: AppState = defaultAppState,
+  action: AnyAction
+): AppState {
+  const newState = circuitFieldStateReducer(
+    state.ui.circuitEditor.circuitField,
+    action
+  );
+  if (state.ui.circuitEditor.circuitField !== newState) {
+    state = fpSet(state, "ui", "circuitEditor", "circuitField", newState);
+  }
+
+  return state;
+}
+
+function circuitFieldStateReducer(
   state: CircuitFieldState = defaultCircuitFieldState,
   action:
     | CircuitFieldAction

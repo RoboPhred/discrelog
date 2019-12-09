@@ -1,15 +1,13 @@
-import { AnyAction } from "redux";
+import { fpSet } from "@/utils";
 
-import { SimulatorState, defaultSimulatorState } from "../state";
 import { NodeTypes } from "../node-types";
 
-import { collectNodeTransitions } from "./transition-utils";
 import { isInteractNodeAction } from "../actions/node-interact";
 
-export default function nodeInteractReducer(
-  state: SimulatorState = defaultSimulatorState,
-  action: AnyAction
-): SimulatorState {
+import { collectNodeTransitions } from "./transition-utils";
+import { createSimulatorReducer } from "./utils";
+
+export default createSimulatorReducer((state, action) => {
   if (!isInteractNodeAction(action)) {
     return state;
   }
@@ -25,14 +23,7 @@ export default function nodeInteractReducer(
 
   const nodeState = nodeStatesByNodeId[nodeId];
   const newState = type.interact(nodeState);
-  state = {
-    ...state,
-    nodeStatesByNodeId: {
-      ...state.nodeStatesByNodeId,
-      [nodeId]: newState
-    }
-  }
+  state = fpSet(state, "nodeStatesByNodeId", nodeId, newState);
 
   return collectNodeTransitions(state, nodeId);
-}
-
+});

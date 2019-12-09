@@ -1,9 +1,4 @@
-import { AnyAction } from "redux";
-
-import { AppState } from "@/store";
 import { combineReducers } from "@/store/utils";
-
-import { CircuitEditorState, defaultCircuitEditorState } from "../state";
 
 import circuitFieldReducer from "../ContentViews/CircuitField/reducer";
 
@@ -16,7 +11,8 @@ import selectNodesReducer from "./select-nodes";
 import selectRegionReducer from "./select-region";
 import clearSelectionReducer from "./select-clear";
 
-const circuitEditorCombinedReducer = combineReducers(
+export default combineReducers(
+  circuitFieldReducer,
   addNodeReducer,
   deleteNodeReducer,
   mouseOverNodeReducer,
@@ -26,22 +22,3 @@ const circuitEditorCombinedReducer = combineReducers(
   selectRegionReducer,
   clearSelectionReducer
 );
-
-export default function circuitEditorReducer(
-  state: CircuitEditorState = defaultCircuitEditorState,
-  action: AnyAction,
-  appState: AppState
-): CircuitEditorState {
-  const newCircuitFieldState = circuitFieldReducer(
-    state.circuitField,
-    action as AnyAction
-  );
-  if (newCircuitFieldState != state.circuitField) {
-    state = {
-      ...state,
-      circuitField: newCircuitFieldState
-    };
-  }
-
-  return circuitEditorCombinedReducer(state, action, appState);
-}

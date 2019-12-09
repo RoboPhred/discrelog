@@ -1,15 +1,11 @@
-import { AnyAction } from "redux";
 import pick from "lodash/pick";
 import difference from "lodash/difference";
 
 import { isDeleteNodeAction } from "@/services/simulator/actions/node-delete";
 
-import { CircuitEditorState, defaultCircuitEditorState } from "../state";
+import { createEditorReducer } from "./utils";
 
-export default function nodeDeleteReducer(
-  state: CircuitEditorState = defaultCircuitEditorState,
-  action: AnyAction
-) {
+export default createEditorReducer((state, action) => {
   if (!isDeleteNodeAction(action)) {
     return state;
   }
@@ -28,4 +24,4 @@ export default function nodeDeleteReducer(
         ? null
         : state.mouseOverNodeId
   };
-}
+});

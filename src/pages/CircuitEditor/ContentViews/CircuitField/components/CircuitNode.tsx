@@ -53,7 +53,6 @@ class CircuitNode extends React.Component<Props> {
 
   render() {
     const {
-      nodeId,
       x,
       y,
       nodeType,
@@ -63,7 +62,7 @@ class CircuitNode extends React.Component<Props> {
       onMouseDown,
       onMouseLeave,
       onMouseOver,
-      onMouseUp,
+      onMouseUp
     } = this.props;
 
     return (

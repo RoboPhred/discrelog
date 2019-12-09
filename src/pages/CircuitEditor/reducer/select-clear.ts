@@ -1,12 +1,8 @@
-import { AnyAction } from "redux";
-
-import { CircuitEditorState, defaultCircuitEditorState } from "../state";
 import { isClearSelectionAction } from "../actions/select-clear";
 
-export default function clearSelectionReducer(
-  state: CircuitEditorState = defaultCircuitEditorState,
-  action: AnyAction
-): CircuitEditorState {
+import { createEditorReducer } from "./utils";
+
+export default createEditorReducer((state, action) => {
   if (!isClearSelectionAction(action)) {
     return state;
   }
@@ -15,4 +11,4 @@ export default function clearSelectionReducer(
     ...state,
     selectedNodeIds: []
   };
-}
+});

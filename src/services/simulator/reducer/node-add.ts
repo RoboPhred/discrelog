@@ -4,15 +4,14 @@ import mapValues from "lodash/mapValues";
 
 import { NodeTypes } from "../node-types";
 import { inputsOf, outputsOf } from "../node-types/utils";
-import { SimulatorState, defaultSimulatorState } from "../state";
+import { SimulatorState } from "../state";
 import { isAddNodeAction } from "../actions/node-add";
 
-export default function nodeAddReducer(
-  state: SimulatorState = defaultSimulatorState,
-  action: AnyAction
-): SimulatorState {
+import { createSimulatorReducer } from "./utils";
+
+export default createSimulatorReducer((state, action: AnyAction) => {
   return produce(state, draft => addNodeMutator(draft, action));
-}
+});
 
 function addNodeMutator(state: SimulatorState, action: AnyAction) {
   if (!isAddNodeAction(action)) {

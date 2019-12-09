@@ -1,26 +1,28 @@
 import { AnyAction } from "redux";
 import find from "lodash/find";
 
-import { SimulatorState, defaultSimulatorState } from "../state";
+import { AppState, defaultAppState } from "@/store";
+import rootReducer from "@/store/reducer";
+
 import { nodePinEquals } from "../types";
 import { isToggleWireAction } from "../actions/wire-toggle";
-import { ACTION_WIRE_DETATCH } from "../actions/wire-detatch";
-import { ACTION_WIRE_ATTACH } from "../actions/wire-attach";
+import { attachWire } from "../actions/wire-attach";
+import { detatchWire } from "../actions/wire-detatch";
 
-import wireDetatchReducer from "./wire-detatch";
-import wireAttachReducer from "./wire-attach";
 import { pinsToConnection } from "./utils";
 
-export default function toggleWireReducer(
-  state: SimulatorState = defaultSimulatorState,
+export default function wireToggleReducer(
+  state: AppState = defaultAppState,
   action: AnyAction
-): SimulatorState {
+) {
   if (!isToggleWireAction(action)) {
     return state;
   }
 
+  const simulatorState = state.services.simulator;
+
   const { p1, p2 } = action.payload;
-  const conn = pinsToConnection(state, p1, p2);
+  const conn = pinsToConnection(simulatorState, p1, p2);
   if (!conn) {
     return state;
   }
@@ -29,21 +31,17 @@ export default function toggleWireReducer(
 
   const isWired =
     find(
-      state.connections,
+      simulatorState.connections,
       c =>
         nodePinEquals(outputPin, c.outputPin) &&
         nodePinEquals(inputPin, c.inputPin)
     ) != null;
 
   if (isWired) {
-    return wireDetatchReducer(state, {
-      type: ACTION_WIRE_DETATCH,
-      payload: action.payload
-    });
+    const { p1, p2 } = action.payload;
+    return rootReducer(state, detatchWire(p1, p2));
   } else {
-    return wireAttachReducer(state, {
-      type: ACTION_WIRE_ATTACH,
-      payload: action.payload
-    });
+    const { p1, p2 } = action.payload;
+    return rootReducer(state, attachWire(p1, p2));
   }
 }

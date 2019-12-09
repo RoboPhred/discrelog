@@ -1,5 +1,4 @@
 import produce from "immer";
-import { AnyAction } from "redux";
 
 import uuidV4 from "uuid/v4";
 import map from "lodash/map";
@@ -16,6 +15,8 @@ import { nodeOutputConnectionsByPinSelector } from "@/services/simulator/selecto
 import { CircuitEditorState, defaultCircuitEditorState } from "../state";
 import { ClipboardNode } from "../types";
 import { isCopyNodesAction, CopyNodesAction } from "../actions/clipboard-copy";
+
+import { createEditorReducer } from "./utils";
 
 function copyNodesMutator(
   state: CircuitEditorState = defaultCircuitEditorState,
@@ -59,13 +60,9 @@ function copyNodesMutator(
   state.clipboardContent = copyNodes;
 }
 
-export default function copySelectedReduxcer(
-  state: CircuitEditorState = defaultCircuitEditorState,
-  action: AnyAction,
-  appState: AppState
-) {
+export default createEditorReducer((state, action, appState) => {
   if (!isCopyNodesAction(action)) {
     return state;
   }
   return produce(state, s => copyNodesMutator(s, action, appState));
-}
+});

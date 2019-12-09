@@ -4,6 +4,7 @@ import find from "lodash/find";
 import findIndex from "lodash/findIndex";
 import pick from "lodash/pick";
 
+import { fpSet } from "@/utils";
 import { IDMap } from "@/types";
 
 import { SimulatorState } from "../state";
@@ -45,16 +46,14 @@ export function collectNodeTransitions(
 
   // TODO: Provide frozen state.  The state passed to this is currently
   //  the immer mutable record.
-  const result = type.evolve(state.nodeStatesByNodeId[node.id], inputs, state.tick);
+  const result = type.evolve(
+    state.nodeStatesByNodeId[node.id],
+    inputs,
+    state.tick
+  );
 
   if (result.state) {
-    state = {
-      ...state,
-      nodeStatesByNodeId: {
-        ...state.nodeStatesByNodeId,
-        [node.id]: result.state
-      }
-    }
+    state = fpSet(state, "nodeStatesByNodeId", node.id, result.state);
   }
 
   if (result.transitions) {
@@ -65,7 +64,10 @@ export function collectNodeTransitions(
       // Sanity check that we are not producing transitions for the past or current tick.
       const transitionTick = state.tick + (tickOffset > 0 ? tickOffset : 1);
 
-      state = removeTransitionByPin(state, { nodeId: node.id, pinId: outputId });
+      state = removeTransitionByPin(state, {
+        nodeId: node.id,
+        pinId: outputId
+      });
 
       if (nodeOutputs[outputId] !== value) {
         state = addTransition(state, node.id, outputId, transitionTick, value);
@@ -122,11 +124,14 @@ function addTransition(
       ...state.transitionWindows[index].transitionIds,
       transitionId
     ]
-  }
+  };
   return state;
 }
 
-function removeTransitionByPin(state: Readonly<SimulatorState>, pin: NodePin): SimulatorState {
+function removeTransitionByPin(
+  state: Readonly<SimulatorState>,
+  pin: NodePin
+): SimulatorState {
   const { nodeId, pinId: outputId } = pin;
 
   const transition = find(
@@ -139,7 +144,10 @@ function removeTransitionByPin(state: Readonly<SimulatorState>, pin: NodePin): S
 
   const { id: transitionId } = transition;
 
-  const transitionsById = pick(state.transitionsById, Object.keys(state.transitionsById).filter(x => x !== transitionId));
+  const transitionsById = pick(
+    state.transitionsById,
+    Object.keys(state.transitionsById).filter(x => x !== transitionId)
+  );
   let transitionWindows = state.transitionWindows;
 
   const transitionWindowIndex = findIndex(
@@ -158,18 +166,19 @@ function removeTransitionByPin(state: Readonly<SimulatorState>, pin: NodePin): S
         transitionWindows = [
           ...transitionWindows.slice(0, transitionWindowIndex),
           ...transitionWindows.slice(transitionWindowIndex + 1)
-        ]
+        ];
       } else {
         // Remove the transition from the tick window.
         transitionWindows = [...transitionWindows];
-        const transitionIds = transitionWindows[transitionWindowIndex].transitionIds;
+        const transitionIds =
+          transitionWindows[transitionWindowIndex].transitionIds;
         transitionWindows[transitionWindowIndex] = {
           ...transitionWindows[transitionWindowIndex],
           transitionIds: [
             ...transitionIds.slice(0, tickWindowTransitionIndex),
-            ...transitionIds.slice(tickWindowTransitionIndex, 1),
+            ...transitionIds.slice(tickWindowTransitionIndex, 1)
           ]
-        }
+        };
       }
     }
   }
@@ -178,5 +187,5 @@ function removeTransitionByPin(state: Readonly<SimulatorState>, pin: NodePin): S
     ...state,
     transitionsById,
     transitionWindows
-  }
+  };
 }

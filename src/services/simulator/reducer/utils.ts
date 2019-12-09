@@ -1,8 +1,28 @@
+import { AnyAction, Reducer } from "redux";
 import find from "lodash/find";
+
+import { AppState, defaultAppState } from "@/store";
+import { fpSet } from "@/utils";
 
 import { SimulatorState } from "../state";
 import { NodePin, Connection } from "../types";
 import { NodeTypes } from "../node-types";
+
+export interface SimulatorReducer {
+  (state: SimulatorState, action: AnyAction): SimulatorState;
+}
+
+export function createSimulatorReducer(
+  reducer: SimulatorReducer
+): Reducer<AppState, AnyAction> {
+  return (state: AppState = defaultAppState, action: AnyAction) => {
+    const newState = reducer(state.services.simulator, action);
+    if (state.services.simulator != newState) {
+      return fpSet(state, "services", "simulator", newState);
+    }
+    return state;
+  };
+}
 
 /**
  * Check two pins to see if they can form a valid connection.

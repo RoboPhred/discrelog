@@ -1,23 +1,13 @@
-import { AnyAction } from "redux";
-
 import forOwn from "lodash/forOwn";
-
-import { AppState } from "@/store";
 
 import { intersects } from "@/geometry";
 
 import { nodeRectsByIdSelector } from "../selectors";
-
-import { CircuitEditorState, defaultCircuitEditorState } from "../state";
 import { isSelectRegionAction } from "../actions/select-region";
 
-import { combineSelection } from "./utils";
+import { combineSelection, createEditorReducer } from "./utils";
 
-export default function selectRegionReducer(
-  state: CircuitEditorState = defaultCircuitEditorState,
-  action: AnyAction,
-  appState: AppState
-) {
+export default createEditorReducer((state, action, appState) => {
   if (!isSelectRegionAction(action)) {
     return state;
   }
@@ -36,4 +26,4 @@ export default function selectRegionReducer(
     ...state,
     selectedNodeIds: combineSelection(state.selectedNodeIds, chosenIds, mode)
   };
-}
+});

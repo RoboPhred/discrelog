@@ -1,24 +1,13 @@
-import { AnyAction } from "redux";
+import { fpSet } from "@/utils";
 
-import { CircuitEditorState, defaultCircuitEditorState } from "../state";
 import { isAddNodeAction } from "../actions/node-add";
 
-export default function addNodeReducer(
-  state: CircuitEditorState = defaultCircuitEditorState,
-  action: AnyAction
-) {
+import { createEditorReducer } from "./utils";
+
+export default createEditorReducer((state, action) => {
   if (!isAddNodeAction(action)) {
     return state;
   }
   const { nodeId: id, x = 0, y = 0 } = action.payload;
-  return {
-    ...state,
-    nodePositions: {
-      ...state.nodePositions,
-      [id]: {
-        x,
-        y
-      }
-    }
-  };
-}
+  return fpSet(state, "nodePositions", id, { x, y });
+});

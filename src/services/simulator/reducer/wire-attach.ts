@@ -1,18 +1,12 @@
-import { AnyAction } from "redux";
 import find from "lodash/find";
-
-import { SimulatorState, defaultSimulatorState } from "../state";
 
 import { collectNodeTransitions } from "./transition-utils";
 import { nodePinEquals } from "../types";
 import { isAttachWireAction } from "../actions/wire-attach";
 
-import { pinsToConnection } from "./utils";
+import { pinsToConnection, createSimulatorReducer } from "./utils";
 
-export default function wireAttachReducer(
-  state: SimulatorState = defaultSimulatorState,
-  action: AnyAction
-): SimulatorState {
+export default createSimulatorReducer((state, action) => {
   if (!isAttachWireAction(action)) {
     return state;
   }
@@ -36,4 +30,4 @@ export default function wireAttachReducer(
   };
 
   return collectNodeTransitions(state, inputPin.nodeId);
-}
+});
