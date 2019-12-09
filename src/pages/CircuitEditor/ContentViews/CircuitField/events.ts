@@ -1,27 +1,22 @@
-import { Dispatch } from "redux";
-
-import { normalizeRectangle, pointSubtract } from "@/geometry";
-import { GetState } from "@/store";
 import { Point } from "@/types";
 
-import { nodePinDirectionSelector } from "@/services/simulator/selectors/connections";
 import { interactNode } from "@/services/simulator/actions/node-interact";
-import { toggleWire } from "@/services/simulator/actions/wire-toggle";
 import { evolveSim } from "@/services/simulator/actions/sim-evolve";
 import { fastForwardSim } from "@/services/simulator/actions/sim-fastforward";
 
 import { SelectionMode } from "@/pages/CircuitEditor/types";
 import { selectNodes } from "@/pages/CircuitEditor/actions/select-nodes";
 import { clearSelection } from "@/pages/CircuitEditor/actions/select-clear";
-import { selectRegion } from "@/pages/CircuitEditor/actions/select-region";
-import { moveNodes } from "@/pages/CircuitEditor/actions/node-move";
 import { hoverNode } from "@/pages/CircuitEditor/actions/node-hover";
 import { paste } from "@/pages/CircuitEditor/actions/clipboard-paste";
 import { selectionDelete } from "@/pages/CircuitEditor/actions/selection-delete";
 import { selectionCopy } from "@/pages/CircuitEditor/actions/selection-copy";
 
-import { selectPin, startDrag, continueDrag, endDrag } from "./actions";
-import { selectedPinSelector } from "./selectors";
+import { selectPin } from "./actions/select-pin";
+import { dragContinue } from "./actions/drag-continue";
+import { dragEnd } from "./actions/drag-end";
+import { dragStartNode } from "./actions/drag-start-node";
+import { dragStartSelect } from "./actions/drag-start-select";
 
 export interface ModifierKeys {
   ctrlMetaKey: boolean;
@@ -30,6 +25,7 @@ export interface ModifierKeys {
 }
 
 export function onNodeClicked(nodeId: string, modifiers: ModifierKeys) {
+  // Might want to make this into an action/reducer pair to complement the others.
   if (modifiers.altKey) {
     return interactNode(nodeId);
   }
@@ -39,35 +35,7 @@ export function onNodeClicked(nodeId: string, modifiers: ModifierKeys) {
 }
 
 export function onNodePinClicked(nodeId: string, pinId: string) {
-  return function(dispatch: Dispatch, getState: GetState) {
-    const state = getState();
-
-    const clickedPinDirection = nodePinDirectionSelector(state, {
-      nodeId,
-      pinId
-    });
-    if (!clickedPinDirection) {
-      return;
-    }
-
-    const selectedPin = selectedPinSelector(state);
-    if (!selectedPin) {
-      dispatch(selectPin(nodeId, pinId));
-      return;
-    }
-
-    const selectedPinDirection = nodePinDirectionSelector(state, selectedPin);
-    if (!selectedPinDirection) {
-      dispatch(selectPin(nodeId, pinId));
-      return;
-    }
-
-    if (selectedPinDirection !== clickedPinDirection) {
-      dispatch(toggleWire(selectedPin, { nodeId, pinId }));
-    } else {
-      dispatch(selectPin(nodeId, pinId));
-    }
-  };
+  return selectPin(nodeId, pinId);
 }
 
 export function onFieldClicked(modifiers: ModifierKeys) {
@@ -79,54 +47,21 @@ export function onNodeDragStart(
   p: Point,
   modifiers: ModifierKeys
 ) {
-  return (dispatch: Dispatch, getState: GetState) => {
-    // TODO: Move logic into reducer.
-    const state = getState();
-    const isNodeSelected =
-      state.ui.circuitEditor.selectedNodeIds.indexOf(nodeId) !== -1;
-    if (!isNodeSelected) {
-      const mode = getSelectMode(modifiers);
-      dispatch(selectNodes(nodeId, mode));
-    }
-    dispatch(startDrag(p, "move-node"));
-  };
+  const selectMode = getSelectMode(modifiers);
+  return dragStartNode(nodeId, p, selectMode);
 }
 
 export function onFieldDragStart(p: Point) {
-  return startDrag(p, "select");
+  return dragStartSelect(p);
 }
 
 export function onDragMove(p: Point) {
-  return continueDrag(p);
+  return dragContinue(p);
 }
 
 export function onDragEnd(p: Point, modifiers: ModifierKeys) {
-  return (dispatch: Dispatch, getState: GetState) => {
-    const state = getState();
-    const {
-      dragMode,
-      dragStart,
-      dragEnd
-    } = state.ui.circuitEditor.circuitField;
-    const { selectedNodeIds } = state.ui.circuitEditor;
-
-    if (dragStart && dragEnd) {
-      switch (dragMode) {
-        case "select": {
-          const rect = normalizeRectangle(dragStart, dragEnd);
-          const mode = getSelectMode(modifiers);
-          dispatch(selectRegion(rect, mode));
-          break;
-        }
-        case "move-node": {
-          const moveBy = pointSubtract(dragEnd, dragStart);
-          dispatch(moveNodes(selectedNodeIds, moveBy.x, moveBy.y));
-          break;
-        }
-      }
-    }
-    dispatch(endDrag());
-  };
+  const mode = getSelectMode(modifiers);
+  return dragEnd(p, mode);
 }
 
 export function onNodeHover(nodeId: string | null) {

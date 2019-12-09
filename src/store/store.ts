@@ -1,5 +1,4 @@
 import { createStore, compose, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
 import freeze from "redux-freeze";
 
 import {
@@ -21,5 +20,5 @@ const composeEnhancers =
 
 export const store = createStore(
   reducer,
-  composeEnhancers(applyMiddleware(freeze, thunk))
+  composeEnhancers(applyMiddleware(freeze))
 );
