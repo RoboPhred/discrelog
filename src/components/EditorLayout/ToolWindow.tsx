@@ -1,18 +1,20 @@
 import * as React from "react";
+import { createUseStyles } from "react-jss";
 
-import styled from "styled-components";
-
-const ToolWindowDiv = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  max-height: 100%;
-  padding: 5px;
-  overflow: auto;
-`;
+const useStyles = createUseStyles({
+  root: {
+    boxSizing: "border-box",
+    width: "100%",
+    maxHeight: "100%",
+    padding: "5px",
+    overflow: "auto"
+  }
+});
 
 const ToolWindow: React.FC = ({ children }) => {
+  const styles = useStyles();
   return (
-    <ToolWindowDiv>{children}</ToolWindowDiv>
+    <div className={styles.root}>{children}</div>
   )
 }
 

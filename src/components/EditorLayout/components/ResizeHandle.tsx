@@ -1,6 +1,5 @@
 import * as React from "react";
-
-import styled from "styled-components";
+import { createUseStyles } from "react-jss";
 
 import { DraggableCore, DraggableData } from "react-draggable";
 
@@ -8,7 +7,17 @@ export interface ResizeHandleProps {
   onResize(delta: number): void;
 }
 
+const useStyles = createUseStyles({
+  dragHandle: {
+    width: "5px",
+    height: "100%",
+    background: "black",
+    cursor: "ew-resize"
+  }
+})
+
 const ResizeHandle: React.FC<ResizeHandleProps> = ({ onResize }) => {
+  const styles = useStyles();
   const onDrag = React.useCallback(
     (_: any, d: DraggableData) => {
       onResize(d.deltaX);
@@ -18,15 +27,8 @@ const ResizeHandle: React.FC<ResizeHandleProps> = ({ onResize }) => {
 
   return (
     <DraggableCore onDrag={onDrag}>
-      <DragHandleDiv />
+      <div className={styles.dragHandle} />
     </DraggableCore>
   );
 };
 export default ResizeHandle;
-
-const DragHandleDiv = styled.div`
-  width: 5px;
-  height: 100%;
-  background: black;
-  cursor: ew-resize;
-`;

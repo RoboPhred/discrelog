@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import LayoutContainer from "./components/LayoutContainer";
-import SidebarPanel from "./components/SidebarPanel";
-import ContentPanel from "./components/ContentPanel";
+import { createUseStyles } from "react-jss";
+
+import { cls } from "@/utils";
 
 import ResizeHandle from "./components/ResizeHandle";
 
@@ -14,6 +14,26 @@ export interface EditorPanelProps {
   defaultRightSidebarWidth?: number;
 }
 
+const useStyles = createUseStyles({
+  root: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "stretch"
+  },
+  contentPanel: {
+    flex: "1 1 auto",
+    background: "darkgray",
+    minWidth: "10px"
+  },
+  sidebarPanel: {
+    display: "flex",
+    flexDirection: "column",
+    boxSizing: "border-box",
+    background: "lightgrey",
+    border: "1 solid darkgray",
+  }
+})
+
 const EditorLayout: React.FC<EditorPanelProps> = ({
   className,
   defaultLeftSidebarWidth,
@@ -22,6 +42,8 @@ const EditorLayout: React.FC<EditorPanelProps> = ({
   rightSidebar,
   children
 }) => {
+  const styles = useStyles();
+
   const [leftSidebarSize, setLeftSidebarSize] = React.useState(
     defaultLeftSidebarWidth || 100
   );
@@ -44,21 +66,21 @@ const EditorLayout: React.FC<EditorPanelProps> = ({
   );
 
   return (
-    <LayoutContainer className={className}>
+    <div className={cls(className, styles.root)}>
       {leftSidebar && (
-        <React.Fragment>
-          <SidebarPanel width={leftSidebarSize}>{leftSidebar}</SidebarPanel>
+        <>
+          <div className={styles.sidebarPanel} style={{ width: leftSidebarSize }}>{leftSidebar}</div>
           <ResizeHandle onResize={onLeftSidebarResize} />
-        </React.Fragment>
+        </>
       )}
-      <ContentPanel>{children}</ContentPanel>
+      <div className={styles.contentPanel}>{children}</div>
       {rightSidebar && (
-        <React.Fragment>
+        <>
           <ResizeHandle onResize={onRightSidebarResize} />
-          <SidebarPanel width={rightSidebarSize}>{rightSidebar}</SidebarPanel>
-        </React.Fragment>
+          <div className={styles.sidebarPanel} style={{ width: rightSidebarSize }}>{rightSidebar}</div>
+        </>
       )}
-    </LayoutContainer>
+    </div>
   );
 };
 
