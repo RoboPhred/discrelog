@@ -1,6 +1,8 @@
 import * as React from "react";
 import { createUseStyles } from "react-jss";
 
+import { cls } from "@/utils";
+
 import EditorLayout, { ToolWindow } from "@/components/EditorLayout";
 
 import CircuitTray from "./ToolWindows/CircuitTray";
@@ -9,6 +11,10 @@ import NodeInfo from "./ToolWindows/NodeInfo";
 import PendingTransitions from "./ToolWindows/PendingTransitions";
 import CircuitField from "./ContentViews/CircuitField";
 
+export interface CircuitEditorProps {
+  className?: string;
+}
+
 const useStyles = createUseStyles({
   fillParent: {
     width: "100%",
@@ -16,11 +22,11 @@ const useStyles = createUseStyles({
   }
 });
 
-const CircuitEditor: React.FC = () => {
+const CircuitEditor: React.FC<CircuitEditorProps> = ({ className }) => {
   const styles = useStyles();
   return (
     <EditorLayout
-      className={styles.fillParent}
+      className={className}
       leftSidebar={
         <ToolWindow>
           <CircuitTray />
@@ -45,6 +51,6 @@ const CircuitEditor: React.FC = () => {
       <CircuitField className={styles.fillParent} />
     </EditorLayout>
   );
-}
+};
 
 export default CircuitEditor;

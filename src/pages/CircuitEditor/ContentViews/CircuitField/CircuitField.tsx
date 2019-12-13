@@ -37,7 +37,7 @@ type DispatchProps = typeof mapDispatchToProps;
 
 const DRAG_THRESHOLD = 5;
 
-type Props = CircuitFieldProps & SizeProps & DispatchProps;
+type Props = CircuitFieldProps /* & SizeProps */ & DispatchProps;
 class CircuitField extends React.Component<Props> {
   // Instance props as we do not require a re-render when these change.
   private _isDragging: boolean = false;
@@ -66,8 +66,8 @@ class CircuitField extends React.Component<Props> {
 
   render() {
     const {
-      className,
-      size: { width, height }
+      className
+      // size: { width, height }
     } = this.props;
 
     return (
@@ -76,8 +76,8 @@ class CircuitField extends React.Component<Props> {
           <div tabIndex={-1} ref={this._hotkeysRef}>
             <svg
               ref={this._svgRef}
-              width={width}
-              height={height}
+              // width={width}
+              // height={height}
               onMouseDown={this._onMouseDown}
               onMouseMove={this._onMouseMove}
               onMouseUp={this._onMouseUp}
@@ -140,7 +140,11 @@ class CircuitField extends React.Component<Props> {
     e.preventDefault();
   }
 
-  private _onNodePinMouseUp(nodeId: string, pinId: string, e: React.MouseEvent) {
+  private _onNodePinMouseUp(
+    nodeId: string,
+    pinId: string,
+    e: React.MouseEvent
+  ) {
     if (this._isDragging) {
       return;
     }
@@ -174,7 +178,10 @@ class CircuitField extends React.Component<Props> {
       return;
     }
 
-    const p = getFieldCoord(this._svgRef.current, { x: e.clientX, y: e.clientY });
+    const p = getFieldCoord(this._svgRef.current, {
+      x: e.clientX,
+      y: e.clientY
+    });
 
     this._startMousePos = p;
   }
@@ -195,7 +202,10 @@ class CircuitField extends React.Component<Props> {
     const { x: sx, y: sy } = this._startMousePos;
 
     const { ctrlKey, altKey, shiftKey, metaKey } = e;
-    const { x, y } = getFieldCoord(this._svgRef.current, { x: e.clientX, y: e.clientY });
+    const { x, y } = getFieldCoord(this._svgRef.current, {
+      x: e.clientX,
+      y: e.clientY
+    });
 
     const modifiers = {
       ctrlMetaKey: keyboardIsMac ? metaKey : ctrlKey,
@@ -233,7 +243,10 @@ class CircuitField extends React.Component<Props> {
     }
 
     const { ctrlKey, altKey, metaKey, shiftKey } = e;
-    const { x, y } = getFieldCoord(this._svgRef.current, { x: e.clientX, y: e.clientY });
+    const { x, y } = getFieldCoord(this._svgRef.current, {
+      x: e.clientX,
+      y: e.clientY
+    });
 
     const modifiers = {
       ctrlMetaKey: keyboardIsMac ? metaKey : ctrlKey,
@@ -260,8 +273,14 @@ class CircuitField extends React.Component<Props> {
   }
 }
 
-export default sizeme<CircuitFieldProps & SizeProps>({
+/*
+sizeme<CircuitFieldProps & SizeProps>({
   monitorWidth: true,
   monitorHeight: true,
   noPlaceholder: true
-})(connect<{}, DispatchProps, CircuitFieldProps>(null, mapDispatchToProps)(CircuitField));
+})(
+*/
+export default connect<{}, DispatchProps, CircuitFieldProps>(
+  null,
+  mapDispatchToProps
+)(CircuitField);
