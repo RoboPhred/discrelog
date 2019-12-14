@@ -1,5 +1,6 @@
 import * as React from "react";
 import { createUseStyles } from "react-jss";
+import MenuItem from "./MenuItem";
 
 const useStyles = createUseStyles({
   root: {
@@ -11,8 +12,9 @@ const useStyles = createUseStyles({
     backgroundColor: "#f8f9fa"
   },
   brand: {
-    marginRight: "10px",
-    fontSize: "1.2rem"
+    marginRight: "15px",
+    fontSize: "1.2rem",
+    fontWeight: "bold"
   },
   menuItem: {
     padding: "0 0.5rem",
@@ -25,8 +27,10 @@ const TitleBar: React.FC = () => {
   return (
     <div className={styles.root}>
       <span className={styles.brand}>Discrelog</span>
-      {/* <span className={styles.menuItem}>File</span>
-      <span className={styles.menuItem}>Edit</span> */}
+      <MenuItem title="File" childPlacement="bottom-start">
+        <span>Foo</span>
+        <span>Bar</span>
+      </MenuItem>
     </div>
   );
 };

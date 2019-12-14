@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { AppState } from "@/store";
 
-import { selectedPinSelector } from "@/pages/CircuitEditor/ContentViews/CircuitField/selectors";
+import { selectedPinSelector } from "@/pages/CircuitEditor/ContentViews/CircuitFieldView/selectors";
 
 const PIN_CIRCLE_RADIUS_UNSELECTED = 4;
 const PIN_CIRCLE_RADIUS_SELECTED = 6;
@@ -40,20 +40,13 @@ class CircuitNodePin extends React.Component<Props> {
   }
 
   render() {
-    const {
-      x,
-      y,
-      isSelected,
-      onClick,
-    } = this.props;
+    const { x, y, isSelected, onClick } = this.props;
     return (
       <circle
         cx={x}
         cy={y}
         r={
-          isSelected
-            ? PIN_CIRCLE_RADIUS_SELECTED
-            : PIN_CIRCLE_RADIUS_UNSELECTED
+          isSelected ? PIN_CIRCLE_RADIUS_SELECTED : PIN_CIRCLE_RADIUS_UNSELECTED
         }
         fill={isSelected ? "yellow" : "blue"}
         onClick={onClick}

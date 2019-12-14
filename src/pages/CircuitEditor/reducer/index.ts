@@ -1,6 +1,6 @@
 import { combineReducers } from "@/store/utils";
 
-import circuitFieldReducer from "../ContentViews/CircuitField/reducer";
+import circuitFieldReducer from "../ContentViews/CircuitFieldView/reducer";
 
 import clipboardCopyReducer from "./clipboard-copy";
 import clipboardPasteReducer from "./clipboard-paste";

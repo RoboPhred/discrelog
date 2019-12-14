@@ -9,7 +9,7 @@ import CircuitTray from "./ToolWindows/CircuitTray";
 import TimingControls from "./ToolWindows/TimingControls";
 import NodeInfo from "./ToolWindows/NodeInfo";
 import PendingTransitions from "./ToolWindows/PendingTransitions";
-import CircuitField from "./ContentViews/CircuitField";
+import CircuitFieldView from "./ContentViews/CircuitFieldView";
 
 export interface CircuitEditorProps {
   className?: string;
@@ -48,7 +48,7 @@ const CircuitEditor: React.FC<CircuitEditorProps> = ({ className }) => {
       }
       defaultRightSidebarWidth={200}
     >
-      <CircuitField className={styles.fillParent} />
+      <CircuitFieldView className={styles.fillParent} />
     </EditorLayout>
   );
 };

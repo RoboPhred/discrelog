@@ -3,21 +3,22 @@ import { createPortal } from "react-dom";
 
 import PopperJS from "popper.js";
 
+export type PopperPlacement =
+  | "top-start"
+  | "top"
+  | "top-end"
+  | "left-start"
+  | "left"
+  | "left-end"
+  | "right-start"
+  | "right"
+  | "right-end"
+  | "bottom-start"
+  | "bottom"
+  | "bottom-end";
 export interface PopperProps extends React.HTMLAttributes<HTMLDivElement> {
   isOpen: boolean;
-  placement:
-    | "top-start"
-    | "top"
-    | "top-end"
-    | "left-start"
-    | "left"
-    | "left-end"
-    | "right-start"
-    | "right"
-    | "right-end"
-    | "bottom-start"
-    | "bottom"
-    | "bottom-end";
+  placement: PopperPlacement;
   anchorEl: Element | null;
 }
 
@@ -86,3 +87,5 @@ const Popper: React.FC<PopperProps> = ({
 
   return createPortal(contentNode, document.body);
 };
+
+export default Popper;
