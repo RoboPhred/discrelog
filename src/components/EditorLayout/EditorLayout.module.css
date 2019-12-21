@@ -1,11 +1,10 @@
 .editor-root {
   display: flex;
   flex-direction: row;
-  align-items: stretch;
 }
 
 .editor-content-panel {
-  flex: 1 1 auto;
+  flex-grow: 1;
   background: darkgray;
   min-width: 10px;
 }
@@ -15,5 +14,4 @@
   flex-direction: column;
   box-sizing: border-box;
   background: lightgrey;
-  border: 1 solid darkgray;
 }

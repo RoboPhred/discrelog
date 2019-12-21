@@ -2,12 +2,14 @@ import * as React from "react";
 
 import { isDev } from "@/env";
 
+import flex from "@/styles/flex.module.css";
+import sizing from "@/styles/sizing.module.css";
+
 import CircuitEditor from "@/pages/CircuitEditor";
 import Intro from "@/pages/Intro";
 
 import TitleBar from "../TitleBar";
-
-import styles from "./App.module.css";
+import { cls } from "@/utils";
 
 const App: React.FC = () => {
   const [introShown, setIntroShown] = React.useState(isDev);
@@ -20,9 +22,11 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className={styles["app-root"]}>
+    <div className={cls(sizing["fill-parent"], flex["flex-column"])}>
       <TitleBar />
-      <CircuitEditor className={styles["app-content"]} />
+      <CircuitEditor
+        className={cls(sizing["fill-parent"], flex["flexitem-shrink"])}
+      />
     </div>
   );
 };
