@@ -22,6 +22,8 @@ import keymap, {
 
 import CircuitField from "./components/CircuitField";
 
+import { cls } from "@/utils";
+
 export interface CircuitFieldViewProps {
   className?: string;
 }
@@ -40,15 +42,13 @@ const CircuitFieldView: React.FC<CircuitFieldViewProps> = ({ className }) => {
   }, [dispatch]);
 
   return (
-    <div className={className}>
-      <HotKeys
-        className={sizing["fill-parent"]}
-        keyMap={keymap}
-        handlers={keyHandlers}
-      >
-        <CircuitField />
-      </HotKeys>
-    </div>
+    <HotKeys
+      className={cls(className, sizing["fill-parent"])}
+      keyMap={keymap}
+      handlers={keyHandlers}
+    >
+      <CircuitField />
+    </HotKeys>
   );
 };
 

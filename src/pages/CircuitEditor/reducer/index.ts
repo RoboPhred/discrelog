@@ -1,6 +1,6 @@
 import { combineReducers } from "@/store/utils";
 
-import circuitFieldReducer from "../ContentViews/CircuitFieldView/reducer";
+import circuitFieldReducer from "../components/CircuitFieldView/components/CircuitField/reducer";
 
 import clipboardCopyReducer from "./clipboard-copy";
 import clipboardPasteReducer from "./clipboard-paste";
@@ -15,9 +15,10 @@ import selectionCopyReducer from "./selection-copy";
 import selectionDeleteReducer from "./selection-delete";
 
 export default combineReducers(
+  circuitFieldReducer,
+
   clipboardCopyReducer,
   clipboardPasteReducer,
-  circuitFieldReducer,
   nodeAddReducer,
   nodeDeleteReducer,
   nodeHoverReducer,

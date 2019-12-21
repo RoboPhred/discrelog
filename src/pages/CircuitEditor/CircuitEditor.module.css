@@ -1,0 +1,28 @@
+.editor {
+  display: flex;
+  flex-direction: column;
+  background: grey;
+}
+
+.editor-fieldcontainer {
+  /* FIXME: Get rid of this and use margins on the thing inside the container */
+  flex-grow: 1;
+  min-height: 0;
+  box-sizing: border-box;
+  padding: 25px;
+  width: 100%;
+  height: 100%;
+}
+
+.editor-field {
+  background: white;
+  border-radius: 5px;
+  width: 100%;
+  height: 100%;
+}
+
+.editor-toolwindow-horizontal {
+  background: white;
+  width: 100%;
+  height: 250px;
+}

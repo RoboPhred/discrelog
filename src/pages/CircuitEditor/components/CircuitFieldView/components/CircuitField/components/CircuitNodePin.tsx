@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { AppState } from "@/store";
 
-import { selectedPinSelector } from "@/pages/CircuitEditor/ContentViews/CircuitFieldView/selectors";
+import { selectedPinSelector } from "@/pages/CircuitEditor/components/CircuitFieldView/components/CircuitField/selectors";
 
 const PIN_CIRCLE_RADIUS_UNSELECTED = 4;
 const PIN_CIRCLE_RADIUS_SELECTED = 6;

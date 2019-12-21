@@ -12,16 +12,17 @@ import { nodeHover } from "@/pages/CircuitEditor/actions/node-hover";
 import { selectNodes } from "@/pages/CircuitEditor/actions/select-nodes";
 import { clearSelection } from "@/pages/CircuitEditor/actions/select-clear";
 
-import { dragStartNode } from "../../actions/drag-start-node";
-import { dragStartSelect } from "../../actions/drag-start-select";
-import { dragContinue } from "../../actions/drag-continue";
-import { dragEnd } from "../../actions/drag-end";
-import { selectPin } from "../../actions/select-pin";
+import { dragStartNode } from "./actions/drag-start-node";
+import { dragStartSelect } from "./actions/drag-start-select";
+import { dragContinue } from "./actions/drag-continue";
+import { dragEnd } from "./actions/drag-end";
+import { selectPin } from "./actions/select-pin";
 
-import DragPreviewLayer from "../DragPreviewLayer";
-import DragSelectLayer from "../DragSelectLayer";
-import WiresLayer from "../WiresLayer";
-import NodesLayer from "../NodesLayer";
+import DragPreviewLayer from "./components/DragPreviewLayer";
+import DragSelectLayer from "./components/DragSelectLayer";
+import WiresLayer from "./components/WiresLayer";
+import NodesLayer from "./components/NodesLayer";
+
 import useMouseTracking from "./useMouseTracking";
 import { ModifierKeys } from "./types";
 

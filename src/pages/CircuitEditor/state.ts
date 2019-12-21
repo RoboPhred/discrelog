@@ -3,7 +3,7 @@ import { Point, IDMap } from "@/types";
 import {
   CircuitFieldState,
   defaultCircuitFieldState
-} from "./ContentViews/CircuitFieldView/state";
+} from "./components/CircuitFieldView/components/CircuitField/state";
 
 import { ClipboardNode } from "./types";
 
