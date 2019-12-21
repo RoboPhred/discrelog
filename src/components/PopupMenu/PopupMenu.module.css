@@ -1,0 +1,6 @@
+.popupmenu {
+  background: white;
+  display: flex;
+  flex-flow: column nowrap;
+  min-width: 150px;
+}

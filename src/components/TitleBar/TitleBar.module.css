@@ -1,0 +1,20 @@
+.titlebar {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-items: baseline;
+  padding: 8px 10px;
+  /* FIXME: Use variable */
+  background-color: #f8f9fa;
+}
+
+.titlebar-brand {
+  margin-right: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.titlebar-menuItem {
+  padding: "0 0.5rem";
+  font-size: "0.9rem";
+}

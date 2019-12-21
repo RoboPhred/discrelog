@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import { createUseStyles } from "react-jss";
-
 import { cls } from "@/utils";
 
-import ResizeHandle from "./components/ResizeHandle";
+import ResizeHandle from "../ResizeHandle";
+
+import styles from "./EditorLayout.module.css";
 
 export interface EditorPanelProps {
   className?: string;
@@ -14,26 +14,6 @@ export interface EditorPanelProps {
   defaultRightSidebarWidth?: number;
 }
 
-const useStyles = createUseStyles({
-  root: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "stretch"
-  },
-  contentPanel: {
-    flex: "1 1 auto",
-    background: "darkgray",
-    minWidth: "10px"
-  },
-  sidebarPanel: {
-    display: "flex",
-    flexDirection: "column",
-    boxSizing: "border-box",
-    background: "lightgrey",
-    border: "1 solid darkgray",
-  }
-})
-
 const EditorLayout: React.FC<EditorPanelProps> = ({
   className,
   defaultLeftSidebarWidth,
@@ -42,8 +22,6 @@ const EditorLayout: React.FC<EditorPanelProps> = ({
   rightSidebar,
   children
 }) => {
-  const styles = useStyles();
-
   const [leftSidebarSize, setLeftSidebarSize] = React.useState(
     defaultLeftSidebarWidth || 100
   );
@@ -66,18 +44,28 @@ const EditorLayout: React.FC<EditorPanelProps> = ({
   );
 
   return (
-    <div className={cls(className, styles.root)}>
+    <div className={cls(className, styles["editor-root"])}>
       {leftSidebar && (
         <>
-          <div className={styles.sidebarPanel} style={{ width: leftSidebarSize }}>{leftSidebar}</div>
+          <div
+            className={styles["editor-sidebar-panel"]}
+            style={{ width: leftSidebarSize }}
+          >
+            {leftSidebar}
+          </div>
           <ResizeHandle onResize={onLeftSidebarResize} />
         </>
       )}
-      <div className={styles.contentPanel}>{children}</div>
+      <div className={styles["editor-content-panel"]}>{children}</div>
       {rightSidebar && (
         <>
           <ResizeHandle onResize={onRightSidebarResize} />
-          <div className={styles.sidebarPanel} style={{ width: rightSidebarSize }}>{rightSidebar}</div>
+          <div
+            className={styles["editor-sidebar-panel"]}
+            style={{ width: rightSidebarSize }}
+          >
+            {rightSidebar}
+          </div>
         </>
       )}
     </div>

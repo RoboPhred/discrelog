@@ -1,0 +1,19 @@
+.editor-root {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.editor-content-panel {
+  flex: 1 1 auto;
+  background: darkgray;
+  min-width: 10px;
+}
+
+.editor-sidebar-panel {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background: lightgrey;
+  border: 1 solid darkgray;
+}

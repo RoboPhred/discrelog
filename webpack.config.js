@@ -1,11 +1,12 @@
 const { resolve: resolvePath, join: joinPath } = require("path");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const isProd = process.env["NODE_ENV"] === "production";
 const isDev = !isProd;
 
-const ROOT = resolvePath(__dirname, "..");
+const ROOT = __dirname;
 const PATHS = {
   src: resolvePath(ROOT, "./src"),
   dist: resolvePath(ROOT, "./dist"),
@@ -64,12 +65,20 @@ module.exports = {
         loader: "ts-loader"
       },
 
-      // css support.
-      //  style-loader can do a lot more than we use it for;
-      //  we currently just use it to inject the css into the html.
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"]
+        use: [
+          { loader: MiniCssExtractPlugin.loader },
+          {
+            loader: "css-loader",
+            options: {
+              modules: {
+                localIdentName: "[name]__[local]___[hash:base64:5]"
+              }
+            }
+          },
+          { loader: "postcss-loader" }
+        ]
       },
 
       // Pull in text and markdown files raw.
@@ -84,7 +93,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       template: resolvePath(PATHS.src, "index.ejs")
-    })
+    }),
+    new MiniCssExtractPlugin()
   ].filter(truthy),
 
   optimization: {

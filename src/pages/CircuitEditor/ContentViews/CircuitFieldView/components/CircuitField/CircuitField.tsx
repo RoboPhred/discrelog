@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { createUseStyles } from "react-jss";
+
+import sizing from "@/styles/sizing.module.css";
 
 import { Point } from "@/types";
 
@@ -26,16 +27,8 @@ import { ModifierKeys } from "./types";
 
 export interface CircuitFieldProps {}
 
-const useStyles = createUseStyles({
-  root: {
-    width: "100%",
-    height: "100%"
-  }
-});
-
 const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
   const dispatch = useDispatch();
-  const styles = useStyles();
 
   const svgRef = React.useRef<SVGSVGElement>(null);
 
@@ -175,7 +168,7 @@ const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
 
   return (
     <svg
-      className={styles.root}
+      className={sizing["fill-parent"]}
       tabIndex={-1}
       ref={svgRef}
       onMouseDown={onMouseDown}

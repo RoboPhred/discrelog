@@ -1,9 +1,9 @@
 import * as React from "react";
-import { createUseStyles } from "react-jss";
 
-import { cls } from "@/utils";
+import sizing from "@/styles/sizing.module.css";
 
-import EditorLayout, { ToolWindow } from "@/components/EditorLayout";
+import EditorLayout from "@/components/EditorLayout";
+import ToolWindow from "@/components/ToolWindow";
 
 import CircuitTray from "./ToolWindows/CircuitTray";
 import TimingControls from "./ToolWindows/TimingControls";
@@ -15,15 +15,7 @@ export interface CircuitEditorProps {
   className?: string;
 }
 
-const useStyles = createUseStyles({
-  fillParent: {
-    width: "100%",
-    height: "100%"
-  }
-});
-
 const CircuitEditor: React.FC<CircuitEditorProps> = ({ className }) => {
-  const styles = useStyles();
   return (
     <EditorLayout
       className={className}
@@ -48,7 +40,7 @@ const CircuitEditor: React.FC<CircuitEditorProps> = ({ className }) => {
       }
       defaultRightSidebarWidth={200}
     >
-      <CircuitFieldView className={styles.fillParent} />
+      <CircuitFieldView className={sizing["fill-parent"]} />
     </EditorLayout>
   );
 };

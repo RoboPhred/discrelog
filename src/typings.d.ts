@@ -10,32 +10,14 @@ type ObjectValueReturnTypes<T> = {
   [P in keyof T]: ReturnType<IsFunction<T[P]>>;
 };
 
+declare module "*.module.css" {
+  const classes: { [key: string]: string };
+  export default classes;
+}
+
 declare module "*.md" {
   const value: string;
   export = value;
-}
-
-declare module "react-sizeme" {
-  export interface SizeConfig {
-    monitorWidth?: boolean;
-    monitorHeight?: boolean;
-    noPlaceholder?: boolean;
-  }
-
-  export interface SizeProps {
-    size: {
-      width: number;
-      height: number;
-    };
-  }
-
-  type SizemeDecorator<TProps extends SizeProps> = (
-    component: React.ComponentClass<TProps>
-  ) => React.ComponentClass<Omit<TProps, keyof SizeProps>>;
-  function sizeme<TProps extends SizeProps>(
-    config: SizeConfig
-  ): SizemeDecorator<TProps>;
-  export default sizeme;
 }
 
 declare module "svg-path-bounds" {

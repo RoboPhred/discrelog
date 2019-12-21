@@ -1,11 +1,12 @@
 import * as React from "react";
-import { createUseStyles } from "react-jss";
 import { connect } from "react-redux";
+
+import { typedKeys, cls } from "@/utils";
+import sizing from "@/styles/sizing.module.css";
+import flex from "@/styles/flex.module.css";
 
 import { addNode } from "@/services/simulator/actions/node-add";
 import { NodeTypes } from "@/services/simulator/node-types";
-
-import { typedKeys } from "@/utils";
 
 import NodeVisual from "../components/NodeVisual";
 
@@ -16,18 +17,7 @@ type DispatchProps = typeof mapDispatchToProps;
 
 type Props = DispatchProps;
 
-const useStyles = createUseStyles({
-  root: {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    flexDirection: "column"
-  }
-});
-
 const CircuitTray: React.FC<Props> = ({ addNode }) => {
-  const styles = useStyles();
-
   const elements = typedKeys(NodeTypes).map(type => {
     return (
       <div key={type} onClick={() => addNode(type)}>
@@ -38,6 +28,10 @@ const CircuitTray: React.FC<Props> = ({ addNode }) => {
     );
   });
 
-  return <div className={styles.root}>{elements}</div>;
-}
+  return (
+    <div className={cls(sizing["fill-parent"], flex["flex-column"])}>
+      {elements}
+    </div>
+  );
+};
 export default connect(null, mapDispatchToProps)(CircuitTray);

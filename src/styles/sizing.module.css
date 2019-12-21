@@ -1,0 +1,6 @@
+/** FIXME: ide ts is not generating typings when this is referenced with an @-path */
+
+.fill-parent {
+  width: 100%;
+  height: 100%;
+}

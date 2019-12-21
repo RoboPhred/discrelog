@@ -1,9 +1,8 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { createUseStyles } from "react-jss";
 import { HotKeys } from "react-hotkeys";
 
-import { cls } from "@/utils";
+import sizing from "@/styles/sizing.module.css";
 
 import { evolveSim } from "@/services/simulator/actions/sim-evolve";
 import { fastForwardSim } from "@/services/simulator/actions/sim-fastforward";
@@ -27,18 +26,7 @@ export interface CircuitFieldViewProps {
   className?: string;
 }
 
-const useStyles = createUseStyles({
-  root: {
-    overflow: "hidden"
-  },
-  fillParent: {
-    width: "100%",
-    height: "100%"
-  }
-});
-
 const CircuitFieldView: React.FC<CircuitFieldViewProps> = ({ className }) => {
-  const styles = useStyles();
   const dispatch = useDispatch();
   const keyHandlers = React.useMemo(() => {
     let keyHandlers: KeymapHandler = {
@@ -52,9 +40,9 @@ const CircuitFieldView: React.FC<CircuitFieldViewProps> = ({ className }) => {
   }, [dispatch]);
 
   return (
-    <div className={cls(className, styles.root)}>
+    <div className={className}>
       <HotKeys
-        className={styles.fillParent}
+        className={sizing["fill-parent"]}
         keyMap={keymap}
         handlers={keyHandlers}
       >
