@@ -9,8 +9,8 @@ const TitleBar: React.FC = () => {
     <div className={styles.titlebar}>
       <span className={styles["titlebar-brand"]}>Discrelog</span>
       <MenuItem title="File" childPlacement="bottom-start">
-        <span className={styles["titlebar-menuItem"]}>Foo</span>
-        <span className={styles["titlebar-menuItem"]}>Bar</span>
+        <MenuItem title="Foo" />
+        <MenuItem title="Bar" />
       </MenuItem>
     </div>
   );

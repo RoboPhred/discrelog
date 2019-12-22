@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FocusOn } from "react-focus-on";
 
 import Popper, { PopperPlacement } from "../Popper";
 
@@ -8,12 +9,14 @@ export interface PopupMenuProps {
   isOpen: boolean;
   placement: PopperPlacement;
   anchorEl: Element | null;
+  onClose(): void;
 }
 
 const PopupMenu: React.FC<PopupMenuProps> = ({
   isOpen,
   placement,
   anchorEl,
+  onClose,
   children
 }) => {
   return (
@@ -23,7 +26,9 @@ const PopupMenu: React.FC<PopupMenuProps> = ({
       placement={placement}
       anchorEl={anchorEl}
     >
-      {children}
+      <FocusOn enabled={isOpen} onClickOutside={onClose} onEscapeKey={onClose}>
+        {children}
+      </FocusOn>
     </Popper>
   );
 };

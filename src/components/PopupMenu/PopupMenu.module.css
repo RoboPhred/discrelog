@@ -1,6 +1,18 @@
 .popupmenu {
   background: white;
+  border: 1px solid lightgray;
   display: flex;
   flex-flow: column nowrap;
   min-width: 150px;
+  padding: 5px;
+}
+
+.popupmenu > :global(.menu-item) {
+  padding: 0 0.5rem;
+  font-size: 0.9rem;
+}
+
+.popupmenu :global(.menu-item):focus {
+  background: lightskyblue;
+  outline: none;
 }

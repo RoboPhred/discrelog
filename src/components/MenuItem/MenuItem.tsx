@@ -1,7 +1,11 @@
 import * as React from "react";
 
-import PopupMenu from "./PopupMenu";
-import { PopperPlacement } from "./Popper";
+import { cls } from "@/utils";
+
+import PopupMenu from "../PopupMenu";
+import { PopperPlacement } from "../Popper";
+
+import "./MenuItem.module.css";
 
 export interface MenuItemProps {
   title: string;
@@ -27,6 +31,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
       if (isParentItem) {
         setOpen(!isOpen);
         e.preventDefault();
+        e.stopPropagation();
       }
       if (onClick) {
         onClick(e);
@@ -35,10 +40,17 @@ const MenuItem: React.FC<MenuItemProps> = ({
     [isOpen, isParentItem, onClick]
   );
 
-  const renderResult = [];
+  const onClose = React.useCallback(() => {
+    setOpen(false);
+  }, [isOpen]);
 
   const item = (
-    <div className={className} ref={ref} onClick={onItemClick}>
+    <div
+      className={cls("menu-item", className)}
+      ref={ref}
+      tabIndex={0}
+      onClick={onItemClick}
+    >
       {title}
     </div>
   );
@@ -50,6 +62,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
         isOpen={isOpen}
         anchorEl={ref.current}
         placement={childPlacement}
+        onClose={onClose}
       >
         {children}
       </PopupMenu>
