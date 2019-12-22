@@ -5,8 +5,8 @@ import { connect } from "react-redux";
 
 import { AppState } from "@/store";
 
-import { Connection } from "@/services/simulator";
 import { connectionsSelector } from "@/services/simulator/selectors/connections";
+import { Connection } from "@/services/simulator/types";
 
 import Wire from "./Wire";
 

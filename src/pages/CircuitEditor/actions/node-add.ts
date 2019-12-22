@@ -1,10 +1,11 @@
 import { AnyAction } from "redux";
 
+import { NodeType } from "@/node-defs";
+
 import {
   addNode as simulatorAddNode,
   ACTION_NODE_ADD
 } from "@/services/simulator/actions/node-add";
-import { NodeType } from "@/services/simulator/node-types";
 
 // TODO: Rather than hyjacking the existing action, make this its own distinct
 //  action and invoke the simulator action in the reducer.

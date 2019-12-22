@@ -1,6 +1,5 @@
 import { IDMap } from "@/types";
-
-import { NodeType } from "./node-types";
+import { NodeType } from "@/node-defs";
 
 export interface Node {
   id: string;

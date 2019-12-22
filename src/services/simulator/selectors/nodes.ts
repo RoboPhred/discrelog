@@ -1,7 +1,8 @@
 import mapValues from "lodash/mapValues";
 
+import { NodeTypes } from "@/node-defs";
+
 import { SimulatorState } from "../state";
-import { NodeTypes } from "../node-types";
 
 import { createSimulatorSelector } from "./utils";
 

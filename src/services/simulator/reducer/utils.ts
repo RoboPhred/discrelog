@@ -3,10 +3,10 @@ import find from "lodash/find";
 
 import { AppState, defaultAppState } from "@/store";
 import { fpSet } from "@/utils";
+import { NodeTypes } from "@/node-defs";
 
 import { SimulatorState } from "../state";
 import { NodePin, Connection } from "../types";
-import { NodeTypes } from "../node-types";
 
 export interface SimulatorReducer {
   (state: SimulatorState, action: AnyAction): SimulatorState;

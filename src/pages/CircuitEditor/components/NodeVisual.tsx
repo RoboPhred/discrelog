@@ -1,12 +1,12 @@
 import * as React from "react";
 
-import { NodePinDirection } from "@/services/simulator";
 import {
   NodeType,
   NodeTypes,
-  NodePinDefinition
-} from "@/services/simulator/node-types";
-import { normalizeVisuals } from "@/services/simulator/node-types/utils";
+  NodePinDefinition,
+  NodePinDirection
+} from "@/node-defs";
+import { normalizeVisuals } from "@/node-defs/utils";
 
 export interface RenderPinProps extends NodePinDefinition {
   id: string;
@@ -48,8 +48,7 @@ class NodeVisual extends React.Component<Props> {
     let body: React.ReactNode;
     if (!def) {
       body = <rect x={x} y={y} width={50} height={50} fill="red" />;
-    }
-    else {
+    } else {
       const { shapePath } = def.visual;
       const visuals = normalizeVisuals(shapePath, nodeState);
       body = visuals.map((v, i) => (
@@ -79,7 +78,7 @@ class NodeVisual extends React.Component<Props> {
       });
     }
 
-    const transform = (x != 0 || y != 0) ? `translate(${x}, ${y})` : undefined;
+    const transform = x != 0 || y != 0 ? `translate(${x}, ${y})` : undefined;
     return (
       <g
         className="node-visual"
@@ -90,9 +89,7 @@ class NodeVisual extends React.Component<Props> {
         onMouseUp={onMouseUp}
         onMouseLeave={onMouseLeave}
       >
-        {hitPath && (
-          <path d={hitPath} fill="transparent" onClick={onClick} />
-        )}
+        {hitPath && <path d={hitPath} fill="transparent" onClick={onClick} />}
         {body}
         {pins}
       </g>

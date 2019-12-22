@@ -6,6 +6,7 @@ import mapValues from "lodash/mapValues";
 import pick from "lodash/pick";
 
 import { normalizeRectangle } from "@/geometry";
+import { normalizeVisuals } from "@/node-defs/utils";
 
 import { AppState } from "@/store";
 
@@ -14,7 +15,6 @@ import {
   nodeStatesByIdSelector,
   nodesByIdSelector
 } from "@/services/simulator/selectors/nodes";
-import { normalizeVisuals } from "@/services/simulator/node-types/utils";
 
 export const nodePositionsByIdSelector = (s: AppState) =>
   s.ui.circuitEditor.nodePositions;

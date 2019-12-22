@@ -1,7 +1,5 @@
 import { IDMap } from "@/types";
 
-import { PinValueMap } from "../types";
-
 export type NodePinDirection = "input" | "output";
 
 export interface NodePinDefinition {
@@ -47,16 +45,13 @@ export interface EvolutionResult {
 export type NodeInteractFunction = (state: any) => any;
 export type NodeEvolverFunction = (
   state: any,
-  inputs: PinValueMap,
+  inputs: Record<string, boolean>,
   tick: number
 ) => EvolutionResult;
 
 export interface NodeDefinition {
   type: string;
 
-  // TODO: node appearance and pin positions should be a ui-only concern.
-  //  Preferably without splitting it out of the def... Move node defs to its own folder outside
-  //  of the service?
   visual: NodeVisualDefinition;
 
   pins: IDMap<NodePinDefinition>;

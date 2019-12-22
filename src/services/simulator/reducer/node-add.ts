@@ -2,8 +2,9 @@ import { AnyAction } from "redux";
 import produce from "immer";
 import mapValues from "lodash/mapValues";
 
-import { NodeTypes } from "../node-types";
-import { inputsOf, outputsOf } from "../node-types/utils";
+import { NodeTypes } from "@/node-defs";
+import { inputsOf, outputsOf } from "@/node-defs/utils";
+
 import { SimulatorState } from "../state";
 import { isAddNodeAction } from "../actions/node-add";
 

@@ -1,7 +1,7 @@
 import uuidV4 from "uuid/v4";
-
-import { NodeType } from "../node-types";
 import { AnyAction } from "redux";
+
+import { NodeType } from "@/node-defs";
 
 export const ACTION_NODE_ADD = "@sim/node/add" as const;
 export const addNode = (nodeType: NodeType, nodeId?: string) => ({

@@ -7,6 +7,8 @@ import uuidV4 from "uuid/v4";
 import { Point } from "@/types";
 import { pointAdd, ZeroPoint } from "@/geometry";
 import { AppState, defaultAppState } from "@/store";
+import { fpSet } from "@/utils";
+
 import rootReducer from "@/store/reducer";
 
 import { attachWire } from "@/services/simulator/actions/wire-attach";
@@ -14,7 +16,6 @@ import { attachWire } from "@/services/simulator/actions/wire-attach";
 import { isPasteAction } from "../actions/clipboard-paste";
 import { addNode } from "../actions/node-add";
 import { selectNodes } from "../actions/select-nodes";
-import { fpSet } from "@/utils";
 
 export const CLIPBOARD_PASTE_OFFSET: Point = { x: 10, y: 10 };
 

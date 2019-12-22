@@ -6,10 +6,10 @@ import pick from "lodash/pick";
 
 import { fpSet } from "@/utils";
 import { IDMap } from "@/types";
+import { NodeTypes } from "@/node-defs";
 
 import { SimulatorState } from "../state";
 import { TransitionWindow, NodePin, NodePinTransition } from "../types";
-import { NodeTypes } from "../node-types";
 
 import { nodeInputConnectionsByPinSelector } from "../selectors/connections";
 

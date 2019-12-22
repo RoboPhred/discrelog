@@ -21,15 +21,15 @@ Click on pins to select them. While a pin is selected, click on other pins to co
 
 ### Controls:
 
-* Select element: `left-click`
-* Toggle element in current selection: `ctrl + left-click`
-* Add element to current selection: `shift + left-click`
-* Activate Button: `alt + left-click` or `option + left-click`
-* Delete Element: `backspace` or `delete`
-* Copy Selected: `ctrl + c` or `command + c`
-* Paste: `ctrl + v` or `command + v`
-* Next tick: `spacebar`
-* Fast forward to next transition: `shift + spacebar`
+- Select element: `left-click`
+- Toggle element in current selection: `ctrl + left-click`
+- Add element to current selection: `shift + left-click`
+- Activate Button: `alt + left-click` or `option + left-click`
+- Delete Element: `backspace` or `delete`
+- Copy Selected: `ctrl + c` or `command + c`
+- Paste: `ctrl + v` or `command + v`
+- Next tick: `spacebar`
+- Fast forward to next transition: `shift + spacebar`
 
 ## Circuit structure and Simulation
 
@@ -45,17 +45,17 @@ It is not possible for a component to change its pin on the current tick. This e
 
 As of the time of this writing, the available logic components consist of:
 
-* Combinational logic (4 tick response)
-  * AND
-  * OR
-  * NOR
-* Negate / NOT (4 tick response)
-* Toggle Switch (1 tick response)
-* Buffer (2 tick response)
-* 7 Segment Display (immediate visual response)
-* LED (immediate visual response)
+- Combinational logic (4 tick response)
+  - AND
+  - OR
+  - NOR
+- Negate / NOT (4 tick response)
+- Toggle Switch (1 tick response)
+- Buffer (2 tick response)
+- 7 Segment Display (immediate visual response)
+- LED (immediate visual response)
 
-_For more details on the implementation of logic components, and how to add your own, see [/services/simulator/node-types](https://github.com/RoboPhred/discrelog/tree/master/src/services/simulator/node-types)._
+_For more details on the implementation of logic components, and how to add your own, see [/node-types](https://github.com/RoboPhred/discrelog/tree/master/src/node-types)._
 
 ## Upcomming features
 
@@ -74,7 +74,7 @@ The UI renderer is React, with Redux providing the backing store.
 
 This project is licenced under AGPL-3.0.
 
-Some logic symbol artwork has been provided by wikimedia commons under the public domain license.  These have been called out where used.
+Some logic symbol artwork has been provided by wikimedia commons under the public domain license. These have been called out where used.
 
 ## Alternatives
 
@@ -82,10 +82,10 @@ There are a few notable digital (and analog) circuit editors that I have come ac
 
 Open source:
 
-* http://www.cburch.com/logisim/ (desktop app, java)
-* https://github.com/willymcallister/circuit-sandbox (online, javascript, analog)
+- http://www.cburch.com/logisim/ (desktop app, java)
+- https://github.com/willymcallister/circuit-sandbox (online, javascript, analog)
 
 Closed source:
 
-* https://www.circuitlab.com/ (online)
-* https://simulator.io/ (online)
+- https://www.circuitlab.com/ (online)
+- https://simulator.io/ (online)
