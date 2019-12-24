@@ -6,7 +6,7 @@ import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
 import { nodePinDirectionSelector } from "@/services/simulator/selectors/connections";
-import { toggleWire } from "@/services/simulator/actions/wire-toggle";
+import { toggleWire } from "@/actions/wire-toggle";
 
 import { isSelectPinAction, SelectPinAction } from "../actions/select-pin";
 

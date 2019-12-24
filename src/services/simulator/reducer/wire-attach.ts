@@ -1,10 +1,11 @@
 import find from "lodash/find";
 
-import { collectNodeTransitions } from "./transition-utils";
-import { nodePinEquals } from "../types";
-import { isAttachWireAction } from "../actions/wire-attach";
+import { nodePinEquals } from "@/types";
+import { isAttachWireAction } from "@/actions/wire-attach";
 
-import { pinsToConnection, createSimulatorReducer } from "./utils";
+import { pinsToConnection, createSimulatorReducer } from "../utils";
+
+import { collectNodeTransitions } from "./transition-utils";
 
 export default createSimulatorReducer((state, action) => {
   if (!isAttachWireAction(action)) {

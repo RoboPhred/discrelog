@@ -15,9 +15,7 @@ import {
   nodeStatesByIdSelector,
   nodesByIdSelector
 } from "@/services/simulator/selectors/nodes";
-
-export const nodePositionsByIdSelector = (s: AppState) =>
-  s.ui.circuitEditor.nodePositions;
+import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
 
 export const nodeBoundsById = createSelector(
   nodeDefsByIdSelector,

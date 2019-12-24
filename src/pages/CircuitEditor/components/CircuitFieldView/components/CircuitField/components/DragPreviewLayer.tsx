@@ -13,11 +13,9 @@ import {
   nodeTypesByIdSelector,
   nodeStatesByIdSelector
 } from "@/services/simulator/selectors/nodes";
+import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
 
-import {
-  selectedNodeIdsSelector,
-  nodePositionsByIdSelector
-} from "@/pages/CircuitEditor/selectors";
+import { selectedNodeIdsSelector } from "@/pages/CircuitEditor/selectors";
 
 import NodeVisual from "@/pages/CircuitEditor/components/NodeVisual";
 
@@ -77,7 +75,11 @@ class DragPreviewLayer extends React.Component<Props> {
         ))
       );
     }
-    return <g id="drag-preview-layer" opacity={0.3}>{elements}</g>;
+    return (
+      <g id="drag-preview-layer" opacity={0.3}>
+        {elements}
+      </g>
+    );
   }
 }
 export default connect(mapStateToProps)(DragPreviewLayer);

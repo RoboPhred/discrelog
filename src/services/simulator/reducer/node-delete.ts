@@ -4,10 +4,11 @@ import produce from "immer";
 import binarySearch from "binary-search";
 import remove from "lodash/remove";
 
-import { SimulatorState } from "../state";
-import { isDeleteNodeAction } from "../actions/node-delete";
+import { isDeleteNodeAction } from "@/actions/node-delete";
 
-import { createSimulatorReducer } from "./utils";
+import { SimulatorState } from "../state";
+
+import { createSimulatorReducer } from "../utils";
 
 export default createSimulatorReducer((state, action) => {
   return produce(state, draft => deleteNodeMutator(draft, action));

@@ -2,10 +2,11 @@ import { fpSet } from "@/utils";
 
 import { NodeTypes } from "@/node-defs";
 
-import { isInteractNodeAction } from "../actions/node-interact";
+import { isInteractNodeAction } from "@/actions/node-interact";
+
+import { createSimulatorReducer } from "../utils";
 
 import { collectNodeTransitions } from "./transition-utils";
-import { createSimulatorReducer } from "./utils";
 
 export default createSimulatorReducer((state, action) => {
   if (!isInteractNodeAction(action)) {

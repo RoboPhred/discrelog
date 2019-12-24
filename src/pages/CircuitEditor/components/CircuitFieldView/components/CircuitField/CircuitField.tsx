@@ -5,7 +5,7 @@ import sizing from "@/styles/sizing.module.css";
 
 import { Point } from "@/types";
 
-import { interactNode } from "@/services/simulator/actions/node-interact";
+import { interactNode } from "@/actions/node-interact";
 
 import { SelectionMode } from "@/pages/CircuitEditor/types";
 import { nodeHover } from "@/pages/CircuitEditor/actions/node-hover";

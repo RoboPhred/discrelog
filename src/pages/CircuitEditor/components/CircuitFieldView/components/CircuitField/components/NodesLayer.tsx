@@ -4,8 +4,7 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
 import { AppState } from "@/store";
-
-import { nodePositionsByIdSelector } from "@/pages/CircuitEditor/selectors";
+import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
 
 import CircuitNode from "./CircuitNode";
 
@@ -110,11 +109,7 @@ class BoundCicrcuitNode extends React.Component<BoundCicrcuitNodeProps> {
   }
 
   render() {
-    const {
-      nodeId,
-      x,
-      y
-    } = this.props;
+    const { nodeId, x, y } = this.props;
     return (
       <CircuitNode
         nodeId={nodeId}

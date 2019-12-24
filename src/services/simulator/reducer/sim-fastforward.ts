@@ -2,8 +2,8 @@ import { AnyAction } from "redux";
 
 import { AppState, defaultAppState } from "@/store";
 
-import { isFastForwardSimAction } from "../actions/sim-fastforward";
-import { evolveSim } from "../actions/sim-evolve";
+import { isFastForwardSimAction } from "@/actions/sim-fastforward";
+import { evolveSim } from "@/actions/sim-evolve";
 
 import evolveSimReducer from "./sim-evolve";
 

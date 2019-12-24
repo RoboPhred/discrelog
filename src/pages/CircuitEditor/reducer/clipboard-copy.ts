@@ -1,34 +1,31 @@
-import produce from "immer";
-
 import uuidV4 from "uuid/v4";
 import map from "lodash/map";
 import mapValues from "lodash/mapValues";
 import findIndex from "lodash/findIndex";
 import zipObject from "lodash/zipObject";
 
-import { AppState } from "@/store";
 import { pointSubtract } from "@/geometry";
 
 import { nodeSelector } from "@/services/simulator/selectors/nodes";
 import { nodeOutputConnectionsByPinSelector } from "@/services/simulator/selectors/connections";
+import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
 
-import { CircuitEditorState, defaultCircuitEditorState } from "../state";
 import { ClipboardNode } from "../types";
-import { isCopyNodesAction, CopyNodesAction } from "../actions/clipboard-copy";
+import { isCopyNodesAction } from "../actions/clipboard-copy";
 
 import { createEditorReducer } from "./utils";
 
-function copyNodesMutator(
-  state: CircuitEditorState = defaultCircuitEditorState,
-  action: CopyNodesAction,
-  appState: AppState
-) {
-  const { nodeIds } = action.payload;
-  const { nodePositions } = state;
-
-  if (nodeIds.length === 0) {
-    return;
+export default createEditorReducer((state, action, appState) => {
+  if (!isCopyNodesAction(action)) {
+    return state;
   }
+
+  const { nodeIds } = action.payload;
+  if (nodeIds.length === 0) {
+    return state;
+  }
+
+  const nodePositionsById = nodePositionsByIdSelector(appState);
 
   const copyIds = zipObject(
     nodeIds,
@@ -39,7 +36,7 @@ function copyNodesMutator(
     return findIndex(nodeIds, x => x === id) !== -1;
   }
 
-  const rootPosition = nodePositions[nodeIds[0]];
+  const rootPosition = nodePositionsById[nodeIds[0]];
 
   const copyNodes: ClipboardNode[] = nodeIds.map(nodeId => {
     const node = nodeSelector(appState, nodeId);
@@ -47,7 +44,7 @@ function copyNodesMutator(
     const copyNode: ClipboardNode = {
       id: copyIds[nodeId],
       type: node.type,
-      offset: pointSubtract(nodePositions[nodeId], rootPosition),
+      offset: pointSubtract(nodePositionsById[nodeId], rootPosition),
       outputs: mapValues(outputs, conns =>
         conns
           .filter(x => nodeIsSelected(x.nodeId))
@@ -57,13 +54,9 @@ function copyNodesMutator(
     return copyNode;
   });
 
-  state.clipboardContent = copyNodes;
-  state.clipboardOrigin = rootPosition;
-}
-
-export default createEditorReducer((state, action, appState) => {
-  if (!isCopyNodesAction(action)) {
-    return state;
-  }
-  return produce(state, s => copyNodesMutator(s, action, appState));
+  return {
+    ...state,
+    clipboardContent: copyNodes,
+    clipboardOrigin: rootPosition
+  };
 });

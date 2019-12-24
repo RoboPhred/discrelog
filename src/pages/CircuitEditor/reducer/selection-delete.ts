@@ -3,7 +3,7 @@ import { AnyAction } from "redux";
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
-import { deleteNode } from "@/services/simulator/actions/node-delete";
+import { deleteNode } from "@/actions/node-delete";
 
 import { isSelectionDeleteAction } from "../actions/selection-delete";
 import { selectedNodeIdsSelector } from "../selectors";

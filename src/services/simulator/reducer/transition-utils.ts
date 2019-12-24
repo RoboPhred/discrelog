@@ -5,11 +5,11 @@ import findIndex from "lodash/findIndex";
 import pick from "lodash/pick";
 
 import { fpSet } from "@/utils";
-import { IDMap } from "@/types";
+import { IDMap, NodePin } from "@/types";
 import { NodeTypes } from "@/node-defs";
 
 import { SimulatorState } from "../state";
-import { TransitionWindow, NodePin, NodePinTransition } from "../types";
+import { SimTransitionWindow, SimNodePinTransition } from "../types";
 
 import { nodeInputConnectionsByPinSelector } from "../selectors/connections";
 
@@ -87,7 +87,7 @@ function addTransition(
 ): SimulatorState {
   const transitionId = uuidV4();
 
-  const newTransition: NodePinTransition = {
+  const newTransition: SimNodePinTransition = {
     id: transitionId,
     nodeId,
     outputId,
@@ -109,7 +109,7 @@ function addTransition(
   if (index < 0) {
     // Need to create a new window
     index = -index - 1;
-    const newWindow: TransitionWindow = {
+    const newWindow: SimTransitionWindow = {
       tick,
       transitionIds: []
     };

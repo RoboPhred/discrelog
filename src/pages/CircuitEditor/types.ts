@@ -1,7 +1,5 @@
-import { IDMap, Point } from "@/types";
+import { IDMap, Point, NodePin } from "@/types";
 import { NodeType } from "@/node-defs";
-
-import { NodePin } from "@/services/simulator/types";
 
 export type SelectionMode = "set" | "append" | "remove" | "toggle";
 

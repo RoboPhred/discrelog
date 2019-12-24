@@ -1,6 +1,6 @@
 import { AnyAction } from "redux";
 
-export const ACTION_NODE_INTERACT = "@sim/node/interact" as const;
+export const ACTION_NODE_INTERACT = "@node/interact" as const;
 export const interactNode = (nodeId: string) => ({
   type: ACTION_NODE_INTERACT,
   payload: { nodeId }

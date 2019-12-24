@@ -1,10 +1,11 @@
 import find from "lodash/find";
 import createCachedSelector from "re-reselect";
 
-import { SimulatorState } from "../state";
-import { NodePin } from "../types";
+import { NodePin } from "@/types";
 
-import { createSimulatorSelector } from "./utils";
+import { SimulatorState } from "../state";
+import { createSimulatorSelector } from "../utils";
+
 import { nodeDefSelector } from "./nodes";
 
 export const connectionsSelector = createSimulatorSelector(s => s.connections);

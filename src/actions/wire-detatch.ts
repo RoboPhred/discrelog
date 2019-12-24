@@ -1,7 +1,7 @@
-import { NodePin } from "../types";
 import { AnyAction } from "redux";
+import { NodePin } from "@/types";
 
-export const ACTION_WIRE_DETATCH = "@sim/wire/detatch" as const;
+export const ACTION_WIRE_DETATCH = "@wire/detatch" as const;
 export const detatchWire = (p1: NodePin, p2: NodePin) => ({
   type: ACTION_WIRE_DETATCH,
   payload: {

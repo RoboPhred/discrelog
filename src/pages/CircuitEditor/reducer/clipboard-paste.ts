@@ -11,10 +11,10 @@ import { fpSet } from "@/utils";
 
 import rootReducer from "@/store/reducer";
 
-import { attachWire } from "@/services/simulator/actions/wire-attach";
+import { attachWire } from "@/actions/wire-attach";
+import { addNode } from "@/actions/node-add";
 
 import { isPasteAction } from "../actions/clipboard-paste";
-import { addNode } from "../actions/node-add";
 import { selectNodes } from "../actions/select-nodes";
 
 export const CLIPBOARD_PASTE_OFFSET: Point = { x: 10, y: 10 };
@@ -46,7 +46,10 @@ export default function clipboardPasteReducer(
   for (let node of clipboardNodes) {
     const { id, type, offset } = node;
     const p = pointAdd(pastePosition, offset);
-    state = rootReducer(state, addNode(type, p.x, p.y, pasteIds[id]));
+    state = rootReducer(
+      state,
+      addNode(type, { position: p, nodeId: pasteIds[id] })
+    );
   }
 
   // Wire the nodes

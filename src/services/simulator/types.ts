@@ -1,35 +1,14 @@
 import { IDMap } from "@/types";
 import { NodeType } from "@/node-defs";
 
-export interface Node {
+export interface SimNode {
   id: string;
   type: NodeType;
 }
 
-export type NodesById = IDMap<Node>;
+export type SimNodesById = IDMap<SimNode>;
 
-/**
- * Identifies a pin on a specific node.
- */
-export interface NodePin {
-  nodeId: string;
-  pinId: string;
-}
-export function nodePinEquals(a: NodePin, b: NodePin) {
-  return a.nodeId === b.nodeId && a.pinId === b.pinId;
-}
-
-/**
- * A connection from a node input to a node output.
- */
-export interface Connection {
-  outputPin: NodePin;
-  inputPin: NodePin;
-}
-
-export type PinValueMap = IDMap<boolean>;
-
-export interface NodePinTransition {
+export interface SimNodePinTransition {
   id: string;
   nodeId: string;
   outputId: string;
@@ -37,7 +16,7 @@ export interface NodePinTransition {
   value: boolean;
 }
 
-export interface TransitionWindow {
+export interface SimTransitionWindow {
   /**
    * The tick represented by this window.
    */

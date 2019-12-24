@@ -1,8 +1,9 @@
-import { collectNodeTransitions } from "./transition-utils";
-import { nodePinEquals } from "../types";
-import { isDetatchWireNodeAction } from "../actions/wire-detatch";
+import { isDetatchWireNodeAction } from "@/actions/wire-detatch";
+import { nodePinEquals } from "@/types";
 
-import { pinsToConnection, createSimulatorReducer } from "./utils";
+import { pinsToConnection, createSimulatorReducer } from "../utils";
+
+import { collectNodeTransitions } from "./transition-utils";
 
 export default createSimulatorReducer((state, action) => {
   if (!isDetatchWireNodeAction(action)) {

@@ -7,8 +7,9 @@ import { fpSet } from "@/utils";
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
+import { moveNodes } from "@/actions/node-move";
+
 import { selectRegion } from "@/pages/CircuitEditor/actions/select-region";
-import { moveNodes } from "@/pages/CircuitEditor/actions/node-move";
 
 import { isDragEndAction } from "../actions/drag-end";
 

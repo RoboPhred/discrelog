@@ -1,6 +1,4 @@
-import { Point } from "@/types";
-
-import { NodePin } from "@/services/simulator/types";
+import { Point, NodePin } from "@/types";
 
 import { DragModeType } from "../../types";
 

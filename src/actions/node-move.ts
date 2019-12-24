@@ -1,6 +1,6 @@
 import { AnyAction } from "redux";
 
-export const ACTION_NODE_MOVE = "@editor/node/move" as const;
+export const ACTION_NODE_MOVE = "@node/move" as const;
 export const moveNodes = (
   nodeId: string | string[],
   offsetX: number,

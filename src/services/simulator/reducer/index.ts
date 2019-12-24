@@ -1,4 +1,4 @@
-import { combineReducers } from "@/store/utils";
+import { reduceReducers } from "@/store/utils";
 
 import nodeAddReducer from "./node-add";
 import nodeDeleteReducer from "./node-delete";
@@ -9,7 +9,7 @@ import wireAttachReducer from "./wire-attach";
 import wireDetatchReducer from "./wire-detatch";
 import wireToggleReducer from "./wire-toggle";
 
-const simulatorReducer = combineReducers(
+const simulatorReducer = reduceReducers(
   nodeAddReducer,
   nodeDeleteReducer,
   nodeInteractReducer,

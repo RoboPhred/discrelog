@@ -3,8 +3,7 @@ import mapValues from "lodash/mapValues";
 import { NodeTypes } from "@/node-defs";
 
 import { SimulatorState } from "../state";
-
-import { createSimulatorSelector } from "./utils";
+import { createSimulatorSelector } from "../utils";
 
 // By-Id
 

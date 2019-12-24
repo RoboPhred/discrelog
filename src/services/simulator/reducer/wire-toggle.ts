@@ -4,12 +4,13 @@ import find from "lodash/find";
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
-import { nodePinEquals } from "../types";
-import { isToggleWireAction } from "../actions/wire-toggle";
-import { attachWire } from "../actions/wire-attach";
-import { detatchWire } from "../actions/wire-detatch";
+import { nodePinEquals } from "@/types";
+import { isToggleWireAction } from "@/actions/wire-toggle";
 
-import { pinsToConnection } from "./utils";
+import { attachWire } from "@/actions/wire-attach";
+import { detatchWire } from "@/actions/wire-detatch";
+
+import { pinsToConnection } from "../utils";
 
 export default function wireToggleReducer(
   state: AppState = defaultAppState,

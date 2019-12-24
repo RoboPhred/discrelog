@@ -4,8 +4,8 @@ import { HotKeys } from "react-hotkeys";
 
 import sizing from "@/styles/sizing.module.css";
 
-import { evolveSim } from "@/services/simulator/actions/sim-evolve";
-import { fastForwardSim } from "@/services/simulator/actions/sim-fastforward";
+import { evolveSim } from "@/actions/sim-evolve";
+import { fastForwardSim } from "@/actions/sim-fastforward";
 
 import { selectionCopy } from "../../actions/selection-copy";
 import { paste } from "../../actions/clipboard-paste";

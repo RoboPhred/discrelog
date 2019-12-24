@@ -1,4 +1,4 @@
-import { combineReducers } from "@/store/utils";
+import { reduceReducers } from "@/store/utils";
 
 import dragContinueReducer from "./drag-continue";
 import dragEndReducer from "./drag-end";
@@ -7,7 +7,7 @@ import dragStartSelectReducer from "./drag-start-select";
 import selectPinReducer from "./select-pin";
 import selectedNodesChangedReducer from "./selected-nodes-changed";
 
-const circuitFieldReducer = combineReducers(
+const circuitFieldReducer = reduceReducers(
   dragContinueReducer,
   dragEndReducer,
   dragStartNodeReducer,

@@ -1,7 +1,7 @@
 import { AnyAction, Reducer } from "redux";
 import { AppState } from "./state";
 
-export function combineReducers(
+export function reduceReducers(
   ...reducers: Reducer<AppState, AnyAction>[]
 ): Reducer<AppState, AnyAction> {
   return (state: AppState | undefined, action: AnyAction) => {

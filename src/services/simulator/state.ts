@@ -1,10 +1,9 @@
-import { IDMap } from "@/types";
+import { IDMap, Connection } from "@/types";
 
 import {
-  NodesById,
-  NodePinTransition,
-  TransitionWindow,
-  Connection
+  SimNodesById,
+  SimNodePinTransition,
+  SimTransitionWindow
 } from "./types";
 
 export interface SimulatorState {
@@ -16,7 +15,7 @@ export interface SimulatorState {
   /**
    * A map of nodes by node id.
    */
-  nodesById: NodesById;
+  nodesById: SimNodesById;
 
   /**
    * A map of node states by node id.
@@ -36,12 +35,12 @@ export interface SimulatorState {
   /**
    * A map of pending transitions by id.
    */
-  transitionsById: IDMap<NodePinTransition>;
+  transitionsById: IDMap<SimNodePinTransition>;
 
   /**
    * Transition windows in ascending order of tick.
    */
-  transitionWindows: TransitionWindow[];
+  transitionWindows: SimTransitionWindow[];
 }
 
 export const defaultSimulatorState: SimulatorState = {

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { typedKeys } from "@/utils";
 import { NodeTypes } from "@/node-defs";
 
-import { addNode } from "@/services/simulator/actions/node-add";
+import { addNode } from "@/actions/node-add";
 
 import NodeVisual from "../NodeVisual";
 

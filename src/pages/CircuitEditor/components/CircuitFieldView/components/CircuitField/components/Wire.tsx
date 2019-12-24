@@ -3,12 +3,10 @@ import { connect } from "react-redux";
 
 import { ZeroPoint, pointAdd } from "@/geometry";
 import { AppState } from "@/store";
-import { Point } from "@/types";
+import { NodePin } from "@/types";
 
-import { NodePin } from "@/services/simulator/types";
 import { nodeDefsByIdSelector } from "@/services/simulator/selectors/nodes";
-
-import { nodePositionsByIdSelector } from "@/pages/CircuitEditor/selectors";
+import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
 
 export interface WireProps {
   output: NodePin;
@@ -31,7 +29,7 @@ function mapStateToProps(state: AppState, props: WireProps) {
     }
     value =
       state.services.simulator.nodeOutputValuesByNodeId[sourceNodeId][
-      sourcePin
+        sourcePin
       ];
   }
 
@@ -71,7 +69,13 @@ class Wire extends React.Component<Props> {
     // const points = getWirePoints(start, end);
     return (
       <g>
-        <line x1={start.x} y1={start.y} x2={end.x} y2={end.y} stroke={value ? "green" : "black"} />
+        <line
+          x1={start.x}
+          y1={start.y}
+          x2={end.x}
+          y2={end.y}
+          stroke={value ? "green" : "black"}
+        />
       </g>
     );
   }

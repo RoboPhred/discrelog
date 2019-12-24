@@ -1,12 +1,13 @@
 import pick from "lodash/pick";
 import difference from "lodash/difference";
 
+import { isEvolveSimAction } from "@/actions/sim-evolve";
+
 import { SimulatorState } from "../state";
-import { isEvolveSimAction } from "../actions/sim-evolve";
-import { TransitionWindow } from "../types";
+import { SimTransitionWindow } from "../types";
 
 import { collectNodeTransitions } from "./transition-utils";
-import { createSimulatorReducer } from "./utils";
+import { createSimulatorReducer } from "../utils";
 
 export default createSimulatorReducer((state, action) => {
   if (!isEvolveSimAction(action)) {
@@ -58,7 +59,7 @@ export default createSimulatorReducer((state, action) => {
 
 function tickWindow(
   state: SimulatorState,
-  window: TransitionWindow
+  window: SimTransitionWindow
 ): SimulatorState {
   // Update the current tick, as it is referenced
   //  during transition collection.

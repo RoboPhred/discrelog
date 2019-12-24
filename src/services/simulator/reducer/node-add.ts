@@ -2,13 +2,14 @@ import { AnyAction } from "redux";
 import produce from "immer";
 import mapValues from "lodash/mapValues";
 
+import { isAddNodeAction } from "@/actions/node-add";
+
 import { NodeTypes } from "@/node-defs";
 import { inputsOf, outputsOf } from "@/node-defs/utils";
 
 import { SimulatorState } from "../state";
-import { isAddNodeAction } from "../actions/node-add";
 
-import { createSimulatorReducer } from "./utils";
+import { createSimulatorReducer } from "../utils";
 
 export default createSimulatorReducer((state, action: AnyAction) => {
   return produce(state, draft => addNodeMutator(draft, action));
