@@ -1,8 +1,8 @@
-import { isSelectNodesAction } from "../actions/select-nodes";
+import { isSelectNodesAction } from "@/actions/select-nodes";
 
-import { combineSelection, createEditorReducer } from "./utils";
+import { combineSelection, createSelectionReducer } from "../utils";
 
-export default createEditorReducer((state, action) => {
+export default createSelectionReducer((state, action) => {
   if (!isSelectNodesAction(action)) {
     return state;
   }

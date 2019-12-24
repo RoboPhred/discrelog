@@ -3,10 +3,10 @@ import { AnyAction } from "redux";
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
+import { isSelectionCopyAction } from "@/actions/selection-copy";
 import { copyNodes } from "@/actions/clipboard-copy";
 
-import { isSelectionCopyAction } from "../actions/selection-copy";
-import { selectedNodeIdsSelector } from "../selectors";
+import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 
 export default function selectionCopyReducer(
   state: AppState = defaultAppState,

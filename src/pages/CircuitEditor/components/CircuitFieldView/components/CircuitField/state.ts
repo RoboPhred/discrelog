@@ -1,6 +1,6 @@
 import { Point, NodePin } from "@/types";
 
-import { DragModeType } from "../../types";
+import { DragModeType } from "./types";
 
 export interface CircuitFieldState {
   dragMode: DragModeType | null;

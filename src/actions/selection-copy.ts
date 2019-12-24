@@ -1,6 +1,6 @@
 import { AnyAction } from "redux";
 
-export const ACTION_SELECTION_COPY = "@editor/selection/copy" as const;
+export const ACTION_SELECTION_COPY = "@selection/copy" as const;
 export const selectionCopy = () => ({
   type: ACTION_SELECTION_COPY
 });

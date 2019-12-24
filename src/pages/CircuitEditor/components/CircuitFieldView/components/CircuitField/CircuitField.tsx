@@ -3,14 +3,12 @@ import { useDispatch } from "react-redux";
 
 import sizing from "@/styles/sizing.module.css";
 
-import { Point } from "@/types";
+import { Point, SelectionMode } from "@/types";
 
 import { interactNode } from "@/actions/node-interact";
 
-import { SelectionMode } from "@/pages/CircuitEditor/types";
-import { nodeHover } from "@/pages/CircuitEditor/actions/node-hover";
-import { selectNodes } from "@/pages/CircuitEditor/actions/select-nodes";
-import { clearSelection } from "@/pages/CircuitEditor/actions/select-clear";
+import { selectNodes } from "@/actions/select-nodes";
+import { clearSelection } from "@/actions/select-clear";
 
 import { dragStartNode } from "./actions/drag-start-node";
 import { dragStartSelect } from "./actions/drag-start-select";
@@ -46,7 +44,8 @@ const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
       if (mouseDownNodeIdRef.current) {
         // Might want to make this into an action/reducer pair to complement the others.
         if (modifiers.altKey) {
-          return interactNode(mouseDownNodeIdRef.current);
+          dispatch(interactNode(mouseDownNodeIdRef.current));
+          return;
         }
 
         const selectMode = getSelectMode(modifiers);
@@ -108,28 +107,6 @@ const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
     []
   );
 
-  const onNodeMouseOver = React.useCallback(
-    (nodeId: string, e: React.MouseEvent) => {
-      if (e.defaultPrevented) {
-        return;
-      }
-
-      dispatch(nodeHover(nodeId));
-    },
-    [dispatch]
-  );
-
-  const onNodeMouseLeave = React.useCallback(
-    (nodeId: string, e: React.MouseEvent) => {
-      if (e.defaultPrevented) {
-        return;
-      }
-
-      dispatch(nodeHover(null));
-    },
-    [dispatch]
-  );
-
   const onNodePinMouseDown = React.useCallback(
     (nodeId: string, pinId: string, e: React.MouseEvent) => {
       if (e.defaultPrevented) {
@@ -181,8 +158,6 @@ const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
       <WiresLayer />
       <NodesLayer
         onNodeMouseDown={onNodeMouseDown}
-        onNodeMouseOver={onNodeMouseOver}
-        onNodeMouseLeave={onNodeMouseLeave}
         onNodePinMouseDown={onNodePinMouseDown}
         onNodePinMouseUp={onNodePinMouseUp}
       />

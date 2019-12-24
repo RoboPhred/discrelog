@@ -14,9 +14,7 @@ import rootReducer from "@/store/reducer";
 import { attachWire } from "@/actions/wire-attach";
 import { addNode } from "@/actions/node-add";
 import { isPasteAction } from "@/actions/clipboard-paste";
-
-// FIXME: Make selection service.
-import { selectNodes } from "@/pages/CircuitEditor/actions/select-nodes";
+import { selectNodes } from "@/actions/select-nodes";
 
 export const CLIPBOARD_PASTE_OFFSET: Point = { x: 10, y: 10 };
 

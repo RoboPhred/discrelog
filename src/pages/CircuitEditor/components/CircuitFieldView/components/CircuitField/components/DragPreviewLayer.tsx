@@ -14,8 +14,7 @@ import {
   nodeStatesByIdSelector
 } from "@/services/simulator/selectors/nodes";
 import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
-
-import { selectedNodeIdsSelector } from "@/pages/CircuitEditor/selectors";
+import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 
 import NodeVisual from "@/pages/CircuitEditor/components/NodeVisual";
 

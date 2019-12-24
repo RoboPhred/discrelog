@@ -8,8 +8,9 @@ import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
 import { moveNodes } from "@/actions/node-move";
+import { selectRegion } from "@/actions/select-region";
 
-import { selectRegion } from "@/pages/CircuitEditor/actions/select-region";
+import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 
 import { isDragEndAction } from "../actions/drag-end";
 
@@ -23,7 +24,7 @@ export default function dragEndReducer(
 
   const { x, y, selectionMode } = action.payload;
 
-  const { selectedNodeIds } = state.ui.circuitEditor;
+  const selectedNodeIds = selectedNodeIdsSelector(state);
 
   let circuitField = state.ui.circuitEditor.circuitField;
 

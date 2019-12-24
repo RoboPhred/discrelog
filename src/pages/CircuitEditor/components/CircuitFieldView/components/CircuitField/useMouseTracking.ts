@@ -48,6 +48,9 @@ export default function useMouseTracking(
     });
 
     startMousePosRef.current = p;
+
+    // Prevent default to stop the browser running mouse logic, like double click text selection.
+    e.preventDefault();
   }, []);
 
   const onMouseMove = React.useCallback(
@@ -122,6 +125,8 @@ export default function useMouseTracking(
     } else {
       onClick({ x, y }, modifiers);
     }
+
+    e.preventDefault();
 
     cancelDrag();
   }, []);

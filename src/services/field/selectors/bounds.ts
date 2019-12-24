@@ -1,21 +1,17 @@
 import { createSelector } from "reselect";
-
 import getBounds from "svg-path-bounds";
 
 import mapValues from "lodash/mapValues";
-import pick from "lodash/pick";
 
-import { normalizeRectangle } from "@/geometry";
 import { normalizeVisuals } from "@/node-defs/utils";
-
-import { AppState } from "@/store";
+import { normalizeRectangle } from "@/geometry";
 
 import {
   nodeDefsByIdSelector,
-  nodeStatesByIdSelector,
-  nodesByIdSelector
+  nodeStatesByIdSelector
 } from "@/services/simulator/selectors/nodes";
-import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
+
+import { nodePositionsByIdSelector } from "./positions";
 
 export const nodeBoundsById = createSelector(
   nodeDefsByIdSelector,
@@ -54,15 +50,3 @@ export const nodeRectsByIdSelector = createSelector(
       );
     })
 );
-
-export const selectedNodeIdsSelector = (s: AppState) =>
-  s.ui.circuitEditor.selectedNodeIds;
-
-export const selectedNodesById = createSelector(
-  nodesByIdSelector,
-  selectedNodeIdsSelector,
-  (nodesById, selectedNodeIds) => pick(nodesById, selectedNodeIds)
-);
-
-export const mouseOverNodeIdSelector = (s: AppState) =>
-  s.ui.circuitEditor.mouseOverNodeId;

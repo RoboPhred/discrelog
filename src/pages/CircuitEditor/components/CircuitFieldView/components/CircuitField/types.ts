@@ -3,3 +3,5 @@ export interface ModifierKeys {
   shiftKey: boolean;
   altKey: boolean;
 }
+
+export type DragModeType = "move-node" | "select";

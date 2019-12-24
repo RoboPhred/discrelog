@@ -1,8 +1,6 @@
 import { AnyAction } from "redux";
 
-import { Point } from "@/types";
-
-import { SelectionMode } from "@/pages/CircuitEditor/types";
+import { Point, SelectionMode } from "@/types";
 
 export const ACTION_DRAG_END = "@editor/field/drag/end" as const;
 export const dragEnd = (point: Point, selectionMode: SelectionMode) => ({

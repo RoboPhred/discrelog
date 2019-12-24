@@ -1,6 +1,6 @@
-import { ACTION_SELECT_REGION } from "@/pages/CircuitEditor/actions/select-region";
-import { ACTION_SELECT_NODES } from "@/pages/CircuitEditor/actions/select-nodes";
-import { ACTION_SELECT_CLEAR } from "@/pages/CircuitEditor/actions/select-clear";
+import { ACTION_SELECT_REGION } from "@/actions/select-region";
+import { ACTION_SELECT_NODES } from "@/actions/select-nodes";
+import { ACTION_SELECT_CLEAR } from "@/actions/select-clear";
 
 import { createFieldReducer } from "./utils";
 

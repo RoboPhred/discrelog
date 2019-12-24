@@ -9,8 +9,8 @@ import {
   nodeTypesByIdSelector,
   nodeStatesByIdSelector
 } from "@/services/simulator/selectors/nodes";
+import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 
-import { selectedNodeIdsSelector } from "@/pages/CircuitEditor/selectors";
 import NodeVisual, {
   RenderPinProps
 } from "@/pages/CircuitEditor/components/NodeVisual";

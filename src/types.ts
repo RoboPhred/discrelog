@@ -37,3 +37,5 @@ export interface Connection {
 }
 
 export type PinValueMap = IDMap<boolean>;
+
+export type SelectionMode = "set" | "append" | "remove" | "toggle";

@@ -2,12 +2,13 @@ import forOwn from "lodash/forOwn";
 
 import { intersects } from "@/geometry";
 
-import { nodeRectsByIdSelector } from "../selectors";
-import { isSelectRegionAction } from "../actions/select-region";
+import { isSelectRegionAction } from "@/actions/select-region";
 
-import { combineSelection, createEditorReducer } from "./utils";
+import { nodeRectsByIdSelector } from "@/services/field/selectors/bounds";
 
-export default createEditorReducer((state, action, appState) => {
+import { combineSelection, createSelectionReducer } from "../utils";
+
+export default createSelectionReducer((state, action, appState) => {
   if (!isSelectRegionAction(action)) {
     return state;
   }
