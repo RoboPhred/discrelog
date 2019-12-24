@@ -6,9 +6,9 @@ import sizing from "@/styles/sizing.module.css";
 
 import { evolveSim } from "@/actions/sim-evolve";
 import { fastForwardSim } from "@/actions/sim-fastforward";
+import { paste } from "@/actions/clipboard-paste";
 
 import { selectionCopy } from "../../actions/selection-copy";
-import { paste } from "../../actions/clipboard-paste";
 import { selectionDelete } from "../../actions/selection-delete";
 
 import keymap, {

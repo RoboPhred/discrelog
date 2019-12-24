@@ -1,6 +1,6 @@
 import { AnyAction } from "redux";
 
-export const ACTION_PASTE = "@editor/paste" as const;
+export const ACTION_PASTE = "@clipboard/paste" as const;
 export const paste = () => ({
   type: ACTION_PASTE
 });

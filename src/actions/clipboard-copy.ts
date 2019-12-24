@@ -1,6 +1,6 @@
 import { AnyAction } from "redux";
 
-export const ACTION_COPY_NODES = "@editor/copy" as const;
+export const ACTION_COPY_NODES = "@clipboard/copy" as const;
 export const copyNodes = (nodeId: string | string[]) => ({
   type: ACTION_COPY_NODES,
   payload: {

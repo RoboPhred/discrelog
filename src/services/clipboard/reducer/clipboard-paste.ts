@@ -13,9 +13,10 @@ import rootReducer from "@/store/reducer";
 
 import { attachWire } from "@/actions/wire-attach";
 import { addNode } from "@/actions/node-add";
+import { isPasteAction } from "@/actions/clipboard-paste";
 
-import { isPasteAction } from "../actions/clipboard-paste";
-import { selectNodes } from "../actions/select-nodes";
+// FIXME: Make selection service.
+import { selectNodes } from "@/pages/CircuitEditor/actions/select-nodes";
 
 export const CLIPBOARD_PASTE_OFFSET: Point = { x: 10, y: 10 };
 
@@ -27,13 +28,8 @@ export default function clipboardPasteReducer(
     return state;
   }
 
-  const circuitEditorState = state.ui.circuitEditor;
-
-  const clipboardNodes = circuitEditorState.clipboardContent;
-  const pastePosition = pointAdd(
-    circuitEditorState.clipboardOrigin || ZeroPoint,
-    CLIPBOARD_PASTE_OFFSET
-  );
+  const { clipboardNodes, clipboardPasteOrigin } = state.services.clipboard;
+  const pastePosition = pointAdd(clipboardPasteOrigin, CLIPBOARD_PASTE_OFFSET);
 
   const pasteIds = zipObject(
     clipboardNodes.map(x => x.id),
@@ -71,7 +67,13 @@ export default function clipboardPasteReducer(
     }
   }
 
-  state = fpSet(state, "ui", "circuitEditor", "clipboardOrigin", pastePosition);
+  state = fpSet(
+    state,
+    "services",
+    "clipboard",
+    "clipboardPasteOrigin",
+    pastePosition
+  );
   state = rootReducer(state, selectNodes(values(pasteIds)));
 
   return state;

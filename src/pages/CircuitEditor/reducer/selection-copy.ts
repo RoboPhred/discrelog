@@ -3,7 +3,8 @@ import { AnyAction } from "redux";
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
-import { copyNodes } from "../actions/clipboard-copy";
+import { copyNodes } from "@/actions/clipboard-copy";
+
 import { isSelectionCopyAction } from "../actions/selection-copy";
 import { selectedNodeIdsSelector } from "../selectors";
 

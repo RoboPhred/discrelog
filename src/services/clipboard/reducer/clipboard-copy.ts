@@ -6,16 +6,16 @@ import zipObject from "lodash/zipObject";
 
 import { pointSubtract } from "@/geometry";
 
+import { isCopyNodesAction } from "@/actions/clipboard-copy";
+
 import { nodeSelector } from "@/services/simulator/selectors/nodes";
 import { nodeOutputConnectionsByPinSelector } from "@/services/simulator/selectors/connections";
 import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
 
 import { ClipboardNode } from "../types";
-import { isCopyNodesAction } from "../actions/clipboard-copy";
+import { createClipboardReducer } from "../utils";
 
-import { createEditorReducer } from "./utils";
-
-export default createEditorReducer((state, action, appState) => {
+export default createClipboardReducer((state, action, appState) => {
   if (!isCopyNodesAction(action)) {
     return state;
   }
@@ -56,7 +56,7 @@ export default createEditorReducer((state, action, appState) => {
 
   return {
     ...state,
-    clipboardContent: copyNodes,
+    clipboardNodes: copyNodes,
     clipboardOrigin: rootPosition
   };
 });
