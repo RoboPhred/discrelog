@@ -14,7 +14,7 @@ export default createFieldReducer((state, action) => {
 
   return {
     ...state,
-    nodePositions: pick(
+    nodePositionsById: pick(
       state.nodePositionsById,
       difference(Object.keys(state.nodePositionsById), nodeIds)
     )

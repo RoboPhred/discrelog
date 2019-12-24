@@ -43,9 +43,16 @@ class NodeVisual extends React.Component<Props> {
       onMouseLeave
     } = this.props;
 
+    if (!nodeType) {
+      console.warn("NodeVisual received undefined nodeType");
+      return null;
+    }
+
     const def = NodeTypes[nodeType];
 
     let body: React.ReactNode;
+    let hitPath: string | undefined;
+    let pins: React.ReactNode = null;
     if (!def) {
       body = <rect x={x} y={y} width={50} height={50} fill="red" />;
     } else {
@@ -60,22 +67,19 @@ class NodeVisual extends React.Component<Props> {
           strokeWidth={v.strokeWidth}
         />
       ));
-    }
+      hitPath = def.visual.hitPath;
 
-    const { hitPath } = def.visual;
-
-    let pins: React.ReactNode = null;
-
-    if (renderPin) {
-      pins = Object.keys(def.pins).map(key => {
-        const pin = def.pins[key];
-        let element = renderPin({
-          direction: pin.direction,
-          id: key,
-          ...pin
+      if (renderPin) {
+        pins = Object.keys(def.pins).map(key => {
+          const pin = def.pins[key];
+          let element = renderPin({
+            direction: pin.direction,
+            id: key,
+            ...pin
+          });
+          return React.cloneElement(element, { key: `input-${key}` });
         });
-        return React.cloneElement(element, { key: `input-${key}` });
-      });
+      }
     }
 
     const transform = x != 0 || y != 0 ? `translate(${x}, ${y})` : undefined;
