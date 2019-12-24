@@ -30,5 +30,11 @@ export default function dragNodesStartReducer(
   };
   state = fpSet(state, "ui", "circuitEditor", "circuitField", fieldState);
 
-  return rootReducer(state, selectNodes(nodeId, selectionMode));
+  // TODO: Use selector for this.
+  if (state.ui.circuitEditor.selectedNodeIds.indexOf(nodeId) === -1) {
+    // Dragging a node that was not previously selected.  Perform a selection on the node.
+    state = rootReducer(state, selectNodes(nodeId, selectionMode));
+  }
+
+  return state;
 }
