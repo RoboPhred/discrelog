@@ -1,12 +1,21 @@
 import * as React from "react";
 import { connect } from "react-redux";
 
-import { ZeroPoint, pointAdd } from "@/geometry";
+import {
+  ZeroPoint,
+  pointAdd,
+  normalize,
+  pointSubtract,
+  dotProduct,
+  scale
+} from "@/geometry";
 import { AppState } from "@/store";
-import { NodePin } from "@/types";
+import { NodePin, Point } from "@/types";
 
 import { nodeDefsByIdSelector } from "@/services/simulator/selectors/nodes";
 import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
+
+import { useMouseCoords } from "../hooks/useMouseCoords";
 
 export interface WireProps {
   output: NodePin;
@@ -54,62 +63,63 @@ function mapStateToProps(state: AppState, props: WireProps) {
 type StateProps = ReturnType<typeof mapStateToProps>;
 
 type Props = StateProps & WireProps;
-class Wire extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
 
-    this.state = {
-      testPoint: null
-    };
+const Wire: React.FC<Props> = ({ start, end, value }) => {
+  const getMouseCoords = useMouseCoords();
+  const [mousePos, setMousePos] = React.useState<Point | null>(null);
+
+  const onMouseMove = React.useCallback(
+    (e: React.MouseEvent) => {
+      const p = getMouseCoords({ x: e.clientX, y: e.clientY });
+      setMousePos(p);
+    },
+    [getMouseCoords]
+  );
+
+  const onMouseOut = React.useCallback(() => {
+    setMousePos(null);
+  }, []);
+
+  let color: string;
+  if (mousePos) {
+    color = "orange";
+  } else if (value) {
+    color = "green";
+  } else {
+    color = "black";
   }
 
-  render() {
-    const { start, end, value } = this.props;
-    // TODO: Style lines again
-    // const points = getWirePoints(start, end);
-    return (
-      <g>
-        <line
-          x1={start.x}
-          y1={start.y}
-          x2={end.x}
-          y2={end.y}
-          stroke={value ? "green" : "black"}
+  let dotPos: Point | undefined;
+  if (mousePos) {
+    let lineDir = normalize(pointSubtract(end, start));
+    const v = pointSubtract(mousePos, start);
+    var d = dotProduct(v, lineDir);
+    dotPos = pointAdd(start, scale(lineDir, d));
+  }
+
+  return (
+    <g>
+      <line
+        onMouseMove={onMouseMove}
+        onMouseOut={onMouseOut}
+        x1={start.x}
+        y1={start.y}
+        x2={end.x}
+        y2={end.y}
+        stroke={color}
+        strokeWidth={2}
+      />
+      {dotPos && (
+        <circle
+          pointerEvents="none"
+          cx={dotPos.x}
+          cy={dotPos.y}
+          r={3}
+          fill="red"
         />
-      </g>
-    );
-  }
-}
+      )}
+    </g>
+  );
+};
+
 export default connect(mapStateToProps)(Wire);
-
-// function getWirePoints(start: Point, end: Point): number[] {
-//   if (Math.abs(start.x - end.x) > Math.abs(start.y - end.y)) {
-//     return [
-//       start.x,
-//       start.y,
-
-//       start.x + (end.x - start.x) / 2,
-//       start.y,
-
-//       start.x + (end.x - start.x) / 2,
-//       end.y,
-
-//       end.x,
-//       end.y
-//     ];
-//   } else {
-//     return [
-//       start.x,
-//       start.y,
-
-//       start.x,
-//       start.y + (end.y - start.y) / 2,
-
-//       end.x,
-//       start.y + (end.y - start.y) / 2,
-
-//       end.x,
-//       end.y
-//     ];
-//   }
-// }

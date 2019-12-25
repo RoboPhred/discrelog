@@ -3,8 +3,7 @@ import * as React from "react";
 import { Point } from "@/types";
 import { keyboardIsMac } from "@/runtime-env";
 
-import { getFieldCoord } from "../../utils";
-
+import { getFieldCoord } from "./utils";
 import { ModifierKeys } from "./types";
 
 const DRAG_THRESHOLD = 5;

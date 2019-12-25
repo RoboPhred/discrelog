@@ -12,7 +12,8 @@
   font-size: 0.9rem;
 }
 
-.popupmenu :global(.menu-item):focus {
+/* Cursor keys dont work yet and this looks confusing with mouse only operation */
+/* .popupmenu :global(.menu-item):focus {
   background: lightskyblue;
   outline: none;
-}
+} */

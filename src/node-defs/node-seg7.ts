@@ -29,7 +29,7 @@ function createSeg(
 const seg7NodeDefinition: NodeDefinition = {
   type: "seg7",
   visual: {
-    hitPath: `V63 H45 V0 z`,
+    hitPath: `M0,0 V63 H45 V0 z`,
     // https://commons.wikimedia.org/wiki/File:7-segment_abcdefg.svg
     shapePath: [
       createSeg("A", [

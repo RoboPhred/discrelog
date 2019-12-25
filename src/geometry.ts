@@ -2,6 +2,25 @@ import { Point, Size, Rectangle } from "@/types";
 
 export const ZeroPoint = Object.freeze({ x: 0, y: 0 });
 
+export function magnitude(v: Point): number {
+  return Math.sqrt(v.x * v.x + v.y * v.y);
+}
+export function normalize(p: Point): Point {
+  const m = magnitude(p);
+  return {
+    x: p.x / m,
+    y: p.y / m
+  };
+}
+
+export function dotProduct(a: Point, b: Point): number {
+  return a.x * b.x + a.y * b.y;
+}
+
+export function scale(p: Point, scaler: number) {
+  return { x: p.x * scaler, y: p.y * scaler };
+}
+
 export function normalizeRectangle(p1: Point, p2: Point): Rectangle;
 export function normalizeRectangle(r: Rectangle): Rectangle;
 export function normalizeRectangle(...args: any[]): Rectangle {

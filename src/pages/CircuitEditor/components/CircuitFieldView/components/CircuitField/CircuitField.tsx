@@ -16,6 +16,8 @@ import { dragContinue } from "./actions/drag-continue";
 import { dragEnd } from "./actions/drag-end";
 import { selectPin } from "./actions/select-pin";
 
+import { FieldSvgElementProvider } from "./contexts/fieldSvgElement";
+
 import DragPreviewLayer from "./components/DragPreviewLayer";
 import DragSelectLayer from "./components/DragSelectLayer";
 import WiresLayer from "./components/WiresLayer";
@@ -144,6 +146,10 @@ const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
     []
   );
 
+  React.useEffect(() => {
+    console.log("ctx change", svgRef.current);
+  }, [svgRef.current]);
+
   return (
     <svg
       className={sizing["fill-parent"]}
@@ -153,14 +159,16 @@ const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
     >
-      <DragSelectLayer />
-      <DragPreviewLayer />
-      <WiresLayer />
-      <NodesLayer
-        onNodeMouseDown={onNodeMouseDown}
-        onNodePinMouseDown={onNodePinMouseDown}
-        onNodePinMouseUp={onNodePinMouseUp}
-      />
+      <FieldSvgElementProvider value={svgRef}>
+        <DragSelectLayer />
+        <DragPreviewLayer />
+        <WiresLayer />
+        <NodesLayer
+          onNodeMouseDown={onNodeMouseDown}
+          onNodePinMouseDown={onNodePinMouseDown}
+          onNodePinMouseUp={onNodePinMouseUp}
+        />
+      </FieldSvgElementProvider>
     </svg>
   );
 };
