@@ -176,7 +176,7 @@ function removeTransitionByPin(
           ...transitionWindows[transitionWindowIndex],
           transitionIds: [
             ...transitionIds.slice(0, tickWindowTransitionIndex),
-            ...transitionIds.slice(tickWindowTransitionIndex, 1)
+            ...transitionIds.slice(tickWindowTransitionIndex + 1)
           ]
         };
       }
