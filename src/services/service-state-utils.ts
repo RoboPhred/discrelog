@@ -9,7 +9,11 @@ export type ServiceState<
 > = AppState["services"][TServiceKey];
 
 export interface ServiceReducer<TServiceState> {
-  (state: TServiceState, action: AnyAction, appState: AppState): TServiceState;
+  (
+    state: Readonly<TServiceState>,
+    action: AnyAction,
+    appState: AppState
+  ): TServiceState;
 }
 
 export function createServiceReducerCreator<TServiceKey extends ServiceKey>(

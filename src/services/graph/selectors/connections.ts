@@ -1,17 +1,17 @@
 import find from "lodash/find";
 import createCachedSelector from "re-reselect";
 
-import { NodePin } from "@/types";
+import { NodePin } from "../types";
 
-import { SimulatorState } from "../state";
-import { createSimulatorSelector } from "../utils";
+import { GraphState } from "../state";
+import { createGraphSelector } from "../utils";
 
 import { nodeDefSelector } from "./nodes";
 
-export const connectionsSelector = createSimulatorSelector(s => s.connections);
+export const connectionsSelector = createGraphSelector(s => s.connections);
 
-export const nodePinDirectionSelector = createSimulatorSelector(
-  (s: SimulatorState, pin: NodePin) => {
+export const nodePinDirectionSelector = createGraphSelector(
+  (s: GraphState, pin: NodePin) => {
     const def = nodeDefSelector.local(s, pin.nodeId);
     if (!def) {
       return null;
@@ -28,7 +28,7 @@ export const nodePinDirectionSelector = createSimulatorSelector(
 /**
  * Gets an object mapping input pin names to their connection source pins.
  */
-export const nodeInputConnectionsByPinSelector = createSimulatorSelector(
+export const nodeInputConnectionsByPinSelector = createGraphSelector(
   createCachedSelector(
     connectionsSelector.local,
     (_: any, nodeId: string) => nodeId,
@@ -63,9 +63,17 @@ export const nodeInputConnectionsByPinSelector = createSimulatorSelector(
 );
 
 /**
+ * Gets an array of outgoing connections from the given node id.
+ */
+export const nodeOutputConnectionsSelector = createGraphSelector(
+  (state: GraphState, nodeId: string) =>
+    state.connections.filter(x => x.outputPin.nodeId === nodeId)
+);
+
+/**
  * Gets an object mapping output pin names to their connection target pins.
  */
-export const nodeOutputConnectionsByPinSelector = createSimulatorSelector(
+export const nodeOutputConnectionsByPinSelector = createGraphSelector(
   createCachedSelector(
     connectionsSelector.local,
     (_: any, nodeId: string) => nodeId,

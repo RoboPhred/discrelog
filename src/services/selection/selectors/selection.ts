@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 
 import pick from "lodash/pick";
 
-import { nodesByIdSelector } from "@/services/simulator/selectors/nodes";
+import { nodesByIdSelector } from "@/services/graph/selectors/nodes";
 
 import { createSelectionSelector } from "../utils";
 

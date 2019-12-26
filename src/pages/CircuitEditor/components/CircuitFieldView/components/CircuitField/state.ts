@@ -1,4 +1,6 @@
-import { Point, NodePin } from "@/types";
+import { Point } from "@/types";
+
+import { NodePin } from "@/services/graph/types";
 
 import { DragModeType } from "./types";
 

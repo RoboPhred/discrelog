@@ -1,7 +1,9 @@
 import pick from "lodash/pick";
 import difference from "lodash/difference";
 
+import { AppState } from "@/store";
 import { isEvolveSimAction } from "@/actions/sim-evolve";
+import { nodeOutputConnectionsSelector } from "@/services/graph/selectors/connections";
 
 import { SimulatorState } from "../state";
 import { SimTransitionWindow } from "../types";
@@ -9,7 +11,7 @@ import { SimTransitionWindow } from "../types";
 import { collectNodeTransitions } from "./transition-utils";
 import { createSimulatorReducer } from "../utils";
 
-export default createSimulatorReducer((state, action) => {
+export default createSimulatorReducer((state, action, appState) => {
   if (!isEvolveSimAction(action)) {
     return state;
   }
@@ -43,7 +45,7 @@ export default createSimulatorReducer((state, action) => {
     //  from a tick it will still be a fresh copy that has not yet been
     //  consumed by redux.
     const window = state.transitionWindows.shift()!;
-    state = tickWindow(state, window);
+    state = tickWindow(state, window, appState);
   }
 
   // If we did not encounter a window on our last tick, jump ahead to that tick.
@@ -59,7 +61,8 @@ export default createSimulatorReducer((state, action) => {
 
 function tickWindow(
   state: SimulatorState,
-  window: SimTransitionWindow
+  window: SimTransitionWindow,
+  appState: AppState
 ): SimulatorState {
   // Update the current tick, as it is referenced
   //  during transition collection.
@@ -76,11 +79,6 @@ function tickWindow(
   for (const tid of window.transitionIds) {
     const { nodeId, outputId, value } = state.transitionsById[tid];
 
-    const node = state.nodesById[nodeId];
-    if (!node) {
-      continue;
-    }
-
     // nodeOutputValuesByNodeId is pre-cloned
     state.nodeOutputValuesByNodeId[nodeId] = {
       ...state.nodeOutputValuesByNodeId[nodeId],
@@ -88,9 +86,7 @@ function tickWindow(
     };
 
     // Add each node we output to, to the output list.
-    const outputConnections = state.connections.filter(
-      x => x.outputPin.nodeId === nodeId
-    );
+    const outputConnections = nodeOutputConnectionsSelector(appState, nodeId);
     for (const outConn of outputConnections) {
       const nodeId = outConn.inputPin.nodeId;
       if (updatedNodes.indexOf(nodeId) === -1) {
@@ -100,7 +96,7 @@ function tickWindow(
   }
 
   for (const nodeId of updatedNodes) {
-    state = collectNodeTransitions(state, nodeId);
+    state = collectNodeTransitions(state, nodeId, appState);
   }
 
   // Remove all window transitions as they have been consumed.

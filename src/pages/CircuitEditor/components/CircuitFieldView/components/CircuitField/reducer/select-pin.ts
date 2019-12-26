@@ -5,7 +5,7 @@ import { fpSet } from "@/utils";
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
-import { nodePinDirectionSelector } from "@/services/simulator/selectors/connections";
+import { nodePinDirectionSelector } from "@/services/graph/selectors/connections";
 import { toggleWire } from "@/actions/wire-toggle";
 
 import { isSelectPinAction, SelectPinAction } from "../actions/select-pin";

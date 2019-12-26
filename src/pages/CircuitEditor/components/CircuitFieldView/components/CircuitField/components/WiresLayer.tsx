@@ -4,9 +4,9 @@ import { createStructuredSelector } from "reselect";
 import { connect } from "react-redux";
 
 import { AppState } from "@/store";
-import { Connection } from "@/types";
 
-import { connectionsSelector } from "@/services/simulator/selectors/connections";
+import { Connection } from "@/services/graph/types";
+import { connectionsSelector } from "@/services/graph/selectors/connections";
 
 import Wire from "./Wire";
 

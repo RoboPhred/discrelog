@@ -7,7 +7,6 @@ import simEvolveReducer from "./sim-evolve";
 import simFastforwardReducer from "./sim-fastforward";
 import wireAttachReducer from "./wire-attach";
 import wireDetatchReducer from "./wire-detatch";
-import wireToggleReducer from "./wire-toggle";
 
 const simulatorReducer = reduceReducers(
   nodeAddReducer,
@@ -16,8 +15,7 @@ const simulatorReducer = reduceReducers(
   simEvolveReducer,
   simFastforwardReducer,
   wireAttachReducer,
-  wireDetatchReducer,
-  wireToggleReducer
+  wireDetatchReducer
 );
 
 export default simulatorReducer;

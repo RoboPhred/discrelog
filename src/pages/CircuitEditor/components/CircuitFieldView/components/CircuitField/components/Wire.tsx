@@ -10,9 +10,11 @@ import {
   scale
 } from "@/geometry";
 import { AppState } from "@/store";
-import { NodePin, Point } from "@/types";
+import { Point } from "@/types";
 
-import { nodeDefsByIdSelector } from "@/services/simulator/selectors/nodes";
+import { NodePin } from "@/services/graph/types";
+import { nodeDefsByIdSelector } from "@/services/graph/selectors/nodes";
+
 import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
 
 import { useMouseCoords } from "../hooks/useMouseCoords";

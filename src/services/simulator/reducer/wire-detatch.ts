@@ -1,33 +1,18 @@
 import { isDetatchWireNodeAction } from "@/actions/wire-detatch";
-import { nodePinEquals } from "@/types";
 
-import { pinsToConnection, createSimulatorReducer } from "../utils";
+import { createSimulatorReducer } from "../utils";
 
 import { collectNodeTransitions } from "./transition-utils";
 
-export default createSimulatorReducer((state, action) => {
+export default createSimulatorReducer((state, action, appState) => {
   if (!isDetatchWireNodeAction(action)) {
     return state;
   }
 
   const { p1, p2 } = action.payload;
-  const conn = pinsToConnection(state, p1, p2);
-  if (!conn) {
-    return state;
-  }
 
-  const { outputPin, inputPin } = conn;
-
-  state = {
-    ...state,
-    connections: state.connections.filter(
-      conn =>
-        !(
-          nodePinEquals(conn.inputPin, inputPin) &&
-          nodePinEquals(conn.outputPin, outputPin)
-        )
-    )
-  };
-
-  return collectNodeTransitions(state, inputPin.nodeId);
+  // We only need to update the input pin, but we do not know which one that is.
+  state = collectNodeTransitions(state, p1.nodeId, appState);
+  state = collectNodeTransitions(state, p2.nodeId, appState);
+  return state;
 });

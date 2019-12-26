@@ -6,10 +6,8 @@ import mapValues from "lodash/mapValues";
 import { normalizeVisuals } from "@/node-defs/utils";
 import { normalizeRectangle } from "@/geometry";
 
-import {
-  nodeDefsByIdSelector,
-  nodeStatesByIdSelector
-} from "@/services/simulator/selectors/nodes";
+import { nodeDefsByIdSelector } from "@/services/graph/selectors/nodes";
+import { nodeStatesByIdSelector } from "@/services/simulator/selectors/nodes";
 
 import { nodePositionsByIdSelector } from "./positions";
 

@@ -5,34 +5,33 @@ import findIndex from "lodash/findIndex";
 import pick from "lodash/pick";
 
 import { fpSet } from "@/utils";
-import { IDMap, NodePin } from "@/types";
-import { NodeTypes } from "@/node-defs";
+import { IDMap } from "@/types";
+import { AppState } from "@/store";
+
+import { nodeInputConnectionsByPinSelector } from "@/services/graph/selectors/connections";
+import { nodeDefSelector } from "@/services/graph/selectors/nodes";
+import { NodePin } from "@/services/graph/types";
 
 import { SimulatorState } from "../state";
 import { SimTransitionWindow, SimNodePinTransition } from "../types";
 
-import { nodeInputConnectionsByPinSelector } from "../selectors/connections";
-
 export function collectNodeTransitions(
   state: SimulatorState,
-  nodeId: string
+  nodeId: string,
+  appState: AppState
 ): SimulatorState {
-  const node = state.nodesById[nodeId];
-  if (!node) {
-    return state;
-  }
-
-  const type = NodeTypes[node.type];
-  if (!type || !type.evolve) {
+  const def = nodeDefSelector(appState, nodeId);
+  if (!def || !def.evolve) {
     return state;
   }
 
   // Build the current input state from the connected pins.
   const inputs: IDMap<boolean> = {};
-  const inputConnectionsByPin = nodeInputConnectionsByPinSelector.local(
-    state,
+  const inputConnectionsByPin = nodeInputConnectionsByPinSelector(
+    appState,
     nodeId
   );
+
   for (const inputPin of Object.keys(inputConnectionsByPin)) {
     const inputConn = inputConnectionsByPin[inputPin];
     if (!inputConn) {
@@ -44,20 +43,18 @@ export function collectNodeTransitions(
     inputs[inputPin] = state.nodeOutputValuesByNodeId[sourceNodeId][sourcePin];
   }
 
-  // TODO: Provide frozen state.  The state passed to this is currently
-  //  the immer mutable record.
-  const result = type.evolve(
-    state.nodeStatesByNodeId[node.id],
+  const result = def.evolve(
+    state.nodeStatesByNodeId[nodeId],
     inputs,
     state.tick
   );
 
   if (result.state) {
-    state = fpSet(state, "nodeStatesByNodeId", node.id, result.state);
+    state = fpSet(state, "nodeStatesByNodeId", nodeId, result.state);
   }
 
   if (result.transitions) {
-    const nodeOutputs = state.nodeOutputValuesByNodeId[node.id] || {};
+    const nodeOutputs = state.nodeOutputValuesByNodeId[nodeId] || {};
     for (const outputId of Object.keys(result.transitions)) {
       const { tickOffset, value } = result.transitions[outputId];
 
@@ -65,12 +62,12 @@ export function collectNodeTransitions(
       const transitionTick = state.tick + (tickOffset > 0 ? tickOffset : 1);
 
       state = removeTransitionByPin(state, {
-        nodeId: node.id,
+        nodeId: nodeId,
         pinId: outputId
       });
 
       if (nodeOutputs[outputId] !== value) {
-        state = addTransition(state, node.id, outputId, transitionTick, value);
+        state = addTransition(state, nodeId, outputId, transitionTick, value);
       }
     }
   }

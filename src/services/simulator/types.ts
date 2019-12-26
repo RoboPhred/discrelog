@@ -1,13 +1,6 @@
 import { IDMap } from "@/types";
 import { NodeType } from "@/node-defs";
 
-export interface SimNode {
-  id: string;
-  type: NodeType;
-}
-
-export type SimNodesById = IDMap<SimNode>;
-
 export interface SimNodePinTransition {
   id: string;
   nodeId: string;

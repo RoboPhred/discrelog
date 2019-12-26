@@ -1,5 +1,5 @@
 import { AnyAction } from "redux";
-import { NodePin } from "@/types";
+import { NodePin } from "@/services/graph/types";
 
 export const ACTION_WIRE_TOGGLE = "@wire/toggle" as const;
 export const toggleWire = (p1: NodePin, p2: NodePin) => ({

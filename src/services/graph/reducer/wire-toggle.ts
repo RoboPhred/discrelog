@@ -4,12 +4,12 @@ import find from "lodash/find";
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
-import { nodePinEquals } from "@/types";
 import { isToggleWireAction } from "@/actions/wire-toggle";
 
 import { attachWire } from "@/actions/wire-attach";
 import { detatchWire } from "@/actions/wire-detatch";
 
+import { nodePinEquals } from "../types";
 import { pinsToConnection } from "../utils";
 
 export default function wireToggleReducer(
@@ -20,10 +20,10 @@ export default function wireToggleReducer(
     return state;
   }
 
-  const simulatorState = state.services.simulator;
+  const graphState = state.services.graph;
 
   const { p1, p2 } = action.payload;
-  const conn = pinsToConnection(simulatorState, p1, p2);
+  const conn = pinsToConnection(graphState, p1, p2);
   if (!conn) {
     return state;
   }
@@ -32,7 +32,7 @@ export default function wireToggleReducer(
 
   const isWired =
     find(
-      simulatorState.connections,
+      graphState.connections,
       c =>
         nodePinEquals(outputPin, c.outputPin) &&
         nodePinEquals(inputPin, c.inputPin)

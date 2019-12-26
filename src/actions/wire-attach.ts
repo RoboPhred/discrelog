@@ -1,5 +1,5 @@
 import { AnyAction } from "redux";
-import { NodePin } from "@/types";
+import { NodePin } from "@/services/graph/types";
 
 export const ACTION_WIRE_ATTACH = "@wire/attach" as const;
 export const attachWire = (p1: NodePin, p2: NodePin) => ({

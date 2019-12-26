@@ -8,8 +8,8 @@ import { pointSubtract } from "@/geometry";
 
 import { isCopyNodesAction } from "@/actions/clipboard-copy";
 
-import { nodeSelector } from "@/services/simulator/selectors/nodes";
-import { nodeOutputConnectionsByPinSelector } from "@/services/simulator/selectors/connections";
+import { nodeSelector } from "@/services/graph/selectors/nodes";
+import { nodeOutputConnectionsByPinSelector } from "@/services/graph/selectors/connections";
 import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
 
 import { ClipboardNode } from "../types";

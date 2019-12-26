@@ -5,10 +5,8 @@ import { connect } from "react-redux";
 import { AppState } from "@/store";
 import { NodeType } from "@/node-defs";
 
-import {
-  nodeTypesByIdSelector,
-  nodeStatesByIdSelector
-} from "@/services/simulator/selectors/nodes";
+import { nodeTypesByIdSelector } from "@/services/graph/selectors/nodes";
+import { nodeStatesByIdSelector } from "@/services/simulator/selectors/nodes";
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 
 import NodeVisual, {

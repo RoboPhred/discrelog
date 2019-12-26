@@ -1,5 +1,4 @@
 import { AnyAction } from "redux";
-import produce from "immer";
 import mapValues from "lodash/mapValues";
 
 import { isAddNodeAction } from "@/actions/node-add";
@@ -7,35 +6,22 @@ import { isAddNodeAction } from "@/actions/node-add";
 import { NodeTypes } from "@/node-defs";
 import { inputsOf, outputsOf } from "@/node-defs/utils";
 
-import { SimulatorState } from "../state";
-
 import { createSimulatorReducer } from "../utils";
 
 export default createSimulatorReducer((state, action: AnyAction) => {
-  return produce(state, draft => addNodeMutator(draft, action));
-});
-
-function addNodeMutator(state: SimulatorState, action: AnyAction) {
   if (!isAddNodeAction(action)) {
-    return;
+    return state;
   }
 
   const { nodeId: id, nodeType: type } = action.payload;
 
   const def = NodeTypes[type];
   if (!def) {
-    return;
+    return state;
   }
-
-  const { nodesById, nodeStatesByNodeId, nodeOutputValuesByNodeId } = state;
 
   const inputs = inputsOf(def);
   const outputs = outputsOf(def);
-
-  nodesById[id] = {
-    id,
-    type
-  };
 
   const result = def.evolve
     ? def.evolve(
@@ -45,8 +31,20 @@ function addNodeMutator(state: SimulatorState, action: AnyAction) {
       )
     : {};
 
-  nodeStatesByNodeId[id] = result.state || {};
-  nodeOutputValuesByNodeId[id] = result.transitions
+  const nodeState = result.state || {};
+  const outputValues = result.transitions
     ? mapValues(result.transitions, x => x.value)
     : mapValues(outputs, () => false);
-}
+
+  return {
+    ...state,
+    nodeStatesByNodeId: {
+      ...state.nodeStatesByNodeId,
+      [id]: nodeState
+    },
+    nodeOutputValuesByNodeId: {
+      ...state.nodeOutputValuesByNodeId,
+      [id]: outputValues
+    }
+  };
+});
