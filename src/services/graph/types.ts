@@ -1,12 +1,10 @@
 import { NodeType } from "@/node-defs";
 import { IDMap } from "@/types";
 
-export interface Node {
+export interface GraphNode {
   id: string;
   type: NodeType;
 }
-
-export type NodesById = IDMap<Node>;
 
 /**
  * Identifies a pin on a specific node.
@@ -25,6 +23,13 @@ export function nodePinEquals(a: NodePin, b: NodePin) {
 export interface Connection {
   outputPin: NodePin;
   inputPin: NodePin;
+}
+
+/**
+ * A wire connecting two nodes in the graph
+ */
+export interface Wire extends Connection {
+  id: string;
 }
 
 export type PinValueMap = IDMap<boolean>;

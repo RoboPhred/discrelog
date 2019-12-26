@@ -1,18 +1,21 @@
-import { isDetatchWireNodeAction } from "@/actions/wire-detatch";
+import { nodeIdsSelector } from "@/services/graph/selectors/nodes";
+import { isDetatchWireAction } from "@/actions/wire-detatch";
 
 import { createSimulatorReducer } from "../utils";
 
 import { collectNodeTransitions } from "./transition-utils";
 
 export default createSimulatorReducer((state, action, appState) => {
-  if (!isDetatchWireNodeAction(action)) {
+  if (!isDetatchWireAction(action)) {
     return state;
   }
 
-  const { p1, p2 } = action.payload;
+  // TODO: Make this reducer run before graph/wire-detatch so we can figure out
+  //  what node we need to collect transitions for.
 
-  // We only need to update the input pin, but we do not know which one that is.
-  state = collectNodeTransitions(state, p1.nodeId, appState);
-  state = collectNodeTransitions(state, p2.nodeId, appState);
+  // For now, just collect transitions on all nodes.
+  for (const nodeId of nodeIdsSelector(appState)) {
+    state = collectNodeTransitions(state, nodeId, appState);
+  }
   return state;
 });

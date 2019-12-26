@@ -6,6 +6,9 @@ import { createGraphSelector } from "../utils";
 import { GraphState } from "../state";
 
 export const nodesByIdSelector = createGraphSelector(s => s.nodesById);
+export const nodeIdsSelector = createGraphSelector(s =>
+  Object.keys(s.nodesById)
+);
 
 export const nodeTypesByIdSelector = createGraphSelector(s =>
   mapValues(nodesByIdSelector.local(s), n => n.type)

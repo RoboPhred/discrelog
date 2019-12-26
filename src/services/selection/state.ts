@@ -1,9 +1,11 @@
 export interface SelectionState {
-  selectedNodeIds: string[];
+  selectionType: null | "nodes" | "wires";
+  selectedIds: string[];
 }
 
 const _defaultState: SelectionState = {
-  selectedNodeIds: []
+  selectionType: null,
+  selectedIds: []
 };
 
 export const defaultSelectionState = Object.freeze(_defaultState);

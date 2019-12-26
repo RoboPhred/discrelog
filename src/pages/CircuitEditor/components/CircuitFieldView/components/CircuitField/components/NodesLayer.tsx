@@ -9,10 +9,10 @@ import { nodePositionsByIdSelector } from "@/services/field/selectors/positions"
 import CircuitNode from "./CircuitNode";
 
 export interface NodesLayerProps {
-  onNodeMouseDown?(node: string, e: React.MouseEvent): void;
-  onNodeMouseUp?(node: string, e: React.MouseEvent): void;
-  onNodeMouseOver?(node: string, e: React.MouseEvent): void;
-  onNodeMouseLeave?(node: string, e: React.MouseEvent): void;
+  onNodeMouseDown?(nodeId: string, e: React.MouseEvent): void;
+  onNodeMouseUp?(nodeId: string, e: React.MouseEvent): void;
+  onNodeMouseOver?(nodeId: string, e: React.MouseEvent): void;
+  onNodeMouseLeave?(nodeId: string, e: React.MouseEvent): void;
   onNodePinMouseDown?(nodeId: string, pinId: string, e: React.MouseEvent): void;
   onNodePinMouseUp?(nodeId: string, pinId: string, e: React.MouseEvent): void;
 }

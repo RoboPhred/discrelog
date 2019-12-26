@@ -1,4 +1,6 @@
 import find from "lodash/find";
+import values from "lodash/values";
+import { createSelector } from "reselect";
 import createCachedSelector from "re-reselect";
 
 import { NodePin } from "../types";
@@ -8,7 +10,20 @@ import { createGraphSelector } from "../utils";
 
 import { nodeDefSelector } from "./nodes";
 
-export const connectionsSelector = createGraphSelector(s => s.connections);
+export const wireIdsSelector = createGraphSelector(s =>
+  Object.keys(s.wiresById)
+);
+
+export const wireByIdSelector = createGraphSelector(
+  (s: GraphState, wireId: string) => s.wiresById[wireId]
+);
+
+const connectionsSelector = createGraphSelector(
+  createSelector(
+    (state: GraphState) => state.wiresById,
+    wiresById => values(wiresById)
+  )
+);
 
 export const nodePinDirectionSelector = createGraphSelector(
   (s: GraphState, pin: NodePin) => {
@@ -67,7 +82,7 @@ export const nodeInputConnectionsByPinSelector = createGraphSelector(
  */
 export const nodeOutputConnectionsSelector = createGraphSelector(
   (state: GraphState, nodeId: string) =>
-    state.connections.filter(x => x.outputPin.nodeId === nodeId)
+    connectionsSelector.local(state).filter(x => x.outputPin.nodeId === nodeId)
 );
 
 /**

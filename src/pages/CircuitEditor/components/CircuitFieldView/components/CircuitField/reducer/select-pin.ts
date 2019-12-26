@@ -5,8 +5,9 @@ import { fpSet } from "@/utils";
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
+import { attachWire } from "@/actions/wire-attach";
+
 import { nodePinDirectionSelector } from "@/services/graph/selectors/connections";
-import { toggleWire } from "@/actions/wire-toggle";
 
 import { isSelectPinAction, SelectPinAction } from "../actions/select-pin";
 
@@ -41,7 +42,7 @@ export default function selectPinReducer(
   }
 
   if (selectedPinDirection !== clickedPinDirection) {
-    return rootReducer(state, toggleWire(selectedPin, { nodeId, pinId }));
+    return rootReducer(state, attachWire(selectedPin, { nodeId, pinId }));
   }
 
   return doSelectPinReducer(state, action);

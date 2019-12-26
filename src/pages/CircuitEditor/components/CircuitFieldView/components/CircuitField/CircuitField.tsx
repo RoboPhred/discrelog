@@ -8,6 +8,7 @@ import { Point, SelectionMode } from "@/types";
 import { interactNode } from "@/actions/node-interact";
 
 import { selectNodes } from "@/actions/select-nodes";
+import { selectWires } from "@/actions/select-wires";
 import { clearSelection } from "@/actions/select-clear";
 
 import { dragStartNode } from "./actions/drag-start-node";
@@ -35,27 +36,38 @@ const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
 
   const mouseDownNodeIdRef = React.useRef<string | null>(null);
   const mouseDownPinIdRef = React.useRef<string | null>(null);
+  const mouseDownWireIdRef = React.useRef<string | null>(null);
 
   const resetMouseTracking = () => {
     mouseDownNodeIdRef.current = null;
     mouseDownPinIdRef.current = null;
+    mouseDownWireIdRef.current = null;
   };
 
   const onClick = React.useCallback(
     (p: Point, modifiers: ModifierKeys) => {
+      const selectMode = getSelectMode(modifiers);
+
+      if (mouseDownWireIdRef.current) {
+        dispatch(selectWires(mouseDownWireIdRef.current, selectMode));
+        resetMouseTracking();
+        return;
+      }
+
       if (mouseDownNodeIdRef.current) {
         // Might want to make this into an action/reducer pair to complement the others.
         if (modifiers.altKey) {
           dispatch(interactNode(mouseDownNodeIdRef.current));
+          resetMouseTracking();
           return;
         }
 
-        const selectMode = getSelectMode(modifiers);
         dispatch(selectNodes(mouseDownNodeIdRef.current, selectMode));
-      } else {
-        dispatch(clearSelection());
+        resetMouseTracking();
+        return;
       }
 
+      dispatch(clearSelection());
       resetMouseTracking();
     },
     [dispatch]
@@ -109,6 +121,16 @@ const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
     []
   );
 
+  const onWireMouseDown = React.useCallback(
+    (wireId: string, e: React.MouseEvent) => {
+      if (e.defaultPrevented) {
+        return;
+      }
+      mouseDownWireIdRef.current = wireId;
+    },
+    []
+  );
+
   const onNodePinMouseDown = React.useCallback(
     (nodeId: string, pinId: string, e: React.MouseEvent) => {
       if (e.defaultPrevented) {
@@ -146,10 +168,6 @@ const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
     []
   );
 
-  React.useEffect(() => {
-    console.log("ctx change", svgRef.current);
-  }, [svgRef.current]);
-
   return (
     <svg
       className={sizing["fill-parent"]}
@@ -162,7 +180,7 @@ const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
       <FieldSvgElementProvider value={svgRef}>
         <DragSelectLayer />
         <DragPreviewLayer />
-        <WiresLayer />
+        <WiresLayer onWireMouseDown={onWireMouseDown} />
         <NodesLayer
           onNodeMouseDown={onNodeMouseDown}
           onNodePinMouseDown={onNodePinMouseDown}

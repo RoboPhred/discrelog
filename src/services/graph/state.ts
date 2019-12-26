@@ -1,20 +1,22 @@
-import { NodesById, Connection } from "./types";
+import { IDMap } from "@/types";
+
+import { Wire, GraphNode } from "./types";
 
 export interface GraphState {
   /**
    * A map of nodes by node id.
    */
-  nodesById: NodesById;
+  nodesById: IDMap<GraphNode>;
 
   /**
-   * A list of node pin to node pin connections.
+   * A map of wires connecting nodes.
    */
-  connections: Connection[];
+  wiresById: IDMap<Wire>;
 }
 
 const _defaultState: GraphState = {
   nodesById: {},
-  connections: []
+  wiresById: {}
 };
 
 export const defaultGraphState = Object.freeze(_defaultState);

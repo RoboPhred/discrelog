@@ -9,10 +9,14 @@ export default createSelectionReducer((state, action) => {
     return state;
   }
 
+  if (state.selectionType !== "nodes") {
+    return state;
+  }
+
   const { nodeIds } = action.payload;
 
   return {
     ...state,
-    selectedNodeIds: difference(state.selectedNodeIds, nodeIds)
+    selectedIds: difference(state.selectedIds, nodeIds)
   };
 });

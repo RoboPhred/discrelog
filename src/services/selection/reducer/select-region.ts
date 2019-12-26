@@ -25,6 +25,7 @@ export default createSelectionReducer((state, action, appState) => {
 
   return {
     ...state,
-    selectedNodeIds: combineSelection(state.selectedNodeIds, chosenIds, mode)
+    selectionType: "nodes",
+    selectedIds: combineSelection(state.selectedIds, chosenIds, mode)
   };
 });

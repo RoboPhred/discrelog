@@ -7,6 +7,7 @@ import { isSelectionDeleteAction } from "@/actions/selection-delete";
 import { deleteNode } from "@/actions/node-delete";
 
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
+import { detatchWire } from "@/actions/wire-detatch";
 
 export default function selectionDeleteReducer(
   state: AppState = defaultAppState,
@@ -16,10 +17,24 @@ export default function selectionDeleteReducer(
     return state;
   }
 
-  const selectedNodes = selectedNodeIdsSelector(state);
-  if (selectedNodes.length === 0) {
+  const { selectionType, selectedIds } = state.services.selection;
+
+  if (selectedIds.length === 0) {
     return state;
   }
 
-  return rootReducer(state, deleteNode(selectedNodes));
+  switch (selectionType) {
+    case "nodes": {
+      return rootReducer(state, deleteNode(selectedIds));
+    }
+    case "wires": {
+      // TODO: Make detatchWire take multiple wires
+      return selectedIds.reduce(
+        (state, wireId) => rootReducer(state, detatchWire(wireId)),
+        state
+      );
+    }
+  }
+
+  return state;
 }

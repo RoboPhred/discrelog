@@ -1,31 +1,21 @@
-import { isDetatchWireNodeAction } from "@/actions/wire-detatch";
+import pick from "lodash/pick";
+import difference from "lodash/difference";
 
-import { pinsToConnection, createGraphReducer } from "../utils";
+import { isDetatchWireAction } from "@/actions/wire-detatch";
 
-import { nodePinEquals, Connection } from "../types";
+import { createGraphReducer } from "../utils";
 
 export default createGraphReducer((state, action) => {
-  if (!isDetatchWireNodeAction(action)) {
+  if (!isDetatchWireAction(action)) {
     return state;
   }
 
-  const { p1, p2 } = action.payload;
-  const conn = pinsToConnection(state, p1, p2);
-  if (!conn) {
-    return state;
-  }
+  const { wireId } = action.payload;
 
-  const { outputPin, inputPin } = conn;
-
-  function isTargetConnection(conn: Connection) {
-    return (
-      nodePinEquals(conn.inputPin, inputPin) &&
-      nodePinEquals(conn.outputPin, outputPin)
-    );
-  }
+  const remainingIds = Object.keys(state.wiresById).filter(x => x !== wireId);
 
   return {
     ...state,
-    connections: state.connections.filter(conn => !isTargetConnection(conn))
+    wiresById: pick(state.wiresById, remainingIds)
   };
 });

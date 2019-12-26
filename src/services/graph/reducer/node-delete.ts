@@ -1,5 +1,6 @@
 import pick from "lodash/pick";
 import difference from "lodash/difference";
+import pickBy from "lodash/pickBy";
 
 import { isDeleteNodeAction } from "@/actions/node-delete";
 
@@ -25,6 +26,6 @@ export default createGraphReducer((state, action) => {
   return {
     ...state,
     nodesById: pick(state.nodesById, remainingIds),
-    connections: state.connections.filter(isRemainingConnection)
+    wiresById: pickBy(state.wiresById, isRemainingConnection)
   };
 });
