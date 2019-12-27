@@ -1,9 +1,11 @@
 import * as React from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 
 import { AppState } from "@/store";
 
 import { selectedPinSelector } from "@/pages/CircuitEditor/components/CircuitFieldView/components/CircuitField/selectors";
+import useSelector from "@/hooks/useSelector";
+import { selectPin } from "../actions/select-pin";
 
 const PIN_CIRCLE_RADIUS_UNSELECTED = 4;
 const PIN_CIRCLE_RADIUS_SELECTED = 6;
@@ -13,67 +15,37 @@ export interface CircuitNodePinProps {
   pinId: string;
   x: number;
   y: number;
-  onPinMouseDown?(pin: string, e: React.MouseEvent): void;
-  onPinMouseUp?(pin: string, e: React.MouseEvent): void;
-  onClick?(e: React.MouseEvent): void;
-  onMouseDown?(e: React.MouseEvent): void;
-  onMouseUp?(e: React.MouseEvent): void;
 }
 
-function mapStateToProps(state: AppState, props: CircuitNodePinProps) {
-  const selected = selectedPinSelector(state);
-  const { nodeId, pinId } = props;
-  return {
-    isSelected:
-      selected && selected.nodeId === nodeId && selected.pinId === pinId
-  };
-}
-type StateProps = ReturnType<typeof mapStateToProps>;
+const CircuitNodePin: React.FC<CircuitNodePinProps> = ({
+  nodeId,
+  pinId,
+  x,
+  y
+}) => {
+  const dispatch = useDispatch();
+  const selectedPin = useSelector(selectedPinSelector);
+  const isSelected =
+    selectedPin && selectedPin.nodeId === nodeId && selectedPin.pinId === pinId;
 
-type Props = CircuitNodePinProps & StateProps;
-class CircuitNodePin extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
+  const onMouseDown = React.useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dispatch(selectPin(nodeId, pinId));
+    },
+    [nodeId, pinId]
+  );
 
-    this._onMouseDown = this._onMouseDown.bind(this);
-    this._onMouseUp = this._onMouseUp.bind(this);
-  }
+  return (
+    <circle
+      cx={x}
+      cy={y}
+      r={isSelected ? PIN_CIRCLE_RADIUS_SELECTED : PIN_CIRCLE_RADIUS_UNSELECTED}
+      fill={isSelected ? "yellow" : "blue"}
+      onMouseDown={onMouseDown}
+    />
+  );
+};
 
-  render() {
-    const { x, y, isSelected, onClick } = this.props;
-    return (
-      <circle
-        cx={x}
-        cy={y}
-        r={
-          isSelected ? PIN_CIRCLE_RADIUS_SELECTED : PIN_CIRCLE_RADIUS_UNSELECTED
-        }
-        fill={isSelected ? "yellow" : "blue"}
-        onClick={onClick}
-        onMouseDown={this._onMouseDown}
-        onMouseUp={this._onMouseUp}
-      />
-    );
-  }
-
-  private _onMouseDown(e: React.MouseEvent) {
-    const { pinId, onMouseDown, onPinMouseDown } = this.props;
-    if (onPinMouseDown) {
-      onPinMouseDown(pinId, e);
-    }
-    if (onMouseDown) {
-      onMouseDown(e);
-    }
-  }
-
-  private _onMouseUp(e: React.MouseEvent) {
-    const { pinId, onMouseUp, onPinMouseUp } = this.props;
-    if (onPinMouseUp) {
-      onPinMouseUp(pinId, e);
-    }
-    if (onMouseUp) {
-      onMouseUp(e);
-    }
-  }
-}
-export default connect(mapStateToProps)(CircuitNodePin);
+export default CircuitNodePin;

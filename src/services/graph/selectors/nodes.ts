@@ -22,6 +22,16 @@ export const nodeSelector = createGraphSelector(
   (s: GraphState, nodeId: string) => s.nodesById[nodeId] || null
 );
 
+export const nodeTypeSelector = createGraphSelector(
+  (s: GraphState, nodeId: string) => {
+    const node = nodeSelector.local(s, nodeId);
+    if (!node) {
+      return null;
+    }
+    return node.type;
+  }
+);
+
 export const nodeDefSelector = createGraphSelector(
   (s: GraphState, nodeId: string) => {
     const node = nodeSelector.local(s, nodeId);

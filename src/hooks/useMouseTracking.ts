@@ -26,23 +26,28 @@ export default function useMouseTracking(
     onDragEnd
   } = opts;
 
+  // We need both state and ref for this.
+  //  State lets us trigger a rerender / useEffect.
+  //  Ref lets us check for cancellation when handling document events.
+  //  We seem to get a few rogue onMouseMove events after we try to stop tracking.
   const [isTracking, setTracking] = React.useState(false);
+  const isTrackingRef = React.useRef(false);
+
   const isDraggingRef = React.useRef(false);
   const mouseDownRef = React.useRef<Point>(ZeroPoint);
 
-  const startTracking = React.useCallback(
-    (e: React.MouseEvent) => {
-      if (isTracking) {
-        return;
-      }
+  const startTracking = React.useCallback((e: React.MouseEvent) => {
+    if (isTrackingRef.current) {
+      return;
+    }
 
-      setTracking(true);
-      mouseDownRef.current = { x: e.pageX, y: e.pageY };
-    },
-    [isTracking]
-  );
+    isTrackingRef.current = true;
+    setTracking(true);
+    mouseDownRef.current = { x: e.pageX, y: e.pageY };
+  }, []);
 
   const cancelTracking = React.useCallback(() => {
+    isTrackingRef.current = false;
     setTracking(false);
     isDraggingRef.current = false;
     mouseDownRef.current = ZeroPoint;
@@ -54,6 +59,10 @@ export default function useMouseTracking(
     }
 
     function onMouseMove(e: MouseEvent) {
+      if (!isTrackingRef.current) {
+        return;
+      }
+
       if (isDraggingRef.current) {
         if (onDragMove) {
           const offset = pointSubtract(
@@ -77,6 +86,10 @@ export default function useMouseTracking(
     }
 
     function onMouseUp(e: MouseEvent) {
+      if (!isTrackingRef.current) {
+        return;
+      }
+
       if (isDraggingRef.current) {
         if (onDragEnd) {
           const offset = pointSubtract(

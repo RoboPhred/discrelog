@@ -9,10 +9,7 @@ import { wireIdsSelector } from "@/services/graph/selectors/connections";
 
 import Wire from "./Wire";
 
-export interface WiresLayerProps {
-  onWireMouseDown?(wireId: string, e: React.MouseEvent): void;
-  onWireMouseUp?(wireId: string, e: React.MouseEvent): void;
-}
+export interface WiresLayerProps {}
 
 interface StateProps {
   wireIds: ReturnType<typeof wireIdsSelector>;
@@ -22,20 +19,11 @@ const mapStateToProps = createStructuredSelector<AppState, StateProps>({
 });
 
 type Props = WiresLayerProps & StateProps;
-const WiresLayer: React.FC<Props> = ({
-  wireIds,
-  onWireMouseDown,
-  onWireMouseUp
-}) => {
+const WiresLayer: React.FC<Props> = ({ wireIds }) => {
   // FIXME: Use bound wire components to avoid creating new func instances for
   //  onWireMouseDown and onWireMouseUp.  See NodesLayer
   const connectorElements = wireIds.map(wireId => (
-    <Wire
-      key={wireId}
-      wireId={wireId}
-      onMouseDown={e => onWireMouseDown && onWireMouseDown(wireId, e)}
-      onMouseUp={e => onWireMouseUp && onWireMouseUp(wireId, e)}
-    />
+    <Wire key={wireId} wireId={wireId} />
   ));
 
   return <g id="wires-layer">{connectorElements}</g>;

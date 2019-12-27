@@ -2,16 +2,18 @@ import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { Point } from "@/types";
-import { pointAdd, ZeroPoint } from "@/geometry";
 
 import useMouseTracking from "@/hooks/useMouseTracking";
+
+import { clearSelection } from "@/actions/select-clear";
 
 import { getModifiers, getSelectMode } from "../selection-mode";
 
 import { selectionRectSelector } from "../selectors";
 
-import { dragStartSelect } from "../actions/drag-start-select";
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
+
+import { dragStartSelect } from "../actions/drag-start-select";
 import { dragContinue } from "../actions/drag-continue";
 import { dragEnd } from "../actions/drag-end";
 
@@ -20,6 +22,10 @@ const DragSelectLayer: React.FC = () => {
   const selectionRect = useSelector(selectionRectSelector);
 
   const getCoords = useEventMouseCoords();
+
+  const onClick = React.useCallback(() => {
+    dispatch(clearSelection());
+  }, []);
 
   const onDragStart = React.useCallback(
     (e: MouseEvent) => {
@@ -48,12 +54,16 @@ const DragSelectLayer: React.FC = () => {
   );
 
   const { startTracking } = useMouseTracking({
+    onClick,
     onDragStart,
     onDragMove,
     onDragEnd
   });
   const onMouseDown = React.useCallback(
     (e: React.MouseEvent) => {
+      if (e.defaultPrevented) {
+        return;
+      }
       e.preventDefault();
       startTracking(e);
     },

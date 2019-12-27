@@ -1,5 +1,5 @@
 import * as React from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 
 import {
   ZeroPoint,
@@ -13,11 +13,15 @@ import { AppState } from "@/store";
 import { Point } from "@/types";
 
 import { nodeDefsByIdSelector } from "@/services/graph/selectors/nodes";
-import { wireByIdSelector } from "@/services/graph/selectors/connections";
+import {
+  wireByIdSelector,
+  wireIdsSelector
+} from "@/services/graph/selectors/connections";
 import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
 import { selectedWireIdsSelector } from "@/services/selection/selectors/selection";
+import { selectWires } from "@/actions/select-wires";
 
 export interface WireProps {
   wireId: string;
@@ -71,14 +75,10 @@ type StateProps = ReturnType<typeof mapStateToProps>;
 
 type Props = StateProps & WireProps;
 
-const Wire: React.FC<Props> = ({
-  start,
-  end,
-  isSelected,
-  value,
-  onMouseDown,
-  onMouseUp
-}) => {
+const Wire: React.FC<Props> = ({ wireId, start, end, isSelected, value }) => {
+  // FIXME: Use useSelector instead of external connect.
+  const dispatch = useDispatch();
+
   const getMouseCoords = useEventMouseCoords();
 
   const [mousePos, setMousePos] = React.useState<Point | null>(null);
@@ -94,6 +94,10 @@ const Wire: React.FC<Props> = ({
   const onMouseOut = React.useCallback(() => {
     setMousePos(null);
   }, []);
+
+  const onClick = React.useCallback(() => {
+    dispatch(selectWires(wireId));
+  }, [wireId]);
 
   let color: string;
   if (isSelected) {
@@ -117,8 +121,7 @@ const Wire: React.FC<Props> = ({
   return (
     <g>
       <line
-        onMouseDown={onMouseDown}
-        onMouseUp={onMouseUp}
+        onClick={onClick}
         onMouseMove={onMouseMove}
         onMouseOut={onMouseOut}
         x1={start.x}
