@@ -80,7 +80,7 @@ const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
         const selectMode = getSelectMode(modifiers);
         dispatch(dragStartNode(mouseDownNodeIdRef.current, p, selectMode));
       } else {
-        dispatch(dragStartSelect(p));
+        // dispatch(dragStartSelect(p));
       }
 
       resetMouseTracking();

@@ -11,33 +11,41 @@ import { getModifiers, getSelectMode } from "../selection-mode";
 import { selectionRectSelector } from "../selectors";
 
 import { dragStartSelect } from "../actions/drag-start-select";
-import { useMouseCoords } from "../hooks/useMouseCoords";
+import { useEventMouseCoords } from "../hooks/useMouseCoords";
 import { dragContinue } from "../actions/drag-continue";
 import { dragEnd } from "../actions/drag-end";
 
 const DragSelectLayer: React.FC = () => {
   const dispatch = useDispatch();
   const selectionRect = useSelector(selectionRectSelector);
-  const clientDragStartRef = React.useRef<Point | null>(null);
 
-  const getCoords = useMouseCoords();
+  const getCoords = useEventMouseCoords();
 
-  const onDragStart = React.useCallback(() => {
-    dispatch(dragStartSelect(clientDragStartRef.current || ZeroPoint));
-  }, []);
+  const onDragStart = React.useCallback(
+    (e: MouseEvent) => {
+      const p = getCoords(e);
+      dispatch(dragStartSelect(p));
+    },
+    [getCoords]
+  );
 
-  const onDragMove = React.useCallback((offset: Point, e: MouseEvent) => {
-    console.log("Drag ofs", offset);
-    const p = pointAdd(clientDragStartRef.current || ZeroPoint, offset);
-    dispatch(dragContinue(p));
-  }, []);
+  const onDragMove = React.useCallback(
+    (offset: Point, e: MouseEvent) => {
+      const p = getCoords(e);
+      dispatch(dragContinue(p));
+    },
+    [getCoords]
+  );
 
-  const onDragEnd = React.useCallback((offset: Point, e: MouseEvent) => {
-    const p = pointAdd(clientDragStartRef.current || ZeroPoint, offset);
-    const modifiers = getModifiers(e);
-    const mode = getSelectMode(modifiers);
-    dispatch(dragEnd(p, mode));
-  }, []);
+  const onDragEnd = React.useCallback(
+    (offset: Point, e: MouseEvent) => {
+      const p = getCoords(e);
+      const modifiers = getModifiers(e);
+      const mode = getSelectMode(modifiers);
+      dispatch(dragEnd(p, mode));
+    },
+    [getCoords]
+  );
 
   const { startTracking } = useMouseTracking({
     onDragStart,
@@ -47,8 +55,6 @@ const DragSelectLayer: React.FC = () => {
   const onMouseDown = React.useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
-      const p = getCoords({ x: e.clientX, y: e.clientY });
-      clientDragStartRef.current = p;
       startTracking(e);
     },
     [getCoords]

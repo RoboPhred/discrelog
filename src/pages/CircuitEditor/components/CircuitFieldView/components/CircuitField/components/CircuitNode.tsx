@@ -21,9 +21,7 @@ export interface CircuitNodeProps {
   y: number;
   onClick?(e: React.MouseEvent): void;
   onMouseDown?(e: React.MouseEvent): void;
-  onMouseOver?(e: React.MouseEvent): void;
   onMouseUp?(e: React.MouseEvent): void;
-  onMouseLeave?(e: React.MouseEvent): void;
   onPinMouseDown?(pin: string, e: React.MouseEvent): void;
   onPinMouseUp?(pin: string, e: React.MouseEvent): void;
 }
@@ -58,8 +56,6 @@ class CircuitNode extends React.Component<Props> {
       isSelected,
       onClick,
       onMouseDown,
-      onMouseLeave,
-      onMouseOver,
       onMouseUp
     } = this.props;
 
@@ -73,8 +69,6 @@ class CircuitNode extends React.Component<Props> {
         colorOverride={isSelected ? "yellow" : undefined}
         renderPin={this._renderPin}
         onMouseDown={onMouseDown}
-        onMouseLeave={onMouseLeave}
-        onMouseOver={onMouseOver}
         onMouseUp={onMouseUp}
       />
     );

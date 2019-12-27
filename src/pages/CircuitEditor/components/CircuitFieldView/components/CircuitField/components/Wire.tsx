@@ -12,12 +12,11 @@ import {
 import { AppState } from "@/store";
 import { Point } from "@/types";
 
-import { NodePin } from "@/services/graph/types";
 import { nodeDefsByIdSelector } from "@/services/graph/selectors/nodes";
 import { wireByIdSelector } from "@/services/graph/selectors/connections";
 import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
 
-import { useMouseCoords } from "../hooks/useMouseCoords";
+import { useEventMouseCoords } from "../hooks/useMouseCoords";
 import { selectedWireIdsSelector } from "@/services/selection/selectors/selection";
 
 export interface WireProps {
@@ -80,12 +79,13 @@ const Wire: React.FC<Props> = ({
   onMouseDown,
   onMouseUp
 }) => {
-  const getMouseCoords = useMouseCoords();
+  const getMouseCoords = useEventMouseCoords();
+
   const [mousePos, setMousePos] = React.useState<Point | null>(null);
 
   const onMouseMove = React.useCallback(
     (e: React.MouseEvent) => {
-      const p = getMouseCoords({ x: e.clientX, y: e.clientY });
+      const p = getMouseCoords(e);
       setMousePos(p);
     },
     [getMouseCoords]

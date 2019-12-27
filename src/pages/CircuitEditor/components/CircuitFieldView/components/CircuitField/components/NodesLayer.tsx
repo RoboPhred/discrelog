@@ -11,8 +11,6 @@ import CircuitNode from "./CircuitNode";
 export interface NodesLayerProps {
   onNodeMouseDown?(nodeId: string, e: React.MouseEvent): void;
   onNodeMouseUp?(nodeId: string, e: React.MouseEvent): void;
-  onNodeMouseOver?(nodeId: string, e: React.MouseEvent): void;
-  onNodeMouseLeave?(nodeId: string, e: React.MouseEvent): void;
   onNodePinMouseDown?(nodeId: string, pinId: string, e: React.MouseEvent): void;
   onNodePinMouseUp?(nodeId: string, pinId: string, e: React.MouseEvent): void;
 }
@@ -35,13 +33,7 @@ class NodesLayer extends React.Component<Props> {
   }
 
   render() {
-    const {
-      nodePositionsById,
-      onNodeMouseDown,
-      onNodeMouseUp,
-      onNodeMouseOver,
-      onNodeMouseLeave
-    } = this.props;
+    const { nodePositionsById, onNodeMouseDown, onNodeMouseUp } = this.props;
 
     const nodeElements = Object.keys(nodePositionsById).map(key => {
       const { x, y } = nodePositionsById[key];
@@ -53,8 +45,6 @@ class NodesLayer extends React.Component<Props> {
           y={y}
           onMouseDown={onNodeMouseDown}
           onMouseUp={onNodeMouseUp}
-          onMouseOver={onNodeMouseOver}
-          onMouseLeave={onNodeMouseLeave}
           onPinMouseDown={this._onPinMouseDown}
           onPinMouseUp={this._onPinMouseUp}
         />
@@ -102,8 +92,6 @@ class BoundCicrcuitNode extends React.Component<BoundCicrcuitNodeProps> {
 
     this._onMouseDown = this._onMouseDown.bind(this);
     this._onMouseUp = this._onMouseUp.bind(this);
-    this._onMouseOver = this._onMouseOver.bind(this);
-    this._onMouseLeave = this._onMouseLeave.bind(this);
     this._onPinMouseDown = this._onPinMouseDown.bind(this);
     this._onPinMouseUp = this._onPinMouseUp.bind(this);
   }
@@ -117,8 +105,6 @@ class BoundCicrcuitNode extends React.Component<BoundCicrcuitNodeProps> {
         y={y}
         onMouseDown={this._onMouseDown}
         onMouseUp={this._onMouseUp}
-        onMouseOver={this._onMouseOver}
-        onMouseLeave={this._onMouseLeave}
         onPinMouseDown={this._onPinMouseDown}
         onPinMouseUp={this._onPinMouseUp}
       />
@@ -136,20 +122,6 @@ class BoundCicrcuitNode extends React.Component<BoundCicrcuitNodeProps> {
     const { nodeId, onMouseUp } = this.props;
     if (onMouseUp) {
       onMouseUp(nodeId, e);
-    }
-  }
-
-  private _onMouseOver(e: React.MouseEvent) {
-    const { nodeId, onMouseOver } = this.props;
-    if (onMouseOver) {
-      onMouseOver(nodeId, e);
-    }
-  }
-
-  private _onMouseLeave(e: React.MouseEvent) {
-    const { nodeId, onMouseLeave } = this.props;
-    if (onMouseLeave) {
-      onMouseLeave(nodeId, e);
     }
   }
 
