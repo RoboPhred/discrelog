@@ -24,8 +24,9 @@ import DragSelectLayer from "./components/DragSelectLayer";
 import WiresLayer from "./components/WiresLayer";
 import NodesLayer from "./components/NodesLayer";
 
-import useMouseTracking from "./useMouseTracking";
+import useMouseTracking from "./hooks/useMouseTracking";
 import { ModifierKeys } from "./types";
+import { getSelectMode } from "./selection-mode";
 
 export interface CircuitFieldProps {}
 
@@ -192,16 +193,3 @@ const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
 };
 
 export default CircuitField;
-
-function getSelectMode(modifiers: ModifierKeys): SelectionMode {
-  if (modifiers.shiftKey && modifiers.ctrlMetaKey) {
-    return "remove";
-  }
-  if (modifiers.shiftKey) {
-    return "append";
-  }
-  if (modifiers.ctrlMetaKey) {
-    return "toggle";
-  }
-  return "set";
-}

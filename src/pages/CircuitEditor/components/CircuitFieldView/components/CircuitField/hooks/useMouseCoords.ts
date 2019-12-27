@@ -10,6 +10,7 @@ export function useMouseCoords(): (p: Point) => Point {
   return React.useCallback(
     (p: Point) => {
       if (!fieldRef) {
+        console.log("useMouseCoords has no ref.  Falling back");
         return p;
       }
       return getFieldCoord(fieldRef, p);
