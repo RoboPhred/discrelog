@@ -2,6 +2,8 @@ import * as React from "react";
 
 import { cls } from "@/utils";
 
+import PopupMenuContext from "../PopupMenu/popupMenuContext";
+
 import PopupMenu from "../PopupMenu";
 import { PopperPlacement } from "../Popper";
 
@@ -21,6 +23,8 @@ const MenuItem: React.FC<MenuItemProps> = ({
   onClick,
   children
 }) => {
+  const { onClose: onClosePopup } = React.useContext(PopupMenuContext);
+
   const [isOpen, setOpen] = React.useState(false);
   const ref = React.useRef<HTMLDivElement | null>(null);
 
@@ -35,6 +39,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
       }
       if (onClick) {
         onClick(e);
+        onClosePopup();
       }
     },
     [isOpen, isParentItem, onClick]

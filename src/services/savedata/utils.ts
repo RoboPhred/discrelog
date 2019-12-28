@@ -39,3 +39,7 @@ export function loadAutosave(): SaveData | null {
     return null;
   }
 }
+
+export function deleteAutosave() {
+  localStorage.removeItem("autosave");
+}

@@ -3,6 +3,8 @@ import { FocusOn } from "react-focus-on";
 
 import Popper, { PopperPlacement } from "../Popper";
 
+import PopupMenuContext from "./popupMenuContext";
+
 import styles from "./PopupMenu.module.css";
 
 export interface PopupMenuProps {
@@ -26,9 +28,15 @@ const PopupMenu: React.FC<PopupMenuProps> = ({
       placement={placement}
       anchorEl={anchorEl}
     >
-      <FocusOn enabled={isOpen} onClickOutside={onClose} onEscapeKey={onClose}>
-        {children}
-      </FocusOn>
+      <PopupMenuContext.Provider value={{ onClose }}>
+        <FocusOn
+          enabled={isOpen}
+          onClickOutside={onClose}
+          onEscapeKey={onClose}
+        >
+          {children}
+        </FocusOn>
+      </PopupMenuContext.Provider>
     </Popper>
   );
 };

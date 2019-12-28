@@ -1,5 +1,6 @@
 import { reduceReducers } from "@/store/utils";
 
+import fileNewReducer from "./file-new";
 import nodeAddReducer from "./node-add";
 import nodeDeleteReducer from "./node-delete";
 import nodeMoveReducer from "./node-move";
@@ -9,6 +10,7 @@ import wireJointAddReducer from "./wire-joint-add";
 import wireJointMoveReducer from "./wire-joint-move";
 
 const fieldReducer = reduceReducers(
+  fileNewReducer,
   nodeAddReducer,
   nodeDeleteReducer,
   nodeMoveReducer,

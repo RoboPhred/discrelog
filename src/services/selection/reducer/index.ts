@@ -1,5 +1,6 @@
 import { reduceReducers } from "@/store/utils";
 
+import fileNewReducer from "./file-new";
 import nodeDeleteReducer from "./node-delete";
 import selectClearReducer from "./select-clear";
 import selectNodesReducer from "./select-nodes";
@@ -10,6 +11,7 @@ import selectionDeleteReducer from "./selection-delete";
 import wireDetatchReducer from "./wire-detatch";
 
 const selectionReducer = reduceReducers(
+  fileNewReducer,
   nodeDeleteReducer,
   selectClearReducer,
   selectNodesReducer,
