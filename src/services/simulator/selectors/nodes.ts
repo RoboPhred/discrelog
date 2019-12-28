@@ -9,6 +9,8 @@ export const nodeStateSelector = createSimulatorSelector(
   (s: SimulatorState, nodeId: string) => s.nodeStatesByNodeId[nodeId]
 );
 
-export const nodeOutputValuesByNodeIdSelector = createSimulatorSelector(
-  s => s.nodeOutputValuesByNodeId
+export const nodeOutputPinValue = createSimulatorSelector(
+  (s: SimulatorState, nodeId: string, pinId: string) => {
+    return s.nodeOutputValuesByNodeId[nodeId]?.[pinId] || false;
+  }
 );

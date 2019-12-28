@@ -1,6 +1,8 @@
 import { createStore, compose, applyMiddleware } from "redux";
 import freeze from "redux-freeze";
 
+import { doInit } from "@/actions/init";
+
 import {
   actionSanitizer,
   stateSanitizer,
@@ -22,3 +24,4 @@ export const store = createStore(
   reducer,
   composeEnhancers(applyMiddleware(freeze))
 );
+store.dispatch(doInit());

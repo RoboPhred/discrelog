@@ -14,6 +14,7 @@ import { NodePin } from "@/services/graph/types";
 
 import { SimulatorState } from "../state";
 import { SimTransitionWindow, SimNodePinTransition } from "../types";
+import { nodeOutputPinValue } from "../selectors/nodes";
 
 export function collectNodeTransitions(
   state: SimulatorState,
@@ -40,7 +41,7 @@ export function collectNodeTransitions(
     }
     const { nodeId: sourceNodeId, pinId: sourcePin } = inputConn;
 
-    inputs[inputPin] = state.nodeOutputValuesByNodeId[sourceNodeId][sourcePin];
+    inputs[inputPin] = nodeOutputPinValue.local(state, sourceNodeId, sourcePin);
   }
 
   const result = def.evolve(

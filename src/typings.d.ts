@@ -3,6 +3,8 @@ interface Window {
   __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: Function;
 }
 
+declare type ItemsOf<T> = T extends (infer K)[] ? K : never;
+
 declare type HotkeyHandler = (keyEvent?: KeyboardEvent) => void;
 
 type IsFunction<T> = T extends (...args: any[]) => any ? T : never;

@@ -1,6 +1,7 @@
 import clipboardReducer from "@/services/clipboard/reducer";
 import fieldReducer from "@/services/field/reducer";
 import graphReducer from "@/services/graph/reducer";
+import savedataReducer from "@/services/savedata/reducer";
 import selectionReducer from "@/services/selection/reducer";
 import simulatorReducer from "@/services/simulator/reducer";
 
@@ -19,7 +20,10 @@ const reducer = reduceReducers(
   selectionReducer,
   simulatorReducer,
 
-  circuitEditorReducer
+  circuitEditorReducer,
+
+  // Place this last, so it always has the most up to date data.
+  savedataReducer
 );
 
 export default reducer;

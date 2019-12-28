@@ -46,6 +46,16 @@ export interface ServiceSelectorA1<
   local(s: ServiceState<TServiceKey>, a1: TA1): TReturn;
 }
 
+export interface ServiceSelectorA2<
+  TServiceKey extends ServiceKey,
+  TA1,
+  TA2,
+  TReturn
+> {
+  (s: AppState, a1: TA1, a2: TA2): TReturn;
+  local(s: ServiceState<TServiceKey>, a1: TA1, a2: TA2): TReturn;
+}
+
 export interface ServiceSelectorCreator<TServiceKey extends ServiceKey> {
   <TReturn>(
     selector: (s: ServiceState<TServiceKey>) => TReturn
@@ -53,6 +63,9 @@ export interface ServiceSelectorCreator<TServiceKey extends ServiceKey> {
   <TA1, TReturn>(
     selector: (s: ServiceState<TServiceKey>, a1: TA1) => TReturn
   ): ServiceSelectorA1<TServiceKey, TA1, TReturn>;
+  <TA1, TA2, TReturn>(
+    selector: (s: ServiceState<TServiceKey>, a1: TA1, a2: TA2) => TReturn
+  ): ServiceSelectorA2<TServiceKey, TA1, TA2, TReturn>;
 }
 
 export function createServiceSelectorCreator<TServiceKey extends ServiceKey>(
