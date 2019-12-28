@@ -6,7 +6,6 @@ import { nodesByIdSelector } from "@/services/graph/selectors/nodes";
 
 import { createSelectionSelector } from "../utils";
 import { SelectionState } from "../state";
-import { stateSanitizer } from "@/store/devtool-sanitizer";
 
 export const selectedNodeIdsSelector = createSelectionSelector(state => {
   if (state.selectionType === "nodes") {
@@ -24,6 +23,12 @@ export const isNodeSelectedSelector = createSelectionSelector(
   }
 );
 
+export const selectedNodesByIdSelector = createSelector(
+  nodesByIdSelector,
+  selectedNodeIdsSelector,
+  (nodesById, selectedNodeIds) => pick(nodesById, selectedNodeIds)
+);
+
 export const selectedWireIdsSelector = createSelectionSelector(state => {
   if (state.selectionType === "wires") {
     return state.selectedIds;
@@ -31,8 +36,11 @@ export const selectedWireIdsSelector = createSelectionSelector(state => {
   return [];
 });
 
-export const selectedNodesByIdSelector = createSelector(
-  nodesByIdSelector,
-  selectedNodeIdsSelector,
-  (nodesById, selectedNodeIds) => pick(nodesById, selectedNodeIds)
+export const isWireSelectedSelector = createSelectionSelector(
+  (s: SelectionState, wireId: string) => {
+    if (s.selectionType !== "wires") {
+      return false;
+    }
+    return s.selectedIds.indexOf(wireId) !== -1;
+  }
 );

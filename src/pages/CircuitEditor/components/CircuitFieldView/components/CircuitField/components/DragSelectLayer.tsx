@@ -85,7 +85,10 @@ const DragSelectLayer: React.FC = () => {
           <rect
             width={selectionRect.p2.x - selectionRect.p1.x}
             height={selectionRect.p2.y - selectionRect.p1.y}
-            fill="blue"
+            strokeWidth="2"
+            strokeDasharray="5 3"
+            stroke="skyblue"
+            fill="transparent"
           />
         </g>
       )}

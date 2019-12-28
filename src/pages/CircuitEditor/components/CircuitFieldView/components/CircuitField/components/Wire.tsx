@@ -2,81 +2,174 @@ import * as React from "react";
 import { connect, useDispatch } from "react-redux";
 
 import {
-  ZeroPoint,
   pointAdd,
   normalize,
   pointSubtract,
   dotProduct,
   scale
 } from "@/geometry";
-import { AppState } from "@/store";
 import { Point } from "@/types";
 
-import { nodeDefsByIdSelector } from "@/services/graph/selectors/nodes";
+import useSelector from "@/hooks/useSelector";
+
+import { selectWires } from "@/actions/select-wires";
+
 import {
-  wireByIdSelector,
-  wireIdsSelector
-} from "@/services/graph/selectors/connections";
-import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
+  wireStartPositionSelector,
+  wireEndPositionSelector,
+  wireJointsSelector
+} from "@/services/field/selectors/wires";
+import { isWireSelectedSelector } from "@/services/selection/selectors/selection";
+import { wireValueSelector } from "@/services/simulator/selectors/wires";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
-import { selectedWireIdsSelector } from "@/services/selection/selectors/selection";
-import { selectWires } from "@/actions/select-wires";
+import useMouseTracking from "@/hooks/useMouseTracking";
+import { addWireJoint } from "@/actions/wire-joint-add";
+import { moveWireJoint } from "@/actions/wire-joint-move";
 
 export interface WireProps {
   wireId: string;
-  onMouseDown?(e: React.MouseEvent): void;
-  onMouseUp?(e: React.MouseEvent): void;
 }
 
-function mapStateToProps(state: AppState, props: WireProps) {
-  const {
-    inputPin: { nodeId: targetNodeId, pinId: targetPin },
-    outputPin: { nodeId: sourceNodeId, pinId: sourcePin }
-  } = wireByIdSelector(state, props.wireId);
+const Wire: React.FC<WireProps> = ({ wireId }) => {
+  const dispatch = useDispatch();
+  const getMouseCoords = useEventMouseCoords();
 
-  const sourceDef = nodeDefsByIdSelector(state)[sourceNodeId];
-  let sourceOffset = ZeroPoint;
-  let value = false;
+  const start = useSelector(state => wireStartPositionSelector(state, wireId));
+  const end = useSelector(state => wireEndPositionSelector(state, wireId));
+  const joints = useSelector(state => wireJointsSelector(state, wireId));
+  const value = useSelector(state => wireValueSelector(state, wireId));
+  const isSelected = useSelector(state =>
+    isWireSelectedSelector(state, wireId)
+  );
 
-  if (sourceDef) {
-    if (sourceDef.pins[sourcePin]) {
-      sourceOffset = sourceDef.pins[sourcePin];
-    }
-    value =
-      state.services.simulator.nodeOutputValuesByNodeId[sourceNodeId][
-        sourcePin
-      ];
+  const jointDraggingRef = React.useRef<number | null>(null);
+
+  const onInsertJointDragStart = React.useCallback(
+    (e: MouseEvent) => {
+      const jointIndex = jointDraggingRef.current;
+      if (jointIndex == null) {
+        return;
+      }
+
+      const p = getMouseCoords(e);
+      dispatch(addWireJoint(wireId, jointIndex, p));
+    },
+    [getMouseCoords]
+  );
+
+  const onJointDragMove = React.useCallback(
+    (offset: Point, e: MouseEvent) => {
+      const jointIndex = jointDraggingRef.current;
+      if (jointIndex == null) {
+        return;
+      }
+
+      const p = getMouseCoords(e);
+      dispatch(moveWireJoint(wireId, jointIndex, p));
+    },
+    [getMouseCoords]
+  );
+
+  const onJointDragEnd = React.useCallback(() => {
+    jointDraggingRef.current = null;
+  }, []);
+
+  const { startTracking: startInsertJointTracking } = useMouseTracking({
+    onDragStart: onInsertJointDragStart,
+    onDragMove: onJointDragMove,
+    onDragEnd: onJointDragEnd
+  });
+
+  const onInsertJointMouseDown = React.useCallback(
+    (jointIndex: number, e: React.MouseEvent) => {
+      if (e.defaultPrevented) {
+        return;
+      }
+      e.preventDefault();
+      jointDraggingRef.current = jointIndex;
+      startInsertJointTracking(e);
+    },
+    []
+  );
+
+  const { startTracking: startMoveJointTracking } = useMouseTracking({
+    onDragMove: onJointDragMove,
+    onDragEnd: onJointDragEnd
+  });
+
+  const onJointMouseDown = React.useCallback(
+    (jointIndex: number, e: React.MouseEvent) => {
+      if (e.defaultPrevented) {
+        return;
+      }
+      e.preventDefault();
+      jointDraggingRef.current = jointIndex;
+      startMoveJointTracking(e);
+    },
+    []
+  );
+
+  let color: string;
+  if (isSelected) {
+    color = "yellow";
+  } else if (value) {
+    color = "green";
+  } else {
+    color = "black";
   }
 
-  const targetDef = nodeDefsByIdSelector(state)[targetNodeId];
-  let targetOffset = ZeroPoint;
-  if (targetDef && targetDef.pins[targetPin]) {
-    targetOffset = targetDef.pins[targetPin];
-  }
+  const segmentEnds = [...joints, end];
 
-  const selectedWires = selectedWireIdsSelector(state);
-  const isSelected = selectedWires.indexOf(props.wireId) !== -1;
+  const segmentElements = segmentEnds.map((segEnd, index) => {
+    const segStart = index > 0 ? segmentEnds[index - 1] : start;
+    return (
+      <WireSegment
+        key={index}
+        wireId={wireId}
+        start={segStart}
+        end={segEnd}
+        jointIndex={index}
+        color={color}
+        onInsertJointMouseDown={onInsertJointMouseDown}
+      />
+    );
+  });
 
-  return {
-    start: pointAdd(
-      nodePositionsByIdSelector(state)[sourceNodeId] || ZeroPoint,
-      sourceOffset
-    ),
-    end: pointAdd(
-      nodePositionsByIdSelector(state)[targetNodeId] || ZeroPoint,
-      targetOffset
-    ),
-    isSelected,
-    value
-  };
+  const jointElements = joints.map((position, index) => (
+    <WireJoint
+      key={index}
+      position={position}
+      color={color}
+      jointIndex={index}
+      onMouseDown={onJointMouseDown}
+    />
+  ));
+
+  return (
+    <>
+      {segmentElements}
+      {jointElements}
+    </>
+  );
+};
+
+interface WireSegmentProps {
+  wireId: string;
+  start: Point;
+  end: Point;
+  color: string;
+  jointIndex: number;
+  onInsertJointMouseDown(jointIndex: number, e: React.MouseEvent): void;
 }
-type StateProps = ReturnType<typeof mapStateToProps>;
-
-type Props = StateProps & WireProps;
-
-const Wire: React.FC<Props> = ({ wireId, start, end, isSelected, value }) => {
-  // FIXME: Use useSelector instead of external connect.
+const WireSegment: React.FC<WireSegmentProps> = ({
+  wireId,
+  start,
+  end,
+  color,
+  jointIndex,
+  onInsertJointMouseDown
+}) => {
   const dispatch = useDispatch();
 
   const getMouseCoords = useEventMouseCoords();
@@ -91,7 +184,7 @@ const Wire: React.FC<Props> = ({ wireId, start, end, isSelected, value }) => {
     [getMouseCoords]
   );
 
-  const onMouseOut = React.useCallback(() => {
+  const onMouseLeave = React.useCallback(() => {
     setMousePos(null);
   }, []);
 
@@ -99,31 +192,25 @@ const Wire: React.FC<Props> = ({ wireId, start, end, isSelected, value }) => {
     dispatch(selectWires(wireId));
   }, [wireId]);
 
-  let color: string;
-  if (isSelected) {
-    color = "yellow";
-  } else if (mousePos) {
-    color = "orange";
-  } else if (value) {
-    color = "green";
-  } else {
-    color = "black";
-  }
-
-  let dotPos: Point | undefined;
+  let insertJointPos: Point | undefined;
   if (mousePos) {
     let lineDir = normalize(pointSubtract(end, start));
     const v = pointSubtract(mousePos, start);
     var d = dotProduct(v, lineDir);
-    dotPos = pointAdd(start, scale(lineDir, d));
+    insertJointPos = pointAdd(start, scale(lineDir, d));
   }
 
+  const onMouseDown = React.useCallback(
+    (e: React.MouseEvent) => {
+      onInsertJointMouseDown(jointIndex, e);
+    },
+    [jointIndex, onInsertJointMouseDown]
+  );
+
   return (
-    <g>
+    <g onMouseMove={onMouseMove} onMouseLeave={onMouseLeave}>
       <line
         onClick={onClick}
-        onMouseMove={onMouseMove}
-        onMouseOut={onMouseOut}
         x1={start.x}
         y1={start.y}
         x2={end.x}
@@ -131,17 +218,48 @@ const Wire: React.FC<Props> = ({ wireId, start, end, isSelected, value }) => {
         stroke={color}
         strokeWidth={2}
       />
-      {dotPos && (
+      {insertJointPos && (
         <circle
-          pointerEvents="none"
-          cx={dotPos.x}
-          cy={dotPos.y}
+          cx={insertJointPos.x}
+          cy={insertJointPos.y}
           r={3}
           fill="red"
+          onMouseDown={onMouseDown}
         />
       )}
     </g>
   );
 };
 
-export default connect(mapStateToProps)(Wire);
+interface WireJointProps {
+  jointIndex: number;
+  position: Point;
+  color: string;
+  onMouseDown(jointIndex: number, e: React.MouseEvent): void;
+}
+
+const WireJoint: React.FC<WireJointProps> = ({
+  jointIndex,
+  position,
+  color,
+  onMouseDown
+}) => {
+  const mouseDown = React.useCallback(
+    (e: React.MouseEvent) => {
+      onMouseDown(jointIndex, e);
+    },
+    [jointIndex, onMouseDown]
+  );
+
+  return (
+    <circle
+      cx={position.x}
+      cy={position.y}
+      r={2}
+      onMouseDown={mouseDown}
+      fill={color}
+    />
+  );
+};
+
+export default Wire;
