@@ -12,6 +12,7 @@ import {
   SimulatorState,
   defaultSimulatorState
 } from "@/services/simulator/state";
+import { ViewState, defaultViewState } from "@/services/view/state";
 
 import {
   CircuitEditorState,
@@ -20,11 +21,12 @@ import {
 
 export interface AppState {
   services: {
-    simulator: SimulatorState;
+    clipboard: ClipboardState;
     field: FieldState;
     graph: GraphState;
     selection: SelectionState;
-    clipboard: ClipboardState;
+    simulator: SimulatorState;
+    view: ViewState;
   };
   ui: {
     circuitEditor: CircuitEditorState;
@@ -33,11 +35,12 @@ export interface AppState {
 
 const _defaultAppState: AppState = {
   services: {
-    simulator: defaultSimulatorState,
+    clipboard: defaultClipboardState,
     field: defaultFieldState,
     graph: defaultGraphState,
     selection: defaultSelectionState,
-    clipboard: defaultClipboardState
+    simulator: defaultSimulatorState,
+    view: defaultViewState
   },
   ui: {
     circuitEditor: defaultCircuitEditorState

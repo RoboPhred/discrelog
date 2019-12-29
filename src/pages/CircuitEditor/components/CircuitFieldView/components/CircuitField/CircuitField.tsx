@@ -1,6 +1,11 @@
 import * as React from "react";
 
-import sizing from "@/styles/sizing.module.css";
+import { cls } from "@/utils";
+import useSelector from "@/hooks/useSelector";
+import {
+  fieldWidthSelector,
+  fieldHeightSelector
+} from "@/services/field/selectors/bounds";
 
 import { FieldSvgElementProvider } from "./contexts/fieldSvgElement";
 
@@ -9,9 +14,13 @@ import DragSelectLayer from "./components/DragSelectLayer";
 import WiresLayer from "./components/WiresLayer";
 import NodesLayer from "./components/NodesLayer";
 
+import styles from "./CircuitField.module.css";
+
 export interface CircuitFieldProps {}
 
 const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
+  const width = useSelector(fieldWidthSelector);
+  const height = useSelector(fieldHeightSelector);
   const svgRef = React.useRef<SVGSVGElement>(null);
 
   const onMouseDown = React.useCallback(() => {
@@ -19,19 +28,27 @@ const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
   }, []);
 
   return (
-    <svg
-      className={sizing["fill-parent"]}
-      tabIndex={-1}
-      ref={svgRef}
-      onMouseDown={onMouseDown}
+    // svg seems to have an implicit bottom margin against its parent div.
+    //  Wrapping it in a div of the same size fixes it.
+    <div
+      className={cls("circuit-field", styles["circuit-editor"])}
+      style={{ width: `${width}px`, height: `${height}px` }}
     >
-      <FieldSvgElementProvider value={svgRef}>
-        <DragSelectLayer />
-        <DragPreviewLayer />
-        <WiresLayer />
-        <NodesLayer />
-      </FieldSvgElementProvider>
-    </svg>
+      <svg
+        tabIndex={-1}
+        ref={svgRef}
+        width={width}
+        height={height}
+        onMouseDown={onMouseDown}
+      >
+        <FieldSvgElementProvider value={svgRef}>
+          <DragSelectLayer />
+          <DragPreviewLayer />
+          <WiresLayer />
+          <NodesLayer />
+        </FieldSvgElementProvider>
+      </svg>
+    </div>
   );
 };
 

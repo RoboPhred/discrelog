@@ -4,6 +4,7 @@ import graphReducer from "@/services/graph/reducer";
 import savedataReducer from "@/services/savedata/reducer";
 import selectionReducer from "@/services/selection/reducer";
 import simulatorReducer from "@/services/simulator/reducer";
+import viewReducer from "@/services/view/reducer";
 
 import circuitEditorReducer from "@/pages/CircuitEditor/reducer";
 
@@ -19,6 +20,7 @@ const reducer = reduceReducers(
   fieldReducer,
   selectionReducer,
   simulatorReducer,
+  viewReducer,
 
   circuitEditorReducer,
 

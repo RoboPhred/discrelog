@@ -15,7 +15,7 @@ const CircuitEditor: React.FC<CircuitEditorProps> = ({ className }) => {
   return (
     <div className={cls(className, styles.editor)}>
       <div className={styles["editor-fieldcontainer"]}>
-        <CircuitFieldView className={cls(styles["editor-field"])} />
+        <CircuitFieldView />
       </div>
       <div className={styles["editor-toolwindow-horizontal"]}>
         <ElementTray />

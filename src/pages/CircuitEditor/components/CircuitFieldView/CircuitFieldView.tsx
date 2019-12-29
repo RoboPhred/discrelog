@@ -2,8 +2,13 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { HotKeys } from "react-hotkeys";
 
-import sizing from "@/styles/sizing.module.css";
+import { cls } from "@/utils";
+import { useNativeEvent } from "@/hooks/useNativeEvent";
+import useSelector from "@/hooks/useSelector";
 
+import { viewScaleSelector } from "@/services/view/selectors/view";
+
+import { viewZoom } from "@/actions/view-zoom";
 import { evolveSim } from "@/actions/sim-evolve";
 import { fastForwardSim } from "@/actions/sim-fastforward";
 import { paste } from "@/actions/clipboard-paste";
@@ -21,14 +26,17 @@ import keymap, {
 
 import CircuitField from "./components/CircuitField";
 
-import { cls } from "@/utils";
+import styles from "./CircuitFieldView.module.css";
 
 export interface CircuitFieldViewProps {
   className?: string;
 }
 
 const CircuitFieldView: React.FC<CircuitFieldViewProps> = ({ className }) => {
+  const viewRef = React.useRef<HTMLDivElement | null>(null);
   const dispatch = useDispatch();
+  const scale = useSelector(viewScaleSelector);
+
   const keyHandlers = React.useMemo(() => {
     let keyHandlers: KeymapHandler = {
       [KEYMAP_SIM_STEP]: () => dispatch(evolveSim(1)),
@@ -40,14 +48,48 @@ const CircuitFieldView: React.FC<CircuitFieldViewProps> = ({ className }) => {
     return keyHandlers;
   }, [dispatch]);
 
+  const onWheel = React.useCallback((e: WheelEvent) => {
+    if (e.defaultPrevented) {
+      return;
+    }
+
+    if (e.ctrlKey) {
+      dispatch(viewZoom(e.deltaY > 0 ? 1 : -1));
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, []);
+
+  // React listens to the root listener for all events,
+  //  and chrome assumes the root event listener for mouse events
+  //  never wants to preventDefault.
+  // We need to take a local event listener and mark it as not passive.
+  // https://github.com/facebook/react/issues/14856
+  useNativeEvent(viewRef, "wheel", onWheel, { passive: false });
+
   return (
-    <HotKeys
-      className={cls(className, sizing["fill-parent"])}
-      keyMap={keymap}
-      handlers={keyHandlers}
+    <div
+      className={cls(
+        "circuit-field-view",
+        className,
+        styles["circuit-field-view"]
+      )}
+      style={{ position: "relative", width: "1024px", height: "768px" }}
+      ref={viewRef}
     >
-      <CircuitField />
-    </HotKeys>
+      <div
+        className="zoom-container"
+        style={{
+          position: "absolute",
+          transform: `scale(${scale})`,
+          transformOrigin: "0 0"
+        }}
+      >
+        <HotKeys keyMap={keymap} handlers={keyHandlers}>
+          <CircuitField />
+        </HotKeys>
+      </div>
+    </div>
   );
 };
 

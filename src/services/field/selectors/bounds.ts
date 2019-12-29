@@ -10,6 +10,10 @@ import { nodeDefsByIdSelector } from "@/services/graph/selectors/nodes";
 import { nodeStatesByIdSelector } from "@/services/simulator/selectors/nodes";
 
 import { nodePositionsByIdSelector } from "./positions";
+import { createFieldSelector } from "../utils";
+
+export const fieldWidthSelector = createFieldSelector(s => s.width);
+export const fieldHeightSelector = createFieldSelector(s => s.height);
 
 export const nodeBoundsById = createSelector(
   nodeDefsByIdSelector,
