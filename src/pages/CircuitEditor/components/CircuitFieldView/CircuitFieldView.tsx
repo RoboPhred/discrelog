@@ -14,6 +14,7 @@ import { fastForwardSim } from "@/actions/sim-fastforward";
 import { paste } from "@/actions/clipboard-paste";
 import { selectionCopy } from "@/actions/selection-copy";
 import { selectionDelete } from "@/actions/selection-delete";
+import { selectAll } from "@/actions/select-all";
 
 import keymap, {
   KeymapHandler,
@@ -21,12 +22,14 @@ import keymap, {
   KEYMAP_SIM_FASTFORWARD,
   KEYMAP_NODE_COPY,
   KEYMAP_NODE_PASTE,
-  KEYMAP_NODE_DELETE
+  KEYMAP_NODE_DELETE,
+  KEYMAP_SELECTION_SELECT_ALL
 } from "./keymap";
 
 import CircuitField from "./components/CircuitField";
 
 import styles from "./CircuitFieldView.module.css";
+import { AnyAction } from "redux";
 
 export interface CircuitFieldViewProps {
   className?: string;
@@ -38,12 +41,24 @@ const CircuitFieldView: React.FC<CircuitFieldViewProps> = ({ className }) => {
   const scale = useSelector(viewScaleSelector);
 
   const keyHandlers = React.useMemo(() => {
+    function createEventDispatcher(action: AnyAction): HotkeyHandler {
+      return (e?: KeyboardEvent) => {
+        if (e) {
+          if (e.defaultPrevented) {
+            return;
+          }
+          e.preventDefault();
+        }
+        dispatch(action);
+      };
+    }
     let keyHandlers: KeymapHandler = {
-      [KEYMAP_SIM_STEP]: () => dispatch(tickSim(1)),
-      [KEYMAP_SIM_FASTFORWARD]: () => dispatch(fastForwardSim()),
-      [KEYMAP_NODE_COPY]: () => dispatch(selectionCopy()),
-      [KEYMAP_NODE_PASTE]: () => dispatch(paste()),
-      [KEYMAP_NODE_DELETE]: () => dispatch(selectionDelete())
+      [KEYMAP_SIM_STEP]: createEventDispatcher(tickSim(1)),
+      [KEYMAP_SIM_FASTFORWARD]: createEventDispatcher(fastForwardSim()),
+      [KEYMAP_SELECTION_SELECT_ALL]: createEventDispatcher(selectAll()),
+      [KEYMAP_NODE_COPY]: createEventDispatcher(selectionCopy()),
+      [KEYMAP_NODE_PASTE]: createEventDispatcher(paste()),
+      [KEYMAP_NODE_DELETE]: createEventDispatcher(selectionDelete())
     };
     return keyHandlers;
   }, []);
