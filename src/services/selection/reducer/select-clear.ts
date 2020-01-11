@@ -9,7 +9,7 @@ export default createSelectionReducer((state, action) => {
 
   return {
     ...state,
-    selectionType: null,
-    selectedIds: []
+    selectedNodeIds: [],
+    selectedWireIds: []
   };
 });

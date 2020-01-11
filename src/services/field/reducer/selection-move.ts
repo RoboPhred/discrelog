@@ -1,18 +1,18 @@
 import mapValues from "lodash/mapValues";
 import pick from "lodash/pick";
 
-import { isMoveNodesAction } from "@/actions/node-move";
+import { isMoveSelectionAction } from "@/actions/selection-move";
+import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 
 import { createFieldReducer } from "../utils";
 
-export default createFieldReducer((state, action) => {
-  if (!isMoveNodesAction(action)) {
+export default createFieldReducer((state, action, appState) => {
+  if (!isMoveSelectionAction(action)) {
     return state;
   }
-  const { nodeIds, offsetX, offsetY } = action.payload;
-  if (nodeIds.length === 0) {
-    return state;
-  }
+
+  const nodeIds = selectedNodeIdsSelector(appState);
+  const { offsetX, offsetY } = action.payload;
 
   const movedPositions = mapValues(
     pick(state.nodePositionsById, nodeIds),

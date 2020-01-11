@@ -7,10 +7,8 @@ import { fpSet } from "@/utils";
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
-import { moveNodes } from "@/actions/node-move";
 import { selectRegion } from "@/actions/select-region";
-
-import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
+import { moveSelection } from "@/actions/selection-move";
 
 import { isDragEndAction } from "../actions/drag-end";
 
@@ -24,8 +22,6 @@ export default function dragEndReducer(
 
   const { x, y, selectionMode } = action.payload;
 
-  const selectedNodeIds = selectedNodeIdsSelector(state);
-
   let circuitField = state.ui.circuitEditor.circuitField;
 
   const { dragMode, dragStart } = circuitField;
@@ -37,12 +33,9 @@ export default function dragEndReducer(
         state = rootReducer(state, selectRegion(rect, selectionMode));
         break;
       }
-      case "move-node": {
+      case "move": {
         const moveBy = pointSubtract({ x, y }, dragStart);
-        state = rootReducer(
-          state,
-          moveNodes(selectedNodeIds, moveBy.x, moveBy.y)
-        );
+        state = rootReducer(state, moveSelection(moveBy.x, moveBy.y));
         break;
       }
     }

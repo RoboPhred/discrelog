@@ -7,20 +7,13 @@ import { nodesByIdSelector } from "@/services/graph/selectors/nodes";
 import { createSelectionSelector } from "../utils";
 import { SelectionState } from "../state";
 
-export const selectedNodeIdsSelector = createSelectionSelector(state => {
-  if (state.selectionType === "nodes") {
-    return state.selectedIds;
-  }
-  return [];
-});
+export const selectedNodeIdsSelector = createSelectionSelector(
+  state => state.selectedNodeIds
+);
 
 export const isNodeSelectedSelector = createSelectionSelector(
-  (s: SelectionState, nodeId: string) => {
-    if (s.selectionType !== "nodes") {
-      return false;
-    }
-    return s.selectedIds.indexOf(nodeId) !== -1;
-  }
+  (s: SelectionState, nodeId: string) =>
+    s.selectedNodeIds.indexOf(nodeId) !== -1
 );
 
 export const selectedNodesByIdSelector = createSelector(
@@ -29,18 +22,11 @@ export const selectedNodesByIdSelector = createSelector(
   (nodesById, selectedNodeIds) => pick(nodesById, selectedNodeIds)
 );
 
-export const selectedWireIdsSelector = createSelectionSelector(state => {
-  if (state.selectionType === "wires") {
-    return state.selectedIds;
-  }
-  return [];
-});
+export const selectedWireIdsSelector = createSelectionSelector(
+  state => state.selectedWireIds
+);
 
 export const isWireSelectedSelector = createSelectionSelector(
-  (s: SelectionState, wireId: string) => {
-    if (s.selectionType !== "wires") {
-      return false;
-    }
-    return s.selectedIds.indexOf(wireId) !== -1;
-  }
+  (s: SelectionState, wireId: string) =>
+    s.selectedWireIds.indexOf(wireId) !== -1
 );

@@ -1,12 +1,9 @@
-import { createSelectionReducer } from "../utils";
 import { isDetatchWireAction } from "@/actions/wire-detatch";
+
+import { createSelectionReducer } from "../utils";
 
 export default createSelectionReducer((state, action) => {
   if (!isDetatchWireAction(action)) {
-    return state;
-  }
-
-  if (state.selectionType !== "wires") {
     return state;
   }
 
@@ -14,6 +11,6 @@ export default createSelectionReducer((state, action) => {
 
   return {
     ...state,
-    selectedIds: state.selectedIds.filter(x => x !== wireId)
+    selectedWireIds: state.selectedWireIds.filter(x => x !== wireId)
   };
 });

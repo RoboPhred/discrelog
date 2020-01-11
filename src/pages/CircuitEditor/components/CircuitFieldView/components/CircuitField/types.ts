@@ -4,4 +4,4 @@ export interface ModifierKeys {
   altKey: boolean;
 }
 
-export type DragModeType = "move-node" | "select";
+export type DragModeType = "move" | "select";

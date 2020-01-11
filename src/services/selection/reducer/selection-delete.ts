@@ -17,24 +17,13 @@ export default function selectionDeleteReducer(
     return state;
   }
 
-  const { selectionType, selectedIds } = state.services.selection;
+  const { selectedNodeIds, selectedWireIds } = state.services.selection;
 
-  if (selectedIds.length === 0) {
-    return state;
-  }
-
-  switch (selectionType) {
-    case "nodes": {
-      return rootReducer(state, deleteNode(selectedIds));
-    }
-    case "wires": {
-      // TODO: Make detatchWire take multiple wires
-      return selectedIds.reduce(
-        (state, wireId) => rootReducer(state, detatchWire(wireId)),
-        state
-      );
-    }
-  }
+  state = rootReducer(state, deleteNode(selectedNodeIds));
+  state = selectedWireIds.reduce(
+    (state, wireId) => rootReducer(state, detatchWire(wireId)),
+    state
+  );
 
   return state;
 }

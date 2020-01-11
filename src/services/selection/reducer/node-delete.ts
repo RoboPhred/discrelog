@@ -9,14 +9,11 @@ export default createSelectionReducer((state, action) => {
     return state;
   }
 
-  if (state.selectionType !== "nodes") {
-    return state;
-  }
-
   const { nodeIds } = action.payload;
 
   return {
     ...state,
-    selectedIds: difference(state.selectedIds, nodeIds)
+    selectedNodeIds: difference(state.selectedNodeIds, nodeIds),
+    selectedWireIds: [] // Might be removing a node attached to a selected wire
   };
 });

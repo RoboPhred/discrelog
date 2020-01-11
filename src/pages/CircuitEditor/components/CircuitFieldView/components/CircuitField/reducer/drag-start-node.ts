@@ -24,7 +24,7 @@ export default function dragNodesStartReducer(
   let fieldState = state.ui.circuitEditor.circuitField;
   fieldState = {
     ...fieldState,
-    dragMode: "move-node",
+    dragMode: "move",
     dragStart: {
       x,
       y

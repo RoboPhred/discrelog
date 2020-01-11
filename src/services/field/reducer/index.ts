@@ -3,7 +3,7 @@ import { reduceReducers } from "@/store/utils";
 import fileNewReducer from "./file-new";
 import nodeAddReducer from "./node-add";
 import nodeDeleteReducer from "./node-delete";
-import nodeMoveReducer from "./node-move";
+import nodeMoveReducer from "./selection-move";
 import wireAttachReducer from "./wire-attach";
 import wireDetatchReducer from "./wire-detatch";
 import wireJointAddReducer from "./wire-joint-add";
