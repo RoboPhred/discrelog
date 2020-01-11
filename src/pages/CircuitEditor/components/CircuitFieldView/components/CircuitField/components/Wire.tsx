@@ -45,6 +45,10 @@ const Wire: React.FC<WireProps> = ({ wireId }) => {
 
   const jointDraggingRef = React.useRef<number | null>(null);
 
+  const onClick = React.useCallback(() => {
+    dispatch(selectWires(wireId));
+  }, [wireId]);
+
   const onInsertJointDragStart = React.useCallback(
     (e: MouseEvent) => {
       const jointIndex = jointDraggingRef.current;
@@ -76,6 +80,7 @@ const Wire: React.FC<WireProps> = ({ wireId }) => {
   }, []);
 
   const { startTracking: startInsertJointTracking } = useMouseTracking({
+    onClick,
     onDragStart: onInsertJointDragStart,
     onDragMove: onJointDragMove,
     onDragEnd: onJointDragEnd
@@ -94,6 +99,7 @@ const Wire: React.FC<WireProps> = ({ wireId }) => {
   );
 
   const { startTracking: startMoveJointTracking } = useMouseTracking({
+    onClick,
     onDragMove: onJointDragMove,
     onDragEnd: onJointDragEnd
   });
@@ -126,7 +132,6 @@ const Wire: React.FC<WireProps> = ({ wireId }) => {
     return (
       <WireSegment
         key={index}
-        wireId={wireId}
         start={segStart}
         end={segEnd}
         jointIndex={index}
@@ -155,7 +160,6 @@ const Wire: React.FC<WireProps> = ({ wireId }) => {
 };
 
 interface WireSegmentProps {
-  wireId: string;
   start: Point;
   end: Point;
   color: string;
@@ -163,15 +167,12 @@ interface WireSegmentProps {
   onInsertJointMouseDown(jointIndex: number, e: React.MouseEvent): void;
 }
 const WireSegment: React.FC<WireSegmentProps> = ({
-  wireId,
   start,
   end,
   color,
   jointIndex,
   onInsertJointMouseDown
 }) => {
-  const dispatch = useDispatch();
-
   const getMouseCoords = useEventMouseCoords();
 
   const [mousePos, setMousePos] = React.useState<Point | null>(null);
@@ -187,10 +188,6 @@ const WireSegment: React.FC<WireSegmentProps> = ({
   const onMouseLeave = React.useCallback(() => {
     setMousePos(null);
   }, []);
-
-  const onClick = React.useCallback(() => {
-    dispatch(selectWires(wireId));
-  }, [wireId]);
 
   let insertJointPos: Point | undefined;
   if (mousePos) {
@@ -210,7 +207,6 @@ const WireSegment: React.FC<WireSegmentProps> = ({
   return (
     <g onMouseMove={onMouseMove} onMouseLeave={onMouseLeave}>
       <line
-        onClick={onClick}
         x1={start.x}
         y1={start.y}
         x2={end.x}
