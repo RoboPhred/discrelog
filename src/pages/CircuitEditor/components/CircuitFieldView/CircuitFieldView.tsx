@@ -46,7 +46,7 @@ const CircuitFieldView: React.FC<CircuitFieldViewProps> = ({ className }) => {
       [KEYMAP_NODE_DELETE]: () => dispatch(selectionDelete())
     };
     return keyHandlers;
-  }, [dispatch]);
+  }, []);
 
   const onWheel = React.useCallback((e: WheelEvent) => {
     if (e.defaultPrevented) {
@@ -74,15 +74,15 @@ const CircuitFieldView: React.FC<CircuitFieldViewProps> = ({ className }) => {
         className,
         styles["circuit-field-view"]
       )}
-      style={{ position: "relative", width: "1024px", height: "768px" }}
       ref={viewRef}
     >
       <div
-        className="zoom-container"
+        className={cls(
+          "zoom-container",
+          styles["circuit-field-zoom-container"]
+        )}
         style={{
-          position: "absolute",
-          transform: `scale(${scale})`,
-          transformOrigin: "0 0"
+          transform: `scale(${scale})`
         }}
       >
         <HotKeys keyMap={keymap} handlers={keyHandlers}>

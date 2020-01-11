@@ -5,12 +5,9 @@
 }
 
 .editor-fieldcontainer {
-  /* FIXME: Get rid of this and use margins on the thing inside the container */
   flex-grow: 1;
-  min-height: 0;
-  max-height: 100%;
-  min-width: 0;
-  max-width: 100%;
+  width: 100%;
+  height: 100%;
   box-sizing: border-box;
   padding: 15px;
   align-self: center;
