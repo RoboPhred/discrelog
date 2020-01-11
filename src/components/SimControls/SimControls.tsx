@@ -2,24 +2,43 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 
 import { startSim } from "@/actions/sim-start";
+import { stopSim } from "@/actions/sim-stop";
+import { isRunningSelector } from "@/services/simulator/selectors/run";
+
+import useSelector from "@/hooks/useSelector";
+
+import PlayIcon from "../Icons/Play";
 
 import styles from "./SimControls.module.css";
+import StopIcon from "../Icons/Stop";
 
 const PlayPauseButton: React.FC = () => {
   const dispatch = useDispatch();
+  const isRunning = useSelector(isRunningSelector);
+
   const onPlayClick = React.useCallback(() => {
     dispatch(startSim());
   }, []);
 
+  const onStopClick = React.useCallback(() => {
+    dispatch(stopSim());
+  }, []);
+
   return (
-    <svg
-      className={styles["simctrls-buttom-play"]}
-      width={16}
-      height={16}
-      onClick={onPlayClick}
-    >
-      <path d="M0,0 L10,8 L0,16 z" />
-    </svg>
+    <span>
+      {isRunning && (
+        <StopIcon
+          className={styles["simctrls-button-stop"]}
+          onClick={onStopClick}
+        />
+      )}
+      {!isRunning && (
+        <PlayIcon
+          className={styles["simctrls-buttom-play"]}
+          onClick={onPlayClick}
+        />
+      )}
+    </span>
   );
 };
 

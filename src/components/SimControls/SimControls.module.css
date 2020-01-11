@@ -2,3 +2,16 @@
   fill: darkgreen;
   cursor: pointer;
 }
+
+.simctrls-buttom-play:hover {
+  fill: greenyellow;
+}
+
+.simctrls-button-stop {
+  fill: darkred;
+  cursor: pointer;
+}
+
+.simctrls-button-stop:hover {
+  fill: red;
+}
