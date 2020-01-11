@@ -54,7 +54,7 @@ const CircuitFieldView: React.FC<CircuitFieldViewProps> = ({ className }) => {
     }
 
     if (e.ctrlKey) {
-      dispatch(viewZoom(e.deltaY > 0 ? 1 : -1));
+      dispatch(viewZoom(e.deltaY > 0 ? -1 : 1));
       e.preventDefault();
       e.stopPropagation();
     }
