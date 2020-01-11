@@ -31,6 +31,7 @@ const toggleSwitchNodeDefinition: NodeDefinition = {
   },
   evolve(state = defaultToggleState, inputs, tick) {
     return {
+      state,
       transitions: {
         OUT: {
           tickOffset: 1,

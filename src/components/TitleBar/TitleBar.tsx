@@ -4,6 +4,7 @@ import { useAction } from "@/hooks/useAction";
 import { newFile } from "@/actions/file-new";
 
 import MenuItem from "../MenuItem";
+import SimControls from "../SimControls";
 
 import styles from "./TitleBar.module.css";
 
@@ -16,6 +17,9 @@ const TitleBar: React.FC = () => {
       <MenuItem title="File" childPlacement="bottom-start">
         <MenuItem title="New" onClick={onFileNew} />
       </MenuItem>
+      <div className={styles["titlebar-buttons"]}>
+        <SimControls />
+      </div>
     </div>
   );
 };

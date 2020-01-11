@@ -6,6 +6,7 @@ import nodeDeleteReducer from "./node-delete";
 import nodeInteractReducer from "./node-interact";
 import simEvolveReducer from "./sim-evolve";
 import simFastforwardReducer from "./sim-fastforward";
+import simStartReducer from "./sim-start";
 import wireAttachReducer from "./wire-attach";
 import wireDetatchReducer from "./wire-detatch";
 
@@ -16,6 +17,7 @@ const simulatorReducer = reduceReducers(
   nodeInteractReducer,
   simEvolveReducer,
   simFastforwardReducer,
+  simStartReducer,
   wireAttachReducer,
   wireDetatchReducer
 );

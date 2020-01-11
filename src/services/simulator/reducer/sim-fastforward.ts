@@ -3,7 +3,7 @@ import { AnyAction } from "redux";
 import { AppState, defaultAppState } from "@/store";
 
 import { isFastForwardSimAction } from "@/actions/sim-fastforward";
-import { evolveSim } from "@/actions/sim-evolve";
+import { tickSim } from "@/actions/sim-tick";
 
 import evolveSimReducer from "./sim-evolve";
 
@@ -22,5 +22,5 @@ export default function simFastForwardReducer(
   }
 
   const nextWindowTick = transitionWindows[0].tick - tick;
-  return evolveSimReducer(state, evolveSim(nextWindowTick));
+  return evolveSimReducer(state, tickSim(nextWindowTick));
 }

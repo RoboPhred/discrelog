@@ -2,17 +2,17 @@ import pick from "lodash/pick";
 import difference from "lodash/difference";
 
 import { AppState } from "@/store";
-import { isEvolveSimAction } from "@/actions/sim-evolve";
+import { isTickSimAction } from "@/actions/sim-tick";
 import { nodeOutputConnectionsSelector } from "@/services/graph/selectors/connections";
 
 import { SimulatorState } from "../state";
 import { SimTransitionWindow } from "../types";
 
-import { collectNodeTransitions } from "./transition-utils";
+import { collectNodeTransitions } from "./utils";
 import { createSimulatorReducer } from "../utils";
 
 export default createSimulatorReducer((state, action, appState) => {
-  if (!isEvolveSimAction(action)) {
+  if (!isTickSimAction(action)) {
     return state;
   }
 

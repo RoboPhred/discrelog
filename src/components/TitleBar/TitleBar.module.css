@@ -8,6 +8,10 @@
   background-color: #f8f9fa;
 }
 
+.titlebar-buttons {
+  margin-left: auto;
+}
+
 .titlebar-brand {
   margin-right: 15px;
   font-size: 1.2rem;

@@ -9,7 +9,7 @@ import useSelector from "@/hooks/useSelector";
 import { viewScaleSelector } from "@/services/view/selectors/view";
 
 import { viewZoom } from "@/actions/view-zoom";
-import { evolveSim } from "@/actions/sim-evolve";
+import { tickSim } from "@/actions/sim-tick";
 import { fastForwardSim } from "@/actions/sim-fastforward";
 import { paste } from "@/actions/clipboard-paste";
 import { selectionCopy } from "@/actions/selection-copy";
@@ -39,7 +39,7 @@ const CircuitFieldView: React.FC<CircuitFieldViewProps> = ({ className }) => {
 
   const keyHandlers = React.useMemo(() => {
     let keyHandlers: KeymapHandler = {
-      [KEYMAP_SIM_STEP]: () => dispatch(evolveSim(1)),
+      [KEYMAP_SIM_STEP]: () => dispatch(tickSim(1)),
       [KEYMAP_SIM_FASTFORWARD]: () => dispatch(fastForwardSim()),
       [KEYMAP_NODE_COPY]: () => dispatch(selectionCopy()),
       [KEYMAP_NODE_PASTE]: () => dispatch(paste()),

@@ -1,5 +1,6 @@
 import { createStore, compose, applyMiddleware } from "redux";
 import freeze from "redux-freeze";
+import createSagaMiddleware from "redux-saga";
 
 import { doInit } from "@/actions/init";
 
@@ -9,6 +10,7 @@ import {
   actionsBlacklist
 } from "./devtool-sanitizer";
 
+import saga from "./saga";
 import reducer from "./reducer";
 
 const composeEnhancers =
@@ -20,8 +22,12 @@ const composeEnhancers =
     })) ||
   compose;
 
+const sagaMiddleware = createSagaMiddleware();
+
 export const store = createStore(
   reducer,
-  composeEnhancers(applyMiddleware(freeze))
+  composeEnhancers(applyMiddleware(freeze, sagaMiddleware))
 );
+
+sagaMiddleware.run(saga);
 store.dispatch(doInit());

@@ -3,18 +3,84 @@ import uuidV4 from "uuid/v4";
 import find from "lodash/find";
 import findIndex from "lodash/findIndex";
 import pick from "lodash/pick";
+import mapValues from "lodash/mapValues";
 
 import { fpSet } from "@/utils";
 import { IDMap } from "@/types";
 import { AppState } from "@/store";
 
+import { inputsOf, outputsOf } from "@/node-defs/utils";
+
 import { nodeInputConnectionsByPinSelector } from "@/services/graph/selectors/connections";
-import { nodeDefSelector } from "@/services/graph/selectors/nodes";
+import {
+  nodeDefSelector,
+  nodeIdsSelector
+} from "@/services/graph/selectors/nodes";
 import { NodePin } from "@/services/graph/types";
 
 import { SimulatorState } from "../state";
 import { SimTransitionWindow, SimNodePinTransition } from "../types";
 import { nodeOutputPinValue } from "../selectors/nodes";
+
+export function simInit(
+  state: SimulatorState,
+  appState: AppState
+): SimulatorState {
+  // Switching away from edit mode, initialize the simulator.
+  const nodeIds = nodeIdsSelector(appState);
+
+  state = nodeIds.reduce(
+    (state, nodeId) => initNode(state, nodeId, appState),
+    state
+  );
+
+  state = {
+    ...state,
+    tick: 0,
+    transitionWindows: [],
+    transitionsById: {}
+  };
+
+  return state;
+}
+
+function initNode(
+  state: SimulatorState,
+  nodeId: string,
+  appState: AppState
+): SimulatorState {
+  const def = nodeDefSelector(appState, nodeId);
+  if (!def) {
+    return state;
+  }
+
+  const inputs = inputsOf(def);
+  const outputs = outputsOf(def);
+
+  const { state: nodeState = null, transitions = null } = def.evolve
+    ? def.evolve(
+        undefined,
+        mapValues(inputs, () => false),
+        state.tick
+      )
+    : {};
+
+  const outputValues = transitions
+    ? mapValues(transitions, x => x.value)
+    : mapValues(outputs, () => false);
+
+  return {
+    ...state,
+    nodeStatesByNodeId: {
+      ...state.nodeStatesByNodeId,
+      [nodeId]: nodeState
+    },
+    nodeOutputValuesByNodeId: {
+      ...state.nodeOutputValuesByNodeId,
+      [nodeId]: outputValues
+    }
+  };
+}
 
 export function collectNodeTransitions(
   state: SimulatorState,

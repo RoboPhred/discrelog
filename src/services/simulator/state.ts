@@ -4,6 +4,21 @@ import { SimNodePinTransition, SimTransitionWindow } from "./types";
 
 export interface SimulatorState {
   /**
+   * The overall application mode.
+   * Might not belong in simulator state?
+   *
+   * - edit: User is editing, no simulator is running
+   * - step: Sim is paused and only ticks on user command
+   * - run: Sim is actively running and ticking forwards on its own.
+   */
+  mode: "edit" | "step" | "run";
+
+  /**
+   * Tick speed in ticks per second when running.
+   */
+  ticksPerSecond: number;
+
+  /**
    * The current tick the simulator is on.
    */
   tick: number;
@@ -30,6 +45,8 @@ export interface SimulatorState {
 }
 
 const _defaultState: SimulatorState = {
+  mode: "edit",
+  ticksPerSecond: 15,
   tick: 0,
   nodeStatesByNodeId: {},
   nodeOutputValuesByNodeId: {},
