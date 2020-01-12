@@ -1,5 +1,5 @@
 import * as React from "react";
-import { connect, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import {
   pointAdd,

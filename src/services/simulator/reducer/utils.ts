@@ -18,7 +18,7 @@ import {
 } from "@/services/graph/selectors/nodes";
 import { NodePin } from "@/services/graph/types";
 
-import { SimulatorState } from "../state";
+import { SimulatorState, defaultSimulatorState } from "../state";
 import { SimTransitionWindow, SimNodePinTransition } from "../types";
 import { nodeOutputPinValue } from "../selectors/nodes";
 
@@ -29,17 +29,20 @@ export function simInit(
   // Switching away from edit mode, initialize the simulator.
   const nodeIds = nodeIdsSelector(appState);
 
+  state = {
+    ...defaultSimulatorState,
+    ticksPerSecond: state.ticksPerSecond
+  };
+
   state = nodeIds.reduce(
     (state, nodeId) => initNode(state, nodeId, appState),
     state
   );
 
-  state = {
-    ...state,
-    tick: 0,
-    transitionWindows: [],
-    transitionsById: {}
-  };
+  state = nodeIds.reduce(
+    (state, nodeId) => collectNodeTransitions(state, nodeId, appState),
+    state
+  );
 
   return state;
 }

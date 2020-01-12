@@ -10,8 +10,11 @@ import { createGraphSelector } from "../utils";
 
 import { nodeDefSelector } from "./nodes";
 
-export const wireIdsSelector = createGraphSelector(s =>
-  Object.keys(s.wiresById)
+export const wireIdsSelector = createGraphSelector(
+  createSelector(
+    s => s.wiresById,
+    wiresById => Object.keys(wiresById)
+  )
 );
 
 export const wireByIdSelector = createGraphSelector(

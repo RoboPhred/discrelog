@@ -20,10 +20,10 @@ import keymap, {
   KeymapHandler,
   KEYMAP_SIM_STEP,
   KEYMAP_SIM_FASTFORWARD,
-  KEYMAP_NODE_COPY,
-  KEYMAP_NODE_PASTE,
-  KEYMAP_NODE_DELETE,
-  KEYMAP_SELECTION_SELECT_ALL
+  KEYMAP_COPY,
+  KEYMAP_PASTE,
+  KEYMAP_DELETE,
+  KEYMAP_SELECT_ALL
 } from "./keymap";
 
 import CircuitField from "./components/CircuitField";
@@ -55,10 +55,10 @@ const CircuitFieldView: React.FC<CircuitFieldViewProps> = ({ className }) => {
     let keyHandlers: KeymapHandler = {
       [KEYMAP_SIM_STEP]: createEventDispatcher(tickSim(1)),
       [KEYMAP_SIM_FASTFORWARD]: createEventDispatcher(fastForwardSim()),
-      [KEYMAP_SELECTION_SELECT_ALL]: createEventDispatcher(selectAll()),
-      [KEYMAP_NODE_COPY]: createEventDispatcher(selectionCopy()),
-      [KEYMAP_NODE_PASTE]: createEventDispatcher(paste()),
-      [KEYMAP_NODE_DELETE]: createEventDispatcher(selectionDelete())
+      [KEYMAP_SELECT_ALL]: createEventDispatcher(selectAll()),
+      [KEYMAP_COPY]: createEventDispatcher(selectionCopy()),
+      [KEYMAP_PASTE]: createEventDispatcher(paste()),
+      [KEYMAP_DELETE]: createEventDispatcher(selectionDelete())
     };
     return keyHandlers;
   }, []);

@@ -46,7 +46,7 @@ export interface SimulatorState {
 
 const _defaultState: SimulatorState = {
   mode: "edit",
-  ticksPerSecond: 15,
+  ticksPerSecond: 10,
   tick: 0,
   nodeStatesByNodeId: {},
   nodeOutputValuesByNodeId: {},

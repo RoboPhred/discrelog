@@ -43,9 +43,9 @@ const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
       >
         <FieldSvgElementProvider value={svgRef}>
           <DragSelectLayer />
-          <DragPreviewLayer />
-          <WiresLayer />
           <NodesLayer />
+          <WiresLayer />
+          <DragPreviewLayer />
         </FieldSvgElementProvider>
       </svg>
     </div>

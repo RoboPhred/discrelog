@@ -2,18 +2,18 @@ import { keyboardCommandModifier } from "@/runtime-env";
 
 export const KEYMAP_SIM_STEP = "keymap:CircuitEditor/SimStep" as const;
 export const KEYMAP_SIM_FASTFORWARD = "keymap:CircuitEditor/SimFastForward" as const;
-export const KEYMAP_SELECTION_SELECT_ALL = "keymap:CircuitEditor/SelectAll" as const;
-export const KEYMAP_NODE_COPY = "keymap:CircuitEditor/Copy" as const;
-export const KEYMAP_NODE_PASTE = "keymap:CircuitEditor/Paste" as const;
-export const KEYMAP_NODE_DELETE = "keymap:CircuitEditor/Delete" as const;
+export const KEYMAP_SELECT_ALL = "keymap:CircuitEditor/SelectAll" as const;
+export const KEYMAP_COPY = "keymap:CircuitEditor/Copy" as const;
+export const KEYMAP_PASTE = "keymap:CircuitEditor/Paste" as const;
+export const KEYMAP_DELETE = "keymap:CircuitEditor/Delete" as const;
 
 const keymap = {
   [KEYMAP_SIM_STEP]: "space",
   [KEYMAP_SIM_FASTFORWARD]: "shift+space",
-  [KEYMAP_SELECTION_SELECT_ALL]: `${keyboardCommandModifier}+a`,
-  [KEYMAP_NODE_COPY]: `${keyboardCommandModifier}+c`,
-  [KEYMAP_NODE_PASTE]: `${keyboardCommandModifier}+v`,
-  [KEYMAP_NODE_DELETE]: ["backspace", "del"]
+  [KEYMAP_SELECT_ALL]: `${keyboardCommandModifier}+a`,
+  [KEYMAP_COPY]: `${keyboardCommandModifier}+c`,
+  [KEYMAP_PASTE]: `${keyboardCommandModifier}+v`,
+  [KEYMAP_DELETE]: ["backspace", "del"]
 };
 export default keymap;
 
