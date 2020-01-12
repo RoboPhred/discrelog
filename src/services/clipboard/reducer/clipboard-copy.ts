@@ -9,7 +9,7 @@ import { pointSubtract } from "@/geometry";
 import { isCopyNodesAction } from "@/actions/clipboard-copy";
 
 import { nodeSelector } from "@/services/graph/selectors/nodes";
-import { nodeOutputConnectionsByPinSelector } from "@/services/graph/selectors/connections";
+import { nodeOutputConnectionsByPinSelector } from "@/services/graph/selectors/wires";
 import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
 
 import { ClipboardNode } from "../types";
@@ -57,6 +57,6 @@ export default createClipboardReducer((state, action, appState) => {
   return {
     ...state,
     clipboardNodes: copyNodes,
-    clipboardOrigin: rootPosition
+    clipboardPasteOrigin: rootPosition
   };
 });

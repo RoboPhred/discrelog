@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { connect } from "react-redux";
 
-import { wireIdsSelector } from "@/services/graph/selectors/connections";
+import { wireIdsSelector } from "@/services/graph/selectors/wires";
 import useSelector from "@/hooks/useSelector";
 
 import Wire from "./Wire";

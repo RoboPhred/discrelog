@@ -3,7 +3,7 @@ import difference from "lodash/difference";
 
 import { AppState } from "@/store";
 import { isTickSimAction } from "@/actions/sim-tick";
-import { nodeOutputConnectionsSelector } from "@/services/graph/selectors/connections";
+import { nodeOutputConnectionsSelector } from "@/services/graph/selectors/wires";
 
 import { SimulatorState } from "../state";
 import { SimTransitionWindow } from "../types";

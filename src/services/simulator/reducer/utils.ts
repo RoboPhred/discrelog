@@ -11,7 +11,7 @@ import { AppState } from "@/store";
 
 import { inputsOf, outputsOf } from "@/node-defs/utils";
 
-import { nodeInputConnectionsByPinSelector } from "@/services/graph/selectors/connections";
+import { nodeInputConnectionsByPinSelector } from "@/services/graph/selectors/wires";
 import {
   nodeDefSelector,
   nodeIdsSelector

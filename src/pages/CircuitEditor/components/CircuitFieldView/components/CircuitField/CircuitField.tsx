@@ -16,9 +16,7 @@ import NodesLayer from "./components/NodesLayer";
 
 import styles from "./CircuitField.module.css";
 
-export interface CircuitFieldProps {}
-
-const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
+const CircuitField: React.FC = () => {
   const width = useSelector(fieldWidthSelector);
   const height = useSelector(fieldHeightSelector);
   const svgRef = React.useRef<SVGSVGElement>(null);
@@ -32,7 +30,10 @@ const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
     //  Wrapping it in a div of the same size fixes it.
     <div
       className={cls("circuit-field", styles["circuit-editor"])}
-      style={{ width: `${width}px`, height: `${height}px` }}
+      style={{
+        width: `${width}px`,
+        height: `${height}px`
+      }}
     >
       <svg
         tabIndex={-1}
@@ -43,8 +44,8 @@ const CircuitField: React.FC<CircuitFieldProps> = ({}) => {
       >
         <FieldSvgElementProvider value={svgRef}>
           <DragSelectLayer />
-          <NodesLayer />
           <WiresLayer />
+          <NodesLayer />
           <DragPreviewLayer />
         </FieldSvgElementProvider>
       </svg>
