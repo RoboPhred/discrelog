@@ -1,73 +1,91 @@
-import createCachedSelector from "re-reselect";
-
 import { AppState } from "@/store";
 import { pointAdd, ZeroPoint } from "@/geometry";
-import { NodeTypes } from "@/node-defs";
+import { NodeDefinition } from "@/node-defs";
+import { Point } from "@/types";
+
+import { nodeDefSelector } from "@/services/graph/selectors/nodes";
 
 import { createFieldSelector } from "../utils";
 import { FieldState } from "../state";
 
-export const wireStartPositionSelector = createCachedSelector(
-  (s: AppState, wireId: string) => s.services.graph.wiresById[wireId],
-  // TODO: We need a cached selector based on the node id from the previous selector.
-  (s: AppState) => s.services.field.nodePositionsById,
-  // TODO: We need another selector based off the data from wiresById (the previous selector)
-  (s: AppState) => s.services.graph.nodesById,
-  (wire, nodePositionsById, nodesById) => {
-    const {
-      outputPin: { nodeId, pinId }
-    } = wire;
-    // TODO: Use nodeDefSelector somehow...
-    const node = nodesById[nodeId];
-    if (!node) {
-      return ZeroPoint;
-    }
-    const nodeDef = NodeTypes[node.type];
-    if (!nodeDef) {
-      return ZeroPoint;
-    }
+import { nodePositionSelector } from "./positions";
 
-    let offset = ZeroPoint;
-    if (nodeDef && nodeDef.pins[pinId]) {
-      offset = nodeDef.pins[pinId];
-    }
+interface PositionCache {
+  inputNodeDef: NodeDefinition | null;
+  inputNodePosition: Point;
+  outputPosition: Point;
+}
 
-    const nodePosition = nodePositionsById[nodeId] || ZeroPoint;
+// TODO: These build up forever, need to wipe it on occasion.
+// Probably should use LRU cache.
+// Not fixing it right now as we previously used re-reselect, which
+//  also builds up forever.
+const startPositionCacheByWireId: Record<string, PositionCache> = {};
+const endPositionCacheByWireId: Record<string, PositionCache> = {};
 
-    return pointAdd(nodePosition, offset);
+export const wireStartPositionSelector = (state: AppState, wireId: string) => {
+  const {
+    outputPin: { nodeId, pinId }
+  } = state.services.graph.wiresById[wireId];
+  const nodeDef = nodeDefSelector(state, nodeId);
+  const nodePosition = nodePositionSelector(state, nodeId) || ZeroPoint;
+
+  // Caching is to get a consistent reference to avoid component rerenders.
+  //  We are not concerned about performance here.
+  const cacheData = startPositionCacheByWireId[wireId];
+  if (
+    cacheData &&
+    cacheData.inputNodeDef === nodeDef &&
+    cacheData.inputNodePosition === nodePosition
+  ) {
+    return cacheData.outputPosition;
   }
-)((s: AppState, wireId: string) => wireId);
 
-export const wireEndPositionSelector = createCachedSelector(
-  (s: AppState, wireId: string) => s.services.graph.wiresById[wireId],
-  // TODO: We need a cached selector based on the node id from the previous selector.
-  (s: AppState) => s.services.field.nodePositionsById,
-  // TODO: We need another selector based off the data from wiresById (the previous selector)
-  (s: AppState) => s.services.graph.nodesById,
-  (wire, nodePositionsById, nodesById) => {
-    const {
-      inputPin: { nodeId, pinId }
-    } = wire;
-    // TODO: Use nodeDefSelector somehow...
-    const node = nodesById[nodeId];
-    if (!node) {
-      return ZeroPoint;
-    }
-    const nodeDef = NodeTypes[node.type];
-    if (!nodeDef) {
-      return ZeroPoint;
-    }
-
-    let offset = ZeroPoint;
-    if (nodeDef && nodeDef.pins[pinId]) {
-      offset = nodeDef.pins[pinId];
-    }
-
-    const nodePosition = nodePositionsById[nodeId] || ZeroPoint;
-
-    return pointAdd(nodePosition, offset);
+  let offset = ZeroPoint;
+  if (nodeDef && nodeDef.pins[pinId]) {
+    offset = nodeDef.pins[pinId];
   }
-)((s: AppState, wireId: string) => wireId);
+  const position = pointAdd(nodePosition, offset);
+  startPositionCacheByWireId[wireId] = {
+    inputNodeDef: nodeDef,
+    inputNodePosition: nodePosition,
+    outputPosition: position
+  };
+
+  return position;
+};
+
+export const wireEndPositionSelector = (state: AppState, wireId: string) => {
+  const {
+    inputPin: { nodeId, pinId }
+  } = state.services.graph.wiresById[wireId];
+  const nodeDef = nodeDefSelector(state, nodeId);
+  const nodePosition = nodePositionSelector(state, nodeId) || ZeroPoint;
+
+  // Caching is to get a consistent reference to avoid component rerenders.
+  //  We are not concerned about performance here.
+  const cacheData = endPositionCacheByWireId[wireId];
+  if (
+    cacheData &&
+    cacheData.inputNodeDef === nodeDef &&
+    cacheData.inputNodePosition === nodePosition
+  ) {
+    return cacheData.outputPosition;
+  }
+
+  let offset = ZeroPoint;
+  if (nodeDef && nodeDef.pins[pinId]) {
+    offset = nodeDef.pins[pinId];
+  }
+  const position = pointAdd(nodePosition, offset);
+  endPositionCacheByWireId[wireId] = {
+    inputNodeDef: nodeDef,
+    inputNodePosition: nodePosition,
+    outputPosition: position
+  };
+
+  return position;
+};
 
 export const wireJointsSelector = createFieldSelector(
   (state: FieldState, wireId: string) => state.wireJointsByWireId[wireId]
