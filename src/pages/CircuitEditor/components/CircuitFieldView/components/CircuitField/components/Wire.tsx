@@ -11,8 +11,11 @@ import {
 import { Point } from "@/types";
 
 import useSelector from "@/hooks/useSelector";
+import useMouseTracking from "@/hooks/useMouseTracking";
 
 import { selectWires } from "@/actions/select-wires";
+import { addWireJoint } from "@/actions/wire-joint-add";
+import { moveWireJoint } from "@/actions/wire-joint-move";
 
 import {
   wireStartPositionSelector,
@@ -23,9 +26,6 @@ import { isWireSelectedSelector } from "@/services/selection/selectors/selection
 import { wireValueSelector } from "@/services/simulator/selectors/wires";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
-import useMouseTracking from "@/hooks/useMouseTracking";
-import { addWireJoint } from "@/actions/wire-joint-add";
-import { moveWireJoint } from "@/actions/wire-joint-move";
 
 export interface WireProps {
   wireId: string;
