@@ -28,6 +28,7 @@ Click on pins to select them. While a pin is selected, click on other pins to co
 - Delete Element: `backspace` or `delete`
 - Copy Selected: `ctrl + c` or `command + c`
 - Paste: `ctrl + v` or `command + v`
+- Select All: `ctrl + a`
 - Next tick: `spacebar`
 - Fast forward to next transition: `shift + spacebar`
 
@@ -37,7 +38,7 @@ Circuits are built by connecting component output pins to input pins on a one-to
 
 Connections and pins are represented by a binary state. A connection can be active (true) or inactive (false); there is no way to simulate analog concepts such as pull-low/pull-high, resistors, voltages, or currents.
 
-When an output pin changes, all connected components are updated. The update process involves passing the entire state of its input pins, as well as the component's internal state, and allowed to produce an immediately-applied internal state change and a delay-applied output change. Changes to output pins must occur at least one tick in the future, and it is not possible to schedule more than one transition on the same output pin. This assures that logic signals steadily flow through on ticks, and allows such constructs as vibrators, latches, and flip-flops.
+When an output pin changes, all connected components are updated. The update process involves computing the output pin states given the input pins and the component's internal state. The component will then immediately update its state, and schedule pin changes on a future update. Changes to output pins must occur at least one tick in the future, and it is not possible to schedule more than one transition on the same output pin. This ensures that logic remains predictable even in the case of loops, and allows such constructs as vibrators, latches, and flip-flops.
 
 It is not possible for a component to change its pin on the current tick. This ensures components function consistently and predictably through cyclic connections and regardless of the order in which they update.
 
