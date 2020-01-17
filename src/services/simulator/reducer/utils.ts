@@ -209,7 +209,18 @@ function removeTransitionByPin(
     return state;
   }
 
-  const { id: transitionId } = transition;
+  const { id } = transition;
+  return removeTransitionById(state, id);
+}
+
+export function removeTransitionById(
+  state: Readonly<SimulatorState>,
+  transitionId: string
+): SimulatorState {
+  const transition = state.transitionsById[transitionId];
+  if (!transition) {
+    return state;
+  }
 
   const transitionsById = pick(
     state.transitionsById,

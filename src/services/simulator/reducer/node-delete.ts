@@ -1,63 +1,49 @@
-import { AnyAction } from "redux";
-import produce from "immer";
+import pick from "lodash/pick";
 
-import binarySearch from "binary-search";
-
+import { AppState } from "@/store";
+import { nodeIdsSelector } from "@/services/graph/selectors/nodes";
 import { isDeleteNodeAction } from "@/actions/node-delete";
 
 import { SimulatorState } from "../state";
 
 import { createSimulatorReducer } from "../utils";
+import { removeTransitionById } from "./utils";
 
-export default createSimulatorReducer((state, action) => {
-  return produce(state, draft => deleteNodeMutator(draft, action));
-});
-
-function deleteNodeMutator(state: SimulatorState, action: AnyAction) {
+export default createSimulatorReducer((state, action, appState) => {
   if (!isDeleteNodeAction(action)) {
-    return;
+    return state;
   }
 
   const { nodeIds } = action.payload;
-  nodeIds.forEach(id => deleteNodeById(state, id));
-}
 
-function deleteNodeById(state: SimulatorState, nodeId: string) {
-  const {
-    nodeStatesByNodeId,
-    nodeOutputValuesByNodeId,
-    transitionsById,
-    transitionWindows
-  } = state;
-
-  delete nodeStatesByNodeId[nodeId];
-  delete nodeOutputValuesByNodeId[nodeId];
-
-  const nodeTransitionIds = Object.keys(transitionsById).filter(
-    id => transitionsById[id].nodeId === nodeId
+  return nodeIds.reduce(
+    (state, nodeId) => deleteNodeById(state, nodeId, appState),
+    state
   );
-  for (const transitionId of nodeTransitionIds) {
-    const transition = transitionsById[transitionId];
+});
 
-    // Remove transition
-    delete transitionsById[transitionId];
+function deleteNodeById(
+  state: SimulatorState,
+  nodeId: string,
+  appState: AppState
+): SimulatorState {
+  const removeTransitionIds = Object.keys(state.transitionsById).filter(
+    id => state.transitionsById[id].nodeId === nodeId
+  );
 
-    // Remove transition from windows
-    const index = binarySearch(
-      transitionWindows,
-      transition.tick,
-      (a, b) => a.tick - b
-    );
-    if (index >= 0) {
-      const window = transitionWindows[index];
-      const transitionIndex = window.transitionIds.indexOf(transitionId);
-      if (transitionIndex > -1) {
-        if (window.transitionIds.length === 1) {
-          transitionWindows.splice(index, 1);
-        } else {
-          window.transitionIds.splice(transitionIndex, 1);
-        }
-      }
-    }
-  }
+  state = removeTransitionIds.reduce(
+    (state, transitionId) => removeTransitionById(state, transitionId),
+    state
+  );
+
+  const remainingNodeIds = nodeIdsSelector(appState).filter(x => x !== nodeId);
+
+  return {
+    ...state,
+    nodeStatesByNodeId: pick(state.nodeStatesByNodeId, remainingNodeIds),
+    nodeOutputValuesByNodeId: pick(
+      state.nodeOutputValuesByNodeId,
+      remainingNodeIds
+    )
+  };
 }
