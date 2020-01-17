@@ -90,3 +90,8 @@ export const wireEndPositionSelector = (state: AppState, wireId: string) => {
 export const wireJointsSelector = createFieldSelector(
   (state: FieldState, wireId: string) => state.wireJointsByWireId[wireId]
 );
+
+export const wireJointPositionSelector = createFieldSelector(
+  (state: FieldState, wireId: string, jointIndex: number) =>
+    state.wireJointsByWireId[wireId][jointIndex]
+);
