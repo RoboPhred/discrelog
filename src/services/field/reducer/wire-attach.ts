@@ -10,5 +10,5 @@ export default createFieldReducer((state, action) => {
 
   const { wireId } = action.payload;
 
-  return fpSet(state, "wireJointsByWireId", wireId, []);
+  return fpSet(state, "wireJointIdsByWireId", wireId, []);
 });

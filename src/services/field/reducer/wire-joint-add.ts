@@ -7,20 +7,27 @@ export default createFieldReducer((state, action) => {
     return state;
   }
 
-  const { wireId, jointIndex, position } = action.payload;
+  const { wireId, addAfterJointId, position, jointId } = action.payload;
+  let wireJoints = state.wireJointIdsByWireId[wireId];
+  let insertionIndex = addAfterJointId
+    ? wireJoints.indexOf(addAfterJointId) + 1
+    : 0;
 
-  let wireJoints = state.wireJointsByWireId[wireId];
   wireJoints = [
-    ...wireJoints.slice(0, jointIndex),
-    position,
-    ...wireJoints.slice(jointIndex)
+    ...wireJoints.slice(0, insertionIndex),
+    jointId,
+    ...wireJoints.slice(insertionIndex)
   ];
 
   return {
     ...state,
-    wireJointsByWireId: {
-      ...state.wireJointsByWireId,
+    wireJointIdsByWireId: {
+      ...state.wireJointIdsByWireId,
       [wireId]: wireJoints
+    },
+    wireJointPositionsByJointId: {
+      ...state.wireJointPositionsByJointId,
+      [jointId]: position
     }
   };
 });

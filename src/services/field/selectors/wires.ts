@@ -87,11 +87,11 @@ export const wireEndPositionSelector = (state: AppState, wireId: string) => {
   return position;
 };
 
-export const wireJointsSelector = createFieldSelector(
-  (state: FieldState, wireId: string) => state.wireJointsByWireId[wireId]
+export const wireJointIdsSelector = createFieldSelector(
+  (state: FieldState, wireId: string) => state.wireJointIdsByWireId[wireId]
 );
 
 export const wireJointPositionSelector = createFieldSelector(
-  (state: FieldState, wireId: string, jointIndex: number) =>
-    state.wireJointsByWireId[wireId][jointIndex]
+  (state: FieldState, jointId: string) =>
+    state.wireJointPositionsByJointId[jointId]
 );

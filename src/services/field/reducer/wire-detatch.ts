@@ -10,12 +10,12 @@ export default createFieldReducer((state, action) => {
 
   const { wireId } = action.payload;
 
-  const remainingWireIds = Object.keys(state.wireJointsByWireId).filter(
+  const remainingWireIds = Object.keys(state.wireJointIdsByWireId).filter(
     x => x != wireId
   );
 
   return {
     ...state,
-    wireJointsByWireId: pick(state.wireJointsByWireId, remainingWireIds)
+    wireJointIdsByWireId: pick(state.wireJointIdsByWireId, remainingWireIds)
   };
 });

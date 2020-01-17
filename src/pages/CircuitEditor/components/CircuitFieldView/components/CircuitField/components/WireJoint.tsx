@@ -1,26 +1,43 @@
 import * as React from "react";
+import { useDispatch } from "react-redux";
+
+import { Point } from "@/types";
 
 import useSelector from "@/hooks/useSelector";
+import useMouseTracking from "@/hooks/useMouseTracking";
 
 import { wireJointPositionSelector } from "@/services/field/selectors/wires";
+import { moveWireJoint } from "@/actions/wire-joint-move";
+
+import { useEventMouseCoords } from "../hooks/useMouseCoords";
 
 interface WireJointProps {
-  wireId: string;
-  jointIndex: number;
+  jointId: string;
   color: string;
-  onMouseDown(jointIndex: number, e: React.MouseEvent): void;
+  onClick(e: MouseEvent): void;
 }
 
-const WireJoint: React.FC<WireJointProps> = ({
-  wireId,
-  jointIndex,
-  color,
-  onMouseDown
-}) => {
+const WireJoint: React.FC<WireJointProps> = ({ jointId, color, onClick }) => {
+  const getMouseCoords = useEventMouseCoords();
+  const dispatch = useDispatch();
+
   const position = useSelector(state =>
-    wireJointPositionSelector(state, wireId, jointIndex)
+    wireJointPositionSelector(state, jointId)
   );
   const [mouseOver, setMouseOver] = React.useState(false);
+
+  const onJointDragMove = React.useCallback(
+    (offset: Point, e: MouseEvent) => {
+      const p = getMouseCoords(e);
+      dispatch(moveWireJoint(jointId, p));
+    },
+    [getMouseCoords]
+  );
+
+  const { startTracking: startMoveJointTracking } = useMouseTracking({
+    onClick,
+    onDragMove: onJointDragMove
+  });
 
   const onMouseOver = React.useCallback(() => {
     setMouseOver(true);
@@ -31,9 +48,9 @@ const WireJoint: React.FC<WireJointProps> = ({
 
   const mouseDown = React.useCallback(
     (e: React.MouseEvent) => {
-      onMouseDown(jointIndex, e);
+      startMoveJointTracking(e);
     },
-    [jointIndex, onMouseDown]
+    [startMoveJointTracking]
   );
 
   return (

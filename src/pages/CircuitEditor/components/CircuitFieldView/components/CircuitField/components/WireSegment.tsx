@@ -1,4 +1,6 @@
 import * as React from "react";
+import uuidV4 from "uuid/v4";
+import { useDispatch } from "react-redux";
 
 import { Point } from "@/types";
 import {
@@ -10,6 +12,10 @@ import {
 } from "@/geometry";
 
 import useSelector from "@/hooks/useSelector";
+import useMouseTracking from "@/hooks/useMouseTracking";
+
+import { addWireJoint } from "@/actions/wire-joint-add";
+import { moveWireJoint } from "@/actions/wire-joint-move";
 
 import {
   wireJointPositionSelector,
@@ -21,35 +27,37 @@ import { useEventMouseCoords } from "../hooks/useMouseCoords";
 
 export interface WireSegmentProps {
   wireId: string;
-  startJointIndex: number | null;
-  endJointIndex: number | null;
+  startJointId: string | null;
+  endJointId: string | null;
   color: string;
-  onJointInsertMouseDown(jointIndex: number | null, e: React.MouseEvent): void;
+  onClick(e: MouseEvent): void;
 }
 const WireSegment: React.FC<WireSegmentProps> = ({
   wireId,
-  startJointIndex,
-  endJointIndex,
+  startJointId,
+  endJointId,
   color,
-  onJointInsertMouseDown
+  onClick
 }) => {
+  const dispatch = useDispatch();
   const getMouseCoords = useEventMouseCoords();
 
   const start = useSelector(state => {
-    if (startJointIndex == null) {
+    if (startJointId == null) {
       return wireStartPositionSelector(state, wireId);
     }
-    return wireJointPositionSelector(state, wireId, startJointIndex);
+    return wireJointPositionSelector(state, startJointId);
   });
 
   const end = useSelector(state => {
-    if (endJointIndex == null) {
+    if (endJointId == null) {
       return wireEndPositionSelector(state, wireId);
     }
-    return wireJointPositionSelector(state, wireId, endJointIndex);
+    return wireJointPositionSelector(state, endJointId);
   });
 
   const [mousePos, setMousePos] = React.useState<Point | null>(null);
+  const addedJointRef = React.useRef<string | null>(null);
 
   const onMouseMove = React.useCallback(
     (e: React.MouseEvent) => {
@@ -63,12 +71,37 @@ const WireSegment: React.FC<WireSegmentProps> = ({
     setMousePos(null);
   }, []);
 
-  const onJointInsertCircleMouseDown = React.useCallback(
-    (e: React.MouseEvent) => {
-      onJointInsertMouseDown(endJointIndex, e);
+  const onDragStart = React.useCallback(
+    (e: MouseEvent) => {
+      const p = getMouseCoords(e);
+      const jointId = uuidV4();
+      addedJointRef.current = jointId;
+      dispatch(addWireJoint(wireId, startJointId, p, jointId));
     },
-    [endJointIndex, onJointInsertMouseDown]
+    [getMouseCoords]
   );
+
+  const onDragMove = React.useCallback(
+    (offset: Point, e: MouseEvent) => {
+      const jointId = addedJointRef.current;
+      if (!jointId) {
+        return;
+      }
+      const p = getMouseCoords(e);
+      dispatch(moveWireJoint(jointId, p));
+    },
+    [getMouseCoords]
+  );
+
+  const { startTracking } = useMouseTracking({
+    onClick,
+    onDragStart,
+    onDragMove
+  });
+
+  const onJointInsertMouseDown = React.useCallback((e: React.MouseEvent) => {
+    startTracking(e);
+  }, []);
 
   let insertJointPos: Point | undefined;
   if (mousePos) {
@@ -94,7 +127,7 @@ const WireSegment: React.FC<WireSegmentProps> = ({
           cy={insertJointPos.y}
           r={3}
           fill="red"
-          onMouseDown={onJointInsertCircleMouseDown}
+          onMouseDown={onJointInsertMouseDown}
         />
       )}
     </g>

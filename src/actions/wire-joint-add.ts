@@ -1,16 +1,19 @@
 import { AnyAction } from "redux";
+import uuidV4 from "uuid/v4";
 import { Point } from "@/types";
 
 export const ACTION_WIRE_JOINT_ADD = "@wire/joint/add" as const;
 export const addWireJoint = (
   wireId: string,
-  jointIndex: number,
-  position: Point
+  addAfterJointId: string | null,
+  position: Point,
+  jointId?: string
 ) => ({
   type: ACTION_WIRE_JOINT_ADD,
   payload: {
     wireId,
-    jointIndex,
+    jointId: jointId || uuidV4(),
+    addAfterJointId,
     position
   }
 });
