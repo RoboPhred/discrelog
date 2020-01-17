@@ -30,3 +30,12 @@ export const isWireSelectedSelector = createSelectionSelector(
   (s: SelectionState, wireId: string) =>
     s.selectedWireIds.indexOf(wireId) !== -1
 );
+
+export const selectedJointIdsSelector = createSelectionSelector(
+  state => state.selectedJointIds
+);
+
+export const isJointSelectedSelector = createSelectionSelector(
+  (s: SelectionState, jointId: string) =>
+    s.selectedJointIds.indexOf(jointId) !== -1
+);

@@ -4,6 +4,7 @@ import fileNewReducer from "./file-new";
 import nodeDeleteReducer from "./node-delete";
 import selectAllReducer from "./select-all";
 import selectClearReducer from "./select-clear";
+import selectJointsReducer from "./select-joints";
 import selectNodesReducer from "./select-nodes";
 import selectRegionReducer from "./select-region";
 import selectWiresReducer from "./select-wires";
@@ -16,6 +17,7 @@ const selectionReducer = reduceReducers(
   nodeDeleteReducer,
   selectAllReducer,
   selectClearReducer,
+  selectJointsReducer,
   selectNodesReducer,
   selectRegionReducer,
   selectWiresReducer,

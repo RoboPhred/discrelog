@@ -7,6 +7,7 @@ import nodeMoveReducer from "./selection-move";
 import wireAttachReducer from "./wire-attach";
 import wireDetatchReducer from "./wire-detatch";
 import wireJointAddReducer from "./wire-joint-add";
+import wireJointDeleteReducer from "./wire-joint-delete";
 import wireJointMoveReducer from "./wire-joint-move";
 
 const fieldReducer = reduceReducers(
@@ -17,6 +18,7 @@ const fieldReducer = reduceReducers(
   wireAttachReducer,
   wireDetatchReducer,
   wireJointAddReducer,
+  wireJointDeleteReducer,
   wireJointMoveReducer
 );
 

@@ -2,6 +2,7 @@ import { isSelectAllAction } from "@/actions/select-all";
 
 import { nodeIdsSelector } from "@/services/graph/selectors/nodes";
 import { wireIdsSelector } from "@/services/graph/selectors/wires";
+import { allJointIdsSelector } from "@/services/field/selectors/wires";
 
 import { createSelectionReducer } from "../utils";
 
@@ -12,10 +13,12 @@ export default createSelectionReducer((state, action, appState) => {
 
   const nodeIds = nodeIdsSelector(appState);
   const wireIds = wireIdsSelector(appState);
+  const jointIds = allJointIdsSelector(appState);
 
   return {
     ...state,
     selectedNodeIds: nodeIds,
-    selectedWireIds: wireIds
+    selectedWireIds: wireIds,
+    selectedJointIds: jointIds
   };
 });

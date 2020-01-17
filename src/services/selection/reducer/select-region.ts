@@ -16,16 +16,23 @@ export default createSelectionReducer((state, action, appState) => {
   const { region, mode } = action.payload;
 
   const rects = nodeRectsByIdSelector(appState);
-  const chosenIds: string[] = [];
+  const chosenNodeIds: string[] = [];
   forOwn(rects, (rect, id) => {
     if (intersects(rect, region)) {
-      chosenIds.push(id);
+      chosenNodeIds.push(id);
     }
   });
 
+  // TODO: Region select joints
+
   return {
     ...state,
-    selectedNodeIds: combineSelection(state.selectedNodeIds, chosenIds, mode),
-    selectedWireIds: []
+    selectedNodeIds: combineSelection(
+      state.selectedNodeIds,
+      chosenNodeIds,
+      mode
+    ),
+    selectedWireIds: mode === "set" ? [] : state.selectedWireIds,
+    selectedJointIds: mode === "set" ? [] : state.selectedJointIds
   };
 });

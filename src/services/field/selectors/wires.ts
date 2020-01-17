@@ -9,6 +9,7 @@ import { createFieldSelector } from "../utils";
 import { FieldState } from "../state";
 
 import { nodePositionSelector } from "./positions";
+import { FieldSvgElementProvider } from "@/pages/CircuitEditor/components/CircuitFieldView/components/CircuitField/contexts/fieldSvgElement";
 
 interface PositionCache {
   inputNodeDef: NodeDefinition | null;
@@ -86,6 +87,12 @@ export const wireEndPositionSelector = (state: AppState, wireId: string) => {
 
   return position;
 };
+
+// WARN: Returns new object with each invocation.  Not safe for react use.
+//  Currently used to get all joint ids in reducers.
+export const allJointIdsSelector = createFieldSelector((state: FieldState) =>
+  Object.keys(state.wireJointPositionsByJointId)
+);
 
 export const wireJointIdsSelector = createFieldSelector(
   (state: FieldState, wireId: string) => state.wireJointIdsByWireId[wireId]

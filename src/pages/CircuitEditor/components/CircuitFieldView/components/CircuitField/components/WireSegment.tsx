@@ -24,20 +24,20 @@ import {
 } from "@/services/field/selectors/wires";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
+import { selectWires } from "@/actions/select-wires";
+import { getSelectMode, getModifiers } from "../selection-mode";
 
 export interface WireSegmentProps {
   wireId: string;
   startJointId: string | null;
   endJointId: string | null;
   color: string;
-  onClick(e: MouseEvent): void;
 }
 const WireSegment: React.FC<WireSegmentProps> = ({
   wireId,
   startJointId,
   endJointId,
-  color,
-  onClick
+  color
 }) => {
   const dispatch = useDispatch();
   const getMouseCoords = useEventMouseCoords();
@@ -91,6 +91,15 @@ const WireSegment: React.FC<WireSegmentProps> = ({
       dispatch(moveWireJoint(jointId, p));
     },
     [getMouseCoords]
+  );
+
+  const onClick = React.useCallback(
+    (e: MouseEvent) => {
+      const modifiers = getModifiers(e);
+      const mode = getSelectMode(modifiers);
+      dispatch(selectWires(wireId, mode));
+    },
+    [wireId]
   );
 
   const { startTracking } = useMouseTracking({

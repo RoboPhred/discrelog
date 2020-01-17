@@ -19,17 +19,11 @@ export interface WireProps {
 }
 
 const Wire: React.FC<WireProps> = ({ wireId }) => {
-  const dispatch = useDispatch();
-
   const jointIds = useSelector(state => wireJointIdsSelector(state, wireId));
   const value = useSelector(state => wireValueSelector(state, wireId));
   const isSelected = useSelector(state =>
     isWireSelectedSelector(state, wireId)
   );
-
-  const onClick = React.useCallback(() => {
-    dispatch(selectWires(wireId));
-  }, [wireId]);
 
   let color: string;
   if (isSelected) {
@@ -50,18 +44,12 @@ const Wire: React.FC<WireProps> = ({ wireId }) => {
         startJointId={startJointId}
         endJointId={endJointId}
         color={color}
-        onClick={onClick}
       />
     );
   });
 
   const jointElements = jointIds.map(jointId => (
-    <WireJoint
-      key={jointId}
-      color={color}
-      jointId={jointId}
-      onClick={onClick}
-    />
+    <WireJoint key={jointId} jointId={jointId} />
   ));
 
   return (

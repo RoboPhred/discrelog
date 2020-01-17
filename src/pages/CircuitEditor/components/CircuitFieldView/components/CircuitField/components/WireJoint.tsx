@@ -7,19 +7,25 @@ import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
 
 import { wireJointPositionSelector } from "@/services/field/selectors/wires";
+import { isJointSelectedSelector } from "@/services/selection/selectors/selection";
+
 import { moveWireJoint } from "@/actions/wire-joint-move";
+import { selectWireJoints } from "@/actions/select-wire-joints";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
+import { getSelectMode, getModifiers } from "../selection-mode";
 
 interface WireJointProps {
   jointId: string;
-  color: string;
-  onClick(e: MouseEvent): void;
 }
 
-const WireJoint: React.FC<WireJointProps> = ({ jointId, color, onClick }) => {
+const WireJoint: React.FC<WireJointProps> = ({ jointId }) => {
   const getMouseCoords = useEventMouseCoords();
   const dispatch = useDispatch();
+
+  const isSelected = useSelector(state =>
+    isJointSelectedSelector(state, jointId)
+  );
 
   const position = useSelector(state =>
     wireJointPositionSelector(state, jointId)
@@ -32,6 +38,15 @@ const WireJoint: React.FC<WireJointProps> = ({ jointId, color, onClick }) => {
       dispatch(moveWireJoint(jointId, p));
     },
     [getMouseCoords]
+  );
+
+  const onClick = React.useCallback(
+    (e: MouseEvent) => {
+      const modifiers = getModifiers(e);
+      const mode = getSelectMode(modifiers);
+      dispatch(selectWireJoints(jointId, mode));
+    },
+    [jointId]
   );
 
   const { startTracking: startMoveJointTracking } = useMouseTracking({
@@ -52,6 +67,13 @@ const WireJoint: React.FC<WireJointProps> = ({ jointId, color, onClick }) => {
     },
     [startMoveJointTracking]
   );
+
+  let color: string;
+  if (isSelected) {
+    color = "yellow";
+  } else {
+    color = "black";
+  }
 
   return (
     <circle

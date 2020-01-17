@@ -5,9 +5,8 @@ import rootReducer from "@/store/reducer";
 
 import { isSelectionDeleteAction } from "@/actions/selection-delete";
 import { deleteNode } from "@/actions/node-delete";
-
-import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 import { detatchWire } from "@/actions/wire-detatch";
+import { deleteWireJoint } from "@/actions/wire-joint-delete";
 
 export default function selectionDeleteReducer(
   state: AppState = defaultAppState,
@@ -17,11 +16,19 @@ export default function selectionDeleteReducer(
     return state;
   }
 
-  const { selectedNodeIds, selectedWireIds } = state.services.selection;
+  const {
+    selectedNodeIds,
+    selectedWireIds,
+    selectedJointIds
+  } = state.services.selection;
 
   state = rootReducer(state, deleteNode(selectedNodeIds));
   state = selectedWireIds.reduce(
     (state, wireId) => rootReducer(state, detatchWire(wireId)),
+    state
+  );
+  state = selectedJointIds.reduce(
+    (state, jointId) => rootReducer(state, deleteWireJoint(jointId)),
     state
   );
 
