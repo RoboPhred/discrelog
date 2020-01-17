@@ -1,0 +1,232 @@
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Titillium Web", sans-serif;
+}
+
+.flex-module__flex-row___2HFWh {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-direction: row;
+}
+
+.flex-module__flex-column___3GRAs {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
+}
+
+.flex-module__flexitem-shrink___ixBNI {
+  flex-shrink: 1;
+}
+
+.flex-module__flex-row___2HFWh > .flex-module__flexitem-shrink___ixBNI {
+  min-width: 0;
+}
+.flex-module__flex-column___3GRAs > .flex-module__flexitem-shrink___ixBNI {
+  min-height: 0;
+}
+
+/** FIXME: ide ts is not generating typings when this is referenced with an @-path */
+
+.sizing-module__fill-parent___2SiAH {
+  width: 100%;
+  height: 100%;
+}
+
+.CircuitField-module__circuit-editor___Xrh6Y {
+  background: white;
+}
+.CircuitFieldView-module__circuit-field-view___2A5Yu {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  position: relative;
+}
+
+.CircuitFieldView-module__circuit-field-zoom-container___2fQiO {
+  position: absolute;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+}
+
+.ElementTray-module__circuittray___38QqX {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.ElementTray-module__circuittray-title___2yi9d {
+  padding-left: 5px;
+  border-bottom: 1px solid grey;
+}
+
+.ElementTray-module__circuittray-elements___hNZuh {
+  -webkit-box-flex: 1;
+          flex: 1 1 auto;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-direction: row;
+  flex-wrap: wrap;
+  min-height: 0;
+  padding: 5px;
+  background: white;
+  overflow-y: scroll;
+}
+
+.CircuitEditor-module__editor___UL8qT {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
+  background: grey;
+}
+
+.CircuitEditor-module__editor-fieldcontainer___bMu2Y {
+  -webkit-box-flex: 1;
+          flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 15px;
+  align-self: center;
+}
+
+.CircuitEditor-module__editor-toolwindow-horizontal___1PhL8 {
+  background: white;
+  width: 100%;
+  height: 250px;
+}
+
+.Intro-module__intro___11OUj {
+  box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding: 25px;
+  z-index: 9999;
+}
+
+.Intro-module__intro-content___3fJQP {
+  box-sizing: border-box;
+  border: 1px solid #888;
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
+}
+
+.Intro-module__intro-header___38sbJ {
+  -webkit-box-flex: 0;
+          flex: 0 1 auto;
+}
+
+.Intro-module__intro-markdown___1qZ0W {
+  -webkit-box-flex: 0;
+          flex: 0 1 auto;
+  overflow-y: scroll;
+  background: lightgray;
+  margin: 5px;
+  padding: 5px;
+}
+
+.Intro-module__intro-dismiss___2fMU7 {
+  min-height: 2em;
+}
+
+.PopupMenu-module__popupmenu___Z6R_G {
+  background: white;
+  border: 1px solid lightgray;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-flow: column nowrap;
+  min-width: 150px;
+  padding: 5px;
+}
+
+.PopupMenu-module__popupmenu___Z6R_G > .menu-item {
+  padding: 0 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Cursor keys dont work yet and this looks confusing with mouse only operation */
+/* .popupmenu :global(.menu-item):focus {
+  background: lightskyblue;
+  outline: none;
+} */
+
+.menu-item {
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  color: blue;
+}
+
+.SimControls-module__simctrls-buttom-play___3XU45 {
+  fill: darkgreen;
+  cursor: pointer;
+}
+
+.SimControls-module__simctrls-buttom-play___3XU45:hover {
+  fill: greenyellow;
+}
+
+.SimControls-module__simctrls-button-stop___3Wdm8 {
+  fill: darkred;
+  cursor: pointer;
+}
+
+.SimControls-module__simctrls-button-stop___3Wdm8:hover {
+  fill: red;
+}
+
+.TitleBar-module__titlebar___3fEaN {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-flow: row nowrap;
+  -webkit-box-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: baseline;
+          align-items: baseline;
+  padding: 8px 10px;
+  /* FIXME: Use variable */
+  background-color: #f8f9fa;
+}
+
+.TitleBar-module__titlebar-buttons___3h7Tw {
+  margin-left: auto;
+}
+
+.TitleBar-module__titlebar-brand___34og_ {
+  margin-right: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/*# sourceMappingURL=client.css.map*/
