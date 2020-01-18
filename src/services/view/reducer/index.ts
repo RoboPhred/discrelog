@@ -1,5 +1,5 @@
-import { reduceReducers } from "@/store/utils";
+import { concatReducers } from "@/store/utils";
 
 import viewZoomReducer from "./view-zoom";
 
-export default reduceReducers(viewZoomReducer);
+export default concatReducers(viewZoomReducer);

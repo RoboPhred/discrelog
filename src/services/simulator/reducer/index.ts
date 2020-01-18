@@ -1,4 +1,4 @@
-import { reduceReducers } from "@/store/utils";
+import { concatReducers } from "@/store/utils";
 
 import fileNewReducer from "./file-new";
 import nodeAddReducer from "./node-add";
@@ -11,7 +11,7 @@ import simStopReducer from "./sim-stop";
 import wireAttachReducer from "./wire-attach";
 import wireDetatchReducer from "./wire-detatch";
 
-const simulatorReducer = reduceReducers(
+const simulatorReducer = concatReducers(
   fileNewReducer,
   nodeAddReducer,
   nodeDeleteReducer,

@@ -11,7 +11,7 @@ export default createSimulatorReducer((state, action, appState) => {
 
   const { p1, p2 } = action.payload;
 
-  // This is a bit messy.  We only want to recalculate the input,
+  // We only need to recalculate the input,
   //  but we do not know which one that is.
 
   state = collectNodeTransitions(state, p1.nodeId, appState);

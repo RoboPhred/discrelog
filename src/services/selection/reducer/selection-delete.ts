@@ -22,7 +22,9 @@ export default function selectionDeleteReducer(
     selectedJointIds
   } = state.services.selection;
 
-  state = rootReducer(state, deleteNode(selectedNodeIds));
+  if (selectedNodeIds.length > 0) {
+    state = rootReducer(state, deleteNode(selectedNodeIds));
+  }
   state = selectedWireIds.reduce(
     (state, wireId) => rootReducer(state, detatchWire(wireId)),
     state

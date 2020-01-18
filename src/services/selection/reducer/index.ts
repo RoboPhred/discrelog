@@ -1,4 +1,4 @@
-import { reduceReducers } from "@/store/utils";
+import { concatReducers } from "@/store/utils";
 
 import fileNewReducer from "./file-new";
 import nodeDeleteReducer from "./node-delete";
@@ -12,7 +12,7 @@ import selectionCopyReducer from "./selection-copy";
 import selectionDeleteReducer from "./selection-delete";
 import wireDetatchReducer from "./wire-detatch";
 
-const selectionReducer = reduceReducers(
+const selectionReducer = concatReducers(
   fileNewReducer,
   nodeDeleteReducer,
   selectAllReducer,

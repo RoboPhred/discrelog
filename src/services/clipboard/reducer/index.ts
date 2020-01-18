@@ -1,9 +1,9 @@
-import { reduceReducers } from "@/store/utils";
+import { concatReducers } from "@/store/utils";
 
 import clipboardCopyReducer from "./clipboard-copy";
 import clipboardPasteReducer from "./clipboard-paste";
 
-const clipboardReducer = reduceReducers(
+const clipboardReducer = concatReducers(
   clipboardCopyReducer,
   clipboardPasteReducer
 );

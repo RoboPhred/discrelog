@@ -21,7 +21,7 @@ export const wireByIdSelector = createGraphSelector(
   (s: GraphState, wireId: string) => s.wiresById[wireId]
 );
 
-const connectionsSelector = createGraphSelector(
+const wiresSelector = createGraphSelector(
   createSelector(
     (state: GraphState) => state.wiresById,
     wiresById => values(wiresById)
@@ -43,12 +43,19 @@ export const nodePinDirectionSelector = createGraphSelector(
   }
 );
 
+export const nodeInputWireIdsSelector = createGraphSelector(
+  (state: GraphState, nodeId: string) =>
+    Object.keys(state.wiresById).filter(
+      wireId => state.wiresById[wireId].inputPin.nodeId === nodeId
+    )
+);
+
 /**
  * Gets an object mapping input pin names to their connection source pins.
  */
 export const nodeInputConnectionsByPinSelector = createGraphSelector(
   createCachedSelector(
-    connectionsSelector.local,
+    wiresSelector.local,
     (_: any, nodeId: string) => nodeId,
     nodeDefSelector.local,
     (connections, nodeId, nodeDef) => {
@@ -85,7 +92,14 @@ export const nodeInputConnectionsByPinSelector = createGraphSelector(
  */
 export const nodeOutputConnectionsSelector = createGraphSelector(
   (state: GraphState, nodeId: string) =>
-    connectionsSelector.local(state).filter(x => x.outputPin.nodeId === nodeId)
+    wiresSelector.local(state).filter(x => x.outputPin.nodeId === nodeId)
+);
+
+export const nodeOutputWireIdsSelector = createGraphSelector(
+  (state: GraphState, nodeId: string) =>
+    Object.keys(state.wiresById).filter(
+      wireId => state.wiresById[wireId].outputPin.nodeId === nodeId
+    )
 );
 
 /**
@@ -93,7 +107,7 @@ export const nodeOutputConnectionsSelector = createGraphSelector(
  */
 export const nodeOutputConnectionsByPinSelector = createGraphSelector(
   createCachedSelector(
-    connectionsSelector.local,
+    wiresSelector.local,
     (_: any, nodeId: string) => nodeId,
     nodeDefSelector.local,
     (connections, nodeId, nodeDef) => {

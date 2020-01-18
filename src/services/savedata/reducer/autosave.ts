@@ -11,6 +11,7 @@ import { ACTION_WIRE_JOINT_ADD } from "@/actions/wire-joint-add";
 import { ACTION_WIRE_JOINT_MOVE } from "@/actions/wire-joint-move";
 
 import { createSave, storeAutosave } from "../utils";
+import { reducerPriority, PRIORITY_SAVE } from "@/store/priorities";
 
 const AUTOSAVE_TRIGGERS = [
   ACTION_NODE_ADD,
@@ -22,16 +23,16 @@ const AUTOSAVE_TRIGGERS = [
   ACTION_WIRE_JOINT_MOVE
 ];
 
-export default function autoSaveReducer(
-  state: AppState = defaultAppState,
-  action: AnyAction
-): AppState {
-  if (AUTOSAVE_TRIGGERS.indexOf(action.type) === -1) {
+export default reducerPriority(
+  PRIORITY_SAVE,
+  (state: AppState = defaultAppState, action: AnyAction): AppState => {
+    if (AUTOSAVE_TRIGGERS.indexOf(action.type) === -1) {
+      return state;
+    }
+
+    const save = createSave(state);
+    storeAutosave(save);
+
     return state;
   }
-
-  const save = createSave(state);
-  storeAutosave(save);
-
-  return state;
-}
+);

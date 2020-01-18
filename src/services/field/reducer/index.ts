@@ -1,4 +1,4 @@
-import { reduceReducers } from "@/store/utils";
+import { concatReducers } from "@/store/utils";
 
 import fileNewReducer from "./file-new";
 import nodeAddReducer from "./node-add";
@@ -10,7 +10,7 @@ import wireJointAddReducer from "./wire-joint-add";
 import wireJointDeleteReducer from "./wire-joint-delete";
 import wireJointMoveReducer from "./wire-joint-move";
 
-const fieldReducer = reduceReducers(
+const fieldReducer = concatReducers(
   fileNewReducer,
   nodeAddReducer,
   nodeDeleteReducer,
