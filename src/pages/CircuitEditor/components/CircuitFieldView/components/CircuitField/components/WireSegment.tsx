@@ -78,7 +78,7 @@ const WireSegment: React.FC<WireSegmentProps> = ({
       addedJointRef.current = jointId;
       dispatch(addWireJoint(wireId, startJointId, p, jointId));
     },
-    [getMouseCoords]
+    [wireId, startJointId, getMouseCoords]
   );
 
   const onDragMove = React.useCallback(
@@ -108,9 +108,12 @@ const WireSegment: React.FC<WireSegmentProps> = ({
     onDragMove
   });
 
-  const onJointInsertMouseDown = React.useCallback((e: React.MouseEvent) => {
-    startTracking(e);
-  }, []);
+  const onJointInsertMouseDown = React.useCallback(
+    (e: React.MouseEvent) => {
+      startTracking(e);
+    },
+    [startTracking]
+  );
 
   let insertJointPos: Point | undefined;
   if (mousePos) {

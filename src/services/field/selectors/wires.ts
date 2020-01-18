@@ -102,3 +102,18 @@ export const wireJointPositionSelector = createFieldSelector(
   (state: FieldState, jointId: string) =>
     state.wireJointPositionsByJointId[jointId]
 );
+
+// WARN: Returns new object with each invocation.  Not safe for react use.
+//  Currently used to get all joint ids in reducers.
+export const wireJointPositionsByJointIdSelector = createFieldSelector(
+  (state: FieldState) => {
+    const positionsByJointId: Record<string, Point> = {};
+
+    for (const jointId of Object.keys(state.wireJointPositionsByJointId)) {
+      const p = state.wireJointPositionsByJointId[jointId];
+      positionsByJointId[jointId] = p;
+    }
+
+    return positionsByJointId;
+  }
+);

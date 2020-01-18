@@ -1,10 +1,11 @@
 import forOwn from "lodash/forOwn";
 
-import { intersects } from "@/geometry";
+import { intersects, pointIntersects } from "@/geometry";
 
 import { isSelectRegionAction } from "@/actions/select-region";
 
 import { nodeRectsByIdSelector } from "@/services/field/selectors/bounds";
+import { wireJointPositionsByJointIdSelector } from "@/services/field/selectors/wires";
 
 import { combineSelection, createSelectionReducer } from "../utils";
 
@@ -23,7 +24,13 @@ export default createSelectionReducer((state, action, appState) => {
     }
   });
 
-  // TODO: Region select joints
+  const chosenJointIds: string[] = [];
+  const jointPositions = wireJointPositionsByJointIdSelector(appState);
+  forOwn(jointPositions, (p, jointId) => {
+    if (pointIntersects(p, region)) {
+      chosenJointIds.push(jointId);
+    }
+  });
 
   return {
     ...state,
@@ -33,6 +40,10 @@ export default createSelectionReducer((state, action, appState) => {
       mode
     ),
     selectedWireIds: mode === "set" ? [] : state.selectedWireIds,
-    selectedJointIds: mode === "set" ? [] : state.selectedJointIds
+    selectedJointIds: combineSelection(
+      state.selectedJointIds,
+      chosenJointIds,
+      mode
+    )
   };
 });
