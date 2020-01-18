@@ -1,17 +1,43 @@
-.simctrls-buttom-play {
+.button {
+  margin: 0 2px;
+}
+
+.button-play {
   fill: darkgreen;
   cursor: pointer;
 }
 
-.simctrls-buttom-play:hover {
+.button-play:hover {
   fill: greenyellow;
 }
 
-.simctrls-button-stop {
+.button-stop {
   fill: darkred;
   cursor: pointer;
 }
 
-.simctrls-button-stop:hover {
+.button-stop:hover {
   fill: red;
+}
+
+.button-pause {
+  fill: darkorange;
+  cursor: pointer;
+}
+
+.button-pause:hover {
+  fill: orange;
+}
+
+.button-pause.selected {
+  fill: blue;
+}
+
+.button--disabled {
+  fill: grey;
+  cursor: unset;
+}
+
+.button--disabled:hover {
+  fill: grey;
 }

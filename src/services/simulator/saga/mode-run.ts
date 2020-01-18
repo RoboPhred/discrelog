@@ -1,17 +1,19 @@
 import { takeLeading, select, put, delay } from "redux-saga/effects";
 
 import { ACTION_SIM_START } from "@/actions/sim-start";
+import { ACTION_SIM_PAUSE } from "@/actions/sim-pause";
+
 import { tickSim } from "@/actions/sim-tick";
 
-import { isRunningSelector, ticksPerSecondSelector } from "../selectors/run";
+import { isSimRunningSelector, ticksPerSecondSelector } from "../selectors/run";
 
 export default function* runModeSaga() {
-  yield takeLeading(ACTION_SIM_START, handleRunSim);
+  yield takeLeading([ACTION_SIM_START, ACTION_SIM_PAUSE], handleRunSim);
 }
 
 function* handleRunSim() {
   while (true) {
-    const isRunning = yield select(isRunningSelector);
+    const isRunning = yield select(isSimRunningSelector);
     if (!isRunning) {
       break;
     }

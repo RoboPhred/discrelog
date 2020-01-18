@@ -11,7 +11,7 @@ export interface SimulatorState {
    * - step: Sim is paused and only ticks on user command
    * - run: Sim is actively running and ticking forwards on its own.
    */
-  mode: "edit" | "step" | "run";
+  mode: "edit" | "pause" | "run";
 
   /**
    * Tick speed in ticks per second when running.
