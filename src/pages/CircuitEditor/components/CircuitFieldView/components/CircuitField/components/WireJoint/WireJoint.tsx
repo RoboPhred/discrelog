@@ -2,6 +2,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 
 import { Point } from "@/types";
+import { cls } from "@/utils";
 
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
@@ -12,8 +13,10 @@ import { isJointSelectedSelector } from "@/services/selection/selectors/selectio
 import { moveWireJoint } from "@/actions/wire-joint-move";
 import { selectWireJoints } from "@/actions/select-wire-joints";
 
-import { useEventMouseCoords } from "../hooks/useMouseCoords";
-import { getSelectMode, getModifiers } from "../selection-mode";
+import { useEventMouseCoords } from "../../hooks/useMouseCoords";
+import { getSelectMode, getModifiers } from "../../selection-mode";
+
+import styles from "./WireJoint.module.css";
 
 interface WireJointProps {
   jointId: string;
@@ -68,22 +71,15 @@ const WireJoint: React.FC<WireJointProps> = ({ jointId }) => {
     [startMoveJointTracking]
   );
 
-  let color: string;
-  if (isSelected) {
-    color = "yellow";
-  } else {
-    color = "black";
-  }
-
   return (
     <circle
+      className={cls(styles["wire-joint"], isSelected && styles["selected"])}
       cx={position.x}
       cy={position.y}
-      r={mouseOver ? 3 : 2}
+      r={mouseOver || isSelected ? 4 : 2}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
       onMouseDown={mouseDown}
-      fill={color}
     />
   );
 };

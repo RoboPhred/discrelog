@@ -1,11 +1,14 @@
 import * as React from "react";
-import { connect, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
-import { AppState } from "@/store";
+import { cls } from "@/utils";
 
 import { selectedPinSelector } from "@/pages/CircuitEditor/components/CircuitFieldView/components/CircuitField/selectors";
 import useSelector from "@/hooks/useSelector";
-import { selectPin } from "../actions/select-pin";
+
+import { selectPin } from "../../actions/select-pin";
+
+import styles from "./CircuitNodePin.module.css";
 
 const PIN_CIRCLE_RADIUS_UNSELECTED = 4;
 const PIN_CIRCLE_RADIUS_SELECTED = 6;
@@ -26,7 +29,9 @@ const CircuitNodePin: React.FC<CircuitNodePinProps> = ({
   const dispatch = useDispatch();
   const selectedPin = useSelector(selectedPinSelector);
   const isSelected =
-    selectedPin && selectedPin.nodeId === nodeId && selectedPin.pinId === pinId;
+    selectedPin != null &&
+    selectedPin.nodeId === nodeId &&
+    selectedPin.pinId === pinId;
 
   const onMouseDown = React.useCallback(
     (e: React.MouseEvent) => {
@@ -39,6 +44,10 @@ const CircuitNodePin: React.FC<CircuitNodePinProps> = ({
 
   return (
     <circle
+      className={cls(
+        styles["circuit-node-pin"],
+        isSelected && styles["selected"]
+      )}
       cx={x}
       cy={y}
       r={isSelected ? PIN_CIRCLE_RADIUS_SELECTED : PIN_CIRCLE_RADIUS_UNSELECTED}

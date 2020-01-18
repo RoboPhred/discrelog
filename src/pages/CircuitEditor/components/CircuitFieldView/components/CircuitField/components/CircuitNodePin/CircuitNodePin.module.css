@@ -1,0 +1,9 @@
+.circuit-node-pin {
+  fill: var(--color-element-neutral);
+  stroke: var(--color-element-neutral);
+}
+
+.selected {
+  fill: var(--color-element-selected);
+  stroke: var(--color-element-selected);
+}

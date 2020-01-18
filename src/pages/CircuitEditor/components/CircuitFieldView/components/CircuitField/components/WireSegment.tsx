@@ -31,13 +31,11 @@ export interface WireSegmentProps {
   wireId: string;
   startJointId: string | null;
   endJointId: string | null;
-  color: string;
 }
 const WireSegment: React.FC<WireSegmentProps> = ({
   wireId,
   startJointId,
-  endJointId,
-  color
+  endJointId
 }) => {
   const dispatch = useDispatch();
   const getMouseCoords = useEventMouseCoords();
@@ -125,14 +123,7 @@ const WireSegment: React.FC<WireSegmentProps> = ({
 
   return (
     <g onMouseMove={onMouseMove} onMouseLeave={onMouseLeave}>
-      <line
-        x1={start.x}
-        y1={start.y}
-        x2={end.x}
-        y2={end.y}
-        stroke={color}
-        strokeWidth={2}
-      />
+      <line x1={start.x} y1={start.y} x2={end.x} y2={end.y} strokeWidth={2} />
       {insertJointPos && (
         <circle
           cx={insertJointPos.x}

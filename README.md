@@ -15,19 +15,24 @@ http://robophred.github.io/discrelog
 Click circuit elements on the left to create them. They will appear in the top-left corner.
 Click an element to select it. Click-drag an element to move it, and click-drag the field to select multiple elements.
 
-Selected elements appear with a small yellow square in the top left.
-
 Click on pins to select them. While a pin is selected, click on other pins to connect them. Output pins can only connect to input pins, and that input pins can only have one connection. Output pins can connect to more than one input pin.
+
+Click+drag on wires to add wire joints, which can be used to route and organize wires. Click or drag-select joints to select them.
+
+Click on wires (not wire joints) to select the entire wire.
 
 ### Controls:
 
-- Select element: `left-click`
-- Toggle element in current selection: `ctrl + left-click`
-- Add element to current selection: `shift + left-click`
-- Activate Button: `alt + left-click` or `option + left-click`
-- Delete Element: `backspace` or `delete`
-- Copy Selected: `ctrl + c` or `command + c`
-- Paste: `ctrl + v` or `command + v`
+On Mac, `command` replaces `ctrl` and `option` replaces `alt`.
+
+- Select item: `left-click`
+- Toggle item in current selection: `ctrl + left-click`
+- Add item to current selection: `shift + left-click`
+- Remove item from current selection: `ctrl + shift + left-click`
+- Activate Button: `alt + left-click`
+- Delete Selection: `backspace` or `delete`
+- Copy Selected: `ctrl + c`
+- Paste: `ctrl + v`
 - Select All: `ctrl + a`
 - Next tick: `spacebar`
 - Fast forward to next transition: `shift + spacebar`

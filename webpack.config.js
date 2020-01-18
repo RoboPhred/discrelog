@@ -2,6 +2,7 @@ const { resolve: resolvePath, join: joinPath } = require("path");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const postcssCustomProperties = require("postcss-custom-properties");
 
 const isProd = process.env["NODE_ENV"] === "production";
 const isDev = !isProd;
@@ -77,7 +78,13 @@ module.exports = {
               }
             }
           },
-          { loader: "postcss-loader" }
+          {
+            loader: "postcss-loader",
+            options: {
+              ident: "postcss",
+              plugins: () => [postcssCustomProperties()]
+            }
+          }
         ]
       },
 

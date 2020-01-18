@@ -114,7 +114,9 @@ const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId, x, y }) => {
       y={y}
       nodeType={nodeType}
       nodeState={nodeState}
-      colorOverride={isSelected ? "yellow" : undefined}
+      // TODO: Use css vars for this.  Currently cannot do so as nodes declare their own
+      //  stroke/fill that gets set as attributes
+      colorOverride={isSelected ? "blue" : undefined}
       renderPin={renderPin}
       onMouseDown={onMouseDown}
     />

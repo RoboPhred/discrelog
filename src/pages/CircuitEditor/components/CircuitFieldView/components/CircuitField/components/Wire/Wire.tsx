@@ -1,18 +1,16 @@
 import * as React from "react";
-import { useDispatch } from "react-redux";
 
+import { cls } from "@/utils";
 import useSelector from "@/hooks/useSelector";
-
-import { selectWires } from "@/actions/select-wires";
 
 import { wireJointIdsSelector } from "@/services/field/selectors/wires";
 import { isWireSelectedSelector } from "@/services/selection/selectors/selection";
 import { wireValueSelector } from "@/services/simulator/selectors/wires";
 
-import { useEventMouseCoords } from "../hooks/useMouseCoords";
+import WireSegment from "../WireSegment";
+import WireJoint from "../WireJoint";
 
-import WireSegment from "./WireSegment";
-import WireJoint from "./WireJoint";
+import styles from "./Wire.module.css";
 
 export interface WireProps {
   wireId: string;
@@ -20,19 +18,10 @@ export interface WireProps {
 
 const Wire: React.FC<WireProps> = ({ wireId }) => {
   const jointIds = useSelector(state => wireJointIdsSelector(state, wireId));
-  const value = useSelector(state => wireValueSelector(state, wireId));
+  const isPowered = useSelector(state => wireValueSelector(state, wireId));
   const isSelected = useSelector(state =>
     isWireSelectedSelector(state, wireId)
   );
-
-  let color: string;
-  if (isSelected) {
-    color = "yellow";
-  } else if (value) {
-    color = "green";
-  } else {
-    color = "black";
-  }
 
   // We need one extra array entry for starting on the last jointId and ending at null (end of wire)
   const segmentElements = [...jointIds, null].map((endJointId, index) => {
@@ -43,7 +32,6 @@ const Wire: React.FC<WireProps> = ({ wireId }) => {
         wireId={wireId}
         startJointId={startJointId}
         endJointId={endJointId}
-        color={color}
       />
     );
   });
@@ -53,10 +41,16 @@ const Wire: React.FC<WireProps> = ({ wireId }) => {
   ));
 
   return (
-    <>
+    <g
+      className={cls(
+        styles["wire"],
+        isPowered && styles["powered"],
+        isSelected && styles["selected"]
+      )}
+    >
       {segmentElements}
       {jointElements}
-    </>
+    </g>
   );
 };
 
