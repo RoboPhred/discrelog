@@ -79,11 +79,7 @@ module.exports = {
             }
           },
           {
-            loader: "postcss-loader",
-            options: {
-              ident: "postcss",
-              plugins: () => [postcssCustomProperties()]
-            }
+            loader: "postcss-loader"
           }
         ]
       },
