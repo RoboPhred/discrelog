@@ -18,3 +18,8 @@ export interface IDMap<T> {
 }
 
 export type SelectionMode = "set" | "append" | "remove" | "toggle";
+
+export type MaybeArray<T> = T | T[];
+export function asArray<T>(value: MaybeArray<T>): T[] {
+  return Array.isArray(value) ? value : [value];
+}

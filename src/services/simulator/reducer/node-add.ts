@@ -1,50 +1,55 @@
-import { AnyAction } from "redux";
-import mapValues from "lodash/mapValues";
-
 import { isAddNodeAction } from "@/actions/node-add";
-
-import { NodeTypes } from "@/node-defs";
-import { inputsOf, outputsOf } from "@/node-defs/utils";
 
 import { createSimulatorReducer } from "../utils";
 
-export default createSimulatorReducer((state, action: AnyAction) => {
+import { collectNodeTransitions } from "./utils";
+
+export default createSimulatorReducer((state, action, appState) => {
   if (!isAddNodeAction(action)) {
     return state;
   }
 
-  const { nodeId: id, nodeType: type } = action.payload;
+  const { nodeId } = action.payload;
 
-  const def = NodeTypes[type];
-  if (!def) {
-    return state;
-  }
+  return collectNodeTransitions(state, nodeId, appState);
 
-  const inputs = inputsOf(def);
-  const outputs = outputsOf(def);
+  // const def = NodeTypes[type];
+  // if (!def) {
+  //   return state;
+  // }
 
-  const result = def.evolve
-    ? def.evolve(
-        undefined,
-        mapValues(inputs, () => false),
-        state.tick
-      )
-    : {};
+  // const inputs = inputsOf(def);
+  // const outputs = outputsOf(def);
 
-  const nodeState = result.state || {};
-  const outputValues = result.transitions
-    ? mapValues(result.transitions, x => x.value)
-    : mapValues(outputs, () => false);
+  // const result = def.evolve
+  //   ? def.evolve(
+  //       undefined,
+  //       mapValues(inputs, () => false),
+  //       state.tick
+  //     )
+  //   : {};
 
-  return {
-    ...state,
-    nodeStatesByNodeId: {
-      ...state.nodeStatesByNodeId,
-      [id]: nodeState
-    },
-    nodeOutputValuesByNodeId: {
-      ...state.nodeOutputValuesByNodeId,
-      [id]: outputValues
-    }
-  };
+  // const nodeState = result.state || {};
+
+  // let transitions: OutputTransition[] = [];
+  // if (result.transitions) {
+  //   transitions = asArray(result.transitions);
+  // }
+
+  // const outputValues = transitions.reduce(
+  //   (values, transition) => ({ ...values, ...transition.valuesByPin }),
+  //   mapValues(outputs, () => false)
+  // );
+
+  // return {
+  //   ...state,
+  //   nodeStatesByNodeId: {
+  //     ...state.nodeStatesByNodeId,
+  //     [id]: nodeState
+  //   },
+  //   nodeOutputValuesByNodeId: {
+  //     ...state.nodeOutputValuesByNodeId,
+  //     [id]: outputValues
+  //   }
+  // };
 });

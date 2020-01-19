@@ -1,13 +1,13 @@
 import binarySearch from "binary-search";
 import uuidV4 from "uuid/v4";
-import find from "lodash/find";
 import findIndex from "lodash/findIndex";
 import pick from "lodash/pick";
 import mapValues from "lodash/mapValues";
 
 import { fpSet } from "@/utils";
-import { IDMap } from "@/types";
+import { IDMap, asArray } from "@/types";
 import { AppState } from "@/store";
+import { OutputTransition } from "@/node-defs";
 
 import { inputsOf, outputsOf } from "@/node-defs/utils";
 
@@ -16,11 +16,14 @@ import {
   nodeDefSelector,
   nodeIdsSelector
 } from "@/services/graph/selectors/nodes";
-import { NodePin } from "@/services/graph/types";
+
+import { nodeOutputPinValue } from "../selectors/nodes";
 
 import { SimulatorState, defaultSimulatorState } from "../state";
-import { SimTransitionWindow, SimNodePinTransition } from "../types";
-import { nodeOutputPinValue } from "../selectors/nodes";
+import {
+  SimTransitionWindow,
+  SimNodePinTransition as SimNodeTransition
+} from "../types";
 
 export function simInit(
   state: SimulatorState,
@@ -57,32 +60,45 @@ function initNode(
     return state;
   }
 
-  const inputs = inputsOf(def);
   const outputs = outputsOf(def);
+  const outputValues = mapValues(outputs, () => false);
+  return fpSet(state, "nodeOutputValuesByNodeId", nodeId, outputValues);
 
-  const { state: nodeState = null, transitions = null } = def.evolve
-    ? def.evolve(
-        undefined,
-        mapValues(inputs, () => false),
-        state.tick
-      )
-    : {};
+  // Old code used to collect transitions for all-false inputs and set
+  //  outputs immediately to transition values.
 
-  const outputValues = transitions
-    ? mapValues(transitions, x => x.value)
-    : mapValues(outputs, () => false);
+  // const inputs = inputsOf(def);
+  // const outputs = outputsOf(def);
 
-  return {
-    ...state,
-    nodeStatesByNodeId: {
-      ...state.nodeStatesByNodeId,
-      [nodeId]: nodeState
-    },
-    nodeOutputValuesByNodeId: {
-      ...state.nodeOutputValuesByNodeId,
-      [nodeId]: outputValues
-    }
-  };
+  // const initialEvolution = def.evolve
+  //   ? def.evolve(
+  //       undefined,
+  //       mapValues(inputs, () => false),
+  //       state.tick
+  //     )
+  //   : {};
+
+  // let transitions: OutputTransition[] = [];
+  // if (initialEvolution.transitions) {
+  //   transitions = asArray(initialEvolution.transitions);
+  // }
+
+  // const outputValues = transitions.reduce(
+  //   (values, transition) => ({ ...values, ...transition.valuesByPin }),
+  //   mapValues(outputs, () => false)
+  // );
+
+  // return {
+  //   ...state,
+  //   nodeStatesByNodeId: {
+  //     ...state.nodeStatesByNodeId,
+  //     [nodeId]: initialEvolution.state
+  //   },
+  //   nodeOutputValuesByNodeId: {
+  //     ...state.nodeOutputValuesByNodeId,
+  //     [nodeId]: outputValues
+  //   }
+  // };
 }
 
 export function collectNodeTransitions(
@@ -124,21 +140,24 @@ export function collectNodeTransitions(
   }
 
   if (result.transitions) {
-    const nodeOutputs = state.nodeOutputValuesByNodeId[nodeId] || {};
-    for (const outputId of Object.keys(result.transitions)) {
-      const { tickOffset, value } = result.transitions[outputId];
+    const transitions = asArray(result.transitions);
+    for (const transition of transitions) {
+      const {
+        tickOffset,
+        valuesByPin,
+        transitionMerger = "replace"
+      } = transition;
 
       // Sanity check that we are not producing transitions for the past or current tick.
       const transitionTick = state.tick + (tickOffset > 0 ? tickOffset : 1);
 
-      state = removeTransitionByPin(state, {
-        nodeId: nodeId,
-        pinId: outputId
-      });
-
-      if (nodeOutputs[outputId] !== value) {
-        state = addTransition(state, nodeId, outputId, transitionTick, value);
+      // We originally removed old transitions when scheduling new transitions.
+      //  Experimenting without this.
+      if (transitionMerger === "replace") {
+        state = removeTransitionsByNodeId(state, nodeId);
       }
+
+      state = addTransition(state, nodeId, transitionTick, valuesByPin);
     }
   }
 
@@ -148,18 +167,16 @@ export function collectNodeTransitions(
 function addTransition(
   state: Readonly<SimulatorState>,
   nodeId: string,
-  outputId: string,
   tick: number,
-  value: boolean
+  valuesByOutputPin: IDMap<boolean>
 ): SimulatorState {
   const transitionId = uuidV4();
 
-  const newTransition: SimNodePinTransition = {
+  const newTransition: SimNodeTransition = {
     id: transitionId,
     nodeId,
-    outputId,
     tick,
-    value
+    valuesByOutputPin
   };
 
   // Add the transition to the state, and clone transitionWindows for mutation below.
@@ -195,22 +212,22 @@ function addTransition(
   return state;
 }
 
-function removeTransitionByPin(
+function removeTransitionsByNodeId(
   state: Readonly<SimulatorState>,
-  pin: NodePin
+  nodeId: string
 ): SimulatorState {
-  const { nodeId, pinId: outputId } = pin;
-
-  const transition = find(
-    state.transitionsById,
-    t => t.nodeId === nodeId && t.outputId === outputId
-  );
-  if (!transition) {
-    return state;
+  function isNodeTransition(transition: SimNodeTransition) {
+    return transition.nodeId === nodeId;
   }
 
-  const { id } = transition;
-  return removeTransitionById(state, id);
+  const transitionIds = Object.keys(state.transitionsById).filter(id =>
+    isNodeTransition(state.transitionsById[id])
+  );
+
+  return transitionIds.reduce(
+    (state, transitionId) => removeTransitionById(state, transitionId),
+    state
+  );
 }
 
 export function removeTransitionById(

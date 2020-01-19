@@ -77,12 +77,12 @@ function tickWindow(
 
   let updatedNodes = [];
   for (const tid of window.transitionIds) {
-    const { nodeId, outputId, value } = state.transitionsById[tid];
+    const { nodeId, valuesByOutputPin } = state.transitionsById[tid];
 
     // nodeOutputValuesByNodeId is pre-cloned
     state.nodeOutputValuesByNodeId[nodeId] = {
       ...state.nodeOutputValuesByNodeId[nodeId],
-      [outputId]: value
+      ...valuesByOutputPin
     };
 
     // Add each node we output to, to the output list.
@@ -95,16 +95,16 @@ function tickWindow(
     }
   }
 
-  for (const nodeId of updatedNodes) {
-    state = collectNodeTransitions(state, nodeId, appState);
-  }
-
   // Remove all window transitions as they have been consumed.
   // State is cloned above
   state.transitionsById = pick(
     state.transitionsById,
     difference(Object.keys(state.transitionsById), window.transitionIds)
   );
+
+  for (const nodeId of updatedNodes) {
+    state = collectNodeTransitions(state, nodeId, appState);
+  }
 
   return state;
 }

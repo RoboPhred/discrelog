@@ -30,10 +30,8 @@ const bufferNodeDefinition: NodeDefinition = {
   evolve(state, inputs, tick) {
     return {
       transitions: {
-        OUT: {
-          tickOffset: 2,
-          value: inputs.IN
-        }
+        tickOffset: 4,
+        valuesByPin: { OUT: inputs.IN }
       }
     };
   }

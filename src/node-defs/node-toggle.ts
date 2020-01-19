@@ -33,10 +33,8 @@ const toggleSwitchNodeDefinition: NodeDefinition = {
     return {
       state,
       transitions: {
-        OUT: {
-          tickOffset: 1,
-          value: state.toggleState
-        }
+        tickOffset: 1,
+        valuesByPin: { OUT: state.toggleState }
       }
     };
   }

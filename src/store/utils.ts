@@ -1,10 +1,11 @@
-import { AnyAction, Reducer } from "redux";
+import { AnyAction } from "redux";
 import sortBy from "lodash/sortBy";
+
+import { MaybeArray } from "@/types";
 
 import { AppState, defaultAppState } from "./state";
 import { AppReducer } from "./types";
 
-type MaybeArray<T> = T | T[];
 export function concatReducers(
   ...reducers: MaybeArray<AppReducer>[]
 ): AppReducer[] {
