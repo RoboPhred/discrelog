@@ -14,11 +14,15 @@ export interface CircuitEditorProps {
 const CircuitEditor: React.FC<CircuitEditorProps> = ({ className }) => {
   return (
     <div className={cls(className, styles.editor)}>
-      <div className={styles["editor-fieldcontainer"]}>
-        <CircuitFieldView />
-      </div>
-      <div className={styles["editor-toolwindow-horizontal"]}>
-        <ElementTray />
+      <div className={styles["layout-columns"]}>
+        <div className={styles["layout-rows"]}>
+          <div className={cls(styles["toolwindow"], styles["toolwindow-row"])}>
+            <ElementTray />
+          </div>
+          <div className={styles["fieldcontainer"]}>
+            <CircuitFieldView />
+          </div>
+        </div>
       </div>
     </div>
   );
