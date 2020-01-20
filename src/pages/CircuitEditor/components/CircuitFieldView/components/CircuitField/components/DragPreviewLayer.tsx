@@ -59,6 +59,7 @@ class DragPreviewLayer extends React.Component<Props> {
 
     let elements: React.ReactNode | null = null;
     if (dragMoveOffset) {
+      console.log("is drag");
       elements = values(
         mapValues(selectedNodePositionsById, (p, nodeId) => (
           <NodeVisual

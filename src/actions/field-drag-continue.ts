@@ -1,5 +1,5 @@
-import { Point } from "@/types";
 import { AnyAction } from "redux";
+import { Point } from "@/types";
 
 export const ACTION_FIELD_DRAG_CONTINUE = "@field/drag/continue" as const;
 export const fieldDragContinue = (p: Point) => ({

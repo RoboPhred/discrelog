@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useDispatch } from "react-redux";
 
 import { cls } from "@/utils";
 import useSelector from "@/hooks/useSelector";
@@ -7,22 +8,30 @@ import {
   fieldHeightSelector
 } from "@/services/field/selectors/bounds";
 
+import { fieldDragLeave } from "@/actions/field-drag-leave";
+
 import { FieldSvgElementProvider } from "./contexts/fieldSvgElement";
 
+import DragNewNodeLayer from "./components/DragNewNodeLayer";
 import DragPreviewLayer from "./components/DragPreviewLayer";
 import DragSelectLayer from "./components/DragSelectLayer";
-import WiresLayer from "./components/WiresLayer";
 import NodesLayer from "./components/NodesLayer";
+import WiresLayer from "./components/WiresLayer";
 
 import styles from "./CircuitField.module.css";
 
 const CircuitField: React.FC = () => {
+  const dispatch = useDispatch();
   const width = useSelector(fieldWidthSelector);
   const height = useSelector(fieldHeightSelector);
   const svgRef = React.useRef<SVGSVGElement>(null);
 
   const onMouseDown = React.useCallback(() => {
     svgRef.current?.focus();
+  }, []);
+
+  const onMouseLeave = React.useCallback(() => {
+    dispatch(fieldDragLeave());
   }, []);
 
   return (
@@ -41,12 +50,14 @@ const CircuitField: React.FC = () => {
         width={width}
         height={height}
         onMouseDown={onMouseDown}
+        onMouseLeave={onMouseLeave}
       >
         <FieldSvgElementProvider value={svgRef}>
           <DragSelectLayer />
           <WiresLayer />
           <NodesLayer />
           <DragPreviewLayer />
+          <DragNewNodeLayer />
         </FieldSvgElementProvider>
       </svg>
     </div>

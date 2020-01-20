@@ -1,4 +1,5 @@
 import { IDMap, Point } from "@/types";
+import { NodeType } from "@/node-defs";
 
 export interface FieldState {
   width: number;
@@ -6,9 +7,10 @@ export interface FieldState {
   nodePositionsById: IDMap<Point>;
   wireJointIdsByWireId: IDMap<string[]>;
   wireJointPositionsByJointId: IDMap<Point>;
-  dragMode: "move" | "select" | null;
+  dragMode: "move" | "select" | "new-node" | null;
   dragStart: Point | null;
   dragEnd: Point | null;
+  dragNewNodeType: NodeType | null;
 }
 
 const _defaultState: FieldState = {
@@ -19,7 +21,8 @@ const _defaultState: FieldState = {
   wireJointPositionsByJointId: {},
   dragMode: null,
   dragStart: null,
-  dragEnd: null
+  dragEnd: null,
+  dragNewNodeType: null
 };
 
 export const defaultFieldState: Readonly<FieldState> = Object.freeze(
