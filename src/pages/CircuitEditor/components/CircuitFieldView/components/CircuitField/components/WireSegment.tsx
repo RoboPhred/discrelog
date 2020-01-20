@@ -20,9 +20,9 @@ import { moveWireJoint } from "@/actions/wire-joint-move";
 import { selectWires } from "@/actions/select-wires";
 
 import {
-  wireJointPositionSelector,
-  wireStartPositionSelector,
-  wireEndPositionSelector
+  wireJointPositionFromJointIdSelector,
+  wireStartPositionFromWireIdSelector,
+  wireEndPositionFromWireIdSelector
 } from "@/services/field/selectors/wires";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
@@ -42,16 +42,16 @@ const WireSegment: React.FC<WireSegmentProps> = ({
 
   const start = useSelector(state => {
     if (startJointId == null) {
-      return wireStartPositionSelector(state, wireId);
+      return wireStartPositionFromWireIdSelector(state, wireId);
     }
-    return wireJointPositionSelector(state, startJointId);
+    return wireJointPositionFromJointIdSelector(state, startJointId);
   });
 
   const end = useSelector(state => {
     if (endJointId == null) {
-      return wireEndPositionSelector(state, wireId);
+      return wireEndPositionFromWireIdSelector(state, wireId);
     }
-    return wireJointPositionSelector(state, endJointId);
+    return wireJointPositionFromJointIdSelector(state, endJointId);
   });
 
   const [mousePos, setMousePos] = React.useState<Point | null>(null);

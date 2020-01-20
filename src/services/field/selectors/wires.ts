@@ -3,12 +3,12 @@ import { pointAdd, ZeroPoint } from "@/geometry";
 import { NodeDefinition } from "@/node-defs";
 import { Point } from "@/types";
 
-import { nodeDefByNodeIdSelector } from "@/services/graph/selectors/nodes";
+import { nodeDefFromNodeIdSelector } from "@/services/graph/selectors/nodes";
 
 import { createFieldSelector } from "../utils";
 import { FieldState } from "../state";
 
-import { nodePositionByNodeIdSelector } from "./positions";
+import { nodePositionFromNodeIdSelector } from "./positions";
 
 interface PositionCache {
   inputNodeDef: NodeDefinition | null;
@@ -23,12 +23,16 @@ interface PositionCache {
 const startPositionCacheByWireId: Record<string, PositionCache> = {};
 const endPositionCacheByWireId: Record<string, PositionCache> = {};
 
-export const wireStartPositionSelector = (state: AppState, wireId: string) => {
+export const wireStartPositionFromWireIdSelector = (
+  state: AppState,
+  wireId: string
+) => {
   const {
     outputPin: { nodeId, pinId }
   } = state.services.graph.wiresById[wireId];
-  const nodeDef = nodeDefByNodeIdSelector(state, nodeId);
-  const nodePosition = nodePositionByNodeIdSelector(state, nodeId) || ZeroPoint;
+  const nodeDef = nodeDefFromNodeIdSelector(state, nodeId);
+  const nodePosition =
+    nodePositionFromNodeIdSelector(state, nodeId) || ZeroPoint;
 
   // Caching is to get a consistent reference to avoid component rerenders.
   //  We are not concerned about performance here.
@@ -55,12 +59,16 @@ export const wireStartPositionSelector = (state: AppState, wireId: string) => {
   return position;
 };
 
-export const wireEndPositionSelector = (state: AppState, wireId: string) => {
+export const wireEndPositionFromWireIdSelector = (
+  state: AppState,
+  wireId: string
+) => {
   const {
     inputPin: { nodeId, pinId }
   } = state.services.graph.wiresById[wireId];
-  const nodeDef = nodeDefByNodeIdSelector(state, nodeId);
-  const nodePosition = nodePositionByNodeIdSelector(state, nodeId) || ZeroPoint;
+  const nodeDef = nodeDefFromNodeIdSelector(state, nodeId);
+  const nodePosition =
+    nodePositionFromNodeIdSelector(state, nodeId) || ZeroPoint;
 
   // Caching is to get a consistent reference to avoid component rerenders.
   //  We are not concerned about performance here.
@@ -89,15 +97,15 @@ export const wireEndPositionSelector = (state: AppState, wireId: string) => {
 
 // WARN: Returns new object with each invocation.  Not safe for react use.
 //  Currently used to get all joint ids in reducers.
-export const allJointIdsSelector = createFieldSelector((state: FieldState) =>
+export const jointIdsSelector = createFieldSelector((state: FieldState) =>
   Object.keys(state.wireJointPositionsByJointId)
 );
 
-export const wireJointIdsByWireIdSelector = createFieldSelector(
+export const wireJointIdsFromWireIdSelector = createFieldSelector(
   (state: FieldState, wireId: string) => state.wireJointIdsByWireId[wireId]
 );
 
-export const wireJointPositionSelector = createFieldSelector(
+export const wireJointPositionFromJointIdSelector = createFieldSelector(
   (state: FieldState, jointId: string) =>
     state.wireJointPositionsByJointId[jointId]
 );

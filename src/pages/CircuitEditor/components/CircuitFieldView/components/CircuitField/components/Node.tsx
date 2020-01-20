@@ -7,9 +7,9 @@ import { getModifiers, getSelectMode } from "@/selection-mode";
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
 
-import { nodeTypeSelector } from "@/services/graph/selectors/nodes";
-import { nodeStateSelector } from "@/services/simulator/selectors/nodes";
-import { isNodeSelectedSelector } from "@/services/selection/selectors/selection";
+import { nodeTypeFromNodeIdSelector } from "@/services/graph/selectors/nodes";
+import { nodeStateFromNodeIdSelector } from "@/services/simulator/selectors/nodes";
+import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
 
 import { fieldDragStartNode } from "@/actions/field-drag-start-node";
 import { fieldDragContinue } from "@/actions/field-drag-continue";
@@ -22,7 +22,7 @@ import NodeVisual, {
 } from "@/pages/CircuitEditor/components/NodeVisual";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
-import { nodePositionByNodeIdSelector } from "@/services/field/selectors/positions";
+import { nodePositionFromNodeIdSelector } from "@/services/field/selectors/positions";
 
 export interface CircuitNodeProps {
   nodeId: string;
@@ -31,10 +31,12 @@ export interface CircuitNodeProps {
 const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId }) => {
   const dispatch = useDispatch();
 
-  const { x, y } = useSelector(s => nodePositionByNodeIdSelector(s, nodeId));
-  const nodeType = useSelector(s => nodeTypeSelector(s, nodeId));
-  const nodeState = useSelector(s => nodeStateSelector(s, nodeId));
-  const isSelected = useSelector(s => isNodeSelectedSelector(s, nodeId));
+  const { x, y } = useSelector(s => nodePositionFromNodeIdSelector(s, nodeId));
+  const nodeType = useSelector(s => nodeTypeFromNodeIdSelector(s, nodeId));
+  const nodeState = useSelector(s => nodeStateFromNodeIdSelector(s, nodeId));
+  const isSelected = useSelector(s =>
+    isNodeSelectedFromNodeIdSelector(s, nodeId)
+  );
 
   const getCoords = useEventMouseCoords();
 

@@ -18,3 +18,5 @@
   - Could be implemented by mapping nodeId to groupNodeId, so each instance
     of a shared IC node has the same groupNodeId. This will let us
     make the same change to a node across all nodes of the group.
+
+- re-reselect caches items forever, nothing ever clears out the cache. Might want to put a LRU on it.

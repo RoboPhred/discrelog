@@ -11,13 +11,13 @@ import { OutputTransition } from "@/node-defs";
 
 import { inputsOf, outputsOf } from "@/node-defs/utils";
 
-import { nodeInputConnectionsByPinSelector } from "@/services/graph/selectors/wires";
+import { nodeInputSourcesByPinIdFromNodeIdSelector } from "@/services/graph/selectors/wires";
 import {
-  nodeDefByNodeIdSelector,
+  nodeDefFromNodeIdSelector,
   nodeIdsSelector
 } from "@/services/graph/selectors/nodes";
 
-import { nodeOutputPinValue } from "../selectors/nodes";
+import { nodeOutputPinValueFromNodeIdAndPinId } from "../selectors/nodes";
 
 import { SimulatorState, defaultSimulatorState } from "../state";
 import {
@@ -55,7 +55,7 @@ function initNode(
   nodeId: string,
   appState: AppState
 ): SimulatorState {
-  const def = nodeDefByNodeIdSelector(appState, nodeId);
+  const def = nodeDefFromNodeIdSelector(appState, nodeId);
   if (!def) {
     return state;
   }
@@ -106,27 +106,31 @@ export function collectNodeTransitions(
   nodeId: string,
   appState: AppState
 ): SimulatorState {
-  const def = nodeDefByNodeIdSelector(appState, nodeId);
+  const def = nodeDefFromNodeIdSelector(appState, nodeId);
   if (!def || !def.evolve) {
     return state;
   }
 
   // Build the current input state from the connected pins.
   const inputs: IDMap<boolean> = {};
-  const inputConnectionsByPin = nodeInputConnectionsByPinSelector(
+  const inputSourcesByPin = nodeInputSourcesByPinIdFromNodeIdSelector(
     appState,
     nodeId
   );
 
-  for (const inputPin of Object.keys(inputConnectionsByPin)) {
-    const inputConn = inputConnectionsByPin[inputPin];
+  for (const inputPin of Object.keys(inputSourcesByPin)) {
+    const inputConn = inputSourcesByPin[inputPin];
     if (!inputConn) {
       inputs[inputPin] = false;
       continue;
     }
     const { nodeId: sourceNodeId, pinId: sourcePin } = inputConn;
 
-    inputs[inputPin] = nodeOutputPinValue.local(state, sourceNodeId, sourcePin);
+    inputs[inputPin] = nodeOutputPinValueFromNodeIdAndPinId.local(
+      state,
+      sourceNodeId,
+      sourcePin
+    );
   }
 
   const result = def.evolve(

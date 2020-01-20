@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 
 import pick from "lodash/pick";
 
-import { nodesByIdSelector } from "@/services/graph/selectors/nodes";
+import { nodesByNodeIdSelector } from "@/services/graph/selectors/nodes";
 
 import { createSelectionSelector } from "../utils";
 import { SelectionState } from "../state";
@@ -11,13 +11,13 @@ export const selectedNodeIdsSelector = createSelectionSelector(
   state => state.selectedNodeIds
 );
 
-export const isNodeSelectedSelector = createSelectionSelector(
+export const isNodeSelectedFromNodeIdSelector = createSelectionSelector(
   (s: SelectionState, nodeId: string) =>
     s.selectedNodeIds.indexOf(nodeId) !== -1
 );
 
 export const selectedNodesByIdSelector = createSelector(
-  nodesByIdSelector,
+  nodesByNodeIdSelector,
   selectedNodeIdsSelector,
   (nodesById, selectedNodeIds) => pick(nodesById, selectedNodeIds)
 );
@@ -35,7 +35,7 @@ export const selectedJointIdsSelector = createSelectionSelector(
   state => state.selectedJointIds
 );
 
-export const isJointSelectedSelector = createSelectionSelector(
+export const isJointSelectedFromJointIdSelector = createSelectionSelector(
   (s: SelectionState, jointId: string) =>
     s.selectedJointIds.indexOf(jointId) !== -1
 );

@@ -5,8 +5,8 @@ import { isDeleteNodeAction } from "@/actions/node-delete";
 
 import { createFieldReducer } from "../utils";
 import {
-  nodeInputWireIdsSelector,
-  nodeOutputWireIdsSelector
+  nodeInputWireIdsFromNodeIdSelector,
+  nodeOutputWireIdsFromNodeIdSelector
 } from "@/services/graph/selectors/wires";
 
 export default createFieldReducer((state, action, appState) => {
@@ -26,10 +26,10 @@ export default createFieldReducer((state, action, appState) => {
   // We might want to just call that reducer from here.
 
   const removingWireIds = nodeIds.reduce((wireIds, nodeId) => {
-    const inputs = nodeInputWireIdsSelector(appState, nodeId);
+    const inputs = nodeInputWireIdsFromNodeIdSelector(appState, nodeId);
     wireIds.push(...inputs);
 
-    const outputs = nodeOutputWireIdsSelector(appState, nodeId);
+    const outputs = nodeOutputWireIdsFromNodeIdSelector(appState, nodeId);
     wireIds.push(...outputs);
 
     return wireIds;

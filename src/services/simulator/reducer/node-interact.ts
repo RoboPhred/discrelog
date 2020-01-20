@@ -5,7 +5,7 @@ import { isInteractNodeAction } from "@/actions/node-interact";
 import { createSimulatorReducer } from "../utils";
 
 import { collectNodeTransitions } from "./utils";
-import { nodeDefByNodeIdSelector } from "@/services/graph/selectors/nodes";
+import { nodeDefFromNodeIdSelector } from "@/services/graph/selectors/nodes";
 
 export default createSimulatorReducer((state, action, appState) => {
   if (!isInteractNodeAction(action)) {
@@ -14,7 +14,7 @@ export default createSimulatorReducer((state, action, appState) => {
 
   const { nodeId } = action.payload;
 
-  const def = nodeDefByNodeIdSelector(appState, nodeId);
+  const def = nodeDefFromNodeIdSelector(appState, nodeId);
 
   if (!def || !def.interact) {
     return state;

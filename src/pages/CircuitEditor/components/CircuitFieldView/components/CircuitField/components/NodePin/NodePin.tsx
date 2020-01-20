@@ -5,7 +5,7 @@ import { cls } from "@/utils";
 
 import useSelector from "@/hooks/useSelector";
 
-import { nodePinPositionByNodePinSelector } from "@/services/field/selectors/positions";
+import { nodePinPositionFromNodePinSelector } from "@/services/field/selectors/positions";
 import { selectedPinSelector } from "@/pages/CircuitEditor/components/CircuitFieldView/components/CircuitField/selectors";
 
 import { selectPin } from "../../actions/select-pin";
@@ -24,7 +24,7 @@ const NodePin: React.FC<NodePinProps> = ({ nodeId, pinId }) => {
   const dispatch = useDispatch();
   const selectedPin = useSelector(selectedPinSelector);
   const position = useSelector(s =>
-    nodePinPositionByNodePinSelector(s, nodeId, pinId)
+    nodePinPositionFromNodePinSelector(s, nodeId, pinId)
   );
 
   const isSelected =

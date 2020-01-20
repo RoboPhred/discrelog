@@ -3,9 +3,9 @@ import * as React from "react";
 import { cls } from "@/utils";
 import useSelector from "@/hooks/useSelector";
 
-import { wireJointIdsByWireIdSelector } from "@/services/field/selectors/wires";
+import { wireJointIdsFromWireIdSelector } from "@/services/field/selectors/wires";
 import { isWireSelectedSelector } from "@/services/selection/selectors/selection";
-import { wireValueSelector } from "@/services/simulator/selectors/wires";
+import { wireValueFromWireIdSelector } from "@/services/simulator/selectors/wires";
 
 import WireSegment from "../WireSegment";
 import WireJoint from "../WireJoint";
@@ -18,9 +18,11 @@ export interface WireProps {
 
 const Wire: React.FC<WireProps> = ({ wireId }) => {
   const jointIds = useSelector(state =>
-    wireJointIdsByWireIdSelector(state, wireId)
+    wireJointIdsFromWireIdSelector(state, wireId)
   );
-  const isPowered = useSelector(state => wireValueSelector(state, wireId));
+  const isPowered = useSelector(state =>
+    wireValueFromWireIdSelector(state, wireId)
+  );
   const isSelected = useSelector(state =>
     isWireSelectedSelector(state, wireId)
   );

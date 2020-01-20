@@ -9,9 +9,9 @@ import { createStructuredSelector, createSelector } from "reselect";
 
 import { AppState } from "@/store";
 
-import { nodeTypesByIdSelector } from "@/services/graph/selectors/nodes";
+import { nodeTypesByNodeIdSelector } from "@/services/graph/selectors/nodes";
 import { nodeStatesByIdSelector } from "@/services/simulator/selectors/nodes";
-import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
+import { nodePositionsByNodeIdSelector } from "@/services/field/selectors/positions";
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 import { dragMoveOffsetSelector } from "@/services/field/selectors/drag";
 
@@ -19,14 +19,14 @@ import NodeVisual from "@/pages/CircuitEditor/components/NodeVisual";
 
 const selectedNodePositionsById = createSelector(
   selectedNodeIdsSelector,
-  nodePositionsByIdSelector,
+  nodePositionsByNodeIdSelector,
   (selectedNodeIds, nodePositionsById) =>
     pick(nodePositionsById, selectedNodeIds)
 );
 
 const selectedNodeTypesById = createSelector(
   selectedNodeIdsSelector,
-  nodeTypesByIdSelector,
+  nodeTypesByNodeIdSelector,
   (selectedNodeIds, nodeTypesById) => pick(nodeTypesById, selectedNodeIds)
 );
 

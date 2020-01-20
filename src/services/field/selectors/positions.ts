@@ -5,25 +5,26 @@ import { AppState } from "@/store";
 import { pointAdd } from "@/geometry";
 
 import { NodePin } from "@/services/graph/types";
-import { nodeDefByNodeIdSelector } from "@/services/graph/selectors/nodes";
+import { nodeDefFromNodeIdSelector } from "@/services/graph/selectors/nodes";
 
 import { createFieldSelector } from "../utils";
 import { FieldState } from "../state";
 import { NodeDefinition } from "@/node-defs";
 import { Point } from "@/types";
 
-export const nodePositionsByIdSelector = createFieldSelector(
+export const nodePositionsByNodeIdSelector = createFieldSelector(
   state => state.nodePositionsById
 );
 
-export const nodePositionByNodeIdSelector = createFieldSelector(
+export const nodePositionFromNodeIdSelector = createFieldSelector(
   (state: FieldState, nodeId: string) => state.nodePositionsById[nodeId]
 );
 
-const nodePinPositionByNodePinCachedSelector = createCachedSelector(
-  (state: AppState, pin: NodePin) => nodeDefByNodeIdSelector(state, pin.nodeId),
+const nodePinPositionFromNodePinCachedSelector = createCachedSelector(
   (state: AppState, pin: NodePin) =>
-    nodePositionByNodeIdSelector(state, pin.nodeId),
+    nodeDefFromNodeIdSelector(state, pin.nodeId),
+  (state: AppState, pin: NodePin) =>
+    nodePositionFromNodeIdSelector(state, pin.nodeId),
   // break this out so we do not bust the cache when our input changes.
   (_: any, pin: NodePin) => pin.pinId,
   (def: NodeDefinition | null, nodePosition: Point, pinId: string) => {
@@ -36,10 +37,10 @@ const nodePinPositionByNodePinCachedSelector = createCachedSelector(
   }
 )((_: any, pin: NodePin) => `${pin.nodeId}:${pin.pinId}`);
 
-export const nodePinPositionByNodePinSelector = (
+export const nodePinPositionFromNodePinSelector = (
   state: AppState,
   nodeId: string,
   pinId: string
 ) => {
-  return nodePinPositionByNodePinCachedSelector(state, { nodeId, pinId });
+  return nodePinPositionFromNodePinCachedSelector(state, { nodeId, pinId });
 };

@@ -3,7 +3,7 @@ import difference from "lodash/difference";
 
 import { AppState } from "@/store";
 import { isTickSimAction } from "@/actions/sim-tick";
-import { nodeOutputConnectionsSelector } from "@/services/graph/selectors/wires";
+import { nodeOutputWiresFromNodeIdSelector } from "@/services/graph/selectors/wires";
 
 import { SimulatorState } from "../state";
 import { SimTransitionWindow } from "../types";
@@ -86,8 +86,8 @@ function tickWindow(
     };
 
     // Add each node we output to, to the output list.
-    const outputConnections = nodeOutputConnectionsSelector(appState, nodeId);
-    for (const outConn of outputConnections) {
+    const outputWires = nodeOutputWiresFromNodeIdSelector(appState, nodeId);
+    for (const outConn of outputWires) {
       const nodeId = outConn.inputPin.nodeId;
       if (updatedNodes.indexOf(nodeId) === -1) {
         updatedNodes.push(nodeId);
