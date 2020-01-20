@@ -8,7 +8,7 @@ import {
   fieldHeightSelector
 } from "@/services/field/selectors/bounds";
 
-import { fieldDragLeave } from "@/actions/field-drag-leave";
+import { fieldMouseLeave } from "@/actions/field-mouse-leave";
 
 import { FieldSvgElementProvider } from "./contexts/fieldSvgElement";
 
@@ -31,7 +31,7 @@ const CircuitField: React.FC = () => {
   }, []);
 
   const onMouseLeave = React.useCallback(() => {
-    dispatch(fieldDragLeave());
+    dispatch(fieldMouseLeave());
   }, []);
 
   return (
