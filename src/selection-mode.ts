@@ -1,6 +1,6 @@
-import { SelectionMode } from "@/types";
-import { ModifierKeys } from "./types";
-import { keyboardIsMac } from "@/runtime-env";
+import { keyboardIsMac } from "./runtime-env";
+
+export type SelectionMode = "set" | "append" | "remove" | "toggle";
 
 export function getModifiers(e: MouseEvent): ModifierKeys {
   const { ctrlKey, altKey, shiftKey, metaKey } = e;
@@ -22,4 +22,10 @@ export function getSelectMode(modifiers: ModifierKeys): SelectionMode {
     return "toggle";
   }
   return "set";
+}
+
+export interface ModifierKeys {
+  ctrlMetaKey: boolean;
+  shiftKey: boolean;
+  altKey: boolean;
 }

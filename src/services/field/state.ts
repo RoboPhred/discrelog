@@ -6,6 +6,9 @@ export interface FieldState {
   nodePositionsById: IDMap<Point>;
   wireJointIdsByWireId: IDMap<string[]>;
   wireJointPositionsByJointId: IDMap<Point>;
+  dragMode: "move" | "select" | null;
+  dragStart: Point | null;
+  dragEnd: Point | null;
 }
 
 const _defaultState: FieldState = {
@@ -13,7 +16,10 @@ const _defaultState: FieldState = {
   height: 768,
   nodePositionsById: {},
   wireJointIdsByWireId: {},
-  wireJointPositionsByJointId: {}
+  wireJointPositionsByJointId: {},
+  dragMode: null,
+  dragStart: null,
+  dragEnd: null
 };
 
 export const defaultFieldState: Readonly<FieldState> = Object.freeze(

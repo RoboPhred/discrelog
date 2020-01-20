@@ -5,23 +5,22 @@ import { fpSet } from "@/utils";
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
+import { isFieldDragStartNodeAction } from "@/actions/field-drag-start-node";
 import { selectNodes } from "@/actions/select-nodes";
 
 import { isNodeSelectedSelector } from "@/services/selection/selectors/selection";
-
-import { isDragStartNodeAction } from "../actions/drag-start-node";
 
 export default function dragNodesStartReducer(
   state: AppState = defaultAppState,
   action: AnyAction
 ) {
-  if (!isDragStartNodeAction(action)) {
+  if (!isFieldDragStartNodeAction(action)) {
     return state;
   }
 
   const { nodeId, x, y, selectionMode } = action.payload;
 
-  state = fpSet(state, "ui", "circuitEditor", "circuitField", value => ({
+  state = fpSet(state, "services", "field", value => ({
     ...value,
     dragMode: "move" as const,
     dragStart: {

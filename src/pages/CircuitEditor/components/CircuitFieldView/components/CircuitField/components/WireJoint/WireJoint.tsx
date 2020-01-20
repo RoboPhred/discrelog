@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { Point } from "@/types";
 import { cls } from "@/utils";
+import { getSelectMode, getModifiers } from "@/selection-mode";
 
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
@@ -14,7 +15,6 @@ import { moveWireJoint } from "@/actions/wire-joint-move";
 import { selectWireJoints } from "@/actions/select-wire-joints";
 
 import { useEventMouseCoords } from "../../hooks/useMouseCoords";
-import { getSelectMode, getModifiers } from "../../selection-mode";
 
 import styles from "./WireJoint.module.css";
 

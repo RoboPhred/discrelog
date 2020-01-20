@@ -1,9 +1,9 @@
-import { isDragContinueAction } from "../actions/drag-continue";
+import { isFieldDragContinueAction } from "@/actions/field-drag-continue";
 
-import { createFieldReducer } from "./utils";
+import { createFieldReducer } from "../utils";
 
 export default createFieldReducer((state, action) => {
-  if (!isDragContinueAction(action)) {
+  if (!isFieldDragContinueAction(action)) {
     return state;
   }
 

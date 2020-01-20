@@ -1,7 +1,7 @@
 import union from "lodash/union";
 import difference from "lodash/difference";
 
-import { SelectionMode } from "@/types";
+import { SelectionMode } from "@/selection-mode";
 
 import {
   createServiceReducerCreator,

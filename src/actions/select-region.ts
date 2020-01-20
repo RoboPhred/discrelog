@@ -1,6 +1,7 @@
 import { AnyAction } from "redux";
 
-import { Rectangle, SelectionMode } from "@/types";
+import { Rectangle } from "@/types";
+import { SelectionMode } from "@/selection-mode";
 
 export const ACTION_SELECT_REGION = "@select/region" as const;
 export const selectRegion = (

@@ -10,12 +10,14 @@ import {
   pointAdd,
   scale
 } from "@/geometry";
+import { getSelectMode, getModifiers } from "@/selection-mode";
 
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
 
 import { addWireJoint } from "@/actions/wire-joint-add";
 import { moveWireJoint } from "@/actions/wire-joint-move";
+import { selectWires } from "@/actions/select-wires";
 
 import {
   wireJointPositionSelector,
@@ -24,8 +26,6 @@ import {
 } from "@/services/field/selectors/wires";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
-import { selectWires } from "@/actions/select-wires";
-import { getSelectMode, getModifiers } from "../selection-mode";
 
 export interface WireSegmentProps {
   wireId: string;

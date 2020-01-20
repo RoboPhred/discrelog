@@ -2,6 +2,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 
 import { Point } from "@/types";
+import { getModifiers, getSelectMode } from "@/selection-mode";
 
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
@@ -10,21 +11,19 @@ import { nodeTypeSelector } from "@/services/graph/selectors/nodes";
 import { nodeStateSelector } from "@/services/simulator/selectors/nodes";
 import { isNodeSelectedSelector } from "@/services/selection/selectors/selection";
 
+import { fieldDragStartNode } from "@/actions/field-drag-start-node";
+import { fieldDragContinue } from "@/actions/field-drag-continue";
+import { fieldDragEnd } from "@/actions/field-drag-end";
+import { interactNode } from "@/actions/node-interact";
+import { selectNodes } from "@/actions/select-nodes";
+
 import NodeVisual, {
   RenderPinProps
 } from "@/pages/CircuitEditor/components/NodeVisual";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
 
-import { dragStartNode } from "../actions/drag-start-node";
-import { dragContinue } from "../actions/drag-continue";
-import { dragEnd } from "../actions/drag-end";
-
-import { getModifiers, getSelectMode } from "../selection-mode";
-
 import CircuitNodePin from "./CircuitNodePin";
-import { interactNode } from "@/actions/node-interact";
-import { selectNodes } from "@/actions/select-nodes";
 
 export interface CircuitNodeProps {
   nodeId: string;
@@ -56,7 +55,7 @@ const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId, x, y }) => {
       const p = getCoords(e);
       const modifiers = getModifiers(e);
       const mode = getSelectMode(modifiers);
-      dispatch(dragStartNode(nodeId, p, mode));
+      dispatch(fieldDragStartNode(nodeId, p, mode));
     },
     [nodeId, getCoords]
   );
@@ -64,7 +63,7 @@ const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId, x, y }) => {
   const onDragMove = React.useCallback(
     (offset: Point, e: MouseEvent) => {
       const p = getCoords(e);
-      dispatch(dragContinue(p));
+      dispatch(fieldDragContinue(p));
     },
     [getCoords]
   );
@@ -74,7 +73,7 @@ const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId, x, y }) => {
       const p = getCoords(e);
       const modifiers = getModifiers(e);
       const mode = getSelectMode(modifiers);
-      dispatch(dragEnd(p, mode));
+      dispatch(fieldDragEnd(p, mode));
     },
     [getCoords]
   );

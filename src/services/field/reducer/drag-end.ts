@@ -7,22 +7,21 @@ import { fpSet } from "@/utils";
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
+import { isFieldDragEndAction } from "@/actions/field-drag-end";
 import { selectRegion } from "@/actions/select-region";
 import { moveSelection } from "@/actions/selection-move";
-
-import { isDragEndAction } from "../actions/drag-end";
 
 export default function dragEndReducer(
   state: AppState = defaultAppState,
   action: AnyAction
 ) {
-  if (!isDragEndAction(action)) {
+  if (!isFieldDragEndAction(action)) {
     return state;
   }
 
   const { x, y, selectionMode } = action.payload;
 
-  const { dragMode, dragStart } = state.ui.circuitEditor.circuitField;
+  const { dragMode, dragStart } = state.services.field;
 
   if (dragStart) {
     switch (dragMode) {
@@ -39,7 +38,7 @@ export default function dragEndReducer(
     }
   }
 
-  state = fpSet(state, "ui", "circuitEditor", "circuitField", value => ({
+  state = fpSet(state, "services", "field", value => ({
     ...value,
     dragMode: null,
     dragStart: null,

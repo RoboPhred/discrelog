@@ -13,10 +13,9 @@ import { nodeTypesByIdSelector } from "@/services/graph/selectors/nodes";
 import { nodeStatesByIdSelector } from "@/services/simulator/selectors/nodes";
 import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
+import { dragMoveOffsetSelector } from "@/services/field/selectors/drag";
 
 import NodeVisual from "@/pages/CircuitEditor/components/NodeVisual";
-
-import { dragMoveOffsetSelector } from "../selectors";
 
 const selectedNodePositionsById = createSelector(
   selectedNodeIdsSelector,
