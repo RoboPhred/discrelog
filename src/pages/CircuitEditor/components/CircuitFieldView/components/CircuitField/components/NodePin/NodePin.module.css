@@ -1,4 +1,4 @@
-.circuit-node-pin {
+.node-pin {
   fill: var(--color-element-neutral);
   stroke: var(--color-element-neutral);
 }

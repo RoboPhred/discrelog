@@ -3,12 +3,12 @@ import { pointAdd, ZeroPoint } from "@/geometry";
 import { NodeDefinition } from "@/node-defs";
 import { Point } from "@/types";
 
-import { nodeDefSelector } from "@/services/graph/selectors/nodes";
+import { nodeDefByNodeIdSelector } from "@/services/graph/selectors/nodes";
 
 import { createFieldSelector } from "../utils";
 import { FieldState } from "../state";
 
-import { nodePositionByIdSelector } from "./positions";
+import { nodePositionByNodeIdSelector } from "./positions";
 
 interface PositionCache {
   inputNodeDef: NodeDefinition | null;
@@ -27,8 +27,8 @@ export const wireStartPositionSelector = (state: AppState, wireId: string) => {
   const {
     outputPin: { nodeId, pinId }
   } = state.services.graph.wiresById[wireId];
-  const nodeDef = nodeDefSelector(state, nodeId);
-  const nodePosition = nodePositionByIdSelector(state, nodeId) || ZeroPoint;
+  const nodeDef = nodeDefByNodeIdSelector(state, nodeId);
+  const nodePosition = nodePositionByNodeIdSelector(state, nodeId) || ZeroPoint;
 
   // Caching is to get a consistent reference to avoid component rerenders.
   //  We are not concerned about performance here.
@@ -59,8 +59,8 @@ export const wireEndPositionSelector = (state: AppState, wireId: string) => {
   const {
     inputPin: { nodeId, pinId }
   } = state.services.graph.wiresById[wireId];
-  const nodeDef = nodeDefSelector(state, nodeId);
-  const nodePosition = nodePositionByIdSelector(state, nodeId) || ZeroPoint;
+  const nodeDef = nodeDefByNodeIdSelector(state, nodeId);
+  const nodePosition = nodePositionByNodeIdSelector(state, nodeId) || ZeroPoint;
 
   // Caching is to get a consistent reference to avoid component rerenders.
   //  We are not concerned about performance here.

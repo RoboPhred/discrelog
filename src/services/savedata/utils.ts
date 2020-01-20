@@ -11,7 +11,7 @@ import { defaultSimulatorState } from "../simulator/state";
 import { defaultGraphState } from "../graph/state";
 import { nodeIdsSelector, nodeByIdSelector } from "../graph/selectors/nodes";
 import { wireIdsSelector, wireByIdSelector } from "../graph/selectors/wires";
-import { nodePositionByIdSelector } from "../field/selectors/positions";
+import { nodePositionByNodeIdSelector } from "../field/selectors/positions";
 import {
   wireJointPositionsByJointIdSelector,
   wireJointIdsByWireIdSelector
@@ -23,7 +23,7 @@ export function createSave(state: AppState): SaveData {
   return {
     nodes: nodeIdsSelector(state).map(nodeId => {
       const node = nodeByIdSelector(state, nodeId);
-      const position = nodePositionByIdSelector(state, nodeId);
+      const position = nodePositionByNodeIdSelector(state, nodeId);
       const saveNode: SaveNode = {
         id: node.id,
         type: node.type,

@@ -22,18 +22,16 @@ import NodeVisual, {
 } from "@/pages/CircuitEditor/components/NodeVisual";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
-
-import CircuitNodePin from "./CircuitNodePin";
+import { nodePositionByNodeIdSelector } from "@/services/field/selectors/positions";
 
 export interface CircuitNodeProps {
   nodeId: string;
-  x: number;
-  y: number;
 }
 
-const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId, x, y }) => {
+const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId }) => {
   const dispatch = useDispatch();
 
+  const { x, y } = useSelector(s => nodePositionByNodeIdSelector(s, nodeId));
   const nodeType = useSelector(s => nodeTypeSelector(s, nodeId));
   const nodeState = useSelector(s => nodeStateSelector(s, nodeId));
   const isSelected = useSelector(s => isNodeSelectedSelector(s, nodeId));
@@ -95,14 +93,6 @@ const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId, x, y }) => {
     [getCoords]
   );
 
-  const renderPin = React.useCallback(
-    (props: RenderPinProps) => {
-      const { id, x, y } = props;
-      return <CircuitNodePin key={id} nodeId={nodeId} pinId={id} x={x} y={y} />;
-    },
-    [nodeId]
-  );
-
   if (!nodeType) {
     return null;
   }
@@ -116,7 +106,6 @@ const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId, x, y }) => {
       // TODO: Use css vars for this.  Currently cannot do so as nodes declare their own
       //  stroke/fill that gets set as attributes
       colorOverride={isSelected ? "blue" : undefined}
-      renderPin={renderPin}
       onMouseDown={onMouseDown}
     />
   );

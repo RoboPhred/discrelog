@@ -13,7 +13,7 @@ import { inputsOf, outputsOf } from "@/node-defs/utils";
 
 import { nodeInputConnectionsByPinSelector } from "@/services/graph/selectors/wires";
 import {
-  nodeDefSelector,
+  nodeDefByNodeIdSelector,
   nodeIdsSelector
 } from "@/services/graph/selectors/nodes";
 
@@ -55,7 +55,7 @@ function initNode(
   nodeId: string,
   appState: AppState
 ): SimulatorState {
-  const def = nodeDefSelector(appState, nodeId);
+  const def = nodeDefByNodeIdSelector(appState, nodeId);
   if (!def) {
     return state;
   }
@@ -106,7 +106,7 @@ export function collectNodeTransitions(
   nodeId: string,
   appState: AppState
 ): SimulatorState {
-  const def = nodeDefSelector(appState, nodeId);
+  const def = nodeDefByNodeIdSelector(appState, nodeId);
   if (!def || !def.evolve) {
     return state;
   }
