@@ -8,6 +8,12 @@ body,
   font-family: "Titillium Web", sans-serif;
 }
 
+:root {
+  --color-element-neutral: black;
+  --color-element-selected: blue;
+  --color-element-powered: green;
+}
+
 .flex-module__flex-row___2HFWh {
   display: -webkit-box;
   display: flex;
@@ -40,6 +46,55 @@ body,
 .sizing-module__fill-parent___2SiAH {
   width: 100%;
   height: 100%;
+}
+
+.CircuitNodePin-module__circuit-node-pin___3jNOY {
+  fill: black;
+  fill: var(--color-element-neutral);
+  stroke: black;
+  stroke: var(--color-element-neutral);
+}
+
+.CircuitNodePin-module__selected___1n6kJ {
+  fill: blue;
+  fill: var(--color-element-selected);
+  stroke: blue;
+  stroke: var(--color-element-selected);
+}
+
+.WireJoint-module__wire-joint___3lTCQ {
+  fill: black;
+  fill: var(--color-element-neutral);
+  stroke: black;
+  stroke: var(--color-element-neutral);
+}
+
+.WireJoint-module__wire-joint___3lTCQ.WireJoint-module__selected___1jPD- {
+  fill: blue;
+  fill: var(--color-element-selected);
+  stroke: blue;
+  stroke: var(--color-element-selected);
+}
+
+.Wire-module__wire___1Atow {
+  fill: black;
+  fill: var(--color-element-neutral);
+  stroke: black;
+  stroke: var(--color-element-neutral);
+}
+
+.Wire-module__wire___1Atow.Wire-module__powered___afkca {
+  fill: green;
+  fill: var(--color-element-powered);
+  stroke: green;
+  stroke: var(--color-element-powered);
+}
+
+.Wire-module__wire___1Atow.Wire-module__selected___2OYgN {
+  fill: blue;
+  fill: var(--color-element-selected);
+  stroke: blue;
+  stroke: var(--color-element-selected);
 }
 
 .CircuitField-module__circuit-editor___Xrh6Y {
@@ -89,15 +144,32 @@ body,
 }
 
 .CircuitEditor-module__editor___UL8qT {
+  background: grey;
+  width: 100%;
+  height: 100%;
+}
+
+.CircuitEditor-module__layout-rows___2WG7r {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+          flex-flow: row nowrap;
+  width: 100%;
+  height: 100%;
+}
+
+.CircuitEditor-module__layout-columns___1MXih {
   display: -webkit-box;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-          flex-direction: column;
-  background: grey;
+          flex-flow: column nowrap;
+  width: 100%;
+  height: 100%;
 }
 
-.CircuitEditor-module__editor-fieldcontainer___bMu2Y {
+.CircuitEditor-module__fieldcontainer___1qlAx {
   -webkit-box-flex: 1;
           flex-grow: 1;
   width: 100%;
@@ -107,10 +179,13 @@ body,
   align-self: center;
 }
 
-.CircuitEditor-module__editor-toolwindow-horizontal___1PhL8 {
+.CircuitEditor-module__toolwindow___3jN3R {
   background: white;
-  width: 100%;
-  height: 250px;
+}
+
+.CircuitEditor-module__toolwindow-row___20SDp {
+  width: 250px;
+  height: 100%;
 }
 
 .Intro-module__intro___11OUj {
@@ -186,22 +261,48 @@ body,
   color: blue;
 }
 
-.SimControls-module__simctrls-buttom-play___3XU45 {
+.SimControls-module__button___8i6BJ {
+  margin: 0 2px;
+}
+
+.SimControls-module__button-play___OQ_Wh {
   fill: darkgreen;
   cursor: pointer;
 }
 
-.SimControls-module__simctrls-buttom-play___3XU45:hover {
+.SimControls-module__button-play___OQ_Wh:hover {
   fill: greenyellow;
 }
 
-.SimControls-module__simctrls-button-stop___3Wdm8 {
+.SimControls-module__button-stop___t8jrA {
   fill: darkred;
   cursor: pointer;
 }
 
-.SimControls-module__simctrls-button-stop___3Wdm8:hover {
+.SimControls-module__button-stop___t8jrA:hover {
   fill: red;
+}
+
+.SimControls-module__button-pause___n1JVQ {
+  fill: darkorange;
+  cursor: pointer;
+}
+
+.SimControls-module__button-pause___n1JVQ:hover {
+  fill: orange;
+}
+
+.SimControls-module__button-pause___n1JVQ.SimControls-module__selected___2ryhI {
+  fill: blue;
+}
+
+.SimControls-module__button--disabled___3eIn8 {
+  fill: grey;
+  cursor: unset;
+}
+
+.SimControls-module__button--disabled___3eIn8:hover {
+  fill: grey;
 }
 
 .TitleBar-module__titlebar___3fEaN {
