@@ -8,8 +8,7 @@ import { nodeDefSelector } from "@/services/graph/selectors/nodes";
 import { createFieldSelector } from "../utils";
 import { FieldState } from "../state";
 
-import { nodePositionSelector } from "./positions";
-import { FieldSvgElementProvider } from "@/pages/CircuitEditor/components/CircuitFieldView/components/CircuitField/contexts/fieldSvgElement";
+import { nodePositionByIdSelector } from "./positions";
 
 interface PositionCache {
   inputNodeDef: NodeDefinition | null;
@@ -29,7 +28,7 @@ export const wireStartPositionSelector = (state: AppState, wireId: string) => {
     outputPin: { nodeId, pinId }
   } = state.services.graph.wiresById[wireId];
   const nodeDef = nodeDefSelector(state, nodeId);
-  const nodePosition = nodePositionSelector(state, nodeId) || ZeroPoint;
+  const nodePosition = nodePositionByIdSelector(state, nodeId) || ZeroPoint;
 
   // Caching is to get a consistent reference to avoid component rerenders.
   //  We are not concerned about performance here.
@@ -61,7 +60,7 @@ export const wireEndPositionSelector = (state: AppState, wireId: string) => {
     inputPin: { nodeId, pinId }
   } = state.services.graph.wiresById[wireId];
   const nodeDef = nodeDefSelector(state, nodeId);
-  const nodePosition = nodePositionSelector(state, nodeId) || ZeroPoint;
+  const nodePosition = nodePositionByIdSelector(state, nodeId) || ZeroPoint;
 
   // Caching is to get a consistent reference to avoid component rerenders.
   //  We are not concerned about performance here.
@@ -94,7 +93,7 @@ export const allJointIdsSelector = createFieldSelector((state: FieldState) =>
   Object.keys(state.wireJointPositionsByJointId)
 );
 
-export const wireJointIdsSelector = createFieldSelector(
+export const wireJointIdsByWireIdSelector = createFieldSelector(
   (state: FieldState, wireId: string) => state.wireJointIdsByWireId[wireId]
 );
 

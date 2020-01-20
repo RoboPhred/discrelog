@@ -1,7 +1,22 @@
-import { FieldState } from "../field/state";
-import { GraphState } from "../graph/state";
+import { NodeType } from "@/node-defs";
+import { Point } from "@/types";
+
+import { NodePin } from "../graph/types";
 
 export interface SaveData {
-  graph: GraphState;
-  field: FieldState;
+  nodes: SaveNode[];
+  wires: SaveWire[];
+}
+
+export interface SaveNode {
+  id: string;
+  type: NodeType;
+  x: number;
+  y: number;
+}
+
+export interface SaveWire {
+  output: NodePin;
+  input: NodePin;
+  joints: Point[];
 }

@@ -8,7 +8,7 @@ import { pointSubtract } from "@/geometry";
 
 import { isCopyNodesAction } from "@/actions/clipboard-copy";
 
-import { nodeSelector } from "@/services/graph/selectors/nodes";
+import { nodeByIdSelector } from "@/services/graph/selectors/nodes";
 import { nodeOutputConnectionsByPinSelector } from "@/services/graph/selectors/wires";
 import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
 
@@ -39,7 +39,7 @@ export default createClipboardReducer((state, action, appState) => {
   const rootPosition = nodePositionsById[nodeIds[0]];
 
   const copyNodes: ClipboardNode[] = nodeIds.map(nodeId => {
-    const node = nodeSelector(appState, nodeId);
+    const node = nodeByIdSelector(appState, nodeId);
     const outputs = nodeOutputConnectionsByPinSelector(appState, nodeId);
     const copyNode: ClipboardNode = {
       id: copyIds[nodeId],

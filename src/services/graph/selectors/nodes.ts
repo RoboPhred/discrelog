@@ -18,13 +18,13 @@ export const nodeDefsByIdSelector = createGraphSelector(s =>
   mapValues(nodeTypesByIdSelector.local(s), type => NodeTypes[type] || null)
 );
 
-export const nodeSelector = createGraphSelector(
+export const nodeByIdSelector = createGraphSelector(
   (s: GraphState, nodeId: string) => s.nodesById[nodeId] || null
 );
 
 export const nodeTypeSelector = createGraphSelector(
   (s: GraphState, nodeId: string) => {
-    const node = nodeSelector.local(s, nodeId);
+    const node = nodeByIdSelector.local(s, nodeId);
     if (!node) {
       return null;
     }
@@ -34,7 +34,7 @@ export const nodeTypeSelector = createGraphSelector(
 
 export const nodeDefSelector = createGraphSelector(
   (s: GraphState, nodeId: string) => {
-    const node = nodeSelector.local(s, nodeId);
+    const node = nodeByIdSelector.local(s, nodeId);
     if (!node) {
       return null;
     }

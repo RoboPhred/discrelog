@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import "./styles";
 
 import { store } from "./store";
+
 import App from "./components/App";
 
 const rootEl = document.getElementById("root");

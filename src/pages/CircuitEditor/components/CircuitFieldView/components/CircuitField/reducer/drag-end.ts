@@ -22,9 +22,7 @@ export default function dragEndReducer(
 
   const { x, y, selectionMode } = action.payload;
 
-  let circuitField = state.ui.circuitEditor.circuitField;
-
-  const { dragMode, dragStart } = circuitField;
+  const { dragMode, dragStart } = state.ui.circuitEditor.circuitField;
 
   if (dragStart) {
     switch (dragMode) {
@@ -41,14 +39,12 @@ export default function dragEndReducer(
     }
   }
 
-  circuitField = {
-    ...circuitField,
+  state = fpSet(state, "ui", "circuitEditor", "circuitField", value => ({
+    ...value,
     dragMode: null,
     dragStart: null,
     dragEnd: null
-  };
-
-  state = fpSet(state, "ui", "circuitEditor", "circuitField", circuitField);
+  }));
 
   return state;
 }

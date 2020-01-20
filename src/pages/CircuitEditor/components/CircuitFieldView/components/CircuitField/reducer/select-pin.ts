@@ -53,13 +53,11 @@ function doSelectPinReducer(
   action: SelectPinAction
 ): AppState {
   const { nodeId, pinId } = action.payload;
-  let fieldState = state.ui.circuitEditor.circuitField;
-  fieldState = {
-    ...fieldState,
+  return fpSet(state, "ui", "circuitEditor", "circuitField", value => ({
+    ...value,
     selectedPin: {
       nodeId,
       pinId
     }
-  };
-  return fpSet(state, "ui", "circuitEditor", "circuitField", fieldState);
+  }));
 }

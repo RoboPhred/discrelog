@@ -1,26 +1,91 @@
-import { SaveData } from "./types";
+import { SaveData, SaveNode, SaveWire } from "./types";
+
 import { AppState } from "@/store";
+import rootReducer from "@/store/reducer";
+
+import { addNode } from "@/actions/node-add";
+import { attachWire } from "@/actions/wire-attach";
+
 import { defaultSelectionState } from "../selection/state";
 import { defaultSimulatorState } from "../simulator/state";
+import { defaultGraphState } from "../graph/state";
+import { nodeIdsSelector, nodeByIdSelector } from "../graph/selectors/nodes";
+import { wireIdsSelector, wireByIdSelector } from "../graph/selectors/wires";
+import { nodePositionByIdSelector } from "../field/selectors/positions";
+import {
+  wireJointPositionsByJointIdSelector,
+  wireJointIdsByWireIdSelector
+} from "../field/selectors/wires";
+import { defaultFieldState } from "../field/state";
 
 export function createSave(state: AppState): SaveData {
+  const jointPositions = wireJointPositionsByJointIdSelector(state);
   return {
-    field: state.services.field,
-    graph: state.services.graph
+    nodes: nodeIdsSelector(state).map(nodeId => {
+      const node = nodeByIdSelector(state, nodeId);
+      const position = nodePositionByIdSelector(state, nodeId);
+      const saveNode: SaveNode = {
+        id: node.id,
+        type: node.type,
+        x: position.x,
+        y: position.y
+      };
+      return saveNode;
+    }),
+    wires: wireIdsSelector(state).map(wireId => {
+      const wire = wireByIdSelector(state, wireId);
+      const jointIds = wireJointIdsByWireIdSelector(state, wireId);
+      const saveWire: SaveWire = {
+        input: wire.inputPin,
+        output: wire.outputPin,
+        joints: jointIds.map(jointId => jointPositions[jointId])
+      };
+      return saveWire;
+    })
   };
 }
 
 export function loadSave(state: AppState, save: SaveData): AppState {
-  return {
+  state = {
     ...state,
     services: {
       ...state.services,
-      field: save.field,
-      graph: save.graph,
+      field: defaultFieldState,
+      graph: defaultGraphState,
       selection: defaultSelectionState,
       simulator: defaultSimulatorState
     }
   };
+
+  const fallbackState = state;
+
+  try {
+    state = save.nodes.reduce(
+      (state, node) =>
+        rootReducer(
+          state,
+          addNode(node.type, {
+            nodeId: node.id,
+            position: { x: node.x, y: node.y }
+          })
+        ),
+      state
+    );
+
+    state = save.wires.reduce(
+      (state, wire) =>
+        rootReducer(
+          state,
+          attachWire(wire.output, wire.input, { joints: wire.joints })
+        ),
+      state
+    );
+  } catch {
+    // TODO: Notify user of load error.
+    return fallbackState;
+  }
+
+  return state;
 }
 
 export function storeAutosave(save: SaveData): void {

@@ -21,16 +21,14 @@ export default function dragNodesStartReducer(
 
   const { nodeId, x, y, selectionMode } = action.payload;
 
-  let fieldState = state.ui.circuitEditor.circuitField;
-  fieldState = {
-    ...fieldState,
-    dragMode: "move",
+  state = fpSet(state, "ui", "circuitEditor", "circuitField", value => ({
+    ...value,
+    dragMode: "move" as const,
     dragStart: {
       x,
       y
     }
-  };
-  state = fpSet(state, "ui", "circuitEditor", "circuitField", fieldState);
+  }));
 
   if (!isNodeSelectedSelector(state, nodeId)) {
     // Dragging a node that was not previously selected.  Perform a selection on the node.
