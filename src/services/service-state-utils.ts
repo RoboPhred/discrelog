@@ -24,7 +24,7 @@ export function createServiceReducerCreator<TServiceKey extends ServiceKey>(
   return (reducer: ServiceReducer<AppState["services"][TServiceKey]>) => {
     return (state: AppState = defaultAppState, action: AnyAction) => {
       const newState = reducer(state.services[service], action, state);
-      if (state.services.field != newState) {
+      if (state.services[service] != newState) {
         return fpSet(state, "services", service, newState);
       }
       return state;
