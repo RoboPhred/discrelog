@@ -73,7 +73,6 @@ class NodeVisual extends React.Component<Props> {
         pins = Object.keys(def.pins).map(key => {
           const pin = def.pins[key];
           let element = renderPin({
-            direction: pin.direction,
             id: key,
             ...pin
           });

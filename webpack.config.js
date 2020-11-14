@@ -1,8 +1,8 @@
-const { resolve: resolvePath, join: joinPath } = require("path");
+const { resolve: resolvePath, join: joinPath, relative: relativePath, sep } = require("path");
+const { DefinePlugin } = require("webpack");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const postcssCustomProperties = require("postcss-custom-properties");
 
 const isProd = process.env["NODE_ENV"] === "production";
 const isDev = !isProd;
@@ -29,7 +29,7 @@ module.exports = {
   },
 
   output: {
-    filename: "[name].[hash].bundle.js",
+    filename: "[name].[fullhash].bundle.js",
     path: PATHS.dist,
     publicPath: PUBLIC_URL
   },
@@ -45,6 +45,12 @@ module.exports = {
         PATHS.node_modules,
         "svg-arc-to-cubic-bezier/cjs"
       )
+    },
+    fallback: {
+      // Used by react-markdown
+      "path": require.resolve("path-browserify"),
+      // Used by svg-path-bounds
+      "assert": require.resolve("assert")
     }
   },
 
@@ -74,7 +80,7 @@ module.exports = {
             loader: "css-loader",
             options: {
               modules: {
-                localIdentName: "[name]__[local]___[hash:base64:5]"
+                localIdentName: "[name]__[local]___[fullhash:base64:5]"
               }
             }
           },
@@ -93,6 +99,11 @@ module.exports = {
   },
 
   plugins: [
+    new DefinePlugin({
+      "process.env": {
+        NODE_ENV: JSON.stringify(isDev ? "development" : "production"),
+      },
+    }),
     new HtmlWebpackPlugin({
       inject: true,
       template: resolvePath(PATHS.src, "index.ejs")
@@ -101,11 +112,24 @@ module.exports = {
   ].filter(truthy),
 
   optimization: {
+    runtimeChunk: true,
     splitChunks: {
-      chunks: "all"
+      chunks: "all",
+      cacheGroups: {
+        npm: {
+          test: /node_modules/,
+          name: (mod) => {
+            const relToModule = relativePath(PATHS.node_modules, mod.context);
+            const moduleName = relToModule.substring(
+              0,
+              relToModule.indexOf(sep),
+            );
+            return `npm.${moduleName}`;
+          },
+        },
+      },
     },
-    runtimeChunk: true
-  }
+  },
 };
 
 function truthy(x) {
