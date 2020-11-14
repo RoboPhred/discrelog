@@ -2,7 +2,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 
 import { typedKeys } from "@/utils";
-import { NodeTypes, NodeType } from "@/node-defs";
+import { NodeTypes, NodeType, MaxNodeSize } from "@/node-defs";
 
 import useMouseTracking from "@/hooks/useMouseTracking";
 
@@ -21,7 +21,6 @@ const ElementTray: React.FC = () => {
 
   return (
     <div className={styles["circuittray"]}>
-      <div className={styles["circuittray-title"]}>Elements</div>
       <div className={styles["circuittray-elements"]}>{elements}</div>
     </div>
   );
@@ -65,7 +64,7 @@ const Element: React.FC<ElementProps> = ({ nodeType }) => {
 
   return (
     <div onMouseDown={onMouseDown}>
-      <svg width={110} height={70}>
+      <svg width={MaxNodeSize.width} height={MaxNodeSize.height}>
         <NodeVisual nodeType={nodeType} nodeState={{}} />
       </svg>
     </div>

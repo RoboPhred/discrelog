@@ -1,6 +1,7 @@
 import { Point, Size, Rectangle } from "@/types";
 
 export const ZeroPoint = Object.freeze({ x: 0, y: 0 });
+export const ZeroRect = Object.freeze({ p1: ZeroPoint, p2: ZeroPoint });
 
 export function magnitude(v: Point): number {
   return Math.sqrt(v.x * v.x + v.y * v.y);
@@ -64,6 +65,21 @@ export function calcSize(r: Rectangle): Size {
   return {
     width: r.p2.x - r.p1.x,
     height: r.p2.y - r.p1.y,
+  };
+}
+
+export function union(r1: Rectangle, r2: Rectangle): Rectangle {
+  r1 = normalizeRectangle(r1);
+  r2 = normalizeRectangle(r2);
+  return {
+    p1: {
+      x: Math.min(r1.p1.x, r2.p1.x),
+      y: Math.min(r1.p1.y, r2.p1.y),
+    },
+    p2: {
+      x: Math.max(r1.p2.x, r2.p2.x),
+      y: Math.max(r1.p2.y, r2.p2.y),
+    },
   };
 }
 

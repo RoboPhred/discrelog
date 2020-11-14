@@ -7,9 +7,9 @@ import { nodeOutputWiresFromNodeIdSelector } from "@/services/graph/selectors/wi
 
 import { SimulatorState } from "../state";
 import { SimTransitionWindow } from "../types";
+import { createSimulatorReducer } from "../utils";
 
 import { collectNodeTransitions } from "./utils";
-import { createSimulatorReducer } from "../utils";
 
 export default createSimulatorReducer((state, action, appState) => {
   if (!isTickSimAction(action)) {

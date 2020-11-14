@@ -9,7 +9,7 @@ import useMouseTracking from "@/hooks/useMouseTracking";
 
 import { nodeTypeFromNodeIdSelector } from "@/services/graph/selectors/nodes";
 import { nodeStateFromNodeIdSelector } from "@/services/simulator/selectors/nodes";
-import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
+import { isNodeSelectedSelector } from "@/services/selection/selectors/selection";
 
 import { fieldDragStartNode } from "@/actions/field-drag-start-node";
 import { fieldDragContinue } from "@/actions/field-drag-continue";
@@ -36,9 +36,7 @@ const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId }) => {
   );
   const nodeType = useSelector((s) => nodeTypeFromNodeIdSelector(s, nodeId));
   const nodeState = useSelector((s) => nodeStateFromNodeIdSelector(s, nodeId));
-  const isSelected = useSelector((s) =>
-    isNodeSelectedFromNodeIdSelector(s, nodeId)
-  );
+  const isSelected = useSelector((s) => isNodeSelectedSelector(s, nodeId));
 
   const getCoords = useEventMouseCoords();
 

@@ -9,7 +9,7 @@ import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
 
 import { wireJointPositionFromJointIdSelector } from "@/services/field/selectors/wires";
-import { isJointSelectedFromJointIdSelector } from "@/services/selection/selectors/selection";
+import { isJointSelectedSelector } from "@/services/selection/selectors/selection";
 
 import { moveWireJoint } from "@/actions/wire-joint-move";
 import { selectWireJoints } from "@/actions/select-wire-joints";
@@ -27,7 +27,7 @@ const WireJoint: React.FC<WireJointProps> = ({ jointId }) => {
   const dispatch = useDispatch();
 
   const isSelected = useSelector((state) =>
-    isJointSelectedFromJointIdSelector(state, jointId)
+    isJointSelectedSelector(state, jointId)
   );
 
   const position = useSelector((state) =>

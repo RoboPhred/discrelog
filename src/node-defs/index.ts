@@ -1,4 +1,10 @@
+import values from "lodash/values";
+import getBounds from "svg-path-bounds";
+
+import { calcSize, union, ZeroRect } from "@/geometry";
+
 import { NodeDefinition } from "./types";
+import { normalizeVisuals } from "./utils";
 
 export * from "./types";
 
@@ -18,3 +24,28 @@ export const NodeTypes = {
   seg7: require("./node-seg7").default as NodeDefinition,
 };
 export type NodeType = keyof typeof NodeTypes;
+
+export const MaxNodeSize = calcSize(
+  values(NodeTypes).reduce((bounds, { visual }) => {
+    const visuals = normalizeVisuals(visual.shapePath, undefined);
+    if (visual.hitPath) {
+      visuals.push({ path: visual.hitPath });
+    }
+    const rect = visuals
+      .map((path) => {
+        const bounds = getBounds(path.path);
+        return {
+          p1: {
+            x: bounds[0],
+            y: bounds[1],
+          },
+          p2: {
+            x: bounds[2],
+            y: bounds[3],
+          },
+        };
+      })
+      .reduce(union, ZeroRect);
+    return union(bounds, rect);
+  }, ZeroRect)
+);
