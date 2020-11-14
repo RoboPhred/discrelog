@@ -8,9 +8,9 @@ import { pointSubtract } from "@/geometry";
 
 import { isCopyNodesAction } from "@/actions/clipboard-copy";
 
-import { nodeByIdSelector } from "@/services/graph/selectors/nodes";
-import { nodeOutputConnectionsByPinSelector } from "@/services/graph/selectors/wires";
-import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
+import { nodeFromNodeIdSelector } from "@/services/graph/selectors/nodes";
+import { nodeOutputSourcesByPinIdFromNodeIdSelector } from "@/services/graph/selectors/wires";
+import { nodePositionsByNodeIdSelector } from "@/services/field/selectors/positions";
 
 import { ClipboardNode } from "../types";
 import { createClipboardReducer } from "../utils";
@@ -25,7 +25,7 @@ export default createClipboardReducer((state, action, appState) => {
     return state;
   }
 
-  const nodePositionsById = nodePositionsByIdSelector(appState);
+  const nodePositionsById = nodePositionsByNodeIdSelector(appState);
 
   const copyIds = zipObject(
     nodeIds,
@@ -39,8 +39,11 @@ export default createClipboardReducer((state, action, appState) => {
   const rootPosition = nodePositionsById[nodeIds[0]];
 
   const copyNodes: ClipboardNode[] = nodeIds.map(nodeId => {
-    const node = nodeByIdSelector(appState, nodeId);
-    const outputs = nodeOutputConnectionsByPinSelector(appState, nodeId);
+    const node = nodeFromNodeIdSelector(appState, nodeId);
+    const outputs = nodeOutputSourcesByPinIdFromNodeIdSelector(
+      appState,
+      nodeId
+    );
     const copyNode: ClipboardNode = {
       id: copyIds[nodeId],
       type: node.type,

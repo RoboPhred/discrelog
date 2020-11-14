@@ -3,31 +3,30 @@ import { useDispatch } from "react-redux";
 
 import { cls } from "@/utils";
 
-import { selectedPinSelector } from "@/pages/CircuitEditor/components/CircuitFieldView/components/CircuitField/selectors";
 import useSelector from "@/hooks/useSelector";
+
+import { nodePinPositionFromNodePinSelector } from "@/services/field/selectors/positions";
+import { selectedPinSelector } from "@/pages/CircuitEditor/components/CircuitFieldView/components/CircuitField/selectors";
 
 import { selectPin } from "../../actions/select-pin";
 
-import styles from "./CircuitNodePin.module.css";
+import styles from "./NodePin.module.css";
 
 const PIN_CIRCLE_RADIUS_UNSELECTED = 4;
 const PIN_CIRCLE_RADIUS_SELECTED = 6;
 
-export interface CircuitNodePinProps {
+export interface NodePinProps {
   nodeId: string;
   pinId: string;
-  x: number;
-  y: number;
 }
 
-const CircuitNodePin: React.FC<CircuitNodePinProps> = ({
-  nodeId,
-  pinId,
-  x,
-  y
-}) => {
+const NodePin: React.FC<NodePinProps> = ({ nodeId, pinId }) => {
   const dispatch = useDispatch();
   const selectedPin = useSelector(selectedPinSelector);
+  const position = useSelector(s =>
+    nodePinPositionFromNodePinSelector(s, nodeId, pinId)
+  );
+
   const isSelected =
     selectedPin != null &&
     selectedPin.nodeId === nodeId &&
@@ -42,19 +41,21 @@ const CircuitNodePin: React.FC<CircuitNodePinProps> = ({
     [nodeId, pinId]
   );
 
+  if (!position) {
+    return null;
+  }
+
+  const { x, y } = position;
+
   return (
     <circle
-      className={cls(
-        styles["circuit-node-pin"],
-        isSelected && styles["selected"]
-      )}
+      className={cls(styles["node-pin"], isSelected && styles["selected"])}
       cx={x}
       cy={y}
       r={isSelected ? PIN_CIRCLE_RADIUS_SELECTED : PIN_CIRCLE_RADIUS_UNSELECTED}
-      fill={isSelected ? "yellow" : "blue"}
       onMouseDown={onMouseDown}
     />
   );
 };
 
-export default CircuitNodePin;
+export default NodePin;

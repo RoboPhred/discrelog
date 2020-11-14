@@ -8,7 +8,8 @@ import { NodePin } from "../types";
 import { GraphState } from "../state";
 import { createGraphSelector } from "../utils";
 
-import { nodeDefSelector } from "./nodes";
+import { nodeDefFromNodeIdSelector, nodePinsSelector } from "./nodes";
+import mapValues from "lodash/mapValues";
 
 export const wireIdsSelector = createGraphSelector(
   createSelector(
@@ -17,7 +18,7 @@ export const wireIdsSelector = createGraphSelector(
   )
 );
 
-export const wireByIdSelector = createGraphSelector(
+export const wireFromWireIdSelector = createGraphSelector(
   (s: GraphState, wireId: string) => s.wiresById[wireId]
 );
 
@@ -30,7 +31,7 @@ const wiresSelector = createGraphSelector(
 
 export const nodePinDirectionSelector = createGraphSelector(
   (s: GraphState, pin: NodePin) => {
-    const def = nodeDefSelector.local(s, pin.nodeId);
+    const def = nodeDefFromNodeIdSelector.local(s, pin.nodeId);
     if (!def) {
       return null;
     }
@@ -43,7 +44,11 @@ export const nodePinDirectionSelector = createGraphSelector(
   }
 );
 
-export const nodeInputWireIdsSelector = createGraphSelector(
+/**
+ * Gets all wire ids supplying input to the specified node.
+ * WARN: Not react safe.  For reducer use only.
+ */
+export const nodeInputWireIdsFromNodeIdSelector = createGraphSelector(
   (state: GraphState, nodeId: string) =>
     Object.keys(state.wiresById).filter(
       wireId => state.wiresById[wireId].inputPin.nodeId === nodeId
@@ -51,13 +56,13 @@ export const nodeInputWireIdsSelector = createGraphSelector(
 );
 
 /**
- * Gets an object mapping input pin names to their connection source pins.
+ * Gets a map of node input pins to their output sources given a node id.
  */
-export const nodeInputConnectionsByPinSelector = createGraphSelector(
+export const nodeInputSourcesByPinIdFromNodeIdSelector = createGraphSelector(
   createCachedSelector(
     wiresSelector.local,
     (_: any, nodeId: string) => nodeId,
-    nodeDefSelector.local,
+    nodeDefFromNodeIdSelector.local,
     (connections, nodeId, nodeDef) => {
       if (!nodeDef) {
         return {};
@@ -88,14 +93,19 @@ export const nodeInputConnectionsByPinSelector = createGraphSelector(
 );
 
 /**
- * Gets an array of outgoing connections from the given node id.
+ * Gets an array of wires leaving the given node id.
+ * WARN: Not react safe.  For reducer use only.
  */
-export const nodeOutputConnectionsSelector = createGraphSelector(
+export const nodeOutputWiresFromNodeIdSelector = createGraphSelector(
   (state: GraphState, nodeId: string) =>
     wiresSelector.local(state).filter(x => x.outputPin.nodeId === nodeId)
 );
 
-export const nodeOutputWireIdsSelector = createGraphSelector(
+/**
+ * Gets an array of wire ids leaving the given node.
+ * WARN: Not react safe.  For reducer use only.
+ */
+export const nodeOutputWireIdsFromNodeIdSelector = createGraphSelector(
   (state: GraphState, nodeId: string) =>
     Object.keys(state.wiresById).filter(
       wireId => state.wiresById[wireId].outputPin.nodeId === nodeId
@@ -103,13 +113,13 @@ export const nodeOutputWireIdsSelector = createGraphSelector(
 );
 
 /**
- * Gets an object mapping output pin names to their connection target pins.
+ * Gets a map of node input pins to their output sources given a node id.
  */
-export const nodeOutputConnectionsByPinSelector = createGraphSelector(
+export const nodeOutputSourcesByPinIdFromNodeIdSelector = createGraphSelector(
   createCachedSelector(
     wiresSelector.local,
     (_: any, nodeId: string) => nodeId,
-    nodeDefSelector.local,
+    nodeDefFromNodeIdSelector.local,
     (connections, nodeId, nodeDef) => {
       if (!nodeDef) {
         return {};

@@ -1,16 +1,16 @@
 import * as React from "react";
 
 import useSelector from "@/hooks/useSelector";
-import { nodePositionsByIdSelector } from "@/services/field/selectors/positions";
 
-import CircuitNode from "./CircuitNode";
+import { nodeIdsSelector } from "@/services/graph/selectors/nodes";
+
+import Node from "./Node";
 
 const NodesLayer: React.FC = () => {
-  const nodePositionsById = useSelector(nodePositionsByIdSelector);
+  const nodeIds = useSelector(state => nodeIdsSelector(state));
 
-  const nodeElements = Object.keys(nodePositionsById).map(nodeId => {
-    const { x, y } = nodePositionsById[nodeId];
-    return <CircuitNode key={nodeId} nodeId={nodeId} x={x} y={y} />;
+  const nodeElements = nodeIds.map(nodeId => {
+    return <Node key={nodeId} nodeId={nodeId} />;
   });
 
   return <g id="nodes-layer">{nodeElements}</g>;

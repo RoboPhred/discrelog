@@ -6,17 +6,18 @@ import mapValues from "lodash/mapValues";
 import { normalizeVisuals } from "@/node-defs/utils";
 import { normalizeRectangle } from "@/geometry";
 
-import { nodeDefsByIdSelector } from "@/services/graph/selectors/nodes";
+import { nodeDefsByNodeIdSelector } from "@/services/graph/selectors/nodes";
 import { nodeStatesByIdSelector } from "@/services/simulator/selectors/nodes";
 
-import { nodePositionsByIdSelector } from "./positions";
 import { createFieldSelector } from "../utils";
+
+import { nodePositionsByNodeIdSelector } from "./positions";
 
 export const fieldWidthSelector = createFieldSelector(s => s.width);
 export const fieldHeightSelector = createFieldSelector(s => s.height);
 
-export const nodeBoundsById = createSelector(
-  nodeDefsByIdSelector,
+export const nodeBoundsByIdSelector = createSelector(
+  nodeDefsByNodeIdSelector,
   nodeStatesByIdSelector,
   (nodeDefsById, nodeStateById) =>
     mapValues(nodeDefsById, (x, id) => {
@@ -35,8 +36,8 @@ export const nodeBoundsById = createSelector(
 );
 
 export const nodeRectsByIdSelector = createSelector(
-  nodePositionsByIdSelector,
-  nodeBoundsById,
+  nodePositionsByNodeIdSelector,
+  nodeBoundsByIdSelector,
   (positionsById, boundsById) =>
     mapValues(positionsById, (p1, id) => {
       const bounds = boundsById[id] || [0, 0, 0, 0];

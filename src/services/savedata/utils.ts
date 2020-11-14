@@ -9,12 +9,18 @@ import { attachWire } from "@/actions/wire-attach";
 import { defaultSelectionState } from "../selection/state";
 import { defaultSimulatorState } from "../simulator/state";
 import { defaultGraphState } from "../graph/state";
-import { nodeIdsSelector, nodeByIdSelector } from "../graph/selectors/nodes";
-import { wireIdsSelector, wireByIdSelector } from "../graph/selectors/wires";
-import { nodePositionByIdSelector } from "../field/selectors/positions";
+import {
+  nodeIdsSelector,
+  nodeFromNodeIdSelector
+} from "../graph/selectors/nodes";
+import {
+  wireIdsSelector,
+  wireFromWireIdSelector
+} from "../graph/selectors/wires";
+import { nodePositionFromNodeIdSelector } from "../field/selectors/positions";
 import {
   wireJointPositionsByJointIdSelector,
-  wireJointIdsByWireIdSelector
+  wireJointIdsFromWireIdSelector
 } from "../field/selectors/wires";
 import { defaultFieldState } from "../field/state";
 
@@ -22,8 +28,8 @@ export function createSave(state: AppState): SaveData {
   const jointPositions = wireJointPositionsByJointIdSelector(state);
   return {
     nodes: nodeIdsSelector(state).map(nodeId => {
-      const node = nodeByIdSelector(state, nodeId);
-      const position = nodePositionByIdSelector(state, nodeId);
+      const node = nodeFromNodeIdSelector(state, nodeId);
+      const position = nodePositionFromNodeIdSelector(state, nodeId);
       const saveNode: SaveNode = {
         id: node.id,
         type: node.type,
@@ -33,8 +39,8 @@ export function createSave(state: AppState): SaveData {
       return saveNode;
     }),
     wires: wireIdsSelector(state).map(wireId => {
-      const wire = wireByIdSelector(state, wireId);
-      const jointIds = wireJointIdsByWireIdSelector(state, wireId);
+      const wire = wireFromWireIdSelector(state, wireId);
+      const jointIds = wireJointIdsFromWireIdSelector(state, wireId);
       const saveWire: SaveWire = {
         input: wire.inputPin,
         output: wire.outputPin,

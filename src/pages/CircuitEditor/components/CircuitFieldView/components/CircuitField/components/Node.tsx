@@ -7,9 +7,9 @@ import { getModifiers, getSelectMode } from "@/selection-mode";
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
 
-import { nodeTypeSelector } from "@/services/graph/selectors/nodes";
-import { nodeStateSelector } from "@/services/simulator/selectors/nodes";
-import { isNodeSelectedSelector } from "@/services/selection/selectors/selection";
+import { nodeTypeFromNodeIdSelector } from "@/services/graph/selectors/nodes";
+import { nodeStateFromNodeIdSelector } from "@/services/simulator/selectors/nodes";
+import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
 
 import { fieldDragStartNode } from "@/actions/field-drag-start-node";
 import { fieldDragContinue } from "@/actions/field-drag-continue";
@@ -22,21 +22,21 @@ import NodeVisual, {
 } from "@/pages/CircuitEditor/components/NodeVisual";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
-
-import CircuitNodePin from "./CircuitNodePin";
+import { nodePositionFromNodeIdSelector } from "@/services/field/selectors/positions";
 
 export interface CircuitNodeProps {
   nodeId: string;
-  x: number;
-  y: number;
 }
 
-const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId, x, y }) => {
+const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId }) => {
   const dispatch = useDispatch();
 
-  const nodeType = useSelector(s => nodeTypeSelector(s, nodeId));
-  const nodeState = useSelector(s => nodeStateSelector(s, nodeId));
-  const isSelected = useSelector(s => isNodeSelectedSelector(s, nodeId));
+  const { x, y } = useSelector(s => nodePositionFromNodeIdSelector(s, nodeId));
+  const nodeType = useSelector(s => nodeTypeFromNodeIdSelector(s, nodeId));
+  const nodeState = useSelector(s => nodeStateFromNodeIdSelector(s, nodeId));
+  const isSelected = useSelector(s =>
+    isNodeSelectedFromNodeIdSelector(s, nodeId)
+  );
 
   const getCoords = useEventMouseCoords();
 
@@ -95,14 +95,6 @@ const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId, x, y }) => {
     [getCoords]
   );
 
-  const renderPin = React.useCallback(
-    (props: RenderPinProps) => {
-      const { id, x, y } = props;
-      return <CircuitNodePin key={id} nodeId={nodeId} pinId={id} x={x} y={y} />;
-    },
-    [nodeId]
-  );
-
   if (!nodeType) {
     return null;
   }
@@ -116,7 +108,6 @@ const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId, x, y }) => {
       // TODO: Use css vars for this.  Currently cannot do so as nodes declare their own
       //  stroke/fill that gets set as attributes
       colorOverride={isSelected ? "blue" : undefined}
-      renderPin={renderPin}
       onMouseDown={onMouseDown}
     />
   );
