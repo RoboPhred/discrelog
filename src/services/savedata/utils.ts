@@ -17,7 +17,7 @@ import {
   wireIdsSelector,
   wireFromWireIdSelector,
 } from "../graph/selectors/wires";
-import { nodePositionFromNodeIdSelector } from "../field/selectors/positions";
+import { nodePositionFromNodeIdSelector } from "../field/selectors/node-positions";
 import {
   wireJointPositionsByJointIdSelector,
   wireJointIdsFromWireIdSelector,

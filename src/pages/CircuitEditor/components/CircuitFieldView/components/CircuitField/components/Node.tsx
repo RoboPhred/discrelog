@@ -10,6 +10,7 @@ import useMouseTracking from "@/hooks/useMouseTracking";
 import { nodeTypeFromNodeIdSelector } from "@/services/graph/selectors/nodes";
 import { nodeStateFromNodeIdSelector } from "@/services/simulator/selectors/nodes";
 import { isNodeSelectedSelector } from "@/services/selection/selectors/selection";
+import { nodePositionFromNodeIdSelector } from "@/services/field/selectors/node-positions";
 
 import { fieldDragStartNode } from "@/actions/field-drag-start-node";
 import { fieldDragContinue } from "@/actions/field-drag-continue";
@@ -17,12 +18,9 @@ import { fieldDragEnd } from "@/actions/field-drag-end";
 import { interactNode } from "@/actions/node-interact";
 import { selectNodes } from "@/actions/select-nodes";
 
-import NodeVisual, {
-  RenderPinProps,
-} from "@/pages/CircuitEditor/components/NodeVisual";
+import NodeVisual from "@/pages/CircuitEditor/components/NodeVisual";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
-import { nodePositionFromNodeIdSelector } from "@/services/field/selectors/positions";
 
 export interface CircuitNodeProps {
   nodeId: string;

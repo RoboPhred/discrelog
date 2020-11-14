@@ -10,7 +10,7 @@ import { isCopyNodesAction } from "@/actions/clipboard-copy";
 
 import { nodeFromNodeIdSelector } from "@/services/graph/selectors/nodes";
 import { nodeOutputSourcesByPinIdFromNodeIdSelector } from "@/services/graph/selectors/wires";
-import { nodePositionsByNodeIdSelector } from "@/services/field/selectors/positions";
+import { nodePositionsByNodeIdSelector } from "@/services/field/selectors/node-positions";
 
 import { ClipboardNode } from "../types";
 import { createClipboardReducer } from "../utils";

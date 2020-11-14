@@ -8,7 +8,7 @@ import { nodeDefFromNodeIdSelector } from "@/services/graph/selectors/nodes";
 import { createFieldSelector } from "../utils";
 import { FieldState } from "../state";
 
-import { nodePositionFromNodeIdSelector } from "./positions";
+import { nodePositionFromNodeIdSelector } from "./node-positions";
 
 interface PositionCache {
   inputNodeDef: NodeDefinition | null;
@@ -114,13 +114,6 @@ export const wireJointPositionFromJointIdSelector = createFieldSelector(
 //  Currently used to get all joint ids in reducers.
 export const wireJointPositionsByJointIdSelector = createFieldSelector(
   (state: FieldState) => {
-    const positionsByJointId: Record<string, Point> = {};
-
-    for (const jointId of Object.keys(state.wireJointPositionsByJointId)) {
-      const p = state.wireJointPositionsByJointId[jointId];
-      positionsByJointId[jointId] = p;
-    }
-
-    return positionsByJointId;
+    return state.wireJointPositionsByJointId;
   }
 );

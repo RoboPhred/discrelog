@@ -9,12 +9,7 @@ import { normalizeRectangle } from "@/geometry";
 import { nodeDefsByNodeIdSelector } from "@/services/graph/selectors/nodes";
 import { nodeStatesByIdSelector } from "@/services/simulator/selectors/nodes";
 
-import { createFieldSelector } from "../utils";
-
-import { nodePositionsByNodeIdSelector } from "./positions";
-
-export const fieldWidthSelector = createFieldSelector((s) => s.width);
-export const fieldHeightSelector = createFieldSelector((s) => s.height);
+import { nodePositionsByNodeIdSelector } from "./node-positions";
 
 export const nodeBoundsByIdSelector = createSelector(
   nodeDefsByNodeIdSelector,

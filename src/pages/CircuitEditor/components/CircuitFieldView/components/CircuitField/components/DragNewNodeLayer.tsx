@@ -8,28 +8,23 @@ import {
   dragNewNodeTypeSelector,
   dragEndSelector,
 } from "@/services/field/selectors/drag";
-import {
-  fieldWidthSelector,
-  fieldHeightSelector,
-} from "@/services/field/selectors/bounds";
+
+import { fieldRectSelector } from "@/services/field/selectors/field";
 
 import { fieldDragContinue } from "@/actions/field-drag-continue";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
 import NodeVisual from "@/pages/CircuitEditor/components/NodeVisual";
+import { calcSize } from "@/geometry";
 
 const DragNewNodeLayer: React.FC = () => {
   const dispatch = useDispatch();
   const getMouseCoords = useEventMouseCoords();
-  const width = useSelector((state) => fieldWidthSelector(state));
-  const height = useSelector((state) => fieldHeightSelector(state));
-  const isDraggingNewNode = useSelector((state) =>
-    isDraggingNewNodeSelector(state)
-  );
-  const dragEnd = useSelector((state) => dragEndSelector(state));
-  const draggingNodeType = useSelector((state) =>
-    dragNewNodeTypeSelector(state)
-  );
+  const fieldRect = useSelector(fieldRectSelector);
+  const { width, height } = calcSize(fieldRect);
+  const isDraggingNewNode = useSelector(isDraggingNewNodeSelector);
+  const dragEnd = useSelector(dragEndSelector);
+  const draggingNodeType = useSelector(dragNewNodeTypeSelector);
 
   const onMouseMove = React.useCallback(
     (e: React.MouseEvent) => {

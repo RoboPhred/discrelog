@@ -3,10 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { cls } from "@/utils";
 import useSelector from "@/hooks/useSelector";
-import {
-  fieldWidthSelector,
-  fieldHeightSelector,
-} from "@/services/field/selectors/bounds";
+import { fieldRectSelector } from "@/services/field/selectors/field";
 
 import { fieldMouseLeave } from "@/actions/field-mouse-leave";
 
@@ -20,11 +17,13 @@ import WiresLayer from "./components/WiresLayer";
 import NodePinsLayer from "./components/NodePinsLayer";
 
 import styles from "./CircuitField.module.css";
+import { calcSize } from "@/geometry";
 
 const CircuitField: React.FC = () => {
   const dispatch = useDispatch();
-  const width = useSelector(fieldWidthSelector);
-  const height = useSelector(fieldHeightSelector);
+  const fieldRect = useSelector(fieldRectSelector);
+  const { width, height } = calcSize(fieldRect);
+
   const svgRef = React.useRef<SVGSVGElement>(null);
 
   const onMouseDown = React.useCallback(() => {
