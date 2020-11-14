@@ -20,13 +20,13 @@ export default function dragNodesStartReducer(
 
   const { nodeId, x, y, selectionMode } = action.payload;
 
-  state = fpSet(state, "services", "field", value => ({
+  state = fpSet(state, "services", "field", (value) => ({
     ...value,
     dragMode: "move" as const,
     dragStart: {
       x,
-      y
-    }
+      y,
+    },
   }));
 
   if (!isNodeSelectedFromNodeIdSelector(state, nodeId)) {

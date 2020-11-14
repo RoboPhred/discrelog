@@ -14,6 +14,8 @@ export default createViewReducer((state, action) => {
   return {
     ...state,
     scale:
-      delta > 0 ? scale * delta * SCALE_FACTOR : scale / (-delta * SCALE_FACTOR)
+      delta > 0
+        ? scale * delta * SCALE_FACTOR
+        : scale / (-delta * SCALE_FACTOR),
   };
 });

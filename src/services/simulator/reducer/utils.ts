@@ -14,7 +14,7 @@ import { inputsOf, outputsOf } from "@/node-defs/utils";
 import { nodeInputSourcesByPinIdFromNodeIdSelector } from "@/services/graph/selectors/wires";
 import {
   nodeDefFromNodeIdSelector,
-  nodeIdsSelector
+  nodeIdsSelector,
 } from "@/services/graph/selectors/nodes";
 
 import { nodeOutputPinValueFromNodeIdAndPinId } from "../selectors/nodes";
@@ -22,7 +22,7 @@ import { nodeOutputPinValueFromNodeIdAndPinId } from "../selectors/nodes";
 import { SimulatorState, defaultSimulatorState } from "../state";
 import {
   SimTransitionWindow,
-  SimNodePinTransition as SimNodeTransition
+  SimNodePinTransition as SimNodeTransition,
 } from "../types";
 
 export function simInit(
@@ -34,7 +34,7 @@ export function simInit(
 
   state = {
     ...defaultSimulatorState,
-    ticksPerSecond: state.ticksPerSecond
+    ticksPerSecond: state.ticksPerSecond,
   };
 
   state = nodeIds.reduce(
@@ -149,7 +149,7 @@ export function collectNodeTransitions(
       const {
         tickOffset,
         valuesByPin,
-        transitionMerger = "replace"
+        transitionMerger = "replace",
       } = transition;
 
       // Sanity check that we are not producing transitions for the past or current tick.
@@ -180,7 +180,7 @@ function addTransition(
     id: transitionId,
     nodeId,
     tick,
-    valuesByOutputPin
+    valuesByOutputPin,
   };
 
   // Add the transition to the state, and clone transitionWindows for mutation below.
@@ -188,9 +188,9 @@ function addTransition(
     ...state,
     transitionsById: {
       ...state.transitionsById,
-      [transitionId]: newTransition
+      [transitionId]: newTransition,
     },
-    transitionWindows: [...state.transitionWindows]
+    transitionWindows: [...state.transitionWindows],
   };
 
   let index = binarySearch(state.transitionWindows, tick, (a, b) => a.tick - b);
@@ -199,7 +199,7 @@ function addTransition(
     index = -index - 1;
     const newWindow: SimTransitionWindow = {
       tick,
-      transitionIds: []
+      transitionIds: [],
     };
     // Mutation is safe here as we cloned the array above.
     state.transitionWindows.splice(index, 0, newWindow);
@@ -210,8 +210,8 @@ function addTransition(
     ...state.transitionWindows[index],
     transitionIds: [
       ...state.transitionWindows[index].transitionIds,
-      transitionId
-    ]
+      transitionId,
+    ],
   };
   return state;
 }
@@ -224,7 +224,7 @@ function removeTransitionsByNodeId(
     return transition.nodeId === nodeId;
   }
 
-  const transitionIds = Object.keys(state.transitionsById).filter(id =>
+  const transitionIds = Object.keys(state.transitionsById).filter((id) =>
     isNodeTransition(state.transitionsById[id])
   );
 
@@ -245,13 +245,13 @@ export function removeTransitionById(
 
   const transitionsById = pick(
     state.transitionsById,
-    Object.keys(state.transitionsById).filter(x => x !== transitionId)
+    Object.keys(state.transitionsById).filter((x) => x !== transitionId)
   );
   let transitionWindows = state.transitionWindows;
 
   const transitionWindowIndex = findIndex(
     transitionWindows,
-    x => x.tick === transition.tick
+    (x) => x.tick === transition.tick
   );
   if (transitionWindowIndex !== -1) {
     const transitionWindow = transitionWindows[transitionWindowIndex];
@@ -264,7 +264,7 @@ export function removeTransitionById(
         // Only one element left, remove the window.
         transitionWindows = [
           ...transitionWindows.slice(0, transitionWindowIndex),
-          ...transitionWindows.slice(transitionWindowIndex + 1)
+          ...transitionWindows.slice(transitionWindowIndex + 1),
         ];
       } else {
         // Remove the transition from the tick window.
@@ -275,8 +275,8 @@ export function removeTransitionById(
           ...transitionWindows[transitionWindowIndex],
           transitionIds: [
             ...transitionIds.slice(0, tickWindowTransitionIndex),
-            ...transitionIds.slice(tickWindowTransitionIndex + 1)
-          ]
+            ...transitionIds.slice(tickWindowTransitionIndex + 1),
+          ],
         };
       }
     }
@@ -285,6 +285,6 @@ export function removeTransitionById(
   return {
     ...state,
     transitionsById,
-    transitionWindows
+    transitionWindows,
   };
 }

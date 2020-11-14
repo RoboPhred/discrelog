@@ -11,6 +11,6 @@ export default createSelectionReducer((state, action) => {
     ...state,
     selectedNodeIds: [],
     selectedWireIds: [],
-    selectedJointIds: []
+    selectedJointIds: [],
   };
 });

@@ -3,7 +3,7 @@ import { AnyAction } from "redux";
 export const ACTION_WIRE_JOINT_DELETE = "@wire/joint/delete" as const;
 export const deleteWireJoint = (jointId: string) => ({
   type: ACTION_WIRE_JOINT_DELETE,
-  payload: { jointId }
+  payload: { jointId },
 });
 export type DeleteWireJointAction = ReturnType<typeof deleteWireJoint>;
 export function isDeleteWireJointAction(

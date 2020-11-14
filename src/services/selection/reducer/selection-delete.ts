@@ -19,7 +19,7 @@ export default function selectionDeleteReducer(
   const {
     selectedNodeIds,
     selectedWireIds,
-    selectedJointIds
+    selectedJointIds,
   } = state.services.selection;
 
   if (selectedNodeIds.length > 0) {

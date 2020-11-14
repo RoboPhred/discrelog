@@ -23,7 +23,7 @@ export default function useMouseTracking(
     onClick,
     onDragStart,
     onDragMove,
-    onDragEnd
+    onDragEnd,
   } = opts;
 
   // We need both state and ref for this.
@@ -118,6 +118,6 @@ export default function useMouseTracking(
 
   return {
     startTracking,
-    cancelTracking
+    cancelTracking,
   };
 }

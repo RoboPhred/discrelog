@@ -51,7 +51,7 @@ const _defaultState: SimulatorState = {
   nodeStatesByNodeId: {},
   nodeOutputValuesByNodeId: {},
   transitionsById: {},
-  transitionWindows: []
+  transitionWindows: [],
 };
 
 export const defaultSimulatorState = Object.freeze(_defaultState);

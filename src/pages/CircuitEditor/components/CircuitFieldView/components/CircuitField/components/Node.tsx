@@ -18,7 +18,7 @@ import { interactNode } from "@/actions/node-interact";
 import { selectNodes } from "@/actions/select-nodes";
 
 import NodeVisual, {
-  RenderPinProps
+  RenderPinProps,
 } from "@/pages/CircuitEditor/components/NodeVisual";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
@@ -31,10 +31,12 @@ export interface CircuitNodeProps {
 const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId }) => {
   const dispatch = useDispatch();
 
-  const { x, y } = useSelector(s => nodePositionFromNodeIdSelector(s, nodeId));
-  const nodeType = useSelector(s => nodeTypeFromNodeIdSelector(s, nodeId));
-  const nodeState = useSelector(s => nodeStateFromNodeIdSelector(s, nodeId));
-  const isSelected = useSelector(s =>
+  const { x, y } = useSelector((s) =>
+    nodePositionFromNodeIdSelector(s, nodeId)
+  );
+  const nodeType = useSelector((s) => nodeTypeFromNodeIdSelector(s, nodeId));
+  const nodeState = useSelector((s) => nodeStateFromNodeIdSelector(s, nodeId));
+  const isSelected = useSelector((s) =>
     isNodeSelectedFromNodeIdSelector(s, nodeId)
   );
 
@@ -82,7 +84,7 @@ const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId }) => {
     onClick,
     onDragStart,
     onDragMove,
-    onDragEnd
+    onDragEnd,
   });
   const onMouseDown = React.useCallback(
     (e: React.MouseEvent) => {

@@ -10,8 +10,8 @@ export const selectWires = (
   type: ACTION_SELECT_WIRES,
   payload: {
     wireIds: Array.isArray(wireId) ? wireId : [wireId],
-    mode
-  }
+    mode,
+  },
 });
 export type SelectWiresAction = ReturnType<typeof selectWires>;
 export function isSelectWiresAction(

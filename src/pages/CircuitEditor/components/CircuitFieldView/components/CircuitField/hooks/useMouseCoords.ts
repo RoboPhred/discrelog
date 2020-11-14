@@ -30,7 +30,7 @@ export function useEventMouseCoords(): (
       }
       const p: Point = {
         x: e.pageX,
-        y: e.pageY
+        y: e.pageY,
       };
       return getFieldCoord(fieldRef, p);
     },

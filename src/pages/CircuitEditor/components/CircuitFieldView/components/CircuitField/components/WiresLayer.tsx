@@ -9,7 +9,7 @@ import Wire from "./Wire";
 
 const WiresLayer: React.FC = () => {
   const wireIds = useSelector(wireIdsSelector);
-  const connectorElements = wireIds.map(wireId => (
+  const connectorElements = wireIds.map((wireId) => (
     <Wire key={wireId} wireId={wireId} />
   ));
 

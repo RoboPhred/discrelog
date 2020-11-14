@@ -10,7 +10,7 @@ import { GraphState } from "../state";
 
 import { NodePin, GraphNode } from "../types";
 
-export const nodesByNodeIdSelector = createGraphSelector(s => s.nodesById);
+export const nodesByNodeIdSelector = createGraphSelector((s) => s.nodesById);
 
 export const nodeIdsSelector = createGraphSelector(
   createSelector(nodesByNodeIdSelector.local, (nodesById: IDMap<GraphNode>) =>
@@ -20,7 +20,7 @@ export const nodeIdsSelector = createGraphSelector(
 
 export const nodeTypesByNodeIdSelector = createGraphSelector(
   createSelector(nodesByNodeIdSelector.local, (nodesById: IDMap<GraphNode>) =>
-    mapValues(nodesById, x => x.type)
+    mapValues(nodesById, (x) => x.type)
   )
 );
 
@@ -28,7 +28,7 @@ export const nodeDefsByNodeIdSelector = createGraphSelector(
   createSelector(
     nodeTypesByNodeIdSelector.local,
     (nodeTypesById: IDMap<NodeType>) =>
-      mapValues(nodeTypesById, type => NodeTypes[type])
+      mapValues(nodeTypesById, (type) => NodeTypes[type])
   )
 );
 
@@ -58,15 +58,15 @@ export const nodeDefFromNodeIdSelector = createGraphSelector(
 
 export const nodePinsSelector = createGraphSelector(
   createSelector(
-    s => s.nodesById,
+    (s) => s.nodesById,
     (nodesById: IDMap<GraphNode>) =>
       values(nodesById).reduce((pins, node) => {
         const def = NodeTypes[node.type];
         if (def) {
           pins.push(
-            ...Object.keys(def.pins).map(pin => ({
+            ...Object.keys(def.pins).map((pin) => ({
               nodeId: node.id,
-              pinId: pin
+              pinId: pin,
             }))
           );
         }

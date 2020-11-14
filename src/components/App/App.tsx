@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { isDev } from "@/env";
+import { cls } from "@/utils";
 
 import flex from "@/styles/flex.module.css";
 import sizing from "@/styles/sizing.module.css";
@@ -9,7 +10,6 @@ import CircuitEditor from "@/pages/CircuitEditor";
 import Intro from "@/pages/Intro";
 
 import TitleBar from "../TitleBar";
-import { cls } from "@/utils";
 
 const App: React.FC = () => {
   const [introShown, setIntroShown] = React.useState(isDev);

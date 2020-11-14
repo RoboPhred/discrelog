@@ -7,7 +7,7 @@ export function getModifiers(e: MouseEvent): ModifierKeys {
   return {
     ctrlMetaKey: keyboardIsMac ? metaKey : ctrlKey,
     altKey: altKey,
-    shiftKey
+    shiftKey,
   };
 }
 

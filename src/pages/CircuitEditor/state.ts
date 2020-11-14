@@ -1,6 +1,6 @@
 import {
   CircuitFieldState,
-  defaultCircuitFieldState
+  defaultCircuitFieldState,
 } from "./components/CircuitFieldView/components/CircuitField/state";
 
 export interface CircuitEditorState {
@@ -8,5 +8,5 @@ export interface CircuitEditorState {
 }
 
 export const defaultCircuitEditorState: CircuitEditorState = {
-  circuitField: defaultCircuitFieldState
+  circuitField: defaultCircuitFieldState,
 };

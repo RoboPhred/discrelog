@@ -5,7 +5,7 @@ import { cls } from "@/utils";
 import useSelector from "@/hooks/useSelector";
 import {
   fieldWidthSelector,
-  fieldHeightSelector
+  fieldHeightSelector,
 } from "@/services/field/selectors/bounds";
 
 import { fieldMouseLeave } from "@/actions/field-mouse-leave";
@@ -42,7 +42,7 @@ const CircuitField: React.FC = () => {
       className={cls("circuit-field", styles["circuit-editor"])}
       style={{
         width: `${width}px`,
-        height: `${height}px`
+        height: `${height}px`,
       }}
     >
       <svg

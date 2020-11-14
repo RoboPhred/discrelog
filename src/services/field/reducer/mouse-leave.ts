@@ -13,6 +13,6 @@ export default createFieldReducer((state, action) => {
 
   return {
     ...state,
-    dragEnd: null
+    dragEnd: null,
   };
 });

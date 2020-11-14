@@ -15,11 +15,13 @@ export default reducerPriority(
 
     const { wireId } = action.payload;
 
-    const remainingIds = Object.keys(state.wiresById).filter(x => x !== wireId);
+    const remainingIds = Object.keys(state.wiresById).filter(
+      (x) => x !== wireId
+    );
 
     return {
       ...state,
-      wiresById: pick(state.wiresById, remainingIds)
+      wiresById: pick(state.wiresById, remainingIds),
     };
   })
 );

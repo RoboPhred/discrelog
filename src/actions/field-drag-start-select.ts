@@ -6,8 +6,8 @@ export const ACTION_FIELD_DRAG_START_SELECT = "@field/drag/start/select" as cons
 export const fieldDragStartSelect = (p: Point) => ({
   type: ACTION_FIELD_DRAG_START_SELECT,
   payload: {
-    ...p
-  }
+    ...p,
+  },
 });
 export type FieldDragStartSelectAction = ReturnType<
   typeof fieldDragStartSelect

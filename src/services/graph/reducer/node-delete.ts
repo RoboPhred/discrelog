@@ -33,10 +33,10 @@ export default reducerPriority(
       );
     }
 
-    state = fpSet(state, "services", "graph", value => ({
+    state = fpSet(state, "services", "graph", (value) => ({
       ...value,
       nodesById: pick(state.services.graph.nodesById, remainingNodeIds),
-      wiresById: pickBy(state.services.graph.wiresById, isRemainingConnection)
+      wiresById: pickBy(state.services.graph.wiresById, isRemainingConnection),
     }));
 
     return state;

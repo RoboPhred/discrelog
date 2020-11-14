@@ -8,7 +8,7 @@ import {
   pointSubtract,
   dotProduct,
   pointAdd,
-  scale
+  scale,
 } from "@/geometry";
 import { getSelectMode, getModifiers } from "@/selection-mode";
 
@@ -22,7 +22,7 @@ import { selectWires } from "@/actions/select-wires";
 import {
   wireJointPositionFromJointIdSelector,
   wireStartPositionFromWireIdSelector,
-  wireEndPositionFromWireIdSelector
+  wireEndPositionFromWireIdSelector,
 } from "@/services/field/selectors/wires";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
@@ -35,19 +35,19 @@ export interface WireSegmentProps {
 const WireSegment: React.FC<WireSegmentProps> = ({
   wireId,
   startJointId,
-  endJointId
+  endJointId,
 }) => {
   const dispatch = useDispatch();
   const getMouseCoords = useEventMouseCoords();
 
-  const start = useSelector(state => {
+  const start = useSelector((state) => {
     if (startJointId == null) {
       return wireStartPositionFromWireIdSelector(state, wireId);
     }
     return wireJointPositionFromJointIdSelector(state, startJointId);
   });
 
-  const end = useSelector(state => {
+  const end = useSelector((state) => {
     if (endJointId == null) {
       return wireEndPositionFromWireIdSelector(state, wireId);
     }
@@ -103,7 +103,7 @@ const WireSegment: React.FC<WireSegmentProps> = ({
   const { startTracking } = useMouseTracking({
     onClick,
     onDragStart,
-    onDragMove
+    onDragMove,
   });
 
   const onJointInsertMouseDown = React.useCallback(

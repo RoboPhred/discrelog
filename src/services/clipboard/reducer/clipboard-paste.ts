@@ -30,7 +30,7 @@ export default function clipboardPasteReducer(
   const pastePosition = pointAdd(clipboardPasteOrigin, CLIPBOARD_PASTE_OFFSET);
 
   const pasteIds = zipObject(
-    clipboardNodes.map(x => x.id),
+    clipboardNodes.map((x) => x.id),
     map(clipboardNodes, () => uuidV4())
   );
 

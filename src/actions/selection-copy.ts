@@ -2,7 +2,7 @@ import { AnyAction } from "redux";
 
 export const ACTION_SELECTION_COPY = "@selection/copy" as const;
 export const selectionCopy = () => ({
-  type: ACTION_SELECTION_COPY
+  type: ACTION_SELECTION_COPY,
 });
 export type SelectionCopyAction = ReturnType<typeof selectionCopy>;
 export function isSelectionCopyAction(

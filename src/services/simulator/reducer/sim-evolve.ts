@@ -26,7 +26,7 @@ export default createSimulatorReducer((state, action, appState) => {
   // Pre-clone windows as we wil be repeatedly modifying it.
   state = {
     ...state,
-    transitionWindows: [...state.transitionWindows]
+    transitionWindows: [...state.transitionWindows],
   };
 
   let saftyCount = tickCount + 1;
@@ -52,7 +52,7 @@ export default createSimulatorReducer((state, action, appState) => {
   if (state.tick != endTick) {
     state = {
       ...state,
-      tick: endTick
+      tick: endTick,
     };
   }
 
@@ -71,8 +71,8 @@ function tickWindow(
     tick: window.tick,
     // pre-clone outputs for mutation below
     nodeOutputValuesByNodeId: {
-      ...state.nodeOutputValuesByNodeId
-    }
+      ...state.nodeOutputValuesByNodeId,
+    },
   };
 
   let updatedNodes = [];
@@ -82,7 +82,7 @@ function tickWindow(
     // nodeOutputValuesByNodeId is pre-cloned
     state.nodeOutputValuesByNodeId[nodeId] = {
       ...state.nodeOutputValuesByNodeId[nodeId],
-      ...valuesByOutputPin
+      ...valuesByOutputPin,
     };
 
     // Add each node we output to, to the output list.

@@ -23,7 +23,7 @@ export default reducerPriority(
     const { inputPin } = conn;
 
     // Only one source per input.
-    if (find(state.wiresById, c => nodePinEquals(c.inputPin, inputPin))) {
+    if (find(state.wiresById, (c) => nodePinEquals(c.inputPin, inputPin))) {
       return state;
     }
 
@@ -33,9 +33,9 @@ export default reducerPriority(
         ...state.wiresById,
         [wireId]: {
           id: wireId,
-          ...conn
-        }
-      }
+          ...conn,
+        },
+      },
     };
   })
 );

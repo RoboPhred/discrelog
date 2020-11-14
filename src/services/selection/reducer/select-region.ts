@@ -44,6 +44,6 @@ export default createSelectionReducer((state, action, appState) => {
       state.selectedJointIds,
       chosenJointIds,
       mode
-    )
+    ),
   };
 });

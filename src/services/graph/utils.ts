@@ -4,7 +4,7 @@ import { NodeTypes } from "@/node-defs";
 
 import {
   createServiceReducerCreator,
-  createServiceSelectorCreator
+  createServiceSelectorCreator,
 } from "../service-state-utils";
 import { GraphState } from "./state";
 import { NodePin, Connection } from "./types";
@@ -37,8 +37,8 @@ export function pinsToConnection(
     return null;
   }
 
-  const p1Pin = find(p1Def.pins, x => x.name == p1.pinId);
-  const p2Pin = find(p2Def.pins, x => x.name == p2.pinId);
+  const p1Pin = find(p1Def.pins, (x) => x.name == p1.pinId);
+  const p2Pin = find(p2Def.pins, (x) => x.name == p2.pinId);
 
   if (!p1Pin || !p2Pin) {
     return null;
@@ -54,6 +54,6 @@ export function pinsToConnection(
 
   return {
     outputPin,
-    inputPin
+    inputPin,
   };
 }

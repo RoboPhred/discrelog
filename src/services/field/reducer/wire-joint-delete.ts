@@ -14,16 +14,16 @@ export default createFieldReducer((state, action) => {
 
   const remainingJointIds = Object.keys(
     state.wireJointPositionsByJointId
-  ).filter(x => x !== jointId);
+  ).filter((x) => x !== jointId);
 
   return {
     ...state,
-    wireJointIdsByWireId: mapValues(state.wireJointIdsByWireId, wireIds =>
-      wireIds.filter(x => x !== jointId)
+    wireJointIdsByWireId: mapValues(state.wireJointIdsByWireId, (wireIds) =>
+      wireIds.filter((x) => x !== jointId)
     ),
     wireJointsByJointId: pick(
       state.wireJointPositionsByJointId,
       remainingJointIds
-    )
+    ),
   };
 });

@@ -7,7 +7,7 @@ import { doInit } from "@/actions/init";
 import {
   actionSanitizer,
   stateSanitizer,
-  actionsBlacklist
+  actionsBlacklist,
 } from "./devtool-sanitizer";
 
 import saga from "./saga";
@@ -18,7 +18,7 @@ const composeEnhancers =
     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
       actionSanitizer,
       stateSanitizer,
-      actionsBlacklist
+      actionsBlacklist,
     })) ||
   compose;
 

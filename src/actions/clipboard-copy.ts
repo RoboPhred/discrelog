@@ -4,8 +4,8 @@ export const ACTION_COPY_NODES = "@clipboard/copy" as const;
 export const copyNodes = (nodeId: string | string[]) => ({
   type: ACTION_COPY_NODES,
   payload: {
-    nodeIds: Array.isArray(nodeId) ? nodeId : [nodeId]
-  }
+    nodeIds: Array.isArray(nodeId) ? nodeId : [nodeId],
+  },
 });
 export type CopyNodesAction = ReturnType<typeof copyNodes>;
 export function isCopyNodesAction(

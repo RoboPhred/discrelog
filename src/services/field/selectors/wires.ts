@@ -28,7 +28,7 @@ export const wireStartPositionFromWireIdSelector = (
   wireId: string
 ) => {
   const {
-    outputPin: { nodeId, pinId }
+    outputPin: { nodeId, pinId },
   } = state.services.graph.wiresById[wireId];
   const nodeDef = nodeDefFromNodeIdSelector(state, nodeId);
   const nodePosition =
@@ -53,7 +53,7 @@ export const wireStartPositionFromWireIdSelector = (
   startPositionCacheByWireId[wireId] = {
     inputNodeDef: nodeDef,
     inputNodePosition: nodePosition,
-    outputPosition: position
+    outputPosition: position,
   };
 
   return position;
@@ -64,7 +64,7 @@ export const wireEndPositionFromWireIdSelector = (
   wireId: string
 ) => {
   const {
-    inputPin: { nodeId, pinId }
+    inputPin: { nodeId, pinId },
   } = state.services.graph.wiresById[wireId];
   const nodeDef = nodeDefFromNodeIdSelector(state, nodeId);
   const nodePosition =
@@ -89,7 +89,7 @@ export const wireEndPositionFromWireIdSelector = (
   endPositionCacheByWireId[wireId] = {
     inputNodeDef: nodeDef,
     inputNodePosition: nodePosition,
-    outputPosition: position
+    outputPosition: position,
   };
 
   return position;

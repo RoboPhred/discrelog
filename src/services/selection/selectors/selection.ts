@@ -8,7 +8,7 @@ import { createSelectionSelector } from "../utils";
 import { SelectionState } from "../state";
 
 export const selectedNodeIdsSelector = createSelectionSelector(
-  state => state.selectedNodeIds
+  (state) => state.selectedNodeIds
 );
 
 export const isNodeSelectedFromNodeIdSelector = createSelectionSelector(
@@ -23,7 +23,7 @@ export const selectedNodesByIdSelector = createSelector(
 );
 
 export const selectedWireIdsSelector = createSelectionSelector(
-  state => state.selectedWireIds
+  (state) => state.selectedWireIds
 );
 
 export const isWireSelectedSelector = createSelectionSelector(
@@ -32,7 +32,7 @@ export const isWireSelectedSelector = createSelectionSelector(
 );
 
 export const selectedJointIdsSelector = createSelectionSelector(
-  state => state.selectedJointIds
+  (state) => state.selectedJointIds
 );
 
 export const isJointSelectedFromJointIdSelector = createSelectionSelector(

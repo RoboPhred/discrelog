@@ -1,5 +1,5 @@
 export function cls(...values: (string | false | undefined)[]): string {
-  return values.filter(x => Boolean(x) && x != "").join(" ");
+  return values.filter((x) => Boolean(x) && x != "").join(" ");
 }
 
 export function typedKeys<T extends object>(obj: T): (keyof T)[] {

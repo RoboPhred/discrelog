@@ -10,8 +10,8 @@ export const selectNodes = (
   type: ACTION_SELECT_NODES,
   payload: {
     nodeIds: Array.isArray(nodeId) ? nodeId : [nodeId],
-    mode
-  }
+    mode,
+  },
 });
 export type SelectNodesAction = ReturnType<typeof selectNodes>;
 export function isSelectNodesAction(

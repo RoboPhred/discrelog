@@ -13,6 +13,6 @@ export default createSelectionReducer((state, action) => {
     ...state,
     selectedNodeIds: combineSelection(state.selectedNodeIds, nodeIds, mode),
     selectedWireIds: mode === "set" ? [] : state.selectedWireIds,
-    selectedJointIds: mode === "set" ? [] : state.selectedJointIds
+    selectedJointIds: mode === "set" ? [] : state.selectedJointIds,
   };
 });

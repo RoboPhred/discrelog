@@ -9,7 +9,7 @@ export function normalize(p: Point): Point {
   const m = magnitude(p);
   return {
     x: p.x / m,
-    y: p.y / m
+    y: p.y / m,
   };
 }
 
@@ -37,25 +37,25 @@ export function normalizeRectangle(...args: any[]): Rectangle {
   return {
     p1: {
       x: Math.min(p1.x, p2.x),
-      y: Math.min(p1.y, p2.y)
+      y: Math.min(p1.y, p2.y),
     },
     p2: {
       x: Math.max(p1.x, p2.x),
-      y: Math.max(p1.y, p2.y)
-    }
+      y: Math.max(p1.y, p2.y),
+    },
   };
 }
 
 export function pointAdd(p1: Point, p2: Point): Point {
   return {
     x: p1.x + p2.x,
-    y: p1.y + p2.y
+    y: p1.y + p2.y,
   };
 }
 export function pointSubtract(p1: Point, p2: Point): Point {
   return {
     x: p1.x - p2.x,
-    y: p1.y - p2.y
+    y: p1.y - p2.y,
   };
 }
 
@@ -63,7 +63,7 @@ export function calcSize(r: Rectangle): Size {
   r = normalizeRectangle(r);
   return {
     width: r.p2.x - r.p1.x,
-    height: r.p2.y - r.p1.y
+    height: r.p2.y - r.p1.y,
   };
 }
 

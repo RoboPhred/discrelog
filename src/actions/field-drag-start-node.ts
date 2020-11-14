@@ -13,8 +13,8 @@ export const fieldDragStartNode = (
   payload: {
     ...p,
     nodeId,
-    selectionMode
-  }
+    selectionMode,
+  },
 });
 export type FieldDragStartNodeAction = ReturnType<typeof fieldDragStartNode>;
 export function isFieldDragStartNodeAction(

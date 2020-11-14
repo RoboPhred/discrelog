@@ -11,7 +11,7 @@ export const actionsBlacklist: string[] = [
   ACTION_FIELD_DRAG_CONTINUE,
   ACTION_FIELD_MOUSE_LEAVE,
   ACTION_SIM_TICK,
-  ACTION_VIEW_ZOOM
+  ACTION_VIEW_ZOOM,
 ];
 
 export function actionSanitizer(action: AnyAction): AnyAction {

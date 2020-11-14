@@ -13,24 +13,24 @@ const ledNodeDefinition: NodeDefinition = {
       genCirclePath(25, 25, 25),
       {
         path: genCirclePath(25, 25, 20),
-        fill: state => (state.value ? "lightgreen" : "darkgreen")
-      }
-    ]
+        fill: (state) => (state.value ? "lightgreen" : "darkgreen"),
+      },
+    ],
   },
   pins: {
     IN: {
       name: "IN",
       direction: "input",
       x: 0,
-      y: 25
-    }
+      y: 25,
+    },
   },
   evolve(state, inputs, tick) {
     return {
       state: {
-        value: inputs.IN
-      }
+        value: inputs.IN,
+      },
     };
-  }
+  },
 };
 export default ledNodeDefinition;

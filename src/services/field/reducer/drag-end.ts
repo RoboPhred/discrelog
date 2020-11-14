@@ -26,7 +26,7 @@ export default function dragEndReducer(
     dragMode,
     dragStart,
     dragEnd,
-    dragNewNodeType
+    dragNewNodeType,
   } = state.services.field;
 
   switch (dragMode) {
@@ -56,12 +56,12 @@ export default function dragEndReducer(
     }
   }
 
-  state = fpSet(state, "services", "field", value => ({
+  state = fpSet(state, "services", "field", (value) => ({
     ...value,
     dragMode: null,
     dragStart: null,
     dragEnd: null,
-    dragNewNodeType: null
+    dragNewNodeType: null,
   }));
 
   return state;

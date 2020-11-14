@@ -26,11 +26,11 @@ const WireJoint: React.FC<WireJointProps> = ({ jointId }) => {
   const getMouseCoords = useEventMouseCoords();
   const dispatch = useDispatch();
 
-  const isSelected = useSelector(state =>
+  const isSelected = useSelector((state) =>
     isJointSelectedFromJointIdSelector(state, jointId)
   );
 
-  const position = useSelector(state =>
+  const position = useSelector((state) =>
     wireJointPositionFromJointIdSelector(state, jointId)
   );
   const [mouseOver, setMouseOver] = React.useState(false);
@@ -54,7 +54,7 @@ const WireJoint: React.FC<WireJointProps> = ({ jointId }) => {
 
   const { startTracking: startMoveJointTracking } = useMouseTracking({
     onClick,
-    onDragMove: onJointDragMove
+    onDragMove: onJointDragMove,
   });
 
   const onMouseOver = React.useCallback(() => {

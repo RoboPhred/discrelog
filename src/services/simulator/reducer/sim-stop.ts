@@ -12,6 +12,6 @@ export default createSimulatorReducer((state, action, appState) => {
   // Reset the simulator but keep the ticks per second choice.
   return {
     ...defaultSimulatorState,
-    ticksPerSecond: state.ticksPerSecond
+    ticksPerSecond: state.ticksPerSecond,
   };
 });

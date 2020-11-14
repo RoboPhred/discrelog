@@ -15,6 +15,6 @@ export const NodeTypes = {
   buffer: require("./node-buffer").default as NodeDefinition,
   led: require("./node-led").default as NodeDefinition,
   toggle: require("./node-toggle").default as NodeDefinition,
-  seg7: require("./node-seg7").default as NodeDefinition
+  seg7: require("./node-seg7").default as NodeDefinition,
 };
 export type NodeType = keyof typeof NodeTypes;

@@ -5,8 +5,8 @@ export const selectPin = (nodeId: string, pinId: string) => ({
   type: ACTION_SELECT_PIN,
   payload: {
     nodeId,
-    pinId
-  }
+    pinId,
+  },
 });
 export type SelectPinAction = ReturnType<typeof selectPin>;
 export function isSelectPinAction(

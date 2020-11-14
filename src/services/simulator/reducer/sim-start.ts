@@ -13,6 +13,6 @@ export default createSimulatorReducer((state, action, appState) => {
 
   return {
     ...state,
-    mode: "run"
+    mode: "run",
   };
 });

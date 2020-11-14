@@ -40,7 +40,7 @@ const stateSelectors = {
   selectedNodePositionsById,
   selectedNodeTypesById,
   selectedNodeStatesById,
-  dragMoveOffset: dragMoveOffsetSelector
+  dragMoveOffset: dragMoveOffsetSelector,
 };
 type StateProps = ObjectValueReturnTypes<typeof stateSelectors>;
 const mapStateToProps = createStructuredSelector<AppState, StateProps>(
@@ -54,7 +54,7 @@ class DragPreviewLayer extends React.Component<Props> {
       selectedNodePositionsById,
       selectedNodeTypesById,
       selectedNodeStatesById,
-      dragMoveOffset
+      dragMoveOffset,
     } = this.props;
 
     let elements: React.ReactNode | null = null;

@@ -22,12 +22,12 @@ export const dragMoveOffsetSelector = createSelector(
       : null
 );
 
-export const dragEndSelector = createFieldSelector(s => s.dragEnd);
+export const dragEndSelector = createFieldSelector((s) => s.dragEnd);
 
 export const isDraggingNewNodeSelector = createFieldSelector(
-  s => s.dragMode === "new-node"
+  (s) => s.dragMode === "new-node"
 );
 
-export const dragNewNodeTypeSelector = createFieldSelector(s =>
+export const dragNewNodeTypeSelector = createFieldSelector((s) =>
   s.dragMode === "new-node" ? s.dragNewNodeType : null
 );

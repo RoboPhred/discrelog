@@ -6,8 +6,8 @@ export const moveWireJoint = (jointId: string, position: Point) => ({
   type: ACTION_WIRE_JOINT_MOVE,
   payload: {
     jointId,
-    position
-  }
+    position,
+  },
 });
 export type MoveWireJointAction = ReturnType<typeof moveWireJoint>;
 export function isMoveWireJointAction(

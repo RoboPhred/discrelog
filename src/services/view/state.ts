@@ -3,7 +3,7 @@ export interface ViewState {
 }
 
 const _defaultState: ViewState = {
-  scale: 1
+  scale: 1,
 };
 
 export const defaultViewState = Object.freeze(_defaultState);

@@ -10,13 +10,13 @@ export function normalizeVisuals(
 ): { path: string; fill?: string; stroke?: string; strokeWidth?: number }[] {
   const asArray = Array.isArray(v) ? v : [v];
 
-  return asArray.map(x => {
+  return asArray.map((x) => {
     if (typeof x === "string") {
       return {
         path: x,
         fill: "black",
         stroke: "black",
-        strokeWidth: 2
+        strokeWidth: 2,
       };
     }
     const fill = typeof x.fill === "function" ? x.fill(state || {}) : x.fill;
@@ -30,19 +30,19 @@ export function normalizeVisuals(
       path: x.path,
       fill,
       stroke,
-      strokeWidth
+      strokeWidth,
     };
   });
 }
 
 export function inputsOf(def: NodeDefinition): IDMap<NodePinDefinition> {
-  return pickBy(def.pins, value => value.direction === "input") as IDMap<
+  return pickBy(def.pins, (value) => value.direction === "input") as IDMap<
     NodePinDefinition
   >;
 }
 
 export function outputsOf(def: NodeDefinition): IDMap<NodePinDefinition> {
-  return pickBy(def.pins, value => value.direction === "output") as IDMap<
+  return pickBy(def.pins, (value) => value.direction === "output") as IDMap<
     NodePinDefinition
   >;
 }

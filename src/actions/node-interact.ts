@@ -3,7 +3,7 @@ import { AnyAction } from "redux";
 export const ACTION_NODE_INTERACT = "@node/interact" as const;
 export const interactNode = (nodeId: string) => ({
   type: ACTION_NODE_INTERACT,
-  payload: { nodeId }
+  payload: { nodeId },
 });
 export type InteractNodeAction = ReturnType<typeof interactNode>;
 export function isInteractNodeAction(

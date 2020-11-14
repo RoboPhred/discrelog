@@ -5,7 +5,7 @@ export interface CircuitFieldState {
 }
 
 const _defaultState: CircuitFieldState = {
-  selectedPin: null
+  selectedPin: null,
 };
 
 export const defaultCircuitFieldState = Object.freeze(_defaultState);

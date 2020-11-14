@@ -12,7 +12,7 @@ export default createFieldReducer((state, action) => {
   const { wireId } = action.payload;
 
   const remainingWireIds = Object.keys(state.wireJointIdsByWireId).filter(
-    x => x != wireId
+    (x) => x != wireId
   );
 
   const remainingJointIds = difference(
@@ -26,6 +26,6 @@ export default createFieldReducer((state, action) => {
     wireJointPositionsByJointId: pick(
       state.wireJointPositionsByJointId,
       remainingJointIds
-    )
+    ),
   };
 });

@@ -6,8 +6,8 @@ export const ACTION_FIELD_DRAG_START_NEWNODE = "@field/drag/start/new-node" as c
 export const fieldDragStartNewNode = (nodeType: NodeType) => ({
   type: ACTION_FIELD_DRAG_START_NEWNODE,
   payload: {
-    nodeType
-  }
+    nodeType,
+  },
 });
 export type FieldDragStartNewNodeAction = ReturnType<
   typeof fieldDragStartNewNode

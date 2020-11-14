@@ -13,8 +13,8 @@ import { createFieldSelector } from "../utils";
 
 import { nodePositionsByNodeIdSelector } from "./positions";
 
-export const fieldWidthSelector = createFieldSelector(s => s.width);
-export const fieldHeightSelector = createFieldSelector(s => s.height);
+export const fieldWidthSelector = createFieldSelector((s) => s.width);
+export const fieldHeightSelector = createFieldSelector((s) => s.height);
 
 export const nodeBoundsByIdSelector = createSelector(
   nodeDefsByNodeIdSelector,
@@ -44,11 +44,11 @@ export const nodeRectsByIdSelector = createSelector(
       return normalizeRectangle(
         {
           x: p1.x + bounds[0],
-          y: p1.y + bounds[1]
+          y: p1.y + bounds[1],
         },
         {
           x: p1.x + bounds[2],
-          y: p1.y + bounds[3]
+          y: p1.y + bounds[3],
         }
       );
     })

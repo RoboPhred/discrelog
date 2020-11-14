@@ -14,7 +14,7 @@ export default createFieldReducer((state, action) => {
     dragMode: "select",
     dragStart: {
       x,
-      y
-    }
+      y,
+    },
   };
 });

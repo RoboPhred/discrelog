@@ -4,7 +4,7 @@ import {
   NodeType,
   NodeTypes,
   NodePinDefinition,
-  NodePinDirection
+  NodePinDirection,
 } from "@/node-defs";
 import { normalizeVisuals } from "@/node-defs/utils";
 
@@ -40,7 +40,7 @@ class NodeVisual extends React.Component<Props> {
       onMouseDown,
       onMouseOver,
       onMouseUp,
-      onMouseLeave
+      onMouseLeave,
     } = this.props;
 
     if (!nodeType) {
@@ -70,11 +70,11 @@ class NodeVisual extends React.Component<Props> {
       hitPath = def.visual.hitPath;
 
       if (renderPin) {
-        pins = Object.keys(def.pins).map(key => {
+        pins = Object.keys(def.pins).map((key) => {
           const pin = def.pins[key];
           let element = renderPin({
             id: key,
-            ...pin
+            ...pin,
           });
           return React.cloneElement(element, { key: `input-${key}` });
         });

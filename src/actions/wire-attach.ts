@@ -19,8 +19,8 @@ export const attachWire = (
     wireId: uuidV4(),
     p1,
     p2,
-    joints: opts?.joints || []
-  }
+    joints: opts?.joints || [],
+  },
 });
 export type AttachWireAction = ReturnType<typeof attachWire>;
 export function isAttachWireAction(

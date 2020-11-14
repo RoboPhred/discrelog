@@ -13,7 +13,7 @@ const keymap = {
   [KEYMAP_SELECT_ALL]: `${keyboardCommandModifier}+a`,
   [KEYMAP_COPY]: `${keyboardCommandModifier}+c`,
   [KEYMAP_PASTE]: `${keyboardCommandModifier}+v`,
-  [KEYMAP_DELETE]: ["backspace", "del"]
+  [KEYMAP_DELETE]: ["backspace", "del"],
 };
 export default keymap;
 

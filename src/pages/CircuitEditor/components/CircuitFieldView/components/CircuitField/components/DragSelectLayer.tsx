@@ -55,7 +55,7 @@ const DragSelectLayer: React.FC = () => {
     onClick,
     onDragStart,
     onDragMove,
-    onDragEnd
+    onDragEnd,
   });
   const onMouseDown = React.useCallback(
     (e: React.MouseEvent) => {

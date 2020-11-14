@@ -12,6 +12,6 @@ export default createSelectionReducer((state, action) => {
     ...state,
     selectedNodeIds: mode === "set" ? [] : state.selectedNodeIds,
     selectedWireIds: mode === "set" ? [] : state.selectedWireIds,
-    selectedJointIds: combineSelection(state.selectedJointIds, jointIds, mode)
+    selectedJointIds: combineSelection(state.selectedJointIds, jointIds, mode),
   };
 });

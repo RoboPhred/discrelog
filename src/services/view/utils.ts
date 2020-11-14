@@ -1,6 +1,6 @@
 import {
   createServiceReducerCreator,
-  createServiceSelectorCreator
+  createServiceSelectorCreator,
 } from "../service-state-utils";
 
 export const createViewReducer = createServiceReducerCreator("view");

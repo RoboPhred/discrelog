@@ -28,7 +28,7 @@ function deleteNodeById(
   appState: AppState
 ): SimulatorState {
   const removeTransitionIds = Object.keys(state.transitionsById).filter(
-    id => state.transitionsById[id].nodeId === nodeId
+    (id) => state.transitionsById[id].nodeId === nodeId
   );
 
   state = removeTransitionIds.reduce(
@@ -36,7 +36,9 @@ function deleteNodeById(
     state
   );
 
-  const remainingNodeIds = nodeIdsSelector(appState).filter(x => x !== nodeId);
+  const remainingNodeIds = nodeIdsSelector(appState).filter(
+    (x) => x !== nodeId
+  );
 
   return {
     ...state,
@@ -44,6 +46,6 @@ function deleteNodeById(
     nodeOutputValuesByNodeId: pick(
       state.nodeOutputValuesByNodeId,
       remainingNodeIds
-    )
+    ),
   };
 }

@@ -15,11 +15,11 @@ export default createFieldReducer((state, action) => {
 
   // Might want to use addWireJoint action, but field is the only thing that cares about joints.
   if (joints.length > 0) {
-    const jointIds = joints.map(x => uuidV4());
+    const jointIds = joints.map((x) => uuidV4());
     fpSet(state, "wireJointIdsByWireId", wireId, jointIds);
-    fpSet(state, "wireJointPositionsByJointId", value => ({
+    fpSet(state, "wireJointPositionsByJointId", (value) => ({
       ...value,
-      ...zipObject(jointIds, joints)
+      ...zipObject(jointIds, joints),
     }));
   }
 

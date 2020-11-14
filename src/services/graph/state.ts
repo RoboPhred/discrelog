@@ -16,7 +16,7 @@ export interface GraphState {
 
 const _defaultState: GraphState = {
   nodesById: {},
-  wiresById: {}
+  wiresById: {},
 };
 
 export const defaultGraphState = Object.freeze(_defaultState);

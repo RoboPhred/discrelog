@@ -23,7 +23,7 @@ import keymap, {
   KEYMAP_COPY,
   KEYMAP_PASTE,
   KEYMAP_DELETE,
-  KEYMAP_SELECT_ALL
+  KEYMAP_SELECT_ALL,
 } from "./keymap";
 
 import CircuitField from "./components/CircuitField";
@@ -58,7 +58,7 @@ const CircuitFieldView: React.FC<CircuitFieldViewProps> = ({ className }) => {
       [KEYMAP_SELECT_ALL]: createEventDispatcher(selectAll()),
       [KEYMAP_COPY]: createEventDispatcher(selectionCopy()),
       [KEYMAP_PASTE]: createEventDispatcher(paste()),
-      [KEYMAP_DELETE]: createEventDispatcher(selectionDelete())
+      [KEYMAP_DELETE]: createEventDispatcher(selectionDelete()),
     };
     return keyHandlers;
   }, []);
@@ -97,7 +97,7 @@ const CircuitFieldView: React.FC<CircuitFieldViewProps> = ({ className }) => {
           styles["circuit-field-zoom-container"]
         )}
         style={{
-          transform: `scale(${scale})`
+          transform: `scale(${scale})`,
         }}
       >
         <HotKeys keyMap={keymap} handlers={keyHandlers}>

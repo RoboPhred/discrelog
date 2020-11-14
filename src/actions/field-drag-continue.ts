@@ -4,7 +4,7 @@ import { Point } from "@/types";
 export const ACTION_FIELD_DRAG_CONTINUE = "@field/drag/continue" as const;
 export const fieldDragContinue = (p: Point) => ({
   type: ACTION_FIELD_DRAG_CONTINUE,
-  payload: p
+  payload: p,
 });
 export type FieldDragContinueAction = ReturnType<typeof fieldDragContinue>;
 export function isFieldDragContinueAction(

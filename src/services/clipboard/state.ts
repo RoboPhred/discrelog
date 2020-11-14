@@ -10,5 +10,5 @@ export interface ClipboardState {
 
 export const defaultClipboardState: Readonly<ClipboardState> = Object.freeze({
   clipboardNodes: [],
-  clipboardPasteOrigin: ZeroPoint
+  clipboardPasteOrigin: ZeroPoint,
 });

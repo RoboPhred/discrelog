@@ -5,7 +5,7 @@ import { SelectionMode } from "@/selection-mode";
 
 import {
   createServiceReducerCreator,
-  createServiceSelectorCreator
+  createServiceSelectorCreator,
 } from "../service-state-utils";
 
 export const createSelectionReducer = createServiceReducerCreator("selection");

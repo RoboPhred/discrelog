@@ -1,22 +1,22 @@
 import {
   ClipboardState,
-  defaultClipboardState
+  defaultClipboardState,
 } from "@/services/clipboard/state";
 import { FieldState, defaultFieldState } from "@/services/field/state";
 import { GraphState, defaultGraphState } from "@/services/graph/state";
 import {
   SelectionState,
-  defaultSelectionState
+  defaultSelectionState,
 } from "@/services/selection/state";
 import {
   SimulatorState,
-  defaultSimulatorState
+  defaultSimulatorState,
 } from "@/services/simulator/state";
 import { ViewState, defaultViewState } from "@/services/view/state";
 
 import {
   CircuitEditorState,
-  defaultCircuitEditorState
+  defaultCircuitEditorState,
 } from "@/pages/CircuitEditor/state";
 
 export interface AppState {
@@ -40,11 +40,11 @@ const _defaultAppState: AppState = {
     graph: defaultGraphState,
     selection: defaultSelectionState,
     simulator: defaultSimulatorState,
-    view: defaultViewState
+    view: defaultViewState,
   },
   ui: {
-    circuitEditor: defaultCircuitEditorState
-  }
+    circuitEditor: defaultCircuitEditorState,
+  },
 };
 
 export const defaultAppState = Object.freeze(_defaultAppState);

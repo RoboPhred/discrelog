@@ -22,7 +22,7 @@ const _defaultState: FieldState = {
   dragMode: null,
   dragStart: null,
   dragEnd: null,
-  dragNewNodeType: null
+  dragNewNodeType: null,
 };
 
 export const defaultFieldState: Readonly<FieldState> = Object.freeze(

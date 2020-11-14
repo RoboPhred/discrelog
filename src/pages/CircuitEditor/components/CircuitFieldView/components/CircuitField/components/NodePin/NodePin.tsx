@@ -23,7 +23,7 @@ export interface NodePinProps {
 const NodePin: React.FC<NodePinProps> = ({ nodeId, pinId }) => {
   const dispatch = useDispatch();
   const selectedPin = useSelector(selectedPinSelector);
-  const position = useSelector(s =>
+  const position = useSelector((s) =>
     nodePinPositionFromNodePinSelector(s, nodeId, pinId)
   );
 

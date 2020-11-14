@@ -11,6 +11,6 @@ export default createSelectionReducer((state, action) => {
 
   return {
     ...state,
-    selectedWireIds: state.selectedWireIds.filter(x => x !== wireId)
+    selectedWireIds: state.selectedWireIds.filter((x) => x !== wireId),
   };
 });

@@ -11,8 +11,8 @@ export const selectRegion = (
   type: ACTION_SELECT_REGION,
   payload: {
     region,
-    mode
-  }
+    mode,
+  },
 });
 export type SelectRegionAction = ReturnType<typeof selectRegion>;
 export function isSelectRegionAction(

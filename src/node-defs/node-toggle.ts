@@ -4,7 +4,7 @@ interface ToggleState {
   toggleState: boolean;
 }
 const defaultToggleState: ToggleState = {
-  toggleState: false
+  toggleState: false,
 };
 
 const toggleSwitchNodeDefinition: NodeDefinition = {
@@ -12,21 +12,21 @@ const toggleSwitchNodeDefinition: NodeDefinition = {
   visual: {
     shapePath: {
       path: `M0,0 L0,50 L25,50 L25,0 z`,
-      fill: (state: ToggleState) => (state.toggleState ? "green" : "red")
-    }
+      fill: (state: ToggleState) => (state.toggleState ? "green" : "red"),
+    },
   },
   pins: {
     OUT: {
       name: "OUT",
       direction: "output",
       x: 25,
-      y: 25
-    }
+      y: 25,
+    },
   },
   interact(state: ToggleState = defaultToggleState) {
     return {
       ...state,
-      toggleState: !state.toggleState
+      toggleState: !state.toggleState,
     };
   },
   evolve(state = defaultToggleState, inputs, tick) {
@@ -34,9 +34,9 @@ const toggleSwitchNodeDefinition: NodeDefinition = {
       state,
       transitions: {
         tickOffset: 1,
-        valuesByPin: { OUT: state.toggleState }
-      }
+        valuesByPin: { OUT: state.toggleState },
+      },
     };
-  }
+  },
 };
 export default toggleSwitchNodeDefinition;

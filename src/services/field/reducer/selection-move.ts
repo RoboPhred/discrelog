@@ -4,7 +4,7 @@ import pick from "lodash/pick";
 import { isMoveSelectionAction } from "@/actions/selection-move";
 import {
   selectedNodeIdsSelector,
-  selectedJointIdsSelector
+  selectedJointIdsSelector,
 } from "@/services/selection/selectors/selection";
 
 import { createFieldReducer } from "../utils";
@@ -19,18 +19,18 @@ export default createFieldReducer((state, action, appState) => {
   const nodeIds = selectedNodeIdsSelector(appState);
   const movedNodePositions = mapValues(
     pick(state.nodePositionsById, nodeIds),
-    p => ({
+    (p) => ({
       x: p.x + offsetX,
-      y: p.y + offsetY
+      y: p.y + offsetY,
     })
   );
 
   const jointIds = selectedJointIdsSelector(appState);
   const movedJoints = mapValues(
     pick(state.wireJointPositionsByJointId, jointIds),
-    p => ({
+    (p) => ({
       x: p.x + offsetX,
-      y: p.y + offsetY
+      y: p.y + offsetY,
     })
   );
 
@@ -38,11 +38,11 @@ export default createFieldReducer((state, action, appState) => {
     ...state,
     nodePositionsById: {
       ...state.nodePositionsById,
-      ...movedNodePositions
+      ...movedNodePositions,
     },
     wireJointPositionsByJointId: {
       ...state.wireJointPositionsByJointId,
-      ...movedJoints
-    }
+      ...movedJoints,
+    },
   };
 });

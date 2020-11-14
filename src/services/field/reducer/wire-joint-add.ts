@@ -16,18 +16,18 @@ export default createFieldReducer((state, action) => {
   wireJoints = [
     ...wireJoints.slice(0, insertionIndex),
     jointId,
-    ...wireJoints.slice(insertionIndex)
+    ...wireJoints.slice(insertionIndex),
   ];
 
   return {
     ...state,
     wireJointIdsByWireId: {
       ...state.wireJointIdsByWireId,
-      [wireId]: wireJoints
+      [wireId]: wireJoints,
     },
     wireJointPositionsByJointId: {
       ...state.wireJointPositionsByJointId,
-      [jointId]: position
-    }
+      [jointId]: position,
+    },
   };
 });

@@ -7,9 +7,9 @@ import { nodeIdsSelector } from "@/services/graph/selectors/nodes";
 import Node from "./Node";
 
 const NodesLayer: React.FC = () => {
-  const nodeIds = useSelector(state => nodeIdsSelector(state));
+  const nodeIds = useSelector((state) => nodeIdsSelector(state));
 
-  const nodeElements = nodeIds.map(nodeId => {
+  const nodeElements = nodeIds.map((nodeId) => {
     return <Node key={nodeId} nodeId={nodeId} />;
   });
 

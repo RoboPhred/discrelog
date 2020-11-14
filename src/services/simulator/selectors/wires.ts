@@ -14,7 +14,7 @@ export const wireValueFromWireIdSelector = createCachedSelector(
     }
 
     const {
-      outputPin: { nodeId, pinId }
+      outputPin: { nodeId, pinId },
     } = wire;
 
     return outputVauesByNodeId[nodeId]?.[pinId] || false;

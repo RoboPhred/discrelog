@@ -13,7 +13,7 @@ import { NodeDefinition } from "@/node-defs";
 import { Point } from "@/types";
 
 export const nodePositionsByNodeIdSelector = createFieldSelector(
-  state => state.nodePositionsById
+  (state) => state.nodePositionsById
 );
 
 export const nodePositionFromNodeIdSelector = createFieldSelector(

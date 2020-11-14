@@ -25,7 +25,7 @@ export default function selectPinReducer(
 
   const clickedPinDirection = nodePinDirectionSelector(state, {
     nodeId,
-    pinId
+    pinId,
   });
   if (!clickedPinDirection) {
     return state;
@@ -53,11 +53,11 @@ function doSelectPinReducer(
   action: SelectPinAction
 ): AppState {
   const { nodeId, pinId } = action.payload;
-  return fpSet(state, "ui", "circuitEditor", "circuitField", value => ({
+  return fpSet(state, "ui", "circuitEditor", "circuitField", (value) => ({
     ...value,
     selectedPin: {
       nodeId,
-      pinId
-    }
+      pinId,
+    },
   }));
 }

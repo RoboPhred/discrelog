@@ -17,13 +17,13 @@ export interface WireProps {
 }
 
 const Wire: React.FC<WireProps> = ({ wireId }) => {
-  const jointIds = useSelector(state =>
+  const jointIds = useSelector((state) =>
     wireJointIdsFromWireIdSelector(state, wireId)
   );
-  const isPowered = useSelector(state =>
+  const isPowered = useSelector((state) =>
     wireValueFromWireIdSelector(state, wireId)
   );
-  const isSelected = useSelector(state =>
+  const isSelected = useSelector((state) =>
     isWireSelectedSelector(state, wireId)
   );
 
@@ -40,7 +40,7 @@ const Wire: React.FC<WireProps> = ({ wireId }) => {
     );
   });
 
-  const jointElements = jointIds.map(jointId => (
+  const jointElements = jointIds.map((jointId) => (
     <WireJoint key={jointId} jointId={jointId} />
   ));
 

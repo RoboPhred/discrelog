@@ -11,7 +11,7 @@ export interface AddNodeOptions {
 export const ACTION_NODE_ADD = "@node/add" as const;
 export const addNode = (nodeType: NodeType, opts?: AddNodeOptions) => ({
   type: ACTION_NODE_ADD,
-  payload: { nodeId: uuidV4(), nodeType, ...(opts || {}) }
+  payload: { nodeId: uuidV4(), nodeType, ...(opts || {}) },
 });
 export type AddNodeAction = ReturnType<typeof addNode>;
 export function isAddNodeAction(action: AnyAction): action is AddNodeAction {

@@ -6,7 +6,7 @@ import { isDeleteNodeAction } from "@/actions/node-delete";
 import { createFieldReducer } from "../utils";
 import {
   nodeInputWireIdsFromNodeIdSelector,
-  nodeOutputWireIdsFromNodeIdSelector
+  nodeOutputWireIdsFromNodeIdSelector,
 } from "@/services/graph/selectors/wires";
 
 export default createFieldReducer((state, action, appState) => {
@@ -57,6 +57,6 @@ export default createFieldReducer((state, action, appState) => {
     wireJointPositionsByJointId: pick(
       state.wireJointPositionsByJointId,
       remainingJointIds
-    )
+    ),
   };
 });

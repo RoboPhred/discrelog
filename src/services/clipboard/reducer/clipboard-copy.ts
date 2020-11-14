@@ -33,12 +33,12 @@ export default createClipboardReducer((state, action, appState) => {
   );
 
   function nodeIsSelected(id: string): boolean {
-    return findIndex(nodeIds, x => x === id) !== -1;
+    return findIndex(nodeIds, (x) => x === id) !== -1;
   }
 
   const rootPosition = nodePositionsById[nodeIds[0]];
 
-  const copyNodes: ClipboardNode[] = nodeIds.map(nodeId => {
+  const copyNodes: ClipboardNode[] = nodeIds.map((nodeId) => {
     const node = nodeFromNodeIdSelector(appState, nodeId);
     const outputs = nodeOutputSourcesByPinIdFromNodeIdSelector(
       appState,
@@ -48,11 +48,11 @@ export default createClipboardReducer((state, action, appState) => {
       id: copyIds[nodeId],
       type: node.type,
       offset: pointSubtract(nodePositionsById[nodeId], rootPosition),
-      outputs: mapValues(outputs, conns =>
+      outputs: mapValues(outputs, (conns) =>
         conns
-          .filter(x => nodeIsSelected(x.nodeId))
-          .map(c => ({ nodeId: copyIds[c.nodeId], pinId: c.pinId }))
-      )
+          .filter((x) => nodeIsSelected(x.nodeId))
+          .map((c) => ({ nodeId: copyIds[c.nodeId], pinId: c.pinId }))
+      ),
     };
     return copyNode;
   });
@@ -60,6 +60,6 @@ export default createClipboardReducer((state, action, appState) => {
   return {
     ...state,
     clipboardNodes: copyNodes,
-    clipboardPasteOrigin: rootPosition
+    clipboardPasteOrigin: rootPosition,
   };
 });

@@ -14,8 +14,8 @@ export const addWireJoint = (
     wireId,
     jointId: jointId || uuidV4(),
     addAfterJointId,
-    position
-  }
+    position,
+  },
 });
 export type AddWireJointAction = ReturnType<typeof addWireJoint>;
 export function isAddWireJointAction(

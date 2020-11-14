@@ -13,8 +13,8 @@ import mapValues from "lodash/mapValues";
 
 export const wireIdsSelector = createGraphSelector(
   createSelector(
-    s => s.wiresById,
-    wiresById => Object.keys(wiresById)
+    (s) => s.wiresById,
+    (wiresById) => Object.keys(wiresById)
   )
 );
 
@@ -25,7 +25,7 @@ export const wireFromWireIdSelector = createGraphSelector(
 const wiresSelector = createGraphSelector(
   createSelector(
     (state: GraphState) => state.wiresById,
-    wiresById => values(wiresById)
+    (wiresById) => values(wiresById)
   )
 );
 
@@ -36,7 +36,7 @@ export const nodePinDirectionSelector = createGraphSelector(
       return null;
     }
 
-    const pinDef = find(def.pins, p => p.name === pin.pinId);
+    const pinDef = find(def.pins, (p) => p.name === pin.pinId);
     if (!pinDef) {
       return null;
     }
@@ -51,7 +51,7 @@ export const nodePinDirectionSelector = createGraphSelector(
 export const nodeInputWireIdsFromNodeIdSelector = createGraphSelector(
   (state: GraphState, nodeId: string) =>
     Object.keys(state.wiresById).filter(
-      wireId => state.wiresById[wireId].inputPin.nodeId === nodeId
+      (wireId) => state.wiresById[wireId].inputPin.nodeId === nodeId
     )
 );
 
@@ -70,11 +70,11 @@ export const nodeInputSourcesByPinIdFromNodeIdSelector = createGraphSelector(
 
       let inputPins: string[] = [];
       inputPins = Object.keys(nodeDef.pins).filter(
-        x => nodeDef.pins[x].direction === "input"
+        (x) => nodeDef.pins[x].direction === "input"
       );
 
       const inputConnections = connections.filter(
-        x => x.inputPin.nodeId === nodeId
+        (x) => x.inputPin.nodeId === nodeId
       );
 
       const result: Record<string, NodePin | null> = {};
@@ -98,7 +98,7 @@ export const nodeInputSourcesByPinIdFromNodeIdSelector = createGraphSelector(
  */
 export const nodeOutputWiresFromNodeIdSelector = createGraphSelector(
   (state: GraphState, nodeId: string) =>
-    wiresSelector.local(state).filter(x => x.outputPin.nodeId === nodeId)
+    wiresSelector.local(state).filter((x) => x.outputPin.nodeId === nodeId)
 );
 
 /**
@@ -108,7 +108,7 @@ export const nodeOutputWiresFromNodeIdSelector = createGraphSelector(
 export const nodeOutputWireIdsFromNodeIdSelector = createGraphSelector(
   (state: GraphState, nodeId: string) =>
     Object.keys(state.wiresById).filter(
-      wireId => state.wiresById[wireId].outputPin.nodeId === nodeId
+      (wireId) => state.wiresById[wireId].outputPin.nodeId === nodeId
     )
 );
 
@@ -127,11 +127,11 @@ export const nodeOutputSourcesByPinIdFromNodeIdSelector = createGraphSelector(
 
       let outputPins: string[] = [];
       outputPins = Object.keys(nodeDef.pins).filter(
-        x => nodeDef.pins[x].direction === "output"
+        (x) => nodeDef.pins[x].direction === "output"
       );
 
       const outputConnections = connections.filter(
-        x => x.outputPin.nodeId === nodeId
+        (x) => x.outputPin.nodeId === nodeId
       );
 
       const result: Record<string, NodePin[]> = {};

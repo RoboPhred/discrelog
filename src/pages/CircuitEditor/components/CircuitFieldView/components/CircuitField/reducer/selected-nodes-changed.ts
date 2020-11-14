@@ -7,7 +7,7 @@ import { createFieldReducer } from "./utils";
 const SELECTED_NODE_CHANGE_ACTIONS = [
   ACTION_SELECT_REGION,
   ACTION_SELECT_NODES,
-  ACTION_SELECT_CLEAR
+  ACTION_SELECT_CLEAR,
 ];
 export default createFieldReducer((state, action) => {
   if (SELECTED_NODE_CHANGE_ACTIONS.indexOf(action.type) === -1) {
@@ -16,6 +16,6 @@ export default createFieldReducer((state, action) => {
 
   return {
     ...state,
-    selectedPin: null
+    selectedPin: null,
   };
 });

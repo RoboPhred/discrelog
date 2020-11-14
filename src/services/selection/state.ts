@@ -7,7 +7,7 @@ export interface SelectionState {
 const _defaultState: SelectionState = {
   selectedNodeIds: [],
   selectedWireIds: [],
-  selectedJointIds: []
+  selectedJointIds: [],
 };
 
 export const defaultSelectionState = Object.freeze(_defaultState);
