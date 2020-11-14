@@ -7,37 +7,27 @@ import useSelector from "@/hooks/useSelector";
 
 import {
   isSimActiveSelector,
-  isSimPausedSelector
+  isSimPausedSelector,
 } from "@/services/simulator/selectors/run";
 
 import { startSim } from "@/actions/sim-start";
 import { stopSim } from "@/actions/sim-stop";
 import { pauseSim } from "@/actions/sim-pause";
+import { useAction } from "@/hooks/useAction";
 
 import PlayIcon from "../Icons/Play";
-
-import styles from "./SimControls.module.css";
 import StopIcon from "../Icons/Stop";
 import PauseIcon from "../Icons/Pause";
 
+import styles from "./SimControls.module.css";
+
 const PlayPauseButton: React.FC = () => {
-  const dispatch = useDispatch();
   const isActive = useSelector(isSimActiveSelector);
   const isPaused = useSelector(isSimPausedSelector);
 
-  const onPlayClick = React.useCallback(() => {
-    dispatch(startSim());
-  }, []);
-
-  const onStopClick = React.useCallback(() => {
-    dispatch(stopSim());
-  }, []);
-
-  const onPauseClick = React.useCallback(() => {
-    if (isActive) {
-      dispatch(pauseSim("toggle"));
-    }
-  }, [isActive]);
+  const onPlayClick = useAction(startSim);
+  const onStopClick = useAction(stopSim);
+  const onPauseClick = useAction(pauseSim, "toggle");
 
   return (
     <span>

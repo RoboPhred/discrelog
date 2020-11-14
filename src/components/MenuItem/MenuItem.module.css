@@ -1,7 +1,0 @@
-:global(.menu-item) {
-  cursor: pointer;
-}
-
-:global(.menu-item):hover {
-  color: blue;
-}

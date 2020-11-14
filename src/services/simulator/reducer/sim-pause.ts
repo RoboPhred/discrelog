@@ -2,7 +2,6 @@ import { isPauseSimAction } from "@/actions/sim-pause";
 
 import { createSimulatorReducer } from "../utils";
 import { isSimActiveSelector } from "../selectors/run";
-import { SimulatorState } from "../state";
 
 export default createSimulatorReducer((state, action) => {
   if (!isPauseSimAction(action)) {
@@ -30,6 +29,6 @@ export default createSimulatorReducer((state, action) => {
 
   return {
     ...state,
-    mode: runMode
+    mode: runMode,
   };
 });

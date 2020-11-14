@@ -5,6 +5,6 @@ const autoprefixer = require("autoprefixer");
 module.exports = {
   plugins: [
     postcssCustomProperties({ importFrom: "src/styles/variables.css" }),
-    autoprefixer
-  ]
+    autoprefixer,
+  ],
 };

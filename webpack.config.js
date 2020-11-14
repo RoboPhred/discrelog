@@ -1,4 +1,9 @@
-const { resolve: resolvePath, join: joinPath, relative: relativePath, sep } = require("path");
+const {
+  resolve: resolvePath,
+  join: joinPath,
+  relative: relativePath,
+  sep,
+} = require("path");
 const { DefinePlugin } = require("webpack");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -11,7 +16,7 @@ const ROOT = __dirname;
 const PATHS = {
   src: resolvePath(ROOT, "./src"),
   dist: resolvePath(ROOT, "./dist"),
-  node_modules: resolvePath(ROOT, "./node_modules")
+  node_modules: resolvePath(ROOT, "./node_modules"),
 };
 const PUBLIC_URL = isProd ? "/discrelog/" : "/";
 
@@ -19,19 +24,19 @@ module.exports = {
   mode: isDev ? "development" : "production",
 
   devServer: {
-    contentBase: PATHS.dist
+    contentBase: PATHS.dist,
   },
 
   devtool: "source-map",
 
   entry: {
-    client: [joinPath(PATHS.src, "./index.tsx")]
+    client: [joinPath(PATHS.src, "./index.tsx")],
   },
 
   output: {
     filename: "[name].[fullhash].bundle.js",
     path: PATHS.dist,
-    publicPath: PUBLIC_URL
+    publicPath: PUBLIC_URL,
   },
 
   resolve: {
@@ -44,14 +49,14 @@ module.exports = {
       "svg-arc-to-cubic-bezier": joinPath(
         PATHS.node_modules,
         "svg-arc-to-cubic-bezier/cjs"
-      )
+      ),
     },
     fallback: {
       // Used by react-markdown
-      "path": require.resolve("path-browserify"),
+      path: require.resolve("path-browserify"),
       // Used by svg-path-bounds
-      "assert": require.resolve("assert")
-    }
+      assert: require.resolve("assert"),
+    },
   },
 
   module: {
@@ -62,40 +67,56 @@ module.exports = {
         enforce: "pre",
         test: /\.(jsx?|tsx?)$/,
         exclude: /node_modules/,
-        loader: "source-map-loader"
+        loader: "source-map-loader",
       },
 
       // Enable TS file support
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        loader: "ts-loader"
+        loader: "ts-loader",
       },
 
+      // css files with the modular option.
       {
-        test: /\.css$/,
+        test: /\.module\.css$/,
+        exclude: /node_modules/,
         use: [
           { loader: MiniCssExtractPlugin.loader },
           {
             loader: "css-loader",
             options: {
               modules: {
-                localIdentName: "[name]__[local]___[fullhash:base64:5]"
-              }
-            }
+                localIdentName: "[name]__[local]___[fullhash:base64:5]",
+              },
+            },
           },
           {
-            loader: "postcss-loader"
-          }
-        ]
+            loader: "postcss-loader",
+          },
+        ],
+      },
+
+      // Any css that is not .module.css
+      {
+        test: /^(?!.*[.]module\.css$).*(\.css)$/,
+        use: [
+          { loader: MiniCssExtractPlugin.loader },
+          {
+            loader: "css-loader",
+          },
+          {
+            loader: "postcss-loader",
+          },
+        ],
       },
 
       // Pull in text and markdown files raw.
       {
         test: /\.(txt|md)$/,
-        use: "raw-loader"
-      }
-    ]
+        use: "raw-loader",
+      },
+    ],
   },
 
   plugins: [
@@ -106,10 +127,10 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       inject: true,
-      template: resolvePath(PATHS.src, "index.ejs")
+      template: resolvePath(PATHS.src, "index.ejs"),
     }),
-    new MiniCssExtractPlugin()
-  ].filter(truthy),
+    new MiniCssExtractPlugin(),
+  ],
 
   optimization: {
     runtimeChunk: true,
@@ -122,7 +143,7 @@ module.exports = {
             const relToModule = relativePath(PATHS.node_modules, mod.context);
             const moduleName = relToModule.substring(
               0,
-              relToModule.indexOf(sep),
+              relToModule.indexOf(sep)
             );
             return `npm.${moduleName}`;
           },
@@ -131,7 +152,3 @@ module.exports = {
     },
   },
 };
-
-function truthy(x) {
-  return !!x;
-}
