@@ -2,7 +2,7 @@ import { AnyAction } from "redux";
 import zipObject from "lodash/zipObject";
 import map from "lodash/map";
 import values from "lodash/values";
-import uuidV4 from "uuid/v4";
+import { v4 as uuidV4 } from "uuid";
 
 import { Point } from "@/types";
 import { pointAdd, ZeroPoint } from "@/geometry";

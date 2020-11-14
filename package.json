@@ -28,7 +28,7 @@
     "@types/react-redux": "^7.1.11",
     "@types/redux-saga": "^0.10.5",
     "@types/reselect": "^2.2.0",
-    "@types/uuid": "^3.4.6",
+    "@types/uuid": "^8.3.0",
     "autoprefixer": "^10.0.2",
     "cross-env": "^7.0.2",
     "css-loader": "^5.0.1",
@@ -58,11 +58,11 @@
     "lodash": "^4.17.20",
     "path-browserify": "^1.0.1",
     "platform": "^1.3.6",
-    "re-reselect": "^3.4.0",
+    "re-reselect": "^4.0.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-focus-on": "^3.5.0",
-    "react-hotkeys": "^1.1.4",
+    "react-hotkeys": "^2.0.0",
     "react-markdown": "^5.0.2",
     "react-mosaic-component": "^4.1.1",
     "react-redux": "^7.2.2",
@@ -72,6 +72,6 @@
     "redux-saga": "^1.1.3",
     "reselect": "^4.0.0",
     "svg-path-bounds": "^1.0.1",
-    "uuid": "^3.3.3"
+    "uuid": "^8.3.1"
   }
 }

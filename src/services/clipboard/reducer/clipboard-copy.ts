@@ -1,4 +1,4 @@
-import uuidV4 from "uuid/v4";
+import { v4 as uuidV4 } from "uuid";
 import map from "lodash/map";
 import mapValues from "lodash/mapValues";
 import findIndex from "lodash/findIndex";

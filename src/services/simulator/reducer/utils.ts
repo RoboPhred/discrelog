@@ -1,5 +1,5 @@
 import binarySearch from "binary-search";
-import uuidV4 from "uuid/v4";
+import { v4 as uuidV4 } from "uuid";
 import findIndex from "lodash/findIndex";
 import pick from "lodash/pick";
 import mapValues from "lodash/mapValues";
@@ -7,9 +7,8 @@ import mapValues from "lodash/mapValues";
 import { fpSet } from "@/utils";
 import { IDMap, asArray } from "@/types";
 import { AppState } from "@/store";
-import { OutputTransition } from "@/node-defs";
 
-import { inputsOf, outputsOf } from "@/node-defs/utils";
+import { outputsOf } from "@/node-defs/utils";
 
 import { nodeInputSourcesByPinIdFromNodeIdSelector } from "@/services/graph/selectors/wires";
 import {

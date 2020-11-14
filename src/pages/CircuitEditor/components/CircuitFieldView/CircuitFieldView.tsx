@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { HotKeys } from "react-hotkeys";
+import { AnyAction } from "redux";
 
 import { cls } from "@/utils";
 import { useNativeEvent } from "@/hooks/useNativeEvent";
@@ -29,7 +30,6 @@ import keymap, {
 import CircuitField from "./components/CircuitField";
 
 import styles from "./CircuitFieldView.module.css";
-import { AnyAction } from "redux";
 
 export interface CircuitFieldViewProps {
   className?: string;

@@ -1,4 +1,4 @@
-import uuidV4 from "uuid/v4";
+import { v4 as uuidV4 } from "uuid";
 import { AnyAction } from "redux";
 
 import { NodeType } from "@/node-defs";

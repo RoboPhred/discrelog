@@ -1,5 +1,6 @@
 import { AnyAction } from "redux";
-import uuidV4 from "uuid/v4";
+import { v4 as uuidV4 } from "uuid";
+
 import { Point } from "@/types";
 
 export const ACTION_WIRE_JOINT_ADD = "@wire/joint/add" as const;

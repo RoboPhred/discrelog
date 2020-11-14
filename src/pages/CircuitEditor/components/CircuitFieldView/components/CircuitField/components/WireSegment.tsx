@@ -1,5 +1,5 @@
 import * as React from "react";
-import uuidV4 from "uuid/v4";
+import { v4 as uuidV4 } from "uuid";
 import { useDispatch } from "react-redux";
 
 import { Point } from "@/types";
