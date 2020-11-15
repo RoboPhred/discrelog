@@ -20,7 +20,7 @@ export default reducerPriority(
         ...state.nodesById,
         [id]: {
           id,
-          type,
+          elementType: type,
         },
       },
     };

@@ -2,10 +2,14 @@ import pickBy from "lodash/pickBy";
 
 import { IDMap } from "@/types";
 
-import { NodeVisualPath, NodeDefinition, NodePinDefinition } from "./types";
+import {
+  ElementVisualPath,
+  ElementDefinition,
+  ElementPinDefinition,
+} from "./types";
 
 export function normalizeVisuals(
-  v: NodeVisualPath | NodeVisualPath[],
+  v: ElementVisualPath | ElementVisualPath[],
   state: any
 ): { path: string; fill?: string; stroke?: string; strokeWidth?: number }[] {
   const asArray = Array.isArray(v) ? v : [v];
@@ -35,14 +39,14 @@ export function normalizeVisuals(
   });
 }
 
-export function inputsOf(def: NodeDefinition): IDMap<NodePinDefinition> {
+export function inputsOf(def: ElementDefinition): IDMap<ElementPinDefinition> {
   return pickBy(def.pins, (value) => value.direction === "input") as IDMap<
-    NodePinDefinition
+    ElementPinDefinition
   >;
 }
 
-export function outputsOf(def: NodeDefinition): IDMap<NodePinDefinition> {
+export function outputsOf(def: ElementDefinition): IDMap<ElementPinDefinition> {
   return pickBy(def.pins, (value) => value.direction === "output") as IDMap<
-    NodePinDefinition
+    ElementPinDefinition
   >;
 }

@@ -4,7 +4,7 @@ import { cls } from "@/utils";
 import useSelector from "@/hooks/useSelector";
 
 import { wireJointIdsFromWireIdSelector } from "@/services/field/selectors/wires";
-import { isWireSelectedSelector } from "@/services/selection/selectors/selection";
+import { isWireSelectedFromWireIdSelector } from "@/services/selection/selectors/selection";
 import { wireValueFromWireIdSelector } from "@/services/simulator/selectors/wires";
 
 import WireSegment from "../WireSegment";
@@ -24,7 +24,7 @@ const Wire: React.FC<WireProps> = ({ wireId }) => {
     wireValueFromWireIdSelector(state, wireId)
   );
   const isSelected = useSelector((state) =>
-    isWireSelectedSelector(state, wireId)
+    isWireSelectedFromWireIdSelector(state, wireId)
   );
 
   // We need one extra array entry for starting on the last jointId and ending at null (end of wire)

@@ -1,4 +1,4 @@
-import { NodeDefinition, NodeVisualPathDefinition } from "./types";
+import { ElementDefinition, ElementVisualPathDefinition } from "./types";
 
 const SCALE = 3;
 const OFFSET = [15, 0];
@@ -12,7 +12,7 @@ const OFFSET = [15, 0];
 function createSeg(
   name: string,
   points: [number, number][]
-): NodeVisualPathDefinition {
+): ElementVisualPathDefinition {
   const start = points[0];
   let path = `M${start[0] * SCALE + OFFSET[0]},${start[1] * SCALE + OFFSET[1]}`;
   for (let p of points.slice(1)) {
@@ -26,7 +26,7 @@ function createSeg(
   };
 }
 
-const seg7NodeDefinition: NodeDefinition = {
+const seg7ElementDefinition: ElementDefinition = {
   type: "seg7",
   visual: {
     hitPath: `M0,0 V63 H45 V0 z`,
@@ -140,4 +140,4 @@ const seg7NodeDefinition: NodeDefinition = {
     };
   },
 };
-export default seg7NodeDefinition;
+export default seg7ElementDefinition;

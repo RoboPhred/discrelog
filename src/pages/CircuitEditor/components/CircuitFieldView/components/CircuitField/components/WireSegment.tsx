@@ -129,6 +129,7 @@ const WireSegment: React.FC<WireSegmentProps> = ({
           cx={insertJointPos.x}
           cy={insertJointPos.y}
           r={3}
+          stroke="none"
           fill="red"
           onMouseDown={onJointInsertMouseDown}
         />

@@ -1,7 +1,7 @@
 import { v4 as uuidV4 } from "uuid";
 import { AnyAction } from "redux";
 
-import { NodeType } from "@/node-defs";
+import { ElementType } from "@/element-defs";
 import { Point } from "@/types";
 
 export interface AddNodeOptions {
@@ -9,7 +9,7 @@ export interface AddNodeOptions {
   position?: Point;
 }
 export const ACTION_NODE_ADD = "@node/add" as const;
-export const addNode = (nodeType: NodeType, opts?: AddNodeOptions) => ({
+export const addNode = (nodeType: ElementType, opts?: AddNodeOptions) => ({
   type: ACTION_NODE_ADD,
   payload: { nodeId: uuidV4(), nodeType, ...(opts || {}) },
 });

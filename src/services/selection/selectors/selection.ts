@@ -11,7 +11,7 @@ export const selectedNodeIdsSelector = createSelectionSelector(
   (state) => state.selectedNodeIds
 );
 
-export const isNodeSelectedSelector = createSelectionSelector(
+export const isNodeSelectedFromNodeIdSelector = createSelectionSelector(
   (s: SelectionState, nodeId: string) =>
     s.selectedNodeIds.indexOf(nodeId) !== -1
 );
@@ -26,7 +26,7 @@ export const selectedWireIdsSelector = createSelectionSelector(
   (state) => state.selectedWireIds
 );
 
-export const isWireSelectedSelector = createSelectionSelector(
+export const isWireSelectedFromWireIdSelector = createSelectionSelector(
   (s: SelectionState, wireId: string) =>
     s.selectedWireIds.indexOf(wireId) !== -1
 );
@@ -35,7 +35,7 @@ export const selectedJointIdsSelector = createSelectionSelector(
   (state) => state.selectedJointIds
 );
 
-export const isJointSelectedSelector = createSelectionSelector(
+export const isJointSelectedFromJointIdSelector = createSelectionSelector(
   (s: SelectionState, jointId: string) =>
     s.selectedJointIds.indexOf(jointId) !== -1
 );

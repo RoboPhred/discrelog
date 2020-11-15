@@ -1,4 +1,4 @@
-import { NodeDefinition } from "./types";
+import { ElementDefinition } from "./types";
 
 interface ToggleState {
   toggleState: boolean;
@@ -7,7 +7,7 @@ const defaultToggleState: ToggleState = {
   toggleState: false,
 };
 
-const toggleSwitchNodeDefinition: NodeDefinition = {
+const toggleElementDefinition: ElementDefinition = {
   type: "toggle",
   visual: {
     shapePath: {
@@ -39,4 +39,4 @@ const toggleSwitchNodeDefinition: NodeDefinition = {
     };
   },
 };
-export default toggleSwitchNodeDefinition;
+export default toggleElementDefinition;

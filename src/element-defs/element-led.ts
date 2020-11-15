@@ -1,4 +1,4 @@
-import { NodeDefinition } from "./types";
+import { ElementDefinition } from "./types";
 
 function genCirclePath(cx: number, cy: number, r: number): string {
   return `M ${cx - r}, ${cy}
@@ -6,7 +6,7 @@ function genCirclePath(cx: number, cy: number, r: number): string {
     a ${r},${r} 0 1,0 ${-(r * 2)},0`;
 }
 
-const ledNodeDefinition: NodeDefinition = {
+const ledElementDefinition: ElementDefinition = {
   type: "led",
   visual: {
     shapePath: [
@@ -33,4 +33,4 @@ const ledNodeDefinition: NodeDefinition = {
     };
   },
 };
-export default ledNodeDefinition;
+export default ledElementDefinition;

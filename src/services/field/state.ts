@@ -1,5 +1,5 @@
 import { IDMap, Point } from "@/types";
-import { NodeType } from "@/node-defs";
+import { ElementType } from "@/element-defs";
 
 export interface FieldState {
   nodePositionsById: IDMap<Point>;
@@ -8,7 +8,7 @@ export interface FieldState {
   dragMode: "move" | "select" | "new-node" | null;
   dragStart: Point | null;
   dragEnd: Point | null;
-  dragNewNodeType: NodeType | null;
+  dragNewNodeType: ElementType | null;
 }
 
 const _defaultState: FieldState = {

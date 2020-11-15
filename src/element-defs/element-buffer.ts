@@ -1,6 +1,6 @@
-import { NodeDefinition } from "./types";
+import { ElementDefinition } from "./types";
 
-const bufferNodeDefinition: NodeDefinition = {
+const bufferElementDefinition: ElementDefinition = {
   type: "buffer",
   visual: {
     hitPath: `
@@ -36,4 +36,4 @@ const bufferNodeDefinition: NodeDefinition = {
     };
   },
 };
-export default bufferNodeDefinition;
+export default bufferElementDefinition;

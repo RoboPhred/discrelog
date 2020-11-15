@@ -1,6 +1,6 @@
-import { NodeDefinition } from "./types";
+import { ElementDefinition } from "./types";
 
-const bufferNodeDefinition: NodeDefinition = {
+const notElementDefinition: ElementDefinition = {
   type: "not",
   visual: {
     hitPath: `
@@ -38,4 +38,4 @@ const bufferNodeDefinition: NodeDefinition = {
     };
   },
 };
-export default bufferNodeDefinition;
+export default notElementDefinition;

@@ -1,6 +1,6 @@
 import find from "lodash/find";
 
-import { NodeTypes } from "@/node-defs";
+import { ElementTypes } from "@/element-defs";
 
 import {
   createServiceReducerCreator,
@@ -30,8 +30,8 @@ export function pinsToConnection(
     return null;
   }
 
-  const p1Def = NodeTypes[p1Node.type];
-  const p2Def = NodeTypes[p2Node.type];
+  const p1Def = ElementTypes[p1Node.elementType];
+  const p2Def = ElementTypes[p2Node.elementType];
 
   if (!p1Def || !p2Def) {
     return null;

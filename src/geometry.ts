@@ -60,6 +60,20 @@ export function pointSubtract(p1: Point, p2: Point): Point {
   };
 }
 
+export function pointIntersects(p: Point, r: Rectangle): boolean {
+  r = normalizeRectangle(r);
+
+  if (r.p1.x > p.x || r.p2.x < p.x) {
+    return false;
+  }
+
+  if (r.p1.y > p.y || r.p2.y < p.y) {
+    return false;
+  }
+
+  return true;
+}
+
 export function calcSize(r: Rectangle): Size {
   r = normalizeRectangle(r);
   return {
@@ -94,20 +108,6 @@ export function intersects(r1: Rectangle, r2: Rectangle): boolean {
 
   // r1 starts after p2's extent, or does not reach r2's start.
   if (r1.p1.y > r2.p2.y || r1.p2.y < r2.p1.y) {
-    return false;
-  }
-
-  return true;
-}
-
-export function pointIntersects(p: Point, r: Rectangle): boolean {
-  r = normalizeRectangle(r);
-
-  if (r.p1.x > p.x || r.p2.x < p.x) {
-    return false;
-  }
-
-  if (r.p1.y > p.y || r.p2.y < p.y) {
     return false;
   }
 

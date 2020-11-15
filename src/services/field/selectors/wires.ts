@@ -1,6 +1,6 @@
 import { AppState } from "@/store";
 import { pointAdd, ZeroPoint } from "@/geometry";
-import { NodeDefinition } from "@/node-defs";
+import { ElementDefinition } from "@/element-defs";
 import { Point } from "@/types";
 
 import { nodeDefFromNodeIdSelector } from "@/services/graph/selectors/nodes";
@@ -11,7 +11,7 @@ import { FieldState } from "../state";
 import { nodePositionFromNodeIdSelector } from "./node-positions";
 
 interface PositionCache {
-  inputNodeDef: NodeDefinition | null;
+  inputNodeDef: ElementDefinition | null;
   inputNodePosition: Point;
   outputPosition: Point;
 }
@@ -40,7 +40,8 @@ export const wireStartPositionFromWireIdSelector = (
   if (
     cacheData &&
     cacheData.inputNodeDef === nodeDef &&
-    cacheData.inputNodePosition === nodePosition
+    cacheData.inputNodePosition.x === nodePosition.x &&
+    cacheData.inputNodePosition.y === nodePosition.y
   ) {
     return cacheData.outputPosition;
   }
@@ -76,7 +77,8 @@ export const wireEndPositionFromWireIdSelector = (
   if (
     cacheData &&
     cacheData.inputNodeDef === nodeDef &&
-    cacheData.inputNodePosition === nodePosition
+    cacheData.inputNodePosition.x === nodePosition.x &&
+    cacheData.inputNodePosition.y === nodePosition.y
   ) {
     return cacheData.outputPosition;
   }

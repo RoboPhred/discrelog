@@ -8,7 +8,7 @@ import rootReducer from "@/store/reducer";
 import { isFieldDragStartNodeAction } from "@/actions/field-drag-start-node";
 import { selectNodes } from "@/actions/select-nodes";
 
-import { isNodeSelectedSelector } from "@/services/selection/selectors/selection";
+import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
 
 export default function dragNodesStartReducer(
   state: AppState = defaultAppState,
@@ -29,7 +29,7 @@ export default function dragNodesStartReducer(
     },
   }));
 
-  if (!isNodeSelectedSelector(state, nodeId)) {
+  if (!isNodeSelectedFromNodeIdSelector(state, nodeId)) {
     // Dragging a node that was not previously selected.  Perform a selection on the node.
     state = rootReducer(state, selectNodes(nodeId, selectionMode));
   }

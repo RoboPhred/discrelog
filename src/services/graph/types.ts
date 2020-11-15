@@ -1,9 +1,9 @@
-import { NodeType } from "@/node-defs";
+import { ElementType } from "@/element-defs";
 import { IDMap } from "@/types";
 
 export interface GraphNode {
   id: string;
-  type: NodeType;
+  elementType: ElementType;
 }
 
 /**

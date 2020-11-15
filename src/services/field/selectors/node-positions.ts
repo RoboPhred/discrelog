@@ -9,7 +9,7 @@ import { nodeDefFromNodeIdSelector } from "@/services/graph/selectors/nodes";
 
 import { createFieldSelector } from "../utils";
 import { FieldState } from "../state";
-import { NodeDefinition } from "@/node-defs";
+import { ElementDefinition } from "@/element-defs";
 import { Point } from "@/types";
 
 export const nodePositionsByNodeIdSelector = createFieldSelector(
@@ -27,7 +27,7 @@ const nodePinPositionFromNodePinCachedSelector = createCachedSelector(
     nodePositionFromNodeIdSelector(state, pin.nodeId),
   // break this out so we do not bust the cache when our input changes.
   (_: any, pin: NodePin) => pin.pinId,
-  (def: NodeDefinition | null, nodePosition: Point, pinId: string) => {
+  (def: ElementDefinition | null, nodePosition: Point, pinId: string) => {
     if (!def || !def.pins[pinId]) {
       return null;
     }

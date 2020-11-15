@@ -3,7 +3,7 @@ import getBounds from "svg-path-bounds";
 
 import { calcSize, union, ZeroRect } from "@/geometry";
 
-import { NodeDefinition } from "./types";
+import { ElementDefinition } from "./types";
 import { normalizeVisuals } from "./utils";
 
 export * from "./types";
@@ -13,20 +13,20 @@ export * from "./types";
 // Some assets have been modified for formatting or added functionality.
 // Assets that have been pulled from external sources are marked as such.
 
-export const NodeTypes = {
-  and: require("./node-and").default as NodeDefinition,
-  or: require("./node-or").default as NodeDefinition,
-  nor: require("./node-nor").default as NodeDefinition,
-  not: require("./node-not").default as NodeDefinition,
-  buffer: require("./node-buffer").default as NodeDefinition,
-  led: require("./node-led").default as NodeDefinition,
-  toggle: require("./node-toggle").default as NodeDefinition,
-  seg7: require("./node-seg7").default as NodeDefinition,
+export const ElementTypes = {
+  and: require("./element-and").default as ElementDefinition,
+  or: require("./element-or").default as ElementDefinition,
+  nor: require("./element-nor").default as ElementDefinition,
+  not: require("./element-not").default as ElementDefinition,
+  buffer: require("./element-buffer").default as ElementDefinition,
+  led: require("./element-led").default as ElementDefinition,
+  toggle: require("./element-toggle").default as ElementDefinition,
+  seg7: require("./element-seg7").default as ElementDefinition,
 };
-export type NodeType = keyof typeof NodeTypes;
+export type ElementType = keyof typeof ElementTypes;
 
-export const MaxNodeSize = calcSize(
-  values(NodeTypes).reduce((bounds, { visual }) => {
+export const LargestElementSize = calcSize(
+  values(ElementTypes).reduce((bounds, { visual }) => {
     const visuals = normalizeVisuals(visual.shapePath, undefined);
     if (visual.hitPath) {
       visuals.push({ path: visual.hitPath });

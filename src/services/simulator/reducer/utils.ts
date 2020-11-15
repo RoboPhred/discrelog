@@ -8,7 +8,7 @@ import { fpSet } from "@/utils";
 import { IDMap, asArray } from "@/types";
 import { AppState } from "@/store";
 
-import { outputsOf } from "@/node-defs/utils";
+import { outputsOf } from "@/element-defs/utils";
 
 import { nodeInputSourcesByPinIdFromNodeIdSelector } from "@/services/graph/selectors/wires";
 import {

@@ -1,14 +1,14 @@
 import { IDMap, MaybeArray } from "@/types";
 
-export type NodePinDirection = "input" | "output";
+export type PinDirection = "input" | "output";
 
-export interface NodePinDefinition {
+export interface ElementPinDefinition {
   name: string;
-  direction: NodePinDirection;
+  direction: PinDirection;
   x: number;
   y: number;
 }
-export interface NodeVisualPathDefinition {
+export interface ElementVisualPathDefinition {
   /**
    * The svg path of this visual element.
    */
@@ -20,8 +20,8 @@ export interface NodeVisualPathDefinition {
   stroke?: string | ((state: any) => string);
   strokeWidth?: number | ((state: any) => number);
 }
-export type NodeVisualPath = string | NodeVisualPathDefinition;
-export interface NodeVisualDefinition {
+export type ElementVisualPath = string | ElementVisualPathDefinition;
+export interface ElementVisualDefinition {
   /**
    * Optional SVG path string defining the hit detection of the node.
    */
@@ -29,7 +29,7 @@ export interface NodeVisualDefinition {
   /**
    * The path or paths that make up the visual component of this node.
    */
-  shapePath: NodeVisualPath | NodeVisualPath[];
+  shapePath: ElementVisualPath | ElementVisualPath[];
 }
 
 export interface OutputTransition {
@@ -63,20 +63,20 @@ export interface EvolutionResult {
   transitions?: MaybeArray<OutputTransition>;
 }
 
-export type NodeInteractFunction = (state: any) => any;
-export type NodeEvolverFunction = (
+export type ElementInteractFunction = (state: any) => any;
+export type ElementEvolverFunction = (
   state: any,
   inputs: Record<string, boolean>,
   tick: number
 ) => EvolutionResult;
 
-export interface NodeDefinition {
+export interface ElementDefinition {
   type: string;
 
-  visual: NodeVisualDefinition;
+  visual: ElementVisualDefinition;
 
-  pins: IDMap<NodePinDefinition>;
+  pins: IDMap<ElementPinDefinition>;
 
-  interact?: NodeInteractFunction;
-  evolve?: NodeEvolverFunction;
+  interact?: ElementInteractFunction;
+  evolve?: ElementEvolverFunction;
 }

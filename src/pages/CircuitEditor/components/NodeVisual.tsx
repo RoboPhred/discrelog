@@ -1,21 +1,21 @@
 import * as React from "react";
 
 import {
-  NodeType,
-  NodeTypes,
-  NodePinDefinition,
-  NodePinDirection,
-} from "@/node-defs";
-import { normalizeVisuals } from "@/node-defs/utils";
+  ElementType,
+  ElementTypes,
+  ElementPinDefinition,
+  PinDirection,
+} from "@/element-defs";
+import { normalizeVisuals } from "@/element-defs/utils";
 
-export interface RenderPinProps extends NodePinDefinition {
+export interface RenderPinProps extends ElementPinDefinition {
   id: string;
-  direction: NodePinDirection;
+  direction: PinDirection;
 }
 export interface NodeVisualProps {
   x?: number;
   y?: number;
-  nodeType: NodeType;
+  nodeType: ElementType;
   nodeState: any;
   colorOverride?: string;
   renderPin?(props: RenderPinProps): React.ReactElement<any>;
@@ -48,7 +48,7 @@ class NodeVisual extends React.Component<Props> {
       return null;
     }
 
-    const def = NodeTypes[nodeType];
+    const def = ElementTypes[nodeType];
 
     let body: React.ReactNode;
     let hitPath: string | undefined;

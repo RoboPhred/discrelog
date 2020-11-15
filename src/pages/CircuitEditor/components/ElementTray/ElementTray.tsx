@@ -2,7 +2,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 
 import { typedKeys } from "@/utils";
-import { NodeTypes, NodeType, MaxNodeSize } from "@/node-defs";
+import { ElementTypes, ElementType, LargestElementSize } from "@/element-defs";
 
 import useMouseTracking from "@/hooks/useMouseTracking";
 
@@ -15,7 +15,7 @@ import NodeVisual from "../NodeVisual";
 import styles from "./ElementTray.module.css";
 
 const ElementTray: React.FC = () => {
-  const elements = typedKeys(NodeTypes).map((type) => {
+  const elements = typedKeys(ElementTypes).map((type) => {
     return <Element key={type} nodeType={type} />;
   });
 
@@ -28,7 +28,7 @@ const ElementTray: React.FC = () => {
 export default ElementTray;
 
 interface ElementProps {
-  nodeType: NodeType;
+  nodeType: ElementType;
 }
 const Element: React.FC<ElementProps> = ({ nodeType }) => {
   const dispatch = useDispatch();
@@ -64,7 +64,7 @@ const Element: React.FC<ElementProps> = ({ nodeType }) => {
 
   return (
     <div onMouseDown={onMouseDown}>
-      <svg width={MaxNodeSize.width} height={MaxNodeSize.height}>
+      <svg width={LargestElementSize.width} height={LargestElementSize.height}>
         <NodeVisual nodeType={nodeType} nodeState={{}} />
       </svg>
     </div>

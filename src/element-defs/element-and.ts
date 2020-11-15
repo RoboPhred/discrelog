@@ -1,6 +1,6 @@
-import { NodeDefinition } from "./types";
+import { ElementDefinition } from "./types";
 
-const andNodeDefinition: NodeDefinition = {
+const andElementDefinition: ElementDefinition = {
   type: "and",
   visual: {
     hitPath: `
@@ -44,4 +44,4 @@ const andNodeDefinition: NodeDefinition = {
     };
   },
 };
-export default andNodeDefinition;
+export default andElementDefinition;

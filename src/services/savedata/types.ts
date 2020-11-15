@@ -1,4 +1,4 @@
-import { NodeType } from "@/node-defs";
+import { ElementType } from "@/element-defs";
 import { Point } from "@/types";
 
 import { NodePin } from "../graph/types";
@@ -10,7 +10,7 @@ export interface SaveData {
 
 export interface SaveNode {
   id: string;
-  type: NodeType;
+  type: ElementType;
   x: number;
   y: number;
 }
