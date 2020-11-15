@@ -46,7 +46,8 @@ export default createClipboardReducer((state, action, appState) => {
     );
     const copyNode: ClipboardNode = {
       id: copyIds[nodeId],
-      type: node.elementType,
+      type: "element",
+      elementType: node.elementType,
       offset: pointSubtract(nodePositionsById[nodeId], rootPosition),
       outputs: mapValues(outputs, (conns) =>
         conns

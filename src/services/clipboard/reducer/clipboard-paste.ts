@@ -10,8 +10,8 @@ import { fpSet } from "@/utils";
 
 import rootReducer from "@/store/reducer";
 
-import { attachWire } from "@/actions/wire-attach";
 import { addElement } from "@/actions/element-add";
+import { attachWire } from "@/actions/wire-attach";
 import { isPasteAction } from "@/actions/clipboard-paste";
 import { selectNodes } from "@/actions/select-nodes";
 
@@ -37,12 +37,12 @@ export default function clipboardPasteReducer(
 
   // Create the nodes.
   for (let node of clipboardNodes) {
-    const { id, type, offset } = node;
+    const { id, elementType, offset } = node;
     const p = pointAdd(pastePosition, offset);
     state = rootReducer(
       state,
       // TODO: We may have things other than elements, like chips.  Also need to clone its data.  Should make a dedicated cloneNode action.
-      addElement(type, { position: p, nodeId: pasteIds[id] })
+      addElement(elementType, { position: p, nodeId: pasteIds[id] })
     );
   }
 

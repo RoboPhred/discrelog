@@ -10,7 +10,7 @@ import { addElement } from "@/actions/element-add";
 import { fieldDragStartNewNode } from "@/actions/field-drag-start-newnode";
 import { fieldDragEnd } from "@/actions/field-drag-end";
 
-import NodeVisual from "../NodeVisual";
+import ElementVisual from "../ElementVisual";
 
 import styles from "./ElementTray.module.css";
 
@@ -65,7 +65,7 @@ const Element: React.FC<ElementProps> = ({ nodeType }) => {
   return (
     <div onMouseDown={onMouseDown}>
       <svg width={LargestElementSize.width} height={LargestElementSize.height}>
-        <NodeVisual nodeType={nodeType} nodeState={{}} />
+        <ElementVisual elementType={nodeType} nodeState={{}} />
       </svg>
     </div>
   );

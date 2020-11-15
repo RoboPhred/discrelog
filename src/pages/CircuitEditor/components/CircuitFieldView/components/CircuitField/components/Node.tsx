@@ -18,7 +18,7 @@ import { fieldDragEnd } from "@/actions/field-drag-end";
 import { interactNode } from "@/actions/node-interact";
 import { selectNodes } from "@/actions/select-nodes";
 
-import NodeVisual from "@/pages/CircuitEditor/components/NodeVisual";
+import ElementVisual from "@/pages/CircuitEditor/components/ElementVisual";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
 
@@ -100,10 +100,10 @@ const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId }) => {
   }
 
   return (
-    <NodeVisual
+    <ElementVisual
       x={x}
       y={y}
-      nodeType={nodeType}
+      elementType={nodeType}
       nodeState={nodeState}
       // TODO: Use css vars for this.  Currently cannot do so as nodes declare their own
       //  stroke/fill that gets set as attributes

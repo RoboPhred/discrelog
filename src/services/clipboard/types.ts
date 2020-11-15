@@ -3,9 +3,15 @@ import { Point } from "@/geometry";
 
 import { NodePin } from "../graph/types";
 
-export interface ClipboardNode {
+export interface ClipboardNodeBase {
   id: string;
-  type: ElementType;
+  type: string;
   offset: Point;
+}
+
+export interface ClipboardElement extends ClipboardNodeBase {
+  type: "element";
+  elementType: ElementType;
   outputs: Record<string, NodePin[]>;
 }
+export type ClipboardNode = ClipboardElement;

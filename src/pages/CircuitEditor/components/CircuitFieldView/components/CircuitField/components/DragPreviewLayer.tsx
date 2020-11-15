@@ -15,7 +15,7 @@ import { nodePositionsByNodeIdSelector } from "@/services/field/selectors/node-p
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 import { dragMoveOffsetSelector } from "@/services/field/selectors/drag";
 
-import NodeVisual from "@/pages/CircuitEditor/components/NodeVisual";
+import ElementVisual from "@/pages/CircuitEditor/components/ElementVisual";
 
 const selectedNodePositionsById = createSelector(
   selectedNodeIdsSelector,
@@ -61,9 +61,9 @@ class DragPreviewLayer extends React.Component<Props> {
     if (dragMoveOffset) {
       elements = values(
         mapValues(selectedNodePositionsById, (p, nodeId) => (
-          <NodeVisual
+          <ElementVisual
             key={nodeId}
-            nodeType={selectedNodeTypesById[nodeId]}
+            elementType={selectedNodeTypesById[nodeId]}
             nodeState={selectedNodeStatesById[nodeId]}
             x={p.x + dragMoveOffset.x}
             y={p.y + dragMoveOffset.y}

@@ -14,7 +14,7 @@ import { fieldRectSelector } from "@/services/field/selectors/field";
 import { fieldDragContinue } from "@/actions/field-drag-continue";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
-import NodeVisual from "@/pages/CircuitEditor/components/NodeVisual";
+import ElementVisual from "@/pages/CircuitEditor/components/ElementVisual";
 import { calcSize } from "@/geometry";
 
 const DragNewNodeLayer: React.FC = () => {
@@ -42,10 +42,10 @@ const DragNewNodeLayer: React.FC = () => {
     <>
       {dragEnd && (
         <g opacity={0.5}>
-          <NodeVisual
+          <ElementVisual
             x={dragEnd.x}
             y={dragEnd.y}
-            nodeType={draggingNodeType}
+            elementType={draggingNodeType}
             nodeState={{}}
           />
         </g>

@@ -23,7 +23,7 @@ export function nodePinEquals(a: NodePin, b: NodePin) {
 }
 
 /**
- * A connection from a node input to a node output.
+ * A connection from a node output to a node input.
  */
 export interface Connection {
   outputPin: NodePin;
