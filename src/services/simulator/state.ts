@@ -1,5 +1,3 @@
-import { IDMap } from "@/types";
-
 import { SimNodePinTransition, SimTransitionWindow } from "./types";
 
 export interface SimulatorState {
@@ -26,17 +24,17 @@ export interface SimulatorState {
   /**
    * A map of node states by node id.
    */
-  nodeStatesByNodeId: IDMap<any>;
+  nodeStatesByNodeId: Record<string, any>;
 
   /**
    * A map of output-to-value maps by node id.
    */
-  nodeOutputValuesByNodeId: IDMap<IDMap<boolean>>;
+  nodeOutputValuesByNodeId: Record<string, Record<string, boolean>>;
 
   /**
    * A map of pending transitions by id.
    */
-  transitionsById: IDMap<SimNodePinTransition>;
+  transitionsById: Record<string, SimNodePinTransition>;
 
   /**
    * Transition windows in ascending order of tick.

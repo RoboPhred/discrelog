@@ -1,4 +1,4 @@
-import { Point } from "@/types";
+import { Point } from "@/geometry";
 
 export function getFieldCoord(field: SVGSVGElement, p: Point) {
   const ctm = field.getScreenCTM();

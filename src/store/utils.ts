@@ -1,7 +1,7 @@
 import { AnyAction } from "redux";
 import sortBy from "lodash/sortBy";
 
-import { MaybeArray } from "@/types";
+import { MaybeArray } from "@/arrays";
 
 import { AppState, defaultAppState } from "./state";
 import { AppReducer } from "./types";

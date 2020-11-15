@@ -1,4 +1,17 @@
-import { Point, Size, Rectangle } from "@/types";
+export interface Point {
+  x: number;
+  y: number;
+}
+
+export interface Size {
+  width: number;
+  height: number;
+}
+
+export interface Rectangle {
+  p1: Point;
+  p2: Point;
+}
 
 export const ZeroPoint = Object.freeze({ x: 0, y: 0 });
 export const ZeroRect = Object.freeze({ p1: ZeroPoint, p2: ZeroPoint });

@@ -1,5 +1,4 @@
-import { Point } from "@/types";
-import { ZeroPoint } from "@/geometry";
+import { Point, ZeroPoint } from "@/geometry";
 
 import { ClipboardNode } from "./types";
 

@@ -1,10 +1,10 @@
-import { IDMap, Point } from "@/types";
+import { Point } from "@/geometry";
 import { ElementType } from "@/element-defs";
 
 export interface FieldState {
-  nodePositionsById: IDMap<Point>;
-  wireJointIdsByWireId: IDMap<string[]>;
-  wireJointPositionsByJointId: IDMap<Point>;
+  nodePositionsById: Record<string, Point>;
+  wireJointIdsByWireId: Record<string, string[]>;
+  wireJointPositionsByJointId: Record<string, Point>;
   dragMode: "move" | "select" | "new-node" | null;
   dragStart: Point | null;
   dragEnd: Point | null;

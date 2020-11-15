@@ -1,5 +1,5 @@
 import { AnyAction } from "redux";
-import { Point } from "@/types";
+import { Point } from "@/geometry";
 
 export const ACTION_WIRE_JOINT_MOVE = "@wire/joint/move" as const;
 export const moveWireJoint = (jointId: string, position: Point) => ({

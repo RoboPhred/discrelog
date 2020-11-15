@@ -1,7 +1,5 @@
 import pickBy from "lodash/pickBy";
 
-import { IDMap } from "@/types";
-
 import {
   ElementVisualPath,
   ElementDefinition,
@@ -39,14 +37,20 @@ export function normalizeVisuals(
   });
 }
 
-export function inputsOf(def: ElementDefinition): IDMap<ElementPinDefinition> {
-  return pickBy(def.pins, (value) => value.direction === "input") as IDMap<
+export function inputsOf(
+  def: ElementDefinition
+): Record<string, ElementPinDefinition> {
+  return pickBy(def.pins, (value) => value.direction === "input") as Record<
+    string,
     ElementPinDefinition
   >;
 }
 
-export function outputsOf(def: ElementDefinition): IDMap<ElementPinDefinition> {
-  return pickBy(def.pins, (value) => value.direction === "output") as IDMap<
+export function outputsOf(
+  def: ElementDefinition
+): Record<string, ElementPinDefinition> {
+  return pickBy(def.pins, (value) => value.direction === "output") as Record<
+    string,
     ElementPinDefinition
   >;
 }

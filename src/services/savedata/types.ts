@@ -1,5 +1,5 @@
 import { ElementType } from "@/element-defs";
-import { Point } from "@/types";
+import { Point } from "@/geometry";
 
 import { NodePin } from "../graph/types";
 

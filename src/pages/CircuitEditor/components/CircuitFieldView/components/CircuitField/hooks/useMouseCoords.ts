@@ -1,10 +1,9 @@
 import * as React from "react";
 
-import { Point } from "@/types";
+import { Point, ZeroPoint } from "@/geometry";
 
 import { fieldSvgElementContext } from "../contexts/fieldSvgElement";
 import { getFieldCoord } from "../utils";
-import { pointSubtract, ZeroPoint } from "@/geometry";
 
 export function useMouseCoords(): (p: Point) => Point {
   const fieldRef = React.useContext(fieldSvgElementContext);

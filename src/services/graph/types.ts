@@ -1,10 +1,15 @@
 import { ElementType } from "@/element-defs";
-import { IDMap } from "@/types";
 
-export interface GraphNode {
+export interface GraphNodeBase {
   id: string;
+  type: string;
+}
+export interface ElementGraphNode extends GraphNodeBase {
+  type: "element";
   elementType: ElementType;
 }
+
+export type GraphNode = ElementGraphNode;
 
 /**
  * Identifies a pin on a specific node.
@@ -32,4 +37,4 @@ export interface Wire extends Connection {
   id: string;
 }
 
-export type PinValueMap = IDMap<boolean>;
+export type PinValueMap = Record<string, boolean>;

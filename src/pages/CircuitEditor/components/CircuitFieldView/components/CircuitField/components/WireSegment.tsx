@@ -2,8 +2,8 @@ import * as React from "react";
 import { v4 as uuidV4 } from "uuid";
 import { useDispatch } from "react-redux";
 
-import { Point } from "@/types";
 import {
+  Point,
   normalize,
   pointSubtract,
   dotProduct,

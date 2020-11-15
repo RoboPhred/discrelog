@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { Point } from "@/types";
+import { Point } from "@/geometry";
 import { getModifiers, getSelectMode } from "@/selection-mode";
 
 import useMouseTracking from "@/hooks/useMouseTracking";

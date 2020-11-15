@@ -2,15 +2,14 @@ import createCachedSelector from "re-reselect";
 
 import { AppState } from "@/store";
 
-import { pointAdd } from "@/geometry";
+import { ElementDefinition } from "@/element-defs";
+import { Point, pointAdd } from "@/geometry";
 
 import { NodePin } from "@/services/graph/types";
 import { nodeDefFromNodeIdSelector } from "@/services/graph/selectors/nodes";
 
 import { createFieldSelector } from "../utils";
 import { FieldState } from "../state";
-import { ElementDefinition } from "@/element-defs";
-import { Point } from "@/types";
 
 export const nodePositionsByNodeIdSelector = createFieldSelector(
   (state) => state.nodePositionsById

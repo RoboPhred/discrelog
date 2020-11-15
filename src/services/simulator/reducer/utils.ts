@@ -5,7 +5,7 @@ import pick from "lodash/pick";
 import mapValues from "lodash/mapValues";
 
 import { fpSet } from "@/utils";
-import { IDMap, asArray } from "@/types";
+import { asArray } from "@/arrays";
 import { AppState } from "@/store";
 
 import { outputsOf } from "@/element-defs/utils";
@@ -111,7 +111,7 @@ export function collectNodeTransitions(
   }
 
   // Build the current input state from the connected pins.
-  const inputs: IDMap<boolean> = {};
+  const inputs: Record<string, boolean> = {};
   const inputSourcesByPin = nodeInputSourcesByPinIdFromNodeIdSelector(
     appState,
     nodeId
@@ -171,7 +171,7 @@ function addTransition(
   state: Readonly<SimulatorState>,
   nodeId: string,
   tick: number,
-  valuesByOutputPin: IDMap<boolean>
+  valuesByOutputPin: Record<string, boolean>
 ): SimulatorState {
   const transitionId = uuidV4();
 

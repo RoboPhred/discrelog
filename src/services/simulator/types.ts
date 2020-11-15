@@ -1,10 +1,8 @@
-import { IDMap } from "@/types";
-
 export interface SimNodePinTransition {
   id: string;
   nodeId: string;
   tick: number;
-  valuesByOutputPin: IDMap<boolean>;
+  valuesByOutputPin: Record<string, boolean>;
 }
 
 export interface SimTransitionWindow {

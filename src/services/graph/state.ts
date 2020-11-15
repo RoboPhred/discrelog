@@ -1,17 +1,15 @@
-import { IDMap } from "@/types";
-
 import { Wire, GraphNode } from "./types";
 
 export interface GraphState {
   /**
    * A map of nodes by node id.
    */
-  nodesById: IDMap<GraphNode>;
+  nodesById: Record<string, GraphNode>;
 
   /**
    * A map of wires connecting nodes.
    */
-  wiresById: IDMap<Wire>;
+  wiresById: Record<string, Wire>;
 }
 
 const _defaultState: GraphState = {

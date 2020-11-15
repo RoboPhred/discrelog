@@ -4,8 +4,7 @@ import map from "lodash/map";
 import values from "lodash/values";
 import { v4 as uuidV4 } from "uuid";
 
-import { Point } from "@/types";
-import { pointAdd, ZeroPoint } from "@/geometry";
+import { Point, pointAdd } from "@/geometry";
 import { AppState, defaultAppState } from "@/store";
 import { fpSet } from "@/utils";
 

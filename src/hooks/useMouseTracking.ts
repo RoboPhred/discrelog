@@ -1,6 +1,5 @@
 import * as React from "react";
-import { ZeroPoint, pointSubtract } from "@/geometry";
-import { Point } from "@/types";
+import { Point, ZeroPoint, pointSubtract } from "@/geometry";
 
 export interface UseMouseTracking {
   startTracking(e: React.MouseEvent): void;

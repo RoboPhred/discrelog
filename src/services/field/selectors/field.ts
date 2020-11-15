@@ -1,8 +1,7 @@
 import { createSelector } from "reselect";
 import values from "lodash/values";
 
-import { Rectangle } from "@/types";
-import { union } from "@/geometry";
+import { Rectangle, union } from "@/geometry";
 
 import { nodeRectsByIdSelector } from "./node-bounds";
 import { wireJointPositionsByJointIdSelector } from "./wires";

@@ -1,7 +1,6 @@
 import { AppState } from "@/store";
-import { pointAdd, ZeroPoint } from "@/geometry";
+import { Point, pointAdd, ZeroPoint } from "@/geometry";
 import { ElementDefinition } from "@/element-defs";
-import { Point } from "@/types";
 
 import { nodeDefFromNodeIdSelector } from "@/services/graph/selectors/nodes";
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 
-import { Point } from "@/types";
+import { Point } from "@/geometry";
 import { cls } from "@/utils";
 import { getSelectMode, getModifiers } from "@/selection-mode";
 

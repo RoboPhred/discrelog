@@ -1,4 +1,4 @@
-import { IDMap, MaybeArray } from "@/types";
+import { MaybeArray } from "@/arrays";
 
 export type PinDirection = "input" | "output";
 
@@ -41,7 +41,7 @@ export interface OutputTransition {
    * A map of values by pin output to transition to.
    * Pins not specified will mantain their original value.
    */
-  valuesByPin: IDMap<boolean>;
+  valuesByPin: Record<string, boolean>;
   /**
    * How to handle other scheduled transitions on this node.
    * - replace: This transition will replace other transitions on this node.
@@ -75,7 +75,7 @@ export interface ElementDefinition {
 
   visual: ElementVisualDefinition;
 
-  pins: IDMap<ElementPinDefinition>;
+  pins: Record<string, ElementPinDefinition>;
 
   interact?: ElementInteractFunction;
   evolve?: ElementEvolverFunction;

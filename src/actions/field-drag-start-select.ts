@@ -1,6 +1,6 @@
 import { AnyAction } from "redux";
 
-import { Point } from "@/types";
+import { Point } from "@/geometry";
 
 export const ACTION_FIELD_DRAG_START_SELECT = "@field/drag/start/select" as const;
 export const fieldDragStartSelect = (p: Point) => ({

@@ -1,6 +1,6 @@
 import { AnyAction } from "redux";
 
-import { Point } from "@/types";
+import { Point } from "@/geometry";
 import { SelectionMode } from "@/selection-mode";
 
 export const ACTION_FIELD_DRAG_START_NODE = "@field/drag/start/node" as const;
