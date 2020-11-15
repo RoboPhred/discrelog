@@ -6,7 +6,6 @@ import { ElementTypes, ElementType } from "@/element-defs";
 
 import { createGraphSelector } from "../utils";
 import { GraphState } from "../state";
-
 import { NodePin, GraphNode } from "../types";
 
 export const nodesByNodeIdSelector = createGraphSelector((s) => s.nodesById);
@@ -18,7 +17,7 @@ export const nodeIdsSelector = createGraphSelector(
   )
 );
 
-export const nodeTypesByNodeIdSelector = createGraphSelector(
+export const elementTypesByNodeIdSelector = createGraphSelector(
   createSelector(
     nodesByNodeIdSelector.local,
     (nodesById: Record<string, GraphNode>) =>
@@ -26,9 +25,9 @@ export const nodeTypesByNodeIdSelector = createGraphSelector(
   )
 );
 
-export const nodeDefsByNodeIdSelector = createGraphSelector(
+export const elementDefsByNodeIdSelector = createGraphSelector(
   createSelector(
-    nodeTypesByNodeIdSelector.local,
+    elementTypesByNodeIdSelector.local,
     (nodeTypesById: Record<string, ElementType>) =>
       mapValues(nodeTypesById, (type) => ElementTypes[type])
   )
@@ -38,7 +37,7 @@ export const nodeFromNodeIdSelector = createGraphSelector(
   (s: GraphState, nodeId: string) => s.nodesById[nodeId] || null
 );
 
-export const nodeTypeFromNodeIdSelector = createGraphSelector(
+export const elementTypeFromNodeIdSelector = createGraphSelector(
   (s: GraphState, nodeId: string) => {
     const node = nodeFromNodeIdSelector.local(s, nodeId);
     if (!node) {
@@ -48,7 +47,7 @@ export const nodeTypeFromNodeIdSelector = createGraphSelector(
   }
 );
 
-export const nodeDefFromNodeIdSelector = createGraphSelector(
+export const elementDefFromNodeIdSelector = createGraphSelector(
   (s: GraphState, nodeId: string) => {
     const node = nodeFromNodeIdSelector.local(s, nodeId);
     if (!node) {
@@ -67,7 +66,7 @@ export const nodePinsSelector = createGraphSelector(
         if (def) {
           pins.push(
             ...Object.keys(def.pins).map((pin) => ({
-              nodeId: node.id,
+              nodeId: node.nodeId,
               pinId: pin,
             }))
           );

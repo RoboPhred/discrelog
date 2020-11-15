@@ -6,7 +6,7 @@ import { ElementDefinition } from "@/element-defs";
 import { Point, pointAdd } from "@/geometry";
 
 import { NodePin } from "@/services/graph/types";
-import { nodeDefFromNodeIdSelector } from "@/services/graph/selectors/nodes";
+import { elementDefFromNodeIdSelector } from "@/services/graph/selectors/nodes";
 
 import { createFieldSelector } from "../utils";
 import { FieldState } from "../state";
@@ -21,7 +21,7 @@ export const nodePositionFromNodeIdSelector = createFieldSelector(
 
 const nodePinPositionFromNodePinCachedSelector = createCachedSelector(
   (state: AppState, pin: NodePin) =>
-    nodeDefFromNodeIdSelector(state, pin.nodeId),
+    elementDefFromNodeIdSelector(state, pin.nodeId),
   (state: AppState, pin: NodePin) =>
     nodePositionFromNodeIdSelector(state, pin.nodeId),
   // break this out so we do not bust the cache when our input changes.

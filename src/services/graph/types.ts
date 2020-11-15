@@ -1,9 +1,10 @@
 import { ElementType } from "@/element-defs";
 
 export interface GraphNodeBase {
-  id: string;
+  nodeId: string;
   type: string;
 }
+
 export interface ElementGraphNode extends GraphNodeBase {
   type: "element";
   elementType: ElementType;

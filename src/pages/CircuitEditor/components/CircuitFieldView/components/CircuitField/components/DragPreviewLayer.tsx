@@ -9,7 +9,7 @@ import { createStructuredSelector, createSelector } from "reselect";
 
 import { AppState } from "@/store";
 
-import { nodeTypesByNodeIdSelector } from "@/services/graph/selectors/nodes";
+import { elementTypesByNodeIdSelector } from "@/services/graph/selectors/nodes";
 import { nodeStatesByIdSelector } from "@/services/simulator/selectors/nodes";
 import { nodePositionsByNodeIdSelector } from "@/services/field/selectors/node-positions";
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
@@ -26,7 +26,7 @@ const selectedNodePositionsById = createSelector(
 
 const selectedNodeTypesById = createSelector(
   selectedNodeIdsSelector,
-  nodeTypesByNodeIdSelector,
+  elementTypesByNodeIdSelector,
   (selectedNodeIds, nodeTypesById) => pick(nodeTypesById, selectedNodeIds)
 );
 

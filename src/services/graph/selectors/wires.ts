@@ -8,7 +8,7 @@ import { NodePin } from "../types";
 import { GraphState } from "../state";
 import { createGraphSelector } from "../utils";
 
-import { nodeDefFromNodeIdSelector, nodePinsSelector } from "./nodes";
+import { elementDefFromNodeIdSelector, nodePinsSelector } from "./nodes";
 import mapValues from "lodash/mapValues";
 
 export const wireIdsSelector = createGraphSelector(
@@ -31,7 +31,7 @@ const wiresSelector = createGraphSelector(
 
 export const nodePinDirectionSelector = createGraphSelector(
   (s: GraphState, pin: NodePin) => {
-    const def = nodeDefFromNodeIdSelector.local(s, pin.nodeId);
+    const def = elementDefFromNodeIdSelector.local(s, pin.nodeId);
     if (!def) {
       return null;
     }
@@ -62,7 +62,7 @@ export const nodeInputSourcesByPinIdFromNodeIdSelector = createGraphSelector(
   createCachedSelector(
     wiresSelector.local,
     (_: any, nodeId: string) => nodeId,
-    nodeDefFromNodeIdSelector.local,
+    elementDefFromNodeIdSelector.local,
     (connections, nodeId, nodeDef) => {
       if (!nodeDef) {
         return {};
@@ -119,7 +119,7 @@ export const nodeOutputSourcesByPinIdFromNodeIdSelector = createGraphSelector(
   createCachedSelector(
     wiresSelector.local,
     (_: any, nodeId: string) => nodeId,
-    nodeDefFromNodeIdSelector.local,
+    elementDefFromNodeIdSelector.local,
     (connections, nodeId, nodeDef) => {
       if (!nodeDef) {
         return {};

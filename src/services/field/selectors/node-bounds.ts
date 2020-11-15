@@ -6,13 +6,13 @@ import mapValues from "lodash/mapValues";
 import { normalizeVisuals } from "@/element-defs/utils";
 import { normalizeRectangle } from "@/geometry";
 
-import { nodeDefsByNodeIdSelector } from "@/services/graph/selectors/nodes";
+import { elementDefsByNodeIdSelector } from "@/services/graph/selectors/nodes";
 import { nodeStatesByIdSelector } from "@/services/simulator/selectors/nodes";
 
 import { nodePositionsByNodeIdSelector } from "./node-positions";
 
 export const nodeBoundsByIdSelector = createSelector(
-  nodeDefsByNodeIdSelector,
+  elementDefsByNodeIdSelector,
   nodeStatesByIdSelector,
   (nodeDefsById, nodeStateById) =>
     mapValues(nodeDefsById, (x, id) => {

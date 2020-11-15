@@ -7,7 +7,7 @@ import { getModifiers, getSelectMode } from "@/selection-mode";
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
 
-import { nodeTypeFromNodeIdSelector } from "@/services/graph/selectors/nodes";
+import { elementTypeFromNodeIdSelector } from "@/services/graph/selectors/nodes";
 import { nodeStateFromNodeIdSelector } from "@/services/simulator/selectors/nodes";
 import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
 import { nodePositionFromNodeIdSelector } from "@/services/field/selectors/node-positions";
@@ -32,7 +32,7 @@ const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId }) => {
   const { x, y } = useSelector((s) =>
     nodePositionFromNodeIdSelector(s, nodeId)
   );
-  const nodeType = useSelector((s) => nodeTypeFromNodeIdSelector(s, nodeId));
+  const nodeType = useSelector((s) => elementTypeFromNodeIdSelector(s, nodeId));
   const nodeState = useSelector((s) => nodeStateFromNodeIdSelector(s, nodeId));
   const isSelected = useSelector((s) =>
     isNodeSelectedFromNodeIdSelector(s, nodeId)

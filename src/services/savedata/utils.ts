@@ -31,7 +31,7 @@ export function createSave(state: AppState): SaveData {
       const node = nodeFromNodeIdSelector(state, nodeId);
       const position = nodePositionFromNodeIdSelector(state, nodeId);
       const saveNode: SaveNode = {
-        id: node.id,
+        id: nodeId,
         type: node.elementType,
         x: position.x,
         y: position.y,

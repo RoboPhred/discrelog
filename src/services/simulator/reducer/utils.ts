@@ -12,7 +12,7 @@ import { outputsOf } from "@/element-defs/utils";
 
 import { nodeInputSourcesByPinIdFromNodeIdSelector } from "@/services/graph/selectors/wires";
 import {
-  nodeDefFromNodeIdSelector,
+  elementDefFromNodeIdSelector,
   nodeIdsSelector,
 } from "@/services/graph/selectors/nodes";
 
@@ -54,7 +54,7 @@ function initNode(
   nodeId: string,
   appState: AppState
 ): SimulatorState {
-  const def = nodeDefFromNodeIdSelector(appState, nodeId);
+  const def = elementDefFromNodeIdSelector(appState, nodeId);
   if (!def) {
     return state;
   }
@@ -62,42 +62,6 @@ function initNode(
   const outputs = outputsOf(def);
   const outputValues = mapValues(outputs, () => false);
   return fpSet(state, "nodeOutputValuesByNodeId", nodeId, outputValues);
-
-  // Old code used to collect transitions for all-false inputs and set
-  //  outputs immediately to transition values.
-
-  // const inputs = inputsOf(def);
-  // const outputs = outputsOf(def);
-
-  // const initialEvolution = def.evolve
-  //   ? def.evolve(
-  //       undefined,
-  //       mapValues(inputs, () => false),
-  //       state.tick
-  //     )
-  //   : {};
-
-  // let transitions: OutputTransition[] = [];
-  // if (initialEvolution.transitions) {
-  //   transitions = asArray(initialEvolution.transitions);
-  // }
-
-  // const outputValues = transitions.reduce(
-  //   (values, transition) => ({ ...values, ...transition.valuesByPin }),
-  //   mapValues(outputs, () => false)
-  // );
-
-  // return {
-  //   ...state,
-  //   nodeStatesByNodeId: {
-  //     ...state.nodeStatesByNodeId,
-  //     [nodeId]: initialEvolution.state
-  //   },
-  //   nodeOutputValuesByNodeId: {
-  //     ...state.nodeOutputValuesByNodeId,
-  //     [nodeId]: outputValues
-  //   }
-  // };
 }
 
 export function collectNodeTransitions(
@@ -105,7 +69,7 @@ export function collectNodeTransitions(
   nodeId: string,
   appState: AppState
 ): SimulatorState {
-  const def = nodeDefFromNodeIdSelector(appState, nodeId);
+  const def = elementDefFromNodeIdSelector(appState, nodeId);
   if (!def || !def.evolve) {
     return state;
   }
@@ -176,7 +140,7 @@ function addTransition(
   const transitionId = uuidV4();
 
   const newTransition: SimNodeTransition = {
-    id: transitionId,
+    transitionId: transitionId,
     nodeId,
     tick,
     valuesByOutputPin,
