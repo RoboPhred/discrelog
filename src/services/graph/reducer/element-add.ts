@@ -2,18 +2,18 @@ import { AnyAction } from "redux";
 
 import { reducerPriority, PRIORITY_PRE } from "@/store/priorities";
 
-import { isAddNodeAction } from "@/actions/node-add";
+import { isAddElementAction } from "@/actions/element-add";
 
 import { createGraphReducer } from "../utils";
 
 export default reducerPriority(
   PRIORITY_PRE,
   createGraphReducer((state, action: AnyAction) => {
-    if (!isAddNodeAction(action)) {
+    if (!isAddElementAction(action)) {
       return state;
     }
 
-    const { nodeId: id, nodeType: type } = action.payload;
+    const { nodeId: id, elementType } = action.payload;
     return {
       ...state,
       nodesById: {
@@ -21,7 +21,7 @@ export default reducerPriority(
         [id]: {
           id,
           type: "element",
-          elementType: type,
+          elementType,
         },
       },
     };

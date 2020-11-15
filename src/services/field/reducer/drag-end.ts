@@ -10,7 +10,7 @@ import rootReducer from "@/store/reducer";
 import { isFieldDragEndAction } from "@/actions/field-drag-end";
 import { selectRegion } from "@/actions/select-region";
 import { moveSelection } from "@/actions/selection-move";
-import { addNode } from "@/actions/node-add";
+import { addElement } from "@/actions/element-add";
 
 export default function dragEndReducer(
   state: AppState = defaultAppState,
@@ -26,7 +26,7 @@ export default function dragEndReducer(
     dragMode,
     dragStart,
     dragEnd,
-    dragNewNodeType,
+    dragNewElementType: dragNewNodeType,
   } = state.services.field;
 
   switch (dragMode) {
@@ -44,12 +44,12 @@ export default function dragEndReducer(
       }
       break;
     }
-    case "new-node": {
+    case "new-element": {
       if (dragEnd) {
         state = rootReducer(
           state,
           // We need to use dragEnd, as the end event comes from ElementTray which doesn't know our coords.
-          addNode(dragNewNodeType!, { position: dragEnd })
+          addElement(dragNewNodeType!, { position: dragEnd })
         );
       }
       break;
@@ -61,7 +61,7 @@ export default function dragEndReducer(
     dragMode: null,
     dragStart: null,
     dragEnd: null,
-    dragNewNodeType: null,
+    dragNewElementType: null,
   }));
 
   return state;

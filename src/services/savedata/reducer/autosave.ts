@@ -2,7 +2,7 @@ import { AnyAction } from "redux";
 
 import { AppState, defaultAppState } from "@/store";
 
-import { ACTION_NODE_ADD } from "@/actions/node-add";
+import { ACTION_ELEMENT_ADD } from "@/actions/element-add";
 import { ACTION_NODE_DELETE } from "@/actions/node-delete";
 import { ACTION_SELECTION_MOVE } from "@/actions/selection-move";
 import { ACTION_WIRE_ATTACH } from "@/actions/wire-attach";
@@ -14,7 +14,7 @@ import { createSave, storeAutosave } from "../utils";
 import { reducerPriority, PRIORITY_SAVE } from "@/store/priorities";
 
 const AUTOSAVE_TRIGGERS = [
-  ACTION_NODE_ADD,
+  ACTION_ELEMENT_ADD,
   ACTION_NODE_DELETE,
   ACTION_SELECTION_MOVE,
   ACTION_WIRE_ATTACH,

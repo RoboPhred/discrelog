@@ -1,14 +1,14 @@
 import { concatReducers } from "@/store/utils";
 
+import elementAddReducer from "./element-add";
 import fileNewReducer from "./file-new";
-import nodeAddReducer from "./node-add";
 import nodeDeleteReducer from "./node-delete";
 import wireAttachReducer from "./wire-attach";
 import wireDetatchReducer from "./wire-detatch";
 
 const graphReducer = concatReducers(
+  elementAddReducer,
   fileNewReducer,
-  nodeAddReducer,
   nodeDeleteReducer,
   wireAttachReducer,
   wireDetatchReducer

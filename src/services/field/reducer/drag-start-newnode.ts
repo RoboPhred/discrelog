@@ -11,7 +11,7 @@ export default createFieldReducer((state, action) => {
 
   return {
     ...state,
-    dragMode: "new-node" as const,
-    dragNewNodeType: nodeType,
+    dragMode: "new-element" as const,
+    dragNewElementType: nodeType,
   };
 });

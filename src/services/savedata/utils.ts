@@ -3,7 +3,7 @@ import { SaveData, SaveNode, SaveWire } from "./types";
 import { AppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
-import { addNode } from "@/actions/node-add";
+import { addElement } from "@/actions/element-add";
 import { attachWire } from "@/actions/wire-attach";
 
 import { defaultSelectionState } from "../selection/state";
@@ -70,7 +70,8 @@ export function loadSave(state: AppState, save: SaveData): AppState {
       (state, node) =>
         rootReducer(
           state,
-          addNode(node.type, {
+          // TODO: Could be element, could be chip.
+          addElement(node.type, {
             nodeId: node.id,
             position: { x: node.x, y: node.y },
           })

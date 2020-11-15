@@ -5,9 +5,9 @@ import dragEndReducer from "./drag-end";
 import dragStartNewNodeReducer from "./drag-start-newnode";
 import dragStartNodeReducer from "./drag-start-node";
 import dragStartSelectReducer from "./drag-start-select";
+import elementAddReducer from "./element-add";
 import fileNewReducer from "./file-new";
 import mouseLeaveReducer from "./mouse-leave";
-import nodeAddReducer from "./node-add";
 import nodeDeleteReducer from "./node-delete";
 import nodeMoveReducer from "./selection-move";
 import wireAttachReducer from "./wire-attach";
@@ -22,9 +22,9 @@ const fieldReducer = concatReducers(
   dragStartNewNodeReducer,
   dragStartNodeReducer,
   dragStartSelectReducer,
+  elementAddReducer,
   fileNewReducer,
   mouseLeaveReducer,
-  nodeAddReducer,
   nodeDeleteReducer,
   nodeMoveReducer,
   wireAttachReducer,

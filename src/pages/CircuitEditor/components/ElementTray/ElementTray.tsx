@@ -6,7 +6,7 @@ import { ElementTypes, ElementType, LargestElementSize } from "@/element-defs";
 
 import useMouseTracking from "@/hooks/useMouseTracking";
 
-import { addNode } from "@/actions/node-add";
+import { addElement } from "@/actions/element-add";
 import { fieldDragStartNewNode } from "@/actions/field-drag-start-newnode";
 import { fieldDragEnd } from "@/actions/field-drag-end";
 
@@ -38,7 +38,7 @@ const Element: React.FC<ElementProps> = ({ nodeType }) => {
         return;
       }
       e.preventDefault();
-      dispatch(addNode(nodeType));
+      dispatch(addElement(nodeType));
     },
     [nodeType]
   );

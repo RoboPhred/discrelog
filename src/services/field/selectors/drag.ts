@@ -25,9 +25,9 @@ export const dragMoveOffsetSelector = createSelector(
 export const dragEndSelector = createFieldSelector((s) => s.dragEnd);
 
 export const isDraggingNewNodeSelector = createFieldSelector(
-  (s) => s.dragMode === "new-node"
+  (s) => s.dragMode === "new-element"
 );
 
 export const dragNewNodeTypeSelector = createFieldSelector((s) =>
-  s.dragMode === "new-node" ? s.dragNewNodeType : null
+  s.dragMode === "new-element" ? s.dragNewElementType : null
 );
