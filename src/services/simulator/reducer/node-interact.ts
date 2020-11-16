@@ -3,29 +3,36 @@ import { fpSet } from "@/utils";
 import { ElementDefinitionsByType } from "@/element-defs";
 
 import { isInteractNodeAction } from "@/actions/node-interact";
+import {
+  simulatorNodeIdFromCircuitNodeIdSelector,
+  elementTypeFromSimulatorNodeId,
+} from "@/services/simulator-graph/selectors/nodes";
 
 import { createSimulatorReducer } from "../utils";
 
 import { collectNodeTransitions } from "./utils";
-import { elementTypeFromSimulatorNodeId } from "@/services/simulator-graph/selectors/nodes";
 
 export default createSimulatorReducer((state, action, appState) => {
   if (!isInteractNodeAction(action)) {
     return state;
   }
 
-  const { nodeId } = action.payload;
+  const { nodeId: circuitNodeId } = action.payload;
+  const simulatorNodeId = simulatorNodeIdFromCircuitNodeIdSelector(
+    appState,
+    circuitNodeId
+  );
 
-  const elementType = elementTypeFromSimulatorNodeId(appState, nodeId);
+  const elementType = elementTypeFromSimulatorNodeId(appState, simulatorNodeId);
   const def = ElementDefinitionsByType[elementType];
 
   if (!def || !def.interact) {
     return state;
   }
 
-  const nodeState = state.nodeStatesByNodeId[nodeId];
+  const nodeState = state.nodeStatesByNodeId[simulatorNodeId];
   const newState = def.interact(nodeState);
-  state = fpSet(state, "nodeStatesByNodeId", nodeId, newState);
+  state = fpSet(state, "nodeStatesByNodeId", simulatorNodeId, newState);
 
-  return collectNodeTransitions(state, nodeId, appState);
+  return collectNodeTransitions(state, simulatorNodeId, appState);
 });

@@ -16,8 +16,6 @@ import {
   elementTypeFromSimulatorNodeId,
 } from "@/services/simulator-graph/selectors/nodes";
 
-import { nodeOutputPinValueFromNodeIdAndPinId } from "../selectors/nodes";
-
 import { SimulatorState, defaultSimulatorState } from "../state";
 import {
   SimTransitionWindow,
@@ -90,13 +88,10 @@ export function collectNodeTransitions(
       inputs[inputPin] = false;
       continue;
     }
-    const { nodeId: sourceNodeId, pinId: sourcePin } = inputConn;
+    const { nodeId: sourceNodeId, pinId: sourcePinId } = inputConn;
 
-    inputs[inputPin] = nodeOutputPinValueFromNodeIdAndPinId.local(
-      state,
-      sourceNodeId,
-      sourcePin
-    );
+    inputs[inputPin] =
+      state.nodeOutputValuesByNodeId[sourceNodeId]?.[sourcePinId] || false;
   }
 
   const result = def.evolve(
