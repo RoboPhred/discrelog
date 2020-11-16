@@ -13,7 +13,7 @@ export * from "./types";
 // Some assets have been modified for formatting or added functionality.
 // Assets that have been pulled from external sources are marked as such.
 
-export const ElementTypes = {
+export const ElementDefinitionsByType = {
   and: require("./element-and").default as ElementDefinition,
   or: require("./element-or").default as ElementDefinition,
   nor: require("./element-nor").default as ElementDefinition,
@@ -23,10 +23,10 @@ export const ElementTypes = {
   toggle: require("./element-toggle").default as ElementDefinition,
   seg7: require("./element-seg7").default as ElementDefinition,
 };
-export type ElementType = keyof typeof ElementTypes;
+export type ElementType = keyof typeof ElementDefinitionsByType;
 
 export const LargestElementSize = calcSize(
-  values(ElementTypes).reduce((bounds, { visual }) => {
+  values(ElementDefinitionsByType).reduce((bounds, { visual }) => {
     const visuals = normalizeVisuals(visual.shapePath, undefined);
     if (visual.hitPath) {
       visuals.push({ path: visual.hitPath });

@@ -2,7 +2,11 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 
 import { typedKeys } from "@/utils";
-import { ElementTypes, ElementType, LargestElementSize } from "@/element-defs";
+import {
+  ElementDefinitionsByType,
+  ElementType,
+  LargestElementSize,
+} from "@/element-defs";
 
 import useMouseTracking from "@/hooks/useMouseTracking";
 
@@ -15,7 +19,7 @@ import ElementVisual from "../ElementVisual";
 import styles from "./ElementTray.module.css";
 
 const ElementTray: React.FC = () => {
-  const elements = typedKeys(ElementTypes).map((type) => {
+  const elements = typedKeys(ElementDefinitionsByType).map((type) => {
     return <Element key={type} nodeType={type} />;
   });
 

@@ -2,7 +2,7 @@ import * as React from "react";
 
 import {
   ElementType,
-  ElementTypes,
+  ElementDefinitionsByType,
   ElementPinDefinition,
   PinDirection,
 } from "@/element-defs";
@@ -39,7 +39,7 @@ const ElementVisual: React.FC<ElementVisualProps> = ({
   onMouseUp,
   onMouseLeave,
 }) => {
-  const def = ElementTypes[elementType];
+  const def = ElementDefinitionsByType[elementType];
 
   let body: React.ReactNode;
   let hitPath: string | undefined;

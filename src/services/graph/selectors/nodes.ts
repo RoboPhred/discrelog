@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 import mapValues from "lodash/mapValues";
 import values from "lodash/values";
 
-import { ElementTypes, ElementType } from "@/element-defs";
+import { ElementDefinitionsByType, ElementType } from "@/element-defs";
 
 import { createGraphSelector } from "../utils";
 import { GraphState } from "../state";
@@ -29,7 +29,7 @@ export const elementDefsByNodeIdSelector = createGraphSelector(
   createSelector(
     elementTypesByNodeIdSelector.local,
     (nodeTypesById: Record<string, ElementType>) =>
-      mapValues(nodeTypesById, (type) => ElementTypes[type])
+      mapValues(nodeTypesById, (type) => ElementDefinitionsByType[type])
   )
 );
 
@@ -53,7 +53,7 @@ export const elementDefFromNodeIdSelector = createGraphSelector(
     if (!node) {
       return null;
     }
-    return ElementTypes[node.elementType] || null;
+    return ElementDefinitionsByType[node.elementType] || null;
   }
 );
 
@@ -62,7 +62,7 @@ export const nodePinsSelector = createGraphSelector(
     (s) => s.nodesById,
     (nodesById: Record<string, GraphNode>) =>
       values(nodesById).reduce((pins, node) => {
-        const def = ElementTypes[node.elementType];
+        const def = ElementDefinitionsByType[node.elementType];
         if (def) {
           pins.push(
             ...Object.keys(def.pins).map((pin) => ({
