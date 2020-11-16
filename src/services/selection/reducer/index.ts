@@ -10,6 +10,7 @@ import selectRegionReducer from "./select-region";
 import selectWiresReducer from "./select-wires";
 import selectionCopyReducer from "./selection-copy";
 import selectionDeleteReducer from "./selection-delete";
+import selectionMoveReducer from "./selection-move";
 import wireDetatchReducer from "./wire-detatch";
 
 const selectionReducer = concatReducers(
@@ -23,6 +24,7 @@ const selectionReducer = concatReducers(
   selectWiresReducer,
   selectionCopyReducer,
   selectionDeleteReducer,
+  selectionMoveReducer,
   wireDetatchReducer
 );
 

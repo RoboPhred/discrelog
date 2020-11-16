@@ -1,4 +1,6 @@
-import { fpSet } from "@/utils";
+import mapValues from "lodash/mapValues";
+import pick from "lodash/pick";
+
 import { isMoveWireJointAction } from "@/actions/wire-joint-move";
 
 import { createFieldReducer } from "../utils";
@@ -8,7 +10,21 @@ export default createFieldReducer((state, action) => {
     return state;
   }
 
-  const { jointId, position } = action.payload;
+  const { jointIds, position, relative } = action.payload;
 
-  return fpSet(state, "wireJointPositionsByJointId", jointId, position);
+  const movedJoints = mapValues(
+    pick(state.wireJointPositionsByJointId, jointIds),
+    (p) => ({
+      x: relative ? p.x + position.x : position.x,
+      y: relative ? p.y + position.y : position.y,
+    })
+  );
+
+  return {
+    ...state,
+    wireJointPositionsByJointId: {
+      ...state.wireJointPositionsByJointId,
+      ...movedJoints,
+    },
+  };
 });

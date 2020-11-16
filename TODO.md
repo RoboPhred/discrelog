@@ -20,3 +20,6 @@
     make the same change to a node across all nodes of the group.
 
 - re-reselect caches items forever, nothing ever clears out the cache. Might want to put a LRU on it.
+
+- Joints do not behave as selectables for the purpose of dragging. Shift-dragging a joint when multiple other items are selected
+  only drags the click target, not all joints as expected.
