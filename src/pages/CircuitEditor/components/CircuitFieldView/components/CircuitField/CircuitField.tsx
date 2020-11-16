@@ -12,6 +12,7 @@ import { FieldSvgElementProvider } from "./contexts/fieldSvgElement";
 import DragNewNodeLayer from "./components/DragNewNodeLayer";
 import DragPreviewLayer from "./components/DragPreviewLayer";
 import DragSelectLayer from "./components/DragSelectLayer";
+import GridBackground from "./components/GridBackground";
 import NodesLayer from "./components/NodesLayer";
 import WiresLayer from "./components/WiresLayer";
 import NodePinsLayer from "./components/NodePinsLayer";
@@ -53,6 +54,7 @@ const CircuitField: React.FC = () => {
         onMouseLeave={onMouseLeave}
       >
         <FieldSvgElementProvider value={svgRef}>
+          <GridBackground />
           <DragSelectLayer />
           <NodesLayer />
           <WiresLayer />

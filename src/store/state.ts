@@ -1,15 +1,19 @@
 import {
-  ClipboardState,
-  defaultClipboardState,
-} from "@/services/clipboard/state";
+  CircuitEditorUiState,
+  defaultCircuitEditorUiState,
+} from "@/services/circuit-editor-ui/state";
+import {
+  CircuitGraphState,
+  defaultCircuitGraphState,
+} from "@/services/circuit-graph/state";
 import {
   CircuitLayoutState,
   defaultCircuitLayoutState,
 } from "@/services/circuit-layout/state";
 import {
-  CircuitGraphState,
-  defaultCircuitGraphState,
-} from "@/services/circuit-graph/state";
+  ClipboardState,
+  defaultClipboardState,
+} from "@/services/clipboard/state";
 import {
   SelectionState,
   defaultSelectionState,
@@ -18,7 +22,6 @@ import {
   SimulatorState,
   defaultSimulatorState,
 } from "@/services/simulator/state";
-import { ViewState, defaultViewState } from "@/services/view/state";
 
 import {
   CircuitEditorState,
@@ -27,12 +30,12 @@ import {
 
 export interface AppState {
   services: {
+    circuitEditorUi: CircuitEditorUiState;
     circuitGraph: CircuitGraphState;
     circuitLayout: CircuitLayoutState;
     clipboard: ClipboardState;
     selection: SelectionState;
     simulator: SimulatorState;
-    view: ViewState;
   };
   ui: {
     circuitEditor: CircuitEditorState;
@@ -41,12 +44,12 @@ export interface AppState {
 
 const _defaultAppState: AppState = {
   services: {
+    circuitEditorUi: defaultCircuitEditorUiState,
     circuitGraph: defaultCircuitGraphState,
     circuitLayout: defaultCircuitLayoutState,
     clipboard: defaultClipboardState,
     selection: defaultSelectionState,
     simulator: defaultSimulatorState,
-    view: defaultViewState,
   },
   ui: {
     circuitEditor: defaultCircuitEditorState,

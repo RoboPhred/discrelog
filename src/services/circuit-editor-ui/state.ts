@@ -1,20 +1,20 @@
 import { ElementType } from "@/element-defs";
 import { Point } from "@/geometry";
 
-export interface ViewState {
-  scale: number;
+export interface CircuitEditorUiState {
+  viewScale: number;
   dragMode: "move" | "select" | "new-element" | null;
   dragStart: Point | null;
   dragEnd: Point | null;
   dragNewElementType: ElementType | null;
 }
 
-const _defaultState: ViewState = {
-  scale: 1,
+const _defaultState: CircuitEditorUiState = {
+  viewScale: 1,
   dragMode: null,
   dragStart: null,
   dragEnd: null,
   dragNewElementType: null,
 };
 
-export const defaultViewState = Object.freeze(_defaultState);
+export const defaultCircuitEditorUiState = Object.freeze(_defaultState);

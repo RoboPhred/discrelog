@@ -6,7 +6,7 @@ import { getModifiers, getSelectMode } from "@/selection-mode";
 
 import useMouseTracking from "@/hooks/useMouseTracking";
 
-import { selectionRectSelector } from "@/services/view/selectors/drag";
+import { selectionRectSelector } from "@/services/circuit-editor-ui/selectors/drag";
 
 import { clearSelection } from "@/actions/select-clear";
 import { fieldDragStartSelect } from "@/actions/field-drag-start-select";

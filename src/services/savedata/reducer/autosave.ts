@@ -1,6 +1,7 @@
 import { AnyAction } from "redux";
 
 import { AppState, defaultAppState } from "@/store";
+import { reducerPriority, PRIORITY_SAVE } from "@/store/priorities";
 
 import { ACTION_ELEMENT_ADD } from "@/actions/element-add";
 import { ACTION_NODE_DELETE } from "@/actions/node-delete";
@@ -11,7 +12,6 @@ import { ACTION_WIRE_JOINT_ADD } from "@/actions/wire-joint-add";
 import { ACTION_WIRE_JOINT_MOVE } from "@/actions/wire-joint-move";
 
 import { createSave, storeAutosave } from "../utils";
-import { reducerPriority, PRIORITY_SAVE } from "@/store/priorities";
 
 const AUTOSAVE_TRIGGERS = [
   ACTION_ELEMENT_ADD,

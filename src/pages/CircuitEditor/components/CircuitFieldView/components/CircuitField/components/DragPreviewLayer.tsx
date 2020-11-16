@@ -13,7 +13,7 @@ import { elementTypesByNodeIdSelector } from "@/services/circuit-graph/selectors
 import { nodeStatesByIdSelector } from "@/services/simulator/selectors/nodes";
 import { nodePositionsByNodeIdSelector } from "@/services/circuit-layout/selectors/node-positions";
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
-import { dragMoveOffsetSelector } from "@/services/view/selectors/drag";
+import { dragMoveOffsetSelector } from "@/services/circuit-editor-ui/selectors/drag";
 
 import ElementVisual from "@/pages/CircuitEditor/components/ElementVisual";
 

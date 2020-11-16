@@ -1,10 +1,10 @@
+import circuitEditorUiReducer from "@/services/circuit-editor-ui/reducer";
+import circuitGraphReducer from "@/services/circuit-graph/reducer";
+import circuitLayoutReducer from "@/services/circuit-layout/reducer";
 import clipboardReducer from "@/services/clipboard/reducer";
-import fieldReducer from "@/services/circuit-layout/reducer";
-import graphReducer from "@/services/circuit-graph/reducer";
 import savedataReducer from "@/services/savedata/reducer";
 import selectionReducer from "@/services/selection/reducer";
 import simulatorReducer from "@/services/simulator/reducer";
-import viewReducer from "@/services/view/reducer";
 
 import circuitEditorReducer from "@/pages/CircuitEditor/reducer";
 
@@ -12,21 +12,15 @@ import { concatReducers, finalizeReducerList } from "./utils";
 
 const reducer = finalizeReducerList(
   concatReducers(
-    // This reducer should run before the others.
-    //  Particularly simulatorReducer, which requires the graph to have been
-    //  updated before it
-    graphReducer,
-
+    circuitEditorUiReducer,
+    circuitGraphReducer,
+    circuitLayoutReducer,
     clipboardReducer,
-    fieldReducer,
+    savedataReducer,
     selectionReducer,
     simulatorReducer,
-    viewReducer,
 
-    circuitEditorReducer,
-
-    // Place this last, so it always has the most up to date data.
-    savedataReducer
+    circuitEditorReducer
   )
 );
 

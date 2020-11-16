@@ -7,7 +7,7 @@ import { cls } from "@/utils";
 import { useNativeEvent } from "@/hooks/useNativeEvent";
 import useSelector from "@/hooks/useSelector";
 
-import { viewScaleSelector } from "@/services/view/selectors/view";
+import { viewScaleSelector } from "@/services/circuit-editor-ui/selectors/view";
 
 import { viewZoom } from "@/actions/view-zoom";
 import { tickSim } from "@/actions/sim-tick";

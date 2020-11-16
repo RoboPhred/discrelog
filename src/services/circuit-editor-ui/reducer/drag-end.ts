@@ -12,6 +12,8 @@ import { selectRegion } from "@/actions/select-region";
 import { moveSelection } from "@/actions/selection-move";
 import { addElement } from "@/actions/element-add";
 
+import { applyGridSnapSelector } from "../selectors/snap";
+
 export default function dragEndReducer(
   state: AppState = defaultAppState,
   action: AnyAction
@@ -26,8 +28,8 @@ export default function dragEndReducer(
     dragMode,
     dragStart,
     dragEnd,
-    dragNewElementType: dragNewNodeType,
-  } = state.services.view;
+    dragNewElementType,
+  } = state.services.circuitEditorUi;
 
   switch (dragMode) {
     case "select": {
@@ -39,24 +41,25 @@ export default function dragEndReducer(
     }
     case "move": {
       if (dragStart) {
-        const moveBy = pointSubtract({ x, y }, dragStart);
+        let moveBy = pointSubtract({ x, y }, dragStart);
+        moveBy = applyGridSnapSelector(state, moveBy);
         state = rootReducer(state, moveSelection(moveBy.x, moveBy.y));
       }
       break;
     }
     case "new-element": {
       if (dragEnd) {
+        const position = applyGridSnapSelector(state, dragEnd);
         state = rootReducer(
           state,
-          // We need to use dragEnd, as the end event comes from ElementTray which doesn't know our coords.
-          addElement(dragNewNodeType!, { position: dragEnd })
+          addElement(dragNewElementType!, { position })
         );
       }
       break;
     }
   }
 
-  state = fpSet(state, "services", "view", (value) => ({
+  state = fpSet(state, "services", "circuitEditorUi", (value) => ({
     ...value,
     dragMode: null,
     dragStart: null,

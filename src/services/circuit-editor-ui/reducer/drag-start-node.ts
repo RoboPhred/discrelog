@@ -20,7 +20,7 @@ export default function dragNodesStartReducer(
 
   const { nodeId, x, y, selectionMode } = action.payload;
 
-  state = fpSet(state, "services", "view", (value) => ({
+  state = fpSet(state, "services", "circuitEditorUi", (value) => ({
     ...value,
     dragMode: "move" as const,
     dragStart: {

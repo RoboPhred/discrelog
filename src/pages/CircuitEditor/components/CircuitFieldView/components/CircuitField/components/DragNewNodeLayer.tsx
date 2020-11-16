@@ -8,7 +8,7 @@ import {
   isDraggingNewNodeSelector,
   dragNewNodeTypeSelector,
   dragEndSelector,
-} from "@/services/view/selectors/drag";
+} from "@/services/circuit-editor-ui/selectors/drag";
 
 import { fieldRectSelector } from "@/services/circuit-layout/selectors/field";
 
