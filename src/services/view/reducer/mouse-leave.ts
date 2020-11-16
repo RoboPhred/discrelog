@@ -1,8 +1,8 @@
 import { isFieldMouseLeaveAction } from "@/actions/field-mouse-leave";
 
-import { createFieldReducer } from "../utils";
+import { createViewReducer } from "../utils";
 
-export default createFieldReducer((state, action) => {
+export default createViewReducer((state, action) => {
   if (!isFieldMouseLeaveAction(action)) {
     return state;
   }

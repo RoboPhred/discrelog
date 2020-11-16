@@ -1,8 +1,8 @@
 import { isFieldDragStartSelectAction } from "@/actions/field-drag-start-select";
 
-import { createFieldReducer } from "../utils";
+import { createViewReducer } from "../utils";
 
-export default createFieldReducer((state, action) => {
+export default createViewReducer((state, action) => {
   if (!isFieldDragStartSelectAction(action)) {
     return state;
   }

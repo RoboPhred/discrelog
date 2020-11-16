@@ -27,7 +27,7 @@ export default function dragEndReducer(
     dragStart,
     dragEnd,
     dragNewElementType: dragNewNodeType,
-  } = state.services.field;
+  } = state.services.view;
 
   switch (dragMode) {
     case "select": {
@@ -56,7 +56,7 @@ export default function dragEndReducer(
     }
   }
 
-  state = fpSet(state, "services", "field", (value) => ({
+  state = fpSet(state, "services", "view", (value) => ({
     ...value,
     dragMode: null,
     dragStart: null,

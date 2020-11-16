@@ -1,21 +1,22 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 
+import { calcSize } from "@/geometry";
 import useSelector from "@/hooks/useSelector";
 
 import {
   isDraggingNewNodeSelector,
   dragNewNodeTypeSelector,
   dragEndSelector,
-} from "@/services/field/selectors/drag";
+} from "@/services/view/selectors/drag";
 
 import { fieldRectSelector } from "@/services/field/selectors/field";
 
 import { fieldDragContinue } from "@/actions/field-drag-continue";
 
-import { useEventMouseCoords } from "../hooks/useMouseCoords";
 import ElementVisual from "@/pages/CircuitEditor/components/ElementVisual";
-import { calcSize } from "@/geometry";
+
+import { useEventMouseCoords } from "../hooks/useMouseCoords";
 
 const DragNewNodeLayer: React.FC = () => {
   const dispatch = useDispatch();

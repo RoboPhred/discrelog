@@ -1,8 +1,8 @@
 import { isFieldDragStartNewNodeAction } from "@/actions/field-drag-start-newnode";
 
-import { createFieldReducer } from "../utils";
+import { createViewReducer } from "../utils";
 
-export default createFieldReducer((state, action) => {
+export default createViewReducer((state, action) => {
   if (!isFieldDragStartNewNodeAction(action)) {
     return state;
   }
