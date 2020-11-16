@@ -61,7 +61,7 @@ As of the time of this writing, the available logic components consist of:
 - 7 Segment Display (immediate visual response)
 - LED (immediate visual response)
 
-_For more details on the implementation of logic components, and how to add your own, see [/node-types](https://github.com/RoboPhred/discrelog/tree/master/src/node-types)._
+_For more details on the implementation of logic components, and how to add your own, see [/element-defs](https://github.com/RoboPhred/discrelog/tree/master/src/element-defs)._
 
 ## Upcomming features
 
@@ -84,7 +84,7 @@ Some logic symbol artwork has been provided by wikimedia commons under the publi
 
 ## Alternatives
 
-There are a few notable digital (and analog) circuit editors that I have come across and arbitrarily collected. Many more exist in the wild.
+There are a few notable digital (and analog) circuit editors that I have come across and arbitrarily collected. More may exist in the wild.
 
 Open source:
 
