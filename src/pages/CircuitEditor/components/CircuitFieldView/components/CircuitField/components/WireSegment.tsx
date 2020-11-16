@@ -23,7 +23,7 @@ import {
   wireJointPositionFromJointIdSelector,
   wireStartPositionFromWireIdSelector,
   wireEndPositionFromWireIdSelector,
-} from "@/services/node-layout/selectors/wires";
+} from "@/services/circuit-layout/selectors/wires";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
 

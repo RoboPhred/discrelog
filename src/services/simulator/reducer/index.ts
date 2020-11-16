@@ -8,8 +8,6 @@ import simFastforwardReducer from "./sim-fastforward";
 import simPauseReducer from "./sim-pause";
 import simStartReducer from "./sim-start";
 import simStopReducer from "./sim-stop";
-import wireAttachReducer from "./wire-attach";
-import wireDetatchReducer from "./wire-detatch";
 
 const simulatorReducer = concatReducers(
   elementGraphInvalidatedReducer,
@@ -19,9 +17,7 @@ const simulatorReducer = concatReducers(
   simFastforwardReducer,
   simPauseReducer,
   simStartReducer,
-  simStopReducer,
-  wireAttachReducer,
-  wireDetatchReducer
+  simStopReducer
 );
 
 export default simulatorReducer;

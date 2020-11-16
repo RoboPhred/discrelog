@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { wireIdsSelector } from "@/services/node-graph/selectors/wires";
+import { wireIdsSelector } from "@/services/circuit-graph/selectors/wires";
 import useSelector from "@/hooks/useSelector";
 
 import Wire from "./Wire";

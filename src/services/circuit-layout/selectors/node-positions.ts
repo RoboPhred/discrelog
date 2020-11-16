@@ -5,18 +5,18 @@ import { AppState } from "@/store";
 import { ElementDefinition } from "@/element-defs";
 import { Point, pointAdd } from "@/geometry";
 
-import { NodePin } from "@/services/node-graph/types";
-import { elementDefFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
+import { NodePin } from "@/services/circuit-graph/types";
+import { elementDefFromNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
 
-import { createFieldSelector } from "../utils";
-import { FieldState } from "../state";
+import { createCircuitLayoutSelector } from "../utils";
+import { CircuitLayoutState } from "../state";
 
-export const nodePositionsByNodeIdSelector = createFieldSelector(
+export const nodePositionsByNodeIdSelector = createCircuitLayoutSelector(
   (state) => state.nodePositionsById
 );
 
-export const nodePositionFromNodeIdSelector = createFieldSelector(
-  (state: FieldState, nodeId: string) => state.nodePositionsById[nodeId]
+export const nodePositionFromNodeIdSelector = createCircuitLayoutSelector(
+  (state: CircuitLayoutState, nodeId: string) => state.nodePositionsById[nodeId]
 );
 
 const nodePinPositionFromNodePinCachedSelector = createCachedSelector(

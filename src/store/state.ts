@@ -2,11 +2,14 @@ import {
   ClipboardState,
   defaultClipboardState,
 } from "@/services/clipboard/state";
-import { FieldState, defaultFieldState } from "@/services/node-layout/state";
 import {
-  NodeGraphState,
-  defaultNodeGraphState,
-} from "@/services/node-graph/state";
+  CircuitLayoutState,
+  defaultCircuitLayoutState,
+} from "@/services/circuit-layout/state";
+import {
+  CircuitGraphState,
+  defaultCircuitGraphState,
+} from "@/services/circuit-graph/state";
 import {
   SelectionState,
   defaultSelectionState,
@@ -24,9 +27,9 @@ import {
 
 export interface AppState {
   services: {
+    circuitGraph: CircuitGraphState;
+    circuitLayout: CircuitLayoutState;
     clipboard: ClipboardState;
-    field: FieldState;
-    nodeGraph: NodeGraphState;
     selection: SelectionState;
     simulator: SimulatorState;
     view: ViewState;
@@ -38,9 +41,9 @@ export interface AppState {
 
 const _defaultAppState: AppState = {
   services: {
+    circuitGraph: defaultCircuitGraphState,
+    circuitLayout: defaultCircuitLayoutState,
     clipboard: defaultClipboardState,
-    field: defaultFieldState,
-    nodeGraph: defaultNodeGraphState,
     selection: defaultSelectionState,
     simulator: defaultSimulatorState,
     view: defaultViewState,

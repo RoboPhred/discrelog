@@ -3,9 +3,9 @@ import pick from "lodash/pick";
 
 import { isMoveWireJointAction } from "@/actions/wire-joint-move";
 
-import { createFieldReducer } from "../utils";
+import { createCircuitLayoutReducer } from "../utils";
 
-export default createFieldReducer((state, action) => {
+export default createCircuitLayoutReducer((state, action) => {
   if (!isMoveWireJointAction(action)) {
     return state;
   }

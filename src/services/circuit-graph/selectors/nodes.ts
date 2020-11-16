@@ -4,20 +4,22 @@ import values from "lodash/values";
 
 import { ElementDefinitionsByType, ElementType } from "@/element-defs";
 
-import { createGraphSelector } from "../utils";
-import { NodeGraphState } from "../state";
+import { createCircuitGraphSelector } from "../utils";
+import { CircuitGraphState } from "../state";
 import { NodePin, GraphNode } from "../types";
 
-export const nodesByNodeIdSelector = createGraphSelector((s) => s.nodesById);
+export const nodesByNodeIdSelector = createCircuitGraphSelector(
+  (s) => s.nodesById
+);
 
-export const nodeIdsSelector = createGraphSelector(
+export const nodeIdsSelector = createCircuitGraphSelector(
   createSelector(
     nodesByNodeIdSelector.local,
     (nodesById: Record<string, GraphNode>) => Object.keys(nodesById)
   )
 );
 
-export const elementTypesByNodeIdSelector = createGraphSelector(
+export const elementTypesByNodeIdSelector = createCircuitGraphSelector(
   createSelector(
     nodesByNodeIdSelector.local,
     (nodesById: Record<string, GraphNode>) =>
@@ -25,7 +27,7 @@ export const elementTypesByNodeIdSelector = createGraphSelector(
   )
 );
 
-export const elementDefsByNodeIdSelector = createGraphSelector(
+export const elementDefsByNodeIdSelector = createCircuitGraphSelector(
   createSelector(
     elementTypesByNodeIdSelector.local,
     (nodeTypesById: Record<string, ElementType>) =>
@@ -33,12 +35,12 @@ export const elementDefsByNodeIdSelector = createGraphSelector(
   )
 );
 
-export const nodeFromNodeIdSelector = createGraphSelector(
-  (s: NodeGraphState, nodeId: string) => s.nodesById[nodeId] || null
+export const nodeFromNodeIdSelector = createCircuitGraphSelector(
+  (s: CircuitGraphState, nodeId: string) => s.nodesById[nodeId] || null
 );
 
-export const elementTypeFromNodeIdSelector = createGraphSelector(
-  (s: NodeGraphState, nodeId: string) => {
+export const elementTypeFromNodeIdSelector = createCircuitGraphSelector(
+  (s: CircuitGraphState, nodeId: string) => {
     const node = nodeFromNodeIdSelector.local(s, nodeId);
     if (!node) {
       return null;
@@ -47,8 +49,8 @@ export const elementTypeFromNodeIdSelector = createGraphSelector(
   }
 );
 
-export const elementDefFromNodeIdSelector = createGraphSelector(
-  (s: NodeGraphState, nodeId: string) => {
+export const elementDefFromNodeIdSelector = createCircuitGraphSelector(
+  (s: CircuitGraphState, nodeId: string) => {
     const node = nodeFromNodeIdSelector.local(s, nodeId);
     if (!node) {
       return null;
@@ -57,7 +59,7 @@ export const elementDefFromNodeIdSelector = createGraphSelector(
   }
 );
 
-export const nodePinsSelector = createGraphSelector(
+export const nodePinsSelector = createCircuitGraphSelector(
   createSelector(
     (s) => s.nodesById,
     (nodesById: Record<string, GraphNode>) =>

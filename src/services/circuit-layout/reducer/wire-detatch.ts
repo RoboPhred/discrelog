@@ -3,9 +3,9 @@ import difference from "lodash/difference";
 
 import { isDetatchWireAction } from "@/actions/wire-detatch";
 
-import { createFieldReducer } from "../utils";
+import { createCircuitLayoutReducer } from "../utils";
 
-export default createFieldReducer((state, action) => {
+export default createCircuitLayoutReducer((state, action) => {
   if (!isDetatchWireAction(action)) {
     return state;
   }

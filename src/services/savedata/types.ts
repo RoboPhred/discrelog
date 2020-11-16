@@ -1,7 +1,7 @@
 import { ElementType } from "@/element-defs";
 import { Point } from "@/geometry";
 
-import { NodePin } from "../node-graph/types";
+import { NodePin } from "../circuit-graph/types";
 
 export interface SaveData {
   nodes: SaveNode[];

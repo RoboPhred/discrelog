@@ -1,17 +1,17 @@
 import { Point } from "@/geometry";
 
-export interface FieldState {
+export interface CircuitLayoutState {
   nodePositionsById: Record<string, Point>;
   wireJointIdsByWireId: Record<string, string[]>;
   wireJointPositionsByJointId: Record<string, Point>;
 }
 
-const _defaultState: FieldState = {
+const _defaultState: CircuitLayoutState = {
   nodePositionsById: {},
   wireJointIdsByWireId: {},
   wireJointPositionsByJointId: {},
 };
 
-export const defaultFieldState: Readonly<FieldState> = Object.freeze(
+export const defaultCircuitLayoutState: Readonly<CircuitLayoutState> = Object.freeze(
   _defaultState
 );

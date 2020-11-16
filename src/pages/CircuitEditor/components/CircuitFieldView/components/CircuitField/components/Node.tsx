@@ -7,10 +7,10 @@ import { getModifiers, getSelectMode } from "@/selection-mode";
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
 
-import { elementTypeFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
+import { elementTypeFromNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
 import { nodeStateFromNodeIdSelector } from "@/services/simulator/selectors/nodes";
 import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
-import { nodePositionFromNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
+import { nodePositionFromNodeIdSelector } from "@/services/circuit-layout/selectors/node-positions";
 
 import { fieldDragStartNode } from "@/actions/field-drag-start-node";
 import { fieldDragContinue } from "@/actions/field-drag-continue";

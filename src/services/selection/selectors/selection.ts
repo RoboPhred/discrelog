@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 
 import pick from "lodash/pick";
 
-import { nodesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
+import { nodesByNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
 
 import { createSelectionSelector } from "../utils";
 import { SelectionState } from "../state";

@@ -2,10 +2,10 @@ import { AppState } from "@/store";
 import { Point, pointAdd, ZeroPoint } from "@/geometry";
 import { ElementDefinition } from "@/element-defs";
 
-import { elementDefFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
+import { elementDefFromNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
 
-import { createFieldSelector } from "../utils";
-import { FieldState } from "../state";
+import { createCircuitLayoutSelector } from "../utils";
+import { CircuitLayoutState } from "../state";
 
 import { nodePositionFromNodeIdSelector } from "./node-positions";
 
@@ -28,7 +28,7 @@ export const wireStartPositionFromWireIdSelector = (
 ) => {
   const {
     outputPin: { nodeId, pinId },
-  } = state.services.nodeGraph.wiresById[wireId];
+  } = state.services.circuitGraph.wiresById[wireId];
   const nodeDef = elementDefFromNodeIdSelector(state, nodeId);
   const nodePosition =
     nodePositionFromNodeIdSelector(state, nodeId) || ZeroPoint;
@@ -65,7 +65,7 @@ export const wireEndPositionFromWireIdSelector = (
 ) => {
   const {
     inputPin: { nodeId, pinId },
-  } = state.services.nodeGraph.wiresById[wireId];
+  } = state.services.circuitGraph.wiresById[wireId];
   const nodeDef = elementDefFromNodeIdSelector(state, nodeId);
   const nodePosition =
     nodePositionFromNodeIdSelector(state, nodeId) || ZeroPoint;
@@ -98,23 +98,24 @@ export const wireEndPositionFromWireIdSelector = (
 
 // WARN: Returns new object with each invocation.  Not safe for react use.
 //  Currently used to get all joint ids in reducers.
-export const jointIdsSelector = createFieldSelector((state: FieldState) =>
-  Object.keys(state.wireJointPositionsByJointId)
+export const jointIdsSelector = createCircuitLayoutSelector(
+  (state: CircuitLayoutState) => Object.keys(state.wireJointPositionsByJointId)
 );
 
-export const wireJointIdsFromWireIdSelector = createFieldSelector(
-  (state: FieldState, wireId: string) => state.wireJointIdsByWireId[wireId]
+export const wireJointIdsFromWireIdSelector = createCircuitLayoutSelector(
+  (state: CircuitLayoutState, wireId: string) =>
+    state.wireJointIdsByWireId[wireId]
 );
 
-export const wireJointPositionFromJointIdSelector = createFieldSelector(
-  (state: FieldState, jointId: string) =>
+export const wireJointPositionFromJointIdSelector = createCircuitLayoutSelector(
+  (state: CircuitLayoutState, jointId: string) =>
     state.wireJointPositionsByJointId[jointId]
 );
 
 // WARN: Returns new object with each invocation.  Not safe for react use.
 //  Currently used to get all joint ids in reducers.
-export const wireJointPositionsByJointIdSelector = createFieldSelector(
-  (state: FieldState) => {
+export const wireJointPositionsByJointIdSelector = createCircuitLayoutSelector(
+  (state: CircuitLayoutState) => {
     return state.wireJointPositionsByJointId;
   }
 );

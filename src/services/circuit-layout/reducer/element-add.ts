@@ -3,9 +3,9 @@ import { fpSet } from "@/utils";
 import { ZeroPoint } from "@/geometry";
 import { isAddElementAction } from "@/actions/element-add";
 
-import { createFieldReducer } from "../utils";
+import { createCircuitLayoutReducer } from "../utils";
 
-export default createFieldReducer((state, action) => {
+export default createCircuitLayoutReducer((state, action) => {
   if (!isAddElementAction(action)) {
     return state;
   }

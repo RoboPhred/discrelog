@@ -2,7 +2,7 @@ import * as React from "react";
 
 import useSelector from "@/hooks/useSelector";
 
-import { nodePinsSelector } from "@/services/node-graph/selectors/nodes";
+import { nodePinsSelector } from "@/services/circuit-graph/selectors/nodes";
 
 import NodePin from "./NodePin";
 

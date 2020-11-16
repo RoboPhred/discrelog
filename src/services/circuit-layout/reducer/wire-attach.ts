@@ -4,9 +4,9 @@ import zipObject from "lodash/zipObject";
 import { isAttachWireAction } from "@/actions/wire-attach";
 import { fpSet } from "@/utils";
 
-import { createFieldReducer } from "../utils";
+import { createCircuitLayoutReducer } from "../utils";
 
-export default createFieldReducer((state, action) => {
+export default createCircuitLayoutReducer((state, action) => {
   if (!isAttachWireAction(action)) {
     return state;
   }
