@@ -1,6 +1,5 @@
 import { createSelector } from "reselect";
 import mapValues from "lodash/mapValues";
-import values from "lodash/values";
 
 import { ElementDefinitionsByType, ElementType } from "@/element-defs";
 

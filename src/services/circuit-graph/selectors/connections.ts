@@ -1,14 +1,8 @@
-import find from "lodash/find";
 import values from "lodash/values";
 import { createSelector } from "reselect";
-import createCachedSelector from "re-reselect";
-
-import { NodePin } from "../types";
 
 import { CircuitGraphState } from "../state";
 import { createCircuitGraphSelector } from "../utils";
-
-import { elementDefFromNodeIdSelector } from "./nodes";
 
 export const connectionIdsSelector = createCircuitGraphSelector(
   createSelector(
@@ -39,17 +33,6 @@ export const nodeInputConnectionIdsFromNodeIdSelector = createCircuitGraphSelect
       (connectionId) =>
         state.connectionsById[connectionId].inputPin.nodeId === nodeId
     )
-);
-
-/**
- * Gets an array of wires leaving the given node id.
- * WARN: Not react safe.  For reducer use only.
- */
-export const nodeOutputConnectionsFromNodeIdSelector = createCircuitGraphSelector(
-  (state: CircuitGraphState, nodeId: string) =>
-    connectionsSelector
-      .local(state)
-      .filter((x) => x.outputPin.nodeId === nodeId)
 );
 
 /**

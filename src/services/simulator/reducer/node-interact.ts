@@ -1,11 +1,13 @@
 import { fpSet } from "@/utils";
 
+import { ElementDefinitionsByType } from "@/element-defs";
+
 import { isInteractNodeAction } from "@/actions/node-interact";
 
 import { createSimulatorReducer } from "../utils";
 
 import { collectNodeTransitions } from "./utils";
-import { elementDefFromNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
+import { elementTypeFromSimulatorNodeId } from "@/services/simulator-graph/selectors/nodes";
 
 export default createSimulatorReducer((state, action, appState) => {
   if (!isInteractNodeAction(action)) {
@@ -14,7 +16,8 @@ export default createSimulatorReducer((state, action, appState) => {
 
   const { nodeId } = action.payload;
 
-  const def = elementDefFromNodeIdSelector(appState, nodeId);
+  const elementType = elementTypeFromSimulatorNodeId(appState, nodeId);
+  const def = ElementDefinitionsByType[elementType];
 
   if (!def || !def.interact) {
     return state;

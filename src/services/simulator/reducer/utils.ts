@@ -10,11 +10,11 @@ import { AppState } from "@/store";
 
 import { outputsOf } from "@/element-defs/utils";
 
-import { nodeInputSourcesByPinIdFromNodeIdSelector } from "@/services/circuit-graph/selectors/pins";
+import { inputNodesByPinIdFromSimulatorNodeIdSelector } from "@/services/simulator-graph/selectors/connections";
 import {
-  elementDefFromNodeIdSelector,
-  nodeIdsSelector,
-} from "@/services/circuit-graph/selectors/nodes";
+  simulatorNodeIdsSelector,
+  elementTypeFromSimulatorNodeId,
+} from "@/services/simulator-graph/selectors/nodes";
 
 import { nodeOutputPinValueFromNodeIdAndPinId } from "../selectors/nodes";
 
@@ -23,13 +23,14 @@ import {
   SimTransitionWindow,
   SimNodePinTransition as SimNodeTransition,
 } from "../types";
+import { ElementDefinitionsByType } from "@/element-defs";
 
 export function simInit(
   state: SimulatorState,
   appState: AppState
 ): SimulatorState {
   // Switching away from edit mode, initialize the simulator.
-  const nodeIds = nodeIdsSelector(appState);
+  const nodeIds = simulatorNodeIdsSelector(appState);
 
   state = {
     ...defaultSimulatorState,
@@ -54,7 +55,8 @@ function initNode(
   nodeId: string,
   appState: AppState
 ): SimulatorState {
-  const def = elementDefFromNodeIdSelector(appState, nodeId);
+  const elementType = elementTypeFromSimulatorNodeId(appState, nodeId);
+  const def = ElementDefinitionsByType[elementType];
   if (!def) {
     return state;
   }
@@ -69,14 +71,15 @@ export function collectNodeTransitions(
   nodeId: string,
   appState: AppState
 ): SimulatorState {
-  const def = elementDefFromNodeIdSelector(appState, nodeId);
+  const elementType = elementTypeFromSimulatorNodeId(appState, nodeId);
+  const def = ElementDefinitionsByType[elementType];
   if (!def || !def.evolve) {
     return state;
   }
 
   // Build the current input state from the connected pins.
   const inputs: Record<string, boolean> = {};
-  const inputSourcesByPin = nodeInputSourcesByPinIdFromNodeIdSelector(
+  const inputSourcesByPin = inputNodesByPinIdFromSimulatorNodeIdSelector(
     appState,
     nodeId
   );
