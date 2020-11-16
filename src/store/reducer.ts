@@ -1,5 +1,5 @@
 import clipboardReducer from "@/services/clipboard/reducer";
-import fieldReducer from "@/services/field/reducer";
+import fieldReducer from "@/services/node-layout/reducer";
 import graphReducer from "@/services/node-graph/reducer";
 import savedataReducer from "@/services/savedata/reducer";
 import selectionReducer from "@/services/selection/reducer";

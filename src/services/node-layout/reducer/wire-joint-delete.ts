@@ -1,9 +1,9 @@
 import pick from "lodash/pick";
+import mapValues from "lodash/mapValues";
 
 import { isDeleteWireJointAction } from "@/actions/wire-joint-delete";
 
 import { createFieldReducer } from "../utils";
-import mapValues from "lodash/mapValues";
 
 export default createFieldReducer((state, action) => {
   if (!isDeleteWireJointAction(action)) {

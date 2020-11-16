@@ -11,7 +11,7 @@ import { AppState } from "@/store";
 
 import { elementTypesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 import { nodeStatesByIdSelector } from "@/services/simulator/selectors/nodes";
-import { nodePositionsByNodeIdSelector } from "@/services/field/selectors/node-positions";
+import { nodePositionsByNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 import { dragMoveOffsetSelector } from "@/services/view/selectors/drag";
 

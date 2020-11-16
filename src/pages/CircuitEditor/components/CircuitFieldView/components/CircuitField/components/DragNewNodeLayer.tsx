@@ -10,7 +10,7 @@ import {
   dragEndSelector,
 } from "@/services/view/selectors/drag";
 
-import { fieldRectSelector } from "@/services/field/selectors/field";
+import { fieldRectSelector } from "@/services/node-layout/selectors/field";
 
 import { fieldDragContinue } from "@/actions/field-drag-continue";
 

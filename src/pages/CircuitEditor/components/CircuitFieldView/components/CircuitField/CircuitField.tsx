@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { cls } from "@/utils";
 import useSelector from "@/hooks/useSelector";
-import { fieldRectSelector } from "@/services/field/selectors/field";
+import { fieldRectSelector } from "@/services/node-layout/selectors/field";
 
 import { fieldMouseLeave } from "@/actions/field-mouse-leave";
 

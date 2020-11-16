@@ -2,7 +2,7 @@ import {
   ClipboardState,
   defaultClipboardState,
 } from "@/services/clipboard/state";
-import { FieldState, defaultFieldState } from "@/services/field/state";
+import { FieldState, defaultFieldState } from "@/services/node-layout/state";
 import {
   NodeGraphState,
   defaultNodeGraphState,

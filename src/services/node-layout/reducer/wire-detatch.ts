@@ -2,6 +2,7 @@ import pick from "lodash/pick";
 import difference from "lodash/difference";
 
 import { isDetatchWireAction } from "@/actions/wire-detatch";
+
 import { createFieldReducer } from "../utils";
 
 export default createFieldReducer((state, action) => {

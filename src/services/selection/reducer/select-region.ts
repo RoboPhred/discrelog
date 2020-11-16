@@ -4,8 +4,8 @@ import { intersects, pointIntersects } from "@/geometry";
 
 import { isSelectRegionAction } from "@/actions/select-region";
 
-import { nodeRectsByIdSelector } from "@/services/field/selectors/node-bounds";
-import { wireJointPositionsByJointIdSelector } from "@/services/field/selectors/wires";
+import { nodeRectsByIdSelector } from "@/services/node-layout/selectors/node-bounds";
+import { wireJointPositionsByJointIdSelector } from "@/services/node-layout/selectors/wires";
 
 import { combineSelection, createSelectionReducer } from "../utils";
 

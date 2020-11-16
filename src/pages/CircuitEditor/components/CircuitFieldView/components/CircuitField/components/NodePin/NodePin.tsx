@@ -5,7 +5,7 @@ import { cls } from "@/utils";
 
 import useSelector from "@/hooks/useSelector";
 
-import { nodePinPositionFromNodePinSelector } from "@/services/field/selectors/node-positions";
+import { nodePinPositionFromNodePinSelector } from "@/services/node-layout/selectors/node-positions";
 import { selectedPinSelector } from "@/pages/CircuitEditor/components/CircuitFieldView/components/CircuitField/selectors";
 
 import { selectPin } from "../../actions/select-pin";

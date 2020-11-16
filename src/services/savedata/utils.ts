@@ -17,12 +17,12 @@ import {
   wireIdsSelector,
   wireFromWireIdSelector,
 } from "../node-graph/selectors/wires";
-import { nodePositionFromNodeIdSelector } from "../field/selectors/node-positions";
+import { nodePositionFromNodeIdSelector } from "../node-layout/selectors/node-positions";
 import {
   wireJointPositionsByJointIdSelector,
   wireJointIdsFromWireIdSelector,
-} from "../field/selectors/wires";
-import { defaultFieldState } from "../field/state";
+} from "../node-layout/selectors/wires";
+import { defaultFieldState } from "../node-layout/state";
 
 export function createSave(state: AppState): SaveData {
   const jointPositions = wireJointPositionsByJointIdSelector(state);
