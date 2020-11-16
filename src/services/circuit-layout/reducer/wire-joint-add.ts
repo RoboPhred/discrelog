@@ -7,8 +7,8 @@ export default createCircuitLayoutReducer((state, action) => {
     return state;
   }
 
-  const { wireId, addAfterJointId, position, jointId } = action.payload;
-  let wireJoints = state.wireJointIdsByWireId[wireId];
+  const { connectionId, addAfterJointId, position, jointId } = action.payload;
+  let wireJoints = state.wireJointIdsByConnectionId[connectionId];
   let insertionIndex = addAfterJointId
     ? wireJoints.indexOf(addAfterJointId) + 1
     : 0;
@@ -21,9 +21,9 @@ export default createCircuitLayoutReducer((state, action) => {
 
   return {
     ...state,
-    wireJointIdsByWireId: {
-      ...state.wireJointIdsByWireId,
-      [wireId]: wireJoints,
+    wireJointIdsByConnectionId: {
+      ...state.wireJointIdsByConnectionId,
+      [connectionId]: wireJoints,
     },
     wireJointPositionsByJointId: {
       ...state.wireJointPositionsByJointId,

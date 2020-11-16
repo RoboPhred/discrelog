@@ -7,10 +7,12 @@ export default createSelectionReducer((state, action) => {
     return state;
   }
 
-  const { wireId } = action.payload;
+  const { connectionId } = action.payload;
 
   return {
     ...state,
-    selectedWireIds: state.selectedWireIds.filter((x) => x !== wireId),
+    selectedConnectionIds: state.selectedConnectionIds.filter(
+      (x) => x !== connectionId
+    ),
   };
 });

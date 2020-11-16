@@ -1,4 +1,4 @@
-import { Wire, GraphNode } from "./types";
+import { GraphNode, Connection } from "./types";
 
 export interface CircuitGraphState {
   /**
@@ -7,14 +7,14 @@ export interface CircuitGraphState {
   nodesById: Record<string, GraphNode>;
 
   /**
-   * A map of wires connecting nodes.
+   * A map of connections between nodes, by connection id.
    */
-  wiresById: Record<string, Wire>;
+  connectionsById: Record<string, Connection>;
 }
 
 const _defaultState: CircuitGraphState = {
   nodesById: {},
-  wiresById: {},
+  connectionsById: {},
 };
 
 export const defaultCircuitGraphState = Object.freeze(_defaultState);

@@ -2,13 +2,13 @@ import { Point } from "@/geometry";
 
 export interface CircuitLayoutState {
   nodePositionsById: Record<string, Point>;
-  wireJointIdsByWireId: Record<string, string[]>;
+  wireJointIdsByConnectionId: Record<string, string[]>;
   wireJointPositionsByJointId: Record<string, Point>;
 }
 
 const _defaultState: CircuitLayoutState = {
   nodePositionsById: {},
-  wireJointIdsByWireId: {},
+  wireJointIdsByConnectionId: {},
   wireJointPositionsByJointId: {},
 };
 

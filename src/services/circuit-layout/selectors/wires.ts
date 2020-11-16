@@ -19,23 +19,23 @@ interface PositionCache {
 // Probably should use LRU cache.
 // Not fixing it right now as we previously used re-reselect, which
 //  also builds up forever.
-const startPositionCacheByWireId: Record<string, PositionCache> = {};
-const endPositionCacheByWireId: Record<string, PositionCache> = {};
+const startPositionCacheByConnectionId: Record<string, PositionCache> = {};
+const endPositionCacheByConnectionId: Record<string, PositionCache> = {};
 
-export const wireStartPositionFromWireIdSelector = (
+export const wireStartPositionFromConnectionIdSelector = (
   state: AppState,
-  wireId: string
+  connectionId: string
 ) => {
   const {
     outputPin: { nodeId, pinId },
-  } = state.services.circuitGraph.wiresById[wireId];
+  } = state.services.circuitGraph.connectionsById[connectionId];
   const nodeDef = elementDefFromNodeIdSelector(state, nodeId);
   const nodePosition =
     nodePositionFromNodeIdSelector(state, nodeId) || ZeroPoint;
 
   // Caching is to get a consistent reference to avoid component rerenders.
   //  We are not concerned about performance here.
-  const cacheData = startPositionCacheByWireId[wireId];
+  const cacheData = startPositionCacheByConnectionId[connectionId];
   if (
     cacheData &&
     cacheData.inputNodeDef === nodeDef &&
@@ -50,7 +50,7 @@ export const wireStartPositionFromWireIdSelector = (
     offset = nodeDef.pins[pinId];
   }
   const position = pointAdd(nodePosition, offset);
-  startPositionCacheByWireId[wireId] = {
+  startPositionCacheByConnectionId[connectionId] = {
     inputNodeDef: nodeDef,
     inputNodePosition: nodePosition,
     outputPosition: position,
@@ -59,20 +59,20 @@ export const wireStartPositionFromWireIdSelector = (
   return position;
 };
 
-export const wireEndPositionFromWireIdSelector = (
+export const wireEndPositionFromConnectionIdSelector = (
   state: AppState,
-  wireId: string
+  connectionId: string
 ) => {
   const {
     inputPin: { nodeId, pinId },
-  } = state.services.circuitGraph.wiresById[wireId];
+  } = state.services.circuitGraph.connectionsById[connectionId];
   const nodeDef = elementDefFromNodeIdSelector(state, nodeId);
   const nodePosition =
     nodePositionFromNodeIdSelector(state, nodeId) || ZeroPoint;
 
   // Caching is to get a consistent reference to avoid component rerenders.
   //  We are not concerned about performance here.
-  const cacheData = endPositionCacheByWireId[wireId];
+  const cacheData = endPositionCacheByConnectionId[connectionId];
   if (
     cacheData &&
     cacheData.inputNodeDef === nodeDef &&
@@ -87,7 +87,7 @@ export const wireEndPositionFromWireIdSelector = (
     offset = nodeDef.pins[pinId];
   }
   const position = pointAdd(nodePosition, offset);
-  endPositionCacheByWireId[wireId] = {
+  endPositionCacheByConnectionId[connectionId] = {
     inputNodeDef: nodeDef,
     inputNodePosition: nodePosition,
     outputPosition: position,
@@ -102,9 +102,9 @@ export const jointIdsSelector = createCircuitLayoutSelector(
   (state: CircuitLayoutState) => Object.keys(state.wireJointPositionsByJointId)
 );
 
-export const wireJointIdsFromWireIdSelector = createCircuitLayoutSelector(
-  (state: CircuitLayoutState, wireId: string) =>
-    state.wireJointIdsByWireId[wireId]
+export const wireJointIdsFromConnectionIdSelector = createCircuitLayoutSelector(
+  (state: CircuitLayoutState, connectionId: string) =>
+    state.wireJointIdsByConnectionId[connectionId]
 );
 
 export const wireJointPositionFromJointIdSelector = createCircuitLayoutSelector(

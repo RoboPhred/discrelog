@@ -1,7 +1,6 @@
 import { ElementType } from "@/element-defs";
 
 export interface GraphNodeBase {
-  nodeId: string;
   type: string;
 }
 
@@ -30,12 +29,3 @@ export interface Connection {
   outputPin: NodePin;
   inputPin: NodePin;
 }
-
-/**
- * A wire connecting two nodes in the graph
- */
-export interface Wire extends Connection {
-  id: string;
-}
-
-export type PinValueMap = Record<string, boolean>;

@@ -3,9 +3,9 @@ import * as React from "react";
 import { cls } from "@/utils";
 import useSelector from "@/hooks/useSelector";
 
-import { wireJointIdsFromWireIdSelector } from "@/services/circuit-layout/selectors/wires";
-import { isWireSelectedFromWireIdSelector } from "@/services/selection/selectors/selection";
-import { wireValueFromWireIdSelector } from "@/services/simulator/selectors/wires";
+import { wireJointIdsFromConnectionIdSelector } from "@/services/circuit-layout/selectors/wires";
+import { isWireSelectedFromConnectionIdSelector } from "@/services/selection/selectors/selection";
+import { wireValueFromConnectionIdSelector } from "@/services/simulator/selectors/wires";
 
 import WireSegment from "../WireSegment";
 import WireJoint from "../WireJoint";
@@ -13,18 +13,18 @@ import WireJoint from "../WireJoint";
 import styles from "./Wire.module.css";
 
 export interface WireProps {
-  wireId: string;
+  connectionId: string;
 }
 
-const Wire: React.FC<WireProps> = ({ wireId }) => {
+const Wire: React.FC<WireProps> = ({ connectionId }) => {
   const jointIds = useSelector((state) =>
-    wireJointIdsFromWireIdSelector(state, wireId)
+    wireJointIdsFromConnectionIdSelector(state, connectionId)
   );
   const isPowered = useSelector((state) =>
-    wireValueFromWireIdSelector(state, wireId)
+    wireValueFromConnectionIdSelector(state, connectionId)
   );
   const isSelected = useSelector((state) =>
-    isWireSelectedFromWireIdSelector(state, wireId)
+    isWireSelectedFromConnectionIdSelector(state, connectionId)
   );
 
   // We need one extra array entry for starting on the last jointId and ending at null (end of wire)
@@ -33,7 +33,7 @@ const Wire: React.FC<WireProps> = ({ wireId }) => {
     return (
       <WireSegment
         key={index}
-        wireId={wireId}
+        connectionId={connectionId}
         startJointId={startJointId}
         endJointId={endJointId}
       />

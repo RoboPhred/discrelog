@@ -9,7 +9,7 @@ import { pointSubtract } from "@/geometry";
 import { isCopyNodesAction } from "@/actions/clipboard-copy";
 
 import { nodeFromNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
-import { nodeOutputSourcesByPinIdFromNodeIdSelector } from "@/services/circuit-graph/selectors/wires";
+import { nodeOutputSourcesByPinIdFromNodeIdSelector } from "@/services/circuit-graph/selectors/pins";
 import { nodePositionsByNodeIdSelector } from "@/services/circuit-layout/selectors/node-positions";
 
 import { ClipboardNode } from "../types";

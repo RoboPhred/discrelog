@@ -21,19 +21,19 @@ import { selectWires } from "@/actions/select-wires";
 
 import {
   wireJointPositionFromJointIdSelector,
-  wireStartPositionFromWireIdSelector,
-  wireEndPositionFromWireIdSelector,
+  wireStartPositionFromConnectionIdSelector,
+  wireEndPositionFromConnectionIdSelector,
 } from "@/services/circuit-layout/selectors/wires";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
 
 export interface WireSegmentProps {
-  wireId: string;
+  connectionId: string;
   startJointId: string | null;
   endJointId: string | null;
 }
 const WireSegment: React.FC<WireSegmentProps> = ({
-  wireId,
+  connectionId,
   startJointId,
   endJointId,
 }) => {
@@ -42,14 +42,14 @@ const WireSegment: React.FC<WireSegmentProps> = ({
 
   const start = useSelector((state) => {
     if (startJointId == null) {
-      return wireStartPositionFromWireIdSelector(state, wireId);
+      return wireStartPositionFromConnectionIdSelector(state, connectionId);
     }
     return wireJointPositionFromJointIdSelector(state, startJointId);
   });
 
   const end = useSelector((state) => {
     if (endJointId == null) {
-      return wireEndPositionFromWireIdSelector(state, wireId);
+      return wireEndPositionFromConnectionIdSelector(state, connectionId);
     }
     return wireJointPositionFromJointIdSelector(state, endJointId);
   });
@@ -74,9 +74,9 @@ const WireSegment: React.FC<WireSegmentProps> = ({
       const p = getMouseCoords(e);
       const jointId = uuidV4();
       addedJointRef.current = jointId;
-      dispatch(addWireJoint(wireId, startJointId, p, jointId));
+      dispatch(addWireJoint(connectionId, startJointId, p, jointId));
     },
-    [wireId, startJointId, getMouseCoords]
+    [connectionId, startJointId, getMouseCoords]
   );
 
   const onDragMove = React.useCallback(
@@ -95,9 +95,9 @@ const WireSegment: React.FC<WireSegmentProps> = ({
     (e: MouseEvent) => {
       const modifiers = getModifiers(e);
       const mode = getSelectMode(modifiers);
-      dispatch(selectWires(wireId, mode));
+      dispatch(selectWires(connectionId, mode));
     },
-    [wireId]
+    [connectionId]
   );
 
   const { startTracking } = useMouseTracking({

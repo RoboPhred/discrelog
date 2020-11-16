@@ -5,14 +5,14 @@ import { Point } from "@/geometry";
 
 export const ACTION_WIRE_JOINT_ADD = "@wire/joint/add" as const;
 export const addWireJoint = (
-  wireId: string,
+  connectionId: string,
   addAfterJointId: string | null,
   position: Point,
   jointId?: string
 ) => ({
   type: ACTION_WIRE_JOINT_ADD,
   payload: {
-    wireId,
+    connectionId,
     jointId: jointId || uuidV4(),
     addAfterJointId,
     position,

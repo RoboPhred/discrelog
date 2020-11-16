@@ -62,18 +62,21 @@ export const elementDefFromNodeIdSelector = createCircuitGraphSelector(
 export const nodePinsSelector = createCircuitGraphSelector(
   createSelector(
     (s) => s.nodesById,
-    (nodesById: Record<string, GraphNode>) =>
-      values(nodesById).reduce((pins, node) => {
+    (nodesById: Record<string, GraphNode>) => {
+      const pins: NodePin[] = [];
+      for (const nodeId of Object.keys(nodesById)) {
+        const node = nodesById[nodeId];
         const def = ElementDefinitionsByType[node.elementType];
         if (def) {
           pins.push(
             ...Object.keys(def.pins).map((pin) => ({
-              nodeId: node.nodeId,
+              nodeId: nodeId,
               pinId: pin,
             }))
           );
         }
-        return pins;
-      }, [] as NodePin[])
+      }
+      return pins;
+    }
   )
 );

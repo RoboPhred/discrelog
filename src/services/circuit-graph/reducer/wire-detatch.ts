@@ -9,12 +9,14 @@ export default createCircuitGraphReducer((state, action) => {
     return state;
   }
 
-  const { wireId } = action.payload;
+  const { connectionId } = action.payload;
 
-  const remainingIds = Object.keys(state.wiresById).filter((x) => x !== wireId);
+  const remainingIds = Object.keys(state.connectionsById).filter(
+    (x) => x !== connectionId
+  );
 
   return {
     ...state,
-    wiresById: pick(state.wiresById, remainingIds),
+    connectionsById: pick(state.connectionsById, remainingIds),
   };
 });

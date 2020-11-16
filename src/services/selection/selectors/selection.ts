@@ -22,13 +22,13 @@ export const selectedNodesByIdSelector = createSelector(
   (nodesById, selectedNodeIds) => pick(nodesById, selectedNodeIds)
 );
 
-export const selectedWireIdsSelector = createSelectionSelector(
-  (state) => state.selectedWireIds
+export const selectedConnectionIdsSelector = createSelectionSelector(
+  (state) => state.selectedConnectionIds
 );
 
-export const isWireSelectedFromWireIdSelector = createSelectionSelector(
-  (s: SelectionState, wireId: string) =>
-    s.selectedWireIds.indexOf(wireId) !== -1
+export const isWireSelectedFromConnectionIdSelector = createSelectionSelector(
+  (s: SelectionState, connectionId: string) =>
+    s.selectedConnectionIds.indexOf(connectionId) !== -1
 );
 
 export const selectedJointIdsSelector = createSelectionSelector(

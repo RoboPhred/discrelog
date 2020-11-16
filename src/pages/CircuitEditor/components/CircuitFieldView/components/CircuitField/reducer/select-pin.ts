@@ -7,7 +7,7 @@ import rootReducer from "@/store/reducer";
 
 import { attachWire } from "@/actions/wire-attach";
 
-import { nodePinDirectionSelector } from "@/services/circuit-graph/selectors/wires";
+import { nodePinDirectionSelector } from "@/services/circuit-graph/selectors/pins";
 
 import { isSelectPinAction, SelectPinAction } from "../actions/select-pin";
 

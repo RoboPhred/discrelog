@@ -2,14 +2,14 @@ import createCachedSelector from "re-reselect";
 
 import { AppState } from "@/store";
 
-import { Wire } from "@/services/circuit-graph/types";
+import { Connection } from "@/services/circuit-graph/types";
 
-export const wireValueFromWireIdSelector = createCachedSelector(
-  (state: AppState, wireId: string) =>
-    state.services.circuitGraph.wiresById[wireId],
+export const wireValueFromConnectionIdSelector = createCachedSelector(
+  (state: AppState, connectionId: string) =>
+    state.services.circuitGraph.connectionsById[connectionId],
   (state: AppState) => state.services.simulator.nodeOutputValuesByNodeId,
   (
-    wire: Wire,
+    wire: Connection,
     outputVauesByNodeId: Record<string, Record<string, boolean>>
   ) => {
     if (!wire) {
@@ -22,4 +22,4 @@ export const wireValueFromWireIdSelector = createCachedSelector(
 
     return outputVauesByNodeId[nodeId]?.[pinId] || false;
   }
-)((_: any, wireId: string) => wireId);
+)((_: any, connectionId: string) => connectionId);

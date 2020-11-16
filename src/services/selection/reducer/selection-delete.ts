@@ -18,15 +18,15 @@ export default function selectionDeleteReducer(
 
   const {
     selectedNodeIds,
-    selectedWireIds,
+    selectedConnectionIds,
     selectedJointIds,
   } = state.services.selection;
 
   if (selectedNodeIds.length > 0) {
     state = rootReducer(state, deleteNode(selectedNodeIds));
   }
-  state = selectedWireIds.reduce(
-    (state, wireId) => rootReducer(state, detatchWire(wireId)),
+  state = selectedConnectionIds.reduce(
+    (state, connectionId) => rootReducer(state, detatchWire(connectionId)),
     state
   );
   state = selectedJointIds.reduce(

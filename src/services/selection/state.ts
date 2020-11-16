@@ -1,12 +1,12 @@
 export interface SelectionState {
   selectedNodeIds: string[];
-  selectedWireIds: string[];
+  selectedConnectionIds: string[];
   selectedJointIds: string[];
 }
 
 const _defaultState: SelectionState = {
   selectedNodeIds: [],
-  selectedWireIds: [],
+  selectedConnectionIds: [],
   selectedJointIds: [],
 };
 

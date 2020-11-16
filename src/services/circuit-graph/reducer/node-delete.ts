@@ -26,6 +26,6 @@ export default createCircuitGraphReducer((state, action) => {
   return {
     ...state,
     nodesById: pick(state.nodesById, remainingNodeIds),
-    wiresById: pickBy(state.wiresById, isRemainingConnection),
+    connectionsById: pickBy(state.connectionsById, isRemainingConnection),
   };
 });

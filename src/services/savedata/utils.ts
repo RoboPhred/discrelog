@@ -14,13 +14,13 @@ import {
   nodeFromNodeIdSelector,
 } from "../circuit-graph/selectors/nodes";
 import {
-  wireIdsSelector,
-  wireFromWireIdSelector,
-} from "../circuit-graph/selectors/wires";
+  connectionIdsSelector,
+  connectionFromConnectionIdSelector,
+} from "../circuit-graph/selectors/connections";
 import { nodePositionFromNodeIdSelector } from "../circuit-layout/selectors/node-positions";
 import {
   wireJointPositionsByJointIdSelector,
-  wireJointIdsFromWireIdSelector,
+  wireJointIdsFromConnectionIdSelector,
 } from "../circuit-layout/selectors/wires";
 import { defaultCircuitLayoutState } from "../circuit-layout/state";
 
@@ -38,9 +38,12 @@ export function createSave(state: AppState): SaveData {
       };
       return saveNode;
     }),
-    wires: wireIdsSelector(state).map((wireId) => {
-      const wire = wireFromWireIdSelector(state, wireId);
-      const jointIds = wireJointIdsFromWireIdSelector(state, wireId);
+    wires: connectionIdsSelector(state).map((connectionId) => {
+      const wire = connectionFromConnectionIdSelector(state, connectionId);
+      const jointIds = wireJointIdsFromConnectionIdSelector(
+        state,
+        connectionId
+      );
       const saveWire: SaveWire = {
         input: wire.inputPin,
         output: wire.outputPin,

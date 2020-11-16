@@ -1,10 +1,10 @@
 import { AnyAction } from "redux";
 
 export const ACTION_WIRE_DETATCH = "@wire/detatch" as const;
-export const detatchWire = (wireId: string) => ({
+export const detatchWire = (connectionId: string) => ({
   type: ACTION_WIRE_DETATCH,
   payload: {
-    wireId,
+    connectionId,
   },
 });
 export type DetatchWireNodeAction = ReturnType<typeof detatchWire>;

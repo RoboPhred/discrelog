@@ -10,7 +10,7 @@ import { AppState } from "@/store";
 
 import { outputsOf } from "@/element-defs/utils";
 
-import { nodeInputSourcesByPinIdFromNodeIdSelector } from "@/services/circuit-graph/selectors/wires";
+import { nodeInputSourcesByPinIdFromNodeIdSelector } from "@/services/circuit-graph/selectors/pins";
 import {
   elementDefFromNodeIdSelector,
   nodeIdsSelector,

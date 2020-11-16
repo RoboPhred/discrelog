@@ -18,8 +18,9 @@ export default createCircuitLayoutReducer((state, action) => {
 
   return {
     ...state,
-    wireJointIdsByWireId: mapValues(state.wireJointIdsByWireId, (wireIds) =>
-      wireIds.filter((x) => x !== jointId)
+    wireJointIdsByConnectionId: mapValues(
+      state.wireJointIdsByConnectionId,
+      (connectionIds) => connectionIds.filter((x) => x !== jointId)
     ),
     wireJointsByJointId: pick(
       state.wireJointPositionsByJointId,

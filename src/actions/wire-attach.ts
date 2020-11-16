@@ -16,7 +16,7 @@ export const attachWire = (
 ) => ({
   type: ACTION_WIRE_ATTACH,
   payload: {
-    wireId: uuidV4(),
+    connectionId: uuidV4(),
     p1,
     p2,
     joints: opts?.joints || [],

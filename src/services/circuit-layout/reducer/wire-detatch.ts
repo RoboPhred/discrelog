@@ -10,20 +10,23 @@ export default createCircuitLayoutReducer((state, action) => {
     return state;
   }
 
-  const { wireId } = action.payload;
+  const { connectionId } = action.payload;
 
-  const remainingWireIds = Object.keys(state.wireJointIdsByWireId).filter(
-    (x) => x != wireId
-  );
+  const remainingConnectionIds = Object.keys(
+    state.wireJointIdsByConnectionId
+  ).filter((x) => x != connectionId);
 
   const remainingJointIds = difference(
     Object.keys(state.wireJointPositionsByJointId),
-    state.wireJointIdsByWireId[wireId]
+    state.wireJointIdsByConnectionId[connectionId]
   );
 
   return {
     ...state,
-    wireJointIdsByWireId: pick(state.wireJointIdsByWireId, remainingWireIds),
+    wireJointIdsByConnectionId: pick(
+      state.wireJointIdsByConnectionId,
+      remainingConnectionIds
+    ),
     wireJointPositionsByJointId: pick(
       state.wireJointPositionsByJointId,
       remainingJointIds

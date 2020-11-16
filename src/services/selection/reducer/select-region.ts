@@ -39,7 +39,7 @@ export default createSelectionReducer((state, action, appState) => {
       chosenNodeIds,
       mode
     ),
-    selectedWireIds: mode === "set" ? [] : state.selectedWireIds,
+    selectedConnectionIds: mode === "set" ? [] : state.selectedConnectionIds,
     selectedJointIds: combineSelection(
       state.selectedJointIds,
       chosenJointIds,

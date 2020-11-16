@@ -11,17 +11,17 @@ export default createCircuitLayoutReducer((state, action) => {
     return state;
   }
 
-  const { wireId, joints } = action.payload;
+  const { connectionId, joints } = action.payload;
 
   // Might want to use addWireJoint action, but field is the only thing that cares about joints.
   if (joints.length > 0) {
     const jointIds = joints.map((x) => uuidV4());
-    fpSet(state, "wireJointIdsByWireId", wireId, jointIds);
+    fpSet(state, "wireJointIdsByConnectionId", connectionId, jointIds);
     fpSet(state, "wireJointPositionsByJointId", (value) => ({
       ...value,
       ...zipObject(jointIds, joints),
     }));
   }
 
-  return fpSet(state, "wireJointIdsByWireId", wireId, []);
+  return fpSet(state, "wireJointIdsByConnectionId", connectionId, []);
 });
