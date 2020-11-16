@@ -9,7 +9,7 @@ import { createStructuredSelector, createSelector } from "reselect";
 
 import { AppState } from "@/store";
 
-import { elementTypesByNodeIdSelector } from "@/services/graph/selectors/nodes";
+import { elementTypesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 import { nodeStatesByIdSelector } from "@/services/simulator/selectors/nodes";
 import { nodePositionsByNodeIdSelector } from "@/services/field/selectors/node-positions";
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";

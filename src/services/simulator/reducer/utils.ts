@@ -10,11 +10,11 @@ import { AppState } from "@/store";
 
 import { outputsOf } from "@/element-defs/utils";
 
-import { nodeInputSourcesByPinIdFromNodeIdSelector } from "@/services/graph/selectors/wires";
+import { nodeInputSourcesByPinIdFromNodeIdSelector } from "@/services/node-graph/selectors/wires";
 import {
   elementDefFromNodeIdSelector,
   nodeIdsSelector,
-} from "@/services/graph/selectors/nodes";
+} from "@/services/node-graph/selectors/nodes";
 
 import { nodeOutputPinValueFromNodeIdAndPinId } from "../selectors/nodes";
 

@@ -5,8 +5,8 @@ import { AppState } from "@/store";
 import { ElementDefinition } from "@/element-defs";
 import { Point, pointAdd } from "@/geometry";
 
-import { NodePin } from "@/services/graph/types";
-import { elementDefFromNodeIdSelector } from "@/services/graph/selectors/nodes";
+import { NodePin } from "@/services/node-graph/types";
+import { elementDefFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 
 import { createFieldSelector } from "../utils";
 import { FieldState } from "../state";

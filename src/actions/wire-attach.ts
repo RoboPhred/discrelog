@@ -3,7 +3,7 @@ import { v4 as uuidV4 } from "uuid";
 
 import { Point } from "@/geometry";
 
-import { NodePin } from "@/services/graph/types";
+import { NodePin } from "@/services/node-graph/types";
 
 export interface AttachWireOptions {
   joints?: Point[];

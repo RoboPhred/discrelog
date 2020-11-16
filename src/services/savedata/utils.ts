@@ -8,15 +8,15 @@ import { attachWire } from "@/actions/wire-attach";
 
 import { defaultSelectionState } from "../selection/state";
 import { defaultSimulatorState } from "../simulator/state";
-import { defaultGraphState } from "../graph/state";
+import { defaultNodeGraphState } from "../node-graph/state";
 import {
   nodeIdsSelector,
   nodeFromNodeIdSelector,
-} from "../graph/selectors/nodes";
+} from "../node-graph/selectors/nodes";
 import {
   wireIdsSelector,
   wireFromWireIdSelector,
-} from "../graph/selectors/wires";
+} from "../node-graph/selectors/wires";
 import { nodePositionFromNodeIdSelector } from "../field/selectors/node-positions";
 import {
   wireJointPositionsByJointIdSelector,
@@ -57,7 +57,7 @@ export function loadSave(state: AppState, save: SaveData): AppState {
     services: {
       ...state.services,
       field: defaultFieldState,
-      graph: defaultGraphState,
+      nodeGraph: defaultNodeGraphState,
       selection: defaultSelectionState,
       simulator: defaultSimulatorState,
     },

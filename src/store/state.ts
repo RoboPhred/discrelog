@@ -3,7 +3,10 @@ import {
   defaultClipboardState,
 } from "@/services/clipboard/state";
 import { FieldState, defaultFieldState } from "@/services/field/state";
-import { GraphState, defaultGraphState } from "@/services/graph/state";
+import {
+  NodeGraphState,
+  defaultNodeGraphState,
+} from "@/services/node-graph/state";
 import {
   SelectionState,
   defaultSelectionState,
@@ -23,7 +26,7 @@ export interface AppState {
   services: {
     clipboard: ClipboardState;
     field: FieldState;
-    graph: GraphState;
+    nodeGraph: NodeGraphState;
     selection: SelectionState;
     simulator: SimulatorState;
     view: ViewState;
@@ -37,7 +40,7 @@ const _defaultAppState: AppState = {
   services: {
     clipboard: defaultClipboardState,
     field: defaultFieldState,
-    graph: defaultGraphState,
+    nodeGraph: defaultNodeGraphState,
     selection: defaultSelectionState,
     simulator: defaultSimulatorState,
     view: defaultViewState,

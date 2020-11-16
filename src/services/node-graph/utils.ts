@@ -6,11 +6,11 @@ import {
   createServiceReducerCreator,
   createServiceSelectorCreator,
 } from "../service-state-utils";
-import { GraphState } from "./state";
+import { NodeGraphState } from "./state";
 import { NodePin, Connection } from "./types";
 
-export const createGraphReducer = createServiceReducerCreator("graph");
-export const createGraphSelector = createServiceSelectorCreator("graph");
+export const createGraphReducer = createServiceReducerCreator("nodeGraph");
+export const createGraphSelector = createServiceSelectorCreator("nodeGraph");
 
 /**
  * Check two pins to see if they can form a valid connection.
@@ -19,7 +19,7 @@ export const createGraphSelector = createServiceSelectorCreator("graph");
  * Does not check to see if the pins are already connected, or other connections prevent this connection from forming.
  */
 export function pinsToConnection(
-  state: GraphState,
+  state: NodeGraphState,
   p1: NodePin,
   p2: NodePin
 ): Connection | null {

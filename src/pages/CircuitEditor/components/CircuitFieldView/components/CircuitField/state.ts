@@ -1,4 +1,4 @@
-import { NodePin } from "@/services/graph/types";
+import { NodePin } from "@/services/node-graph/types";
 
 export interface CircuitFieldState {
   selectedPin: NodePin | null;

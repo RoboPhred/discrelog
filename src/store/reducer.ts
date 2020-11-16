@@ -1,6 +1,6 @@
 import clipboardReducer from "@/services/clipboard/reducer";
 import fieldReducer from "@/services/field/reducer";
-import graphReducer from "@/services/graph/reducer";
+import graphReducer from "@/services/node-graph/reducer";
 import savedataReducer from "@/services/savedata/reducer";
 import selectionReducer from "@/services/selection/reducer";
 import simulatorReducer from "@/services/simulator/reducer";

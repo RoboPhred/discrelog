@@ -7,7 +7,7 @@ import { createFieldReducer } from "../utils";
 import {
   nodeInputWireIdsFromNodeIdSelector,
   nodeOutputWireIdsFromNodeIdSelector,
-} from "@/services/graph/selectors/wires";
+} from "@/services/node-graph/selectors/wires";
 
 export default createFieldReducer((state, action, appState) => {
   if (!isDeleteNodeAction(action)) {

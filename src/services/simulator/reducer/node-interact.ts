@@ -5,7 +5,7 @@ import { isInteractNodeAction } from "@/actions/node-interact";
 import { createSimulatorReducer } from "../utils";
 
 import { collectNodeTransitions } from "./utils";
-import { elementDefFromNodeIdSelector } from "@/services/graph/selectors/nodes";
+import { elementDefFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 
 export default createSimulatorReducer((state, action, appState) => {
   if (!isInteractNodeAction(action)) {

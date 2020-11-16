@@ -3,7 +3,7 @@ import { isDetatchWireAction } from "@/actions/wire-detatch";
 import { createSimulatorReducer } from "../utils";
 
 import { collectNodeTransitions } from "./utils";
-import { wireFromWireIdSelector } from "@/services/graph/selectors/wires";
+import { wireFromWireIdSelector } from "@/services/node-graph/selectors/wires";
 
 export default createSimulatorReducer((state, action, appState) => {
   if (!isDetatchWireAction(action)) {

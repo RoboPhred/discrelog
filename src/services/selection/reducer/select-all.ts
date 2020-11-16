@@ -1,7 +1,7 @@
 import { isSelectAllAction } from "@/actions/select-all";
 
-import { nodeIdsSelector } from "@/services/graph/selectors/nodes";
-import { wireIdsSelector } from "@/services/graph/selectors/wires";
+import { nodeIdsSelector } from "@/services/node-graph/selectors/nodes";
+import { wireIdsSelector } from "@/services/node-graph/selectors/wires";
 import { jointIdsSelector } from "@/services/field/selectors/wires";
 
 import { createSelectionReducer } from "../utils";

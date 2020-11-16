@@ -22,7 +22,7 @@ export default reducerPriority(
     const { nodeIds } = action.payload;
 
     const remainingNodeIds = difference(
-      Object.keys(state.services.graph.nodesById),
+      Object.keys(state.services.nodeGraph.nodesById),
       nodeIds
     );
 
@@ -33,10 +33,13 @@ export default reducerPriority(
       );
     }
 
-    state = fpSet(state, "services", "graph", (value) => ({
+    state = fpSet(state, "services", "nodeGraph", (value) => ({
       ...value,
-      nodesById: pick(state.services.graph.nodesById, remainingNodeIds),
-      wiresById: pickBy(state.services.graph.wiresById, isRemainingConnection),
+      nodesById: pick(state.services.nodeGraph.nodesById, remainingNodeIds),
+      wiresById: pickBy(
+        state.services.nodeGraph.wiresById,
+        isRemainingConnection
+      ),
     }));
 
     return state;

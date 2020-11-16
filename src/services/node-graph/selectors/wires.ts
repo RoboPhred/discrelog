@@ -5,7 +5,7 @@ import createCachedSelector from "re-reselect";
 
 import { NodePin } from "../types";
 
-import { GraphState } from "../state";
+import { NodeGraphState } from "../state";
 import { createGraphSelector } from "../utils";
 
 import { elementDefFromNodeIdSelector, nodePinsSelector } from "./nodes";
@@ -19,18 +19,18 @@ export const wireIdsSelector = createGraphSelector(
 );
 
 export const wireFromWireIdSelector = createGraphSelector(
-  (s: GraphState, wireId: string) => s.wiresById[wireId]
+  (s: NodeGraphState, wireId: string) => s.wiresById[wireId]
 );
 
 const wiresSelector = createGraphSelector(
   createSelector(
-    (state: GraphState) => state.wiresById,
+    (state: NodeGraphState) => state.wiresById,
     (wiresById) => values(wiresById)
   )
 );
 
 export const nodePinDirectionSelector = createGraphSelector(
-  (s: GraphState, pin: NodePin) => {
+  (s: NodeGraphState, pin: NodePin) => {
     const def = elementDefFromNodeIdSelector.local(s, pin.nodeId);
     if (!def) {
       return null;
@@ -49,7 +49,7 @@ export const nodePinDirectionSelector = createGraphSelector(
  * WARN: Not react safe.  For reducer use only.
  */
 export const nodeInputWireIdsFromNodeIdSelector = createGraphSelector(
-  (state: GraphState, nodeId: string) =>
+  (state: NodeGraphState, nodeId: string) =>
     Object.keys(state.wiresById).filter(
       (wireId) => state.wiresById[wireId].inputPin.nodeId === nodeId
     )
@@ -97,7 +97,7 @@ export const nodeInputSourcesByPinIdFromNodeIdSelector = createGraphSelector(
  * WARN: Not react safe.  For reducer use only.
  */
 export const nodeOutputWiresFromNodeIdSelector = createGraphSelector(
-  (state: GraphState, nodeId: string) =>
+  (state: NodeGraphState, nodeId: string) =>
     wiresSelector.local(state).filter((x) => x.outputPin.nodeId === nodeId)
 );
 
@@ -106,7 +106,7 @@ export const nodeOutputWiresFromNodeIdSelector = createGraphSelector(
  * WARN: Not react safe.  For reducer use only.
  */
 export const nodeOutputWireIdsFromNodeIdSelector = createGraphSelector(
-  (state: GraphState, nodeId: string) =>
+  (state: NodeGraphState, nodeId: string) =>
     Object.keys(state.wiresById).filter(
       (wireId) => state.wiresById[wireId].outputPin.nodeId === nodeId
     )

@@ -2,7 +2,7 @@ import { AppState } from "@/store";
 import { Point, pointAdd, ZeroPoint } from "@/geometry";
 import { ElementDefinition } from "@/element-defs";
 
-import { elementDefFromNodeIdSelector } from "@/services/graph/selectors/nodes";
+import { elementDefFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 
 import { createFieldSelector } from "../utils";
 import { FieldState } from "../state";
@@ -28,7 +28,7 @@ export const wireStartPositionFromWireIdSelector = (
 ) => {
   const {
     outputPin: { nodeId, pinId },
-  } = state.services.graph.wiresById[wireId];
+  } = state.services.nodeGraph.wiresById[wireId];
   const nodeDef = elementDefFromNodeIdSelector(state, nodeId);
   const nodePosition =
     nodePositionFromNodeIdSelector(state, nodeId) || ZeroPoint;
@@ -65,7 +65,7 @@ export const wireEndPositionFromWireIdSelector = (
 ) => {
   const {
     inputPin: { nodeId, pinId },
-  } = state.services.graph.wiresById[wireId];
+  } = state.services.nodeGraph.wiresById[wireId];
   const nodeDef = elementDefFromNodeIdSelector(state, nodeId);
   const nodePosition =
     nodePositionFromNodeIdSelector(state, nodeId) || ZeroPoint;

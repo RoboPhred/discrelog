@@ -5,7 +5,7 @@ import values from "lodash/values";
 import { ElementDefinitionsByType, ElementType } from "@/element-defs";
 
 import { createGraphSelector } from "../utils";
-import { GraphState } from "../state";
+import { NodeGraphState } from "../state";
 import { NodePin, GraphNode } from "../types";
 
 export const nodesByNodeIdSelector = createGraphSelector((s) => s.nodesById);
@@ -34,11 +34,11 @@ export const elementDefsByNodeIdSelector = createGraphSelector(
 );
 
 export const nodeFromNodeIdSelector = createGraphSelector(
-  (s: GraphState, nodeId: string) => s.nodesById[nodeId] || null
+  (s: NodeGraphState, nodeId: string) => s.nodesById[nodeId] || null
 );
 
 export const elementTypeFromNodeIdSelector = createGraphSelector(
-  (s: GraphState, nodeId: string) => {
+  (s: NodeGraphState, nodeId: string) => {
     const node = nodeFromNodeIdSelector.local(s, nodeId);
     if (!node) {
       return null;
@@ -48,7 +48,7 @@ export const elementTypeFromNodeIdSelector = createGraphSelector(
 );
 
 export const elementDefFromNodeIdSelector = createGraphSelector(
-  (s: GraphState, nodeId: string) => {
+  (s: NodeGraphState, nodeId: string) => {
     const node = nodeFromNodeIdSelector.local(s, nodeId);
     if (!node) {
       return null;

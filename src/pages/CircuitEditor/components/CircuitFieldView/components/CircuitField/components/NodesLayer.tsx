@@ -2,7 +2,7 @@ import * as React from "react";
 
 import useSelector from "@/hooks/useSelector";
 
-import { nodeIdsSelector } from "@/services/graph/selectors/nodes";
+import { nodeIdsSelector } from "@/services/node-graph/selectors/nodes";
 
 import Node from "./Node";
 

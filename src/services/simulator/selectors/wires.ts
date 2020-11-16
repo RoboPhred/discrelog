@@ -2,10 +2,11 @@ import createCachedSelector from "re-reselect";
 
 import { AppState } from "@/store";
 
-import { Wire } from "@/services/graph/types";
+import { Wire } from "@/services/node-graph/types";
 
 export const wireValueFromWireIdSelector = createCachedSelector(
-  (state: AppState, wireId: string) => state.services.graph.wiresById[wireId],
+  (state: AppState, wireId: string) =>
+    state.services.nodeGraph.wiresById[wireId],
   (state: AppState) => state.services.simulator.nodeOutputValuesByNodeId,
   (
     wire: Wire,
