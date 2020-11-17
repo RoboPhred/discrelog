@@ -11,6 +11,7 @@ import { elementTypeFromNodeIdSelector } from "@/services/circuit-graph/selector
 import { nodeStateFromNodeIdSelector } from "@/services/simulator/selectors/nodes";
 import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
 import { nodePositionFromNodeIdSelector } from "@/services/circuit-layout/selectors/node-positions";
+import { isSimActiveSelector } from "@/services/simulator/selectors/run";
 
 import { fieldDragStartNode } from "@/actions/field-drag-start-node";
 import { fieldDragContinue } from "@/actions/field-drag-continue";
@@ -29,6 +30,8 @@ export interface CircuitNodeProps {
 const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId }) => {
   const dispatch = useDispatch();
 
+  const isSimActive = useSelector(isSimActiveSelector);
+
   const { x, y } = useSelector((s) =>
     nodePositionFromNodeIdSelector(s, nodeId)
   );
@@ -40,15 +43,18 @@ const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId }) => {
 
   const getCoords = useEventMouseCoords();
 
-  const onClick = React.useCallback((e: MouseEvent) => {
-    const modifiers = getModifiers(e);
-    if (modifiers.altKey) {
-      dispatch(interactNode(nodeId));
-    } else {
-      const mode = getSelectMode(modifiers);
-      dispatch(selectNodes(nodeId, mode));
-    }
-  }, []);
+  const onClick = React.useCallback(
+    (e: MouseEvent) => {
+      if (isSimActive) {
+        dispatch(interactNode(nodeId));
+      } else {
+        const modifiers = getModifiers(e);
+        const mode = getSelectMode(modifiers);
+        dispatch(selectNodes(nodeId, mode));
+      }
+    },
+    [isSimActive]
+  );
 
   const onDragStart = React.useCallback(
     (e: MouseEvent) => {
