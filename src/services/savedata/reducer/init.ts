@@ -18,5 +18,9 @@ export default function initReducer(
     return state;
   }
 
-  return loadSave(state, save);
+  try {
+    return loadSave(state, save);
+  } catch {
+    return state;
+  }
 }

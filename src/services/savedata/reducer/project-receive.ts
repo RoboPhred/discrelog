@@ -14,5 +14,10 @@ export default function projectReceiveReducer(
     return state;
   }
 
-  return loadSave(state, action.payload.saveData);
+  try {
+    return loadSave(state, action.payload.saveData);
+  } catch {
+    // TODO: display error
+    return state;
+  }
 }

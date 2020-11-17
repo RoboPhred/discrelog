@@ -14,6 +14,7 @@ import {
   ClipboardState,
   defaultClipboardState,
 } from "@/services/clipboard/state";
+import { DialogState, defaultDialogState } from "@/services/dialog/state";
 import {
   SelectionState,
   defaultSelectionState,
@@ -34,6 +35,7 @@ export interface AppState {
     circuitGraph: CircuitGraphState;
     circuitLayout: CircuitLayoutState;
     clipboard: ClipboardState;
+    dialog: DialogState;
     selection: SelectionState;
     simulator: SimulatorState;
   };
@@ -48,6 +50,7 @@ const _defaultAppState: AppState = {
     circuitGraph: defaultCircuitGraphState,
     circuitLayout: defaultCircuitLayoutState,
     clipboard: defaultClipboardState,
+    dialog: defaultDialogState,
     selection: defaultSelectionState,
     simulator: defaultSimulatorState,
   },

@@ -10,6 +10,7 @@ import CircuitEditor from "@/pages/CircuitEditor";
 import Intro from "@/pages/Intro";
 
 import TitleBar from "../TitleBar";
+import DialogManager from "../DialogManager";
 
 const App: React.FC = () => {
   const [introShown, setIntroShown] = React.useState(isDev);
@@ -23,6 +24,7 @@ const App: React.FC = () => {
 
   return (
     <div className={cls(sizing["fill-parent"], flex["flex-column"])}>
+      <DialogManager />
       <TitleBar />
       <CircuitEditor
         className={cls(sizing["fill-parent"], flex["flexitem-shrink"])}

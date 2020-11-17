@@ -1,4 +1,4 @@
-import { SaveData, SaveNode, SaveWire } from "./types";
+import { SaveData, saveDataSchema, SaveNode, SaveWire } from "./types";
 
 import { AppState } from "@/store";
 import rootReducer from "@/store/reducer";
@@ -23,6 +23,7 @@ import {
   wireJointIdsFromConnectionIdSelector,
 } from "../circuit-layout/selectors/wires";
 import { defaultCircuitLayoutState } from "../circuit-layout/state";
+import { SaveFormatError } from "./errors";
 
 export function createSave(state: AppState): SaveData {
   const jointPositions = wireJointPositionsByJointIdSelector(state);
@@ -31,8 +32,8 @@ export function createSave(state: AppState): SaveData {
       const node = nodeFromNodeIdSelector(state, nodeId);
       const position = nodePositionFromNodeIdSelector(state, nodeId);
       const saveNode: SaveNode = {
-        id: nodeId,
-        type: node.elementType,
+        nodeId: nodeId,
+        elementType: node.elementType,
         x: position.x,
         y: position.y,
       };
@@ -55,6 +56,12 @@ export function createSave(state: AppState): SaveData {
 }
 
 export function loadSave(state: AppState, save: SaveData): AppState {
+  try {
+    saveDataSchema.validateSync(save);
+  } catch (e) {
+    throw new SaveFormatError(e.message);
+  }
+
   state = {
     ...state,
     services: {
@@ -66,16 +73,14 @@ export function loadSave(state: AppState, save: SaveData): AppState {
     },
   };
 
-  const fallbackState = state;
-
   try {
     state = save.nodes.reduce(
       (state, node) =>
         rootReducer(
           state,
           // TODO: Could be element, could be chip.
-          addElement(node.type, {
-            nodeId: node.id,
+          addElement(node.elementType, {
+            nodeId: node.nodeId,
             position: { x: node.x, y: node.y },
           })
         ),
@@ -90,9 +95,9 @@ export function loadSave(state: AppState, save: SaveData): AppState {
         ),
       state
     );
-  } catch {
-    // TODO: Notify user of load error.
-    return fallbackState;
+  } catch (e) {
+    console.error("Failed to rehydrate SaveData:", e);
+    throw new SaveFormatError("Failed to load project.");
   }
 
   return state;
