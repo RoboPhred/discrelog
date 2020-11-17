@@ -1,7 +1,7 @@
 import { concatReducers } from "@/store/utils";
 
-import fileNewReducer from "./file-new";
 import nodeDeleteReducer from "./node-delete";
+import projectNewReducer from "./project-new";
 import selectAllReducer from "./select-all";
 import selectClearReducer from "./select-clear";
 import selectJointsReducer from "./select-joints";
@@ -14,7 +14,7 @@ import selectionMoveReducer from "./selection-move";
 import wireDetatchReducer from "./wire-detatch";
 
 const selectionReducer = concatReducers(
-  fileNewReducer,
+  projectNewReducer,
   nodeDeleteReducer,
   selectAllReducer,
   selectClearReducer,

@@ -1,10 +1,10 @@
-import { isNewFileAction } from "@/actions/file-new";
+import { isNewProjectAction } from "@/actions/project-new";
 
 import { createCircuitGraphReducer } from "../utils";
 import { defaultCircuitGraphState } from "../state";
 
 export default createCircuitGraphReducer((state, action) => {
-  if (!isNewFileAction(action)) {
+  if (!isNewProjectAction(action)) {
     return state;
   }
 

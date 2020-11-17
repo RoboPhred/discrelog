@@ -1,10 +1,10 @@
-import { isNewFileAction } from "@/actions/file-new";
+import { isNewProjectAction } from "@/actions/project-new";
 
 import { createSelectionReducer } from "../utils";
 import { defaultSelectionState } from "../state";
 
 export default createSelectionReducer((state, action) => {
-  if (!isNewFileAction(action)) {
+  if (!isNewProjectAction(action)) {
     return state;
   }
 

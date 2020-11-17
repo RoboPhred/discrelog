@@ -1,10 +1,10 @@
-import { isNewFileAction } from "@/actions/file-new";
+import { isNewProjectAction } from "@/actions/project-new";
 
 import { createCircuitLayoutReducer } from "../utils";
 import { defaultCircuitLayoutState } from "../state";
 
 export default createCircuitLayoutReducer((state, action) => {
-  if (!isNewFileAction(action)) {
+  if (!isNewProjectAction(action)) {
     return state;
   }
 

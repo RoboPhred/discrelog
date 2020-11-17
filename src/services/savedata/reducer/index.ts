@@ -1,13 +1,13 @@
 import { concatReducers } from "@/store/utils";
 
 import autosaveReducer from "./autosave";
-import fileNewReducer from "./file-new";
 import initReducer from "./init";
+import projectNewReducer from "./project-new";
 import projectReceiveReducer from "./project-receive";
 
 export default concatReducers(
   autosaveReducer,
-  fileNewReducer,
+  projectNewReducer,
   initReducer,
   projectReceiveReducer
 );
