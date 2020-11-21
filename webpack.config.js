@@ -136,6 +136,7 @@ module.exports = {
       "process.env": {
         NODE_ENV: JSON.stringify(isDev ? "development" : "production"),
       },
+      process: 'process/browser',
     }),
     new HtmlWebpackPlugin({
       inject: true,
