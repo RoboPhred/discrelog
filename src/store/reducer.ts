@@ -7,8 +7,6 @@ import savedataReducer from "@/services/savedata/reducer";
 import selectionReducer from "@/services/selection/reducer";
 import simulatorReducer from "@/services/simulator/reducer";
 
-import circuitEditorReducer from "@/pages/CircuitEditor/reducer";
-
 import { concatReducers, finalizeReducerList } from "./utils";
 
 const reducer = finalizeReducerList(
@@ -20,9 +18,7 @@ const reducer = finalizeReducerList(
     dialogReducer,
     savedataReducer,
     selectionReducer,
-    simulatorReducer,
-
-    circuitEditorReducer
+    simulatorReducer
   )
 );
 

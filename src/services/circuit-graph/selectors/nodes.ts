@@ -26,14 +26,6 @@ export const elementTypesByNodeIdSelector = createCircuitGraphSelector(
   )
 );
 
-export const elementDefsByNodeIdSelector = createCircuitGraphSelector(
-  createSelector(
-    elementTypesByNodeIdSelector.local,
-    (nodeTypesById: Record<string, ElementType>) =>
-      mapValues(nodeTypesById, (type) => ElementDefinitionsByType[type])
-  )
-);
-
 export const nodeFromNodeIdSelector = createCircuitGraphSelector(
   (s: CircuitGraphState, nodeId: string) => s.nodesById[nodeId] || null
 );

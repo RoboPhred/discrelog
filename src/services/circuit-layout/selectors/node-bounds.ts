@@ -3,29 +3,36 @@ import getBounds from "svg-path-bounds";
 
 import mapValues from "lodash/mapValues";
 
+import { ElementDefinitionsByType } from "@/element-defs";
 import { normalizeVisuals } from "@/element-defs/utils";
 import { normalizeRectangle } from "@/geometry";
 
-import { elementDefsByNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
 import { nodeStatesByIdSelector } from "@/services/simulator/selectors/nodes";
+import { elementTypesByNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
 
 import { nodePositionsByNodeIdSelector } from "./node-positions";
 
 export const nodeBoundsByIdSelector = createSelector(
-  elementDefsByNodeIdSelector,
+  elementTypesByNodeIdSelector,
   nodeStatesByIdSelector,
-  (nodeDefsById, nodeStateById) =>
-    mapValues(nodeDefsById, (x, id) => {
-      if (x.visual.hitPath) {
-        return getBounds(x.visual.hitPath);
+  (elementTypesByNodeId, nodeStateById) =>
+    mapValues(elementTypesByNodeId, (elementType, id) => {
+      const def = ElementDefinitionsByType[elementType];
+      if (!def) {
+        return [0, 0, 0, 0];
       }
-      const shapePaths = normalizeVisuals(
-        x.visual.shapePath,
-        nodeStateById[id]
-      );
+
+      const { visual } = def;
+      if (visual.hitPath) {
+        return getBounds(visual.hitPath);
+      }
+
+      const shapePaths = normalizeVisuals(visual.shapePath, nodeStateById[id]);
+
       if (shapePaths.length > 0) {
         return getBounds(shapePaths[0].path);
       }
+
       return [0, 0, 0, 0];
     })
 );

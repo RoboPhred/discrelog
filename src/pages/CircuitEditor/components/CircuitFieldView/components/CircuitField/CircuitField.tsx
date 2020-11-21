@@ -2,7 +2,10 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 
 import { cls } from "@/utils";
+import { calcSize } from "@/geometry";
+
 import useSelector from "@/hooks/useSelector";
+
 import { fieldRectSelector } from "@/services/circuit-layout/selectors/field";
 
 import { fieldMouseLeave } from "@/actions/field-mouse-leave";
@@ -10,15 +13,15 @@ import { fieldMouseLeave } from "@/actions/field-mouse-leave";
 import { FieldSvgElementProvider } from "./contexts/fieldSvgElement";
 
 import DragNewNodeLayer from "./components/DragNewNodeLayer";
-import DragPreviewLayer from "./components/DragPreviewLayer";
+import DragNodePreviewLayer from "./components/DragNodePreviewLayer";
 import DragSelectLayer from "./components/DragSelectLayer";
 import GridBackground from "./components/GridBackground";
 import NodesLayer from "./components/NodesLayer";
 import WiresLayer from "./components/WiresLayer";
 import NodePinsLayer from "./components/NodePinsLayer";
+import DragAttachWirePreviewLayer from "./components/DragAttachWirePreviewLayer";
 
 import styles from "./CircuitField.module.css";
-import { calcSize } from "@/geometry";
 
 const CircuitField: React.FC = () => {
   const dispatch = useDispatch();
@@ -59,7 +62,8 @@ const CircuitField: React.FC = () => {
           <NodesLayer />
           <WiresLayer />
           <NodePinsLayer />
-          <DragPreviewLayer />
+          <DragAttachWirePreviewLayer />
+          <DragNodePreviewLayer />
           <DragNewNodeLayer />
         </FieldSvgElementProvider>
       </svg>

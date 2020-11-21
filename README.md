@@ -12,10 +12,10 @@ http://robophred.github.io/discrelog
 
 ### Usage:
 
-Click circuit elements on the left to create them. They will appear in the top-left corner.
+Drag circuit elements from the elements tray to the field to create them.
 Click an element to select it. Click-drag an element to move it, and click-drag the field to select multiple elements.
 
-Click on pins to select them. While a pin is selected, click on other pins to connect them. Output pins can only connect to input pins, and that input pins can only have one connection. Output pins can connect to more than one input pin.
+Click and drag between pins to connect them. An output pin (circular) can connect to multiple input pins (arcs), but each input pin may only be connected to one output pin.
 
 Click+drag on wires to add wire joints, which can be used to route and organize wires. Click or drag-select joints to select them.
 

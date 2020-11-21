@@ -24,11 +24,6 @@ import {
   defaultSimulatorState,
 } from "@/services/simulator/state";
 
-import {
-  CircuitEditorState,
-  defaultCircuitEditorState,
-} from "@/pages/CircuitEditor/state";
-
 export interface AppState {
   services: {
     circuitEditorUi: CircuitEditorUiState;
@@ -38,9 +33,6 @@ export interface AppState {
     dialog: DialogState;
     selection: SelectionState;
     simulator: SimulatorState;
-  };
-  ui: {
-    circuitEditor: CircuitEditorState;
   };
 }
 
@@ -53,9 +45,6 @@ const _defaultAppState: AppState = {
     dialog: defaultDialogState,
     selection: defaultSelectionState,
     simulator: defaultSimulatorState,
-  },
-  ui: {
-    circuitEditor: defaultCircuitEditorState,
   },
 };
 

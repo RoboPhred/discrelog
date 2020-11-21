@@ -2,17 +2,23 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 
 import { cls } from "@/utils";
+import { Point } from "@/geometry";
+import { getModifiers, getSelectMode } from "@/selection-mode";
 
 import useSelector from "@/hooks/useSelector";
+import useMouseTracking from "@/hooks/useMouseTracking";
 
 import { nodePinPositionFromNodePinSelector } from "@/services/circuit-layout/selectors/node-positions";
-import { selectedPinSelector } from "@/pages/CircuitEditor/components/CircuitFieldView/components/CircuitField/selectors";
+import { pinDirectionFromNodePinSelector } from "@/services/circuit-graph/selectors/pins";
+import { dragWireTargetPinSelector } from "@/services/circuit-editor-ui/selectors/drag";
 
-import { selectPin } from "../../actions/select-pin";
+import { fieldDragStartWire } from "@/actions/field-drag-start-wire";
+import { fieldDragEnd } from "@/actions/field-drag-end";
+import { fieldDragContinue } from "@/actions/field-drag-continue";
+
+import { useEventMouseCoords } from "../../hooks/useMouseCoords";
 
 import styles from "./NodePin.module.css";
-import { pinDirectionFromNodePinSelector } from "@/services/circuit-graph/selectors/pins";
-import { Point } from "@/geometry";
 
 export interface NodePinProps {
   nodeId: string;
@@ -20,8 +26,9 @@ export interface NodePinProps {
 }
 
 const NodePin: React.FC<NodePinProps> = ({ nodeId, pinId }) => {
+  const getMouseCoords = useEventMouseCoords();
   const dispatch = useDispatch();
-  const selectedPin = useSelector(selectedPinSelector);
+
   const position = useSelector((s) =>
     nodePinPositionFromNodePinSelector(s, nodeId, pinId)
   );
@@ -29,33 +36,64 @@ const NodePin: React.FC<NodePinProps> = ({ nodeId, pinId }) => {
     pinDirectionFromNodePinSelector(s, nodeId, pinId)
   );
 
-  const isSelected =
-    selectedPin != null &&
-    selectedPin.nodeId === nodeId &&
-    selectedPin.pinId === pinId;
+  const dragTargetPin = useSelector(dragWireTargetPinSelector);
 
-  const onMouseDown = React.useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      dispatch(selectPin(nodeId, pinId));
+  const onDragStart = React.useCallback(
+    (e) => {
+      const p = getMouseCoords(e);
+      dispatch(fieldDragStartWire(p, { nodeId, pinId }));
     },
-    [nodeId, pinId]
+    [getMouseCoords, nodeId, pinId]
   );
+
+  const onDragMove = React.useCallback(
+    (offset: Point, e: MouseEvent) => {
+      const p = getMouseCoords(e);
+      dispatch(fieldDragContinue(p));
+    },
+    [getMouseCoords]
+  );
+
+  const onDragEnd = React.useCallback(
+    (offset: Point, e: MouseEvent) => {
+      const p = getMouseCoords(e);
+      const modifiers = getModifiers(e);
+      const mode = getSelectMode(modifiers);
+      dispatch(fieldDragEnd(p, mode));
+    },
+    [getMouseCoords]
+  );
+
+  const { startTracking } = useMouseTracking({
+    onDragStart,
+    onDragMove,
+    onDragEnd,
+  });
+
+  const onMouseDown = React.useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    startTracking(e);
+  }, []);
 
   if (!position) {
     return null;
   }
+
+  const isDragTarget =
+    dragTargetPin != null &&
+    dragTargetPin.nodeId === nodeId &&
+    dragTargetPin.pinId === pinId;
 
   const { x, y } = position;
 
   if (direction === "input") {
     return (
       <path
-        d={describeArc(x, y, 5, -135 + 90, 135 + 90)}
+        d={describeArc(x, y, 5, -45, 225)}
         className={cls(
           styles["node-pin-input"],
-          isSelected && styles["selected"]
+          isDragTarget && styles["is-drag-target"]
         )}
         onMouseDown={onMouseDown}
       />
@@ -66,11 +104,11 @@ const NodePin: React.FC<NodePinProps> = ({ nodeId, pinId }) => {
     <circle
       className={cls(
         styles["node-pin-output"],
-        isSelected && styles["selected"]
+        isDragTarget && styles["is-drag-target"]
       )}
       cx={x}
       cy={y}
-      r={isSelected ? 6 : 3}
+      r={3}
       onMouseDown={onMouseDown}
     />
   );

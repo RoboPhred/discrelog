@@ -11,8 +11,10 @@ import { isFieldDragEndAction } from "@/actions/field-drag-end";
 import { selectRegion } from "@/actions/select-region";
 import { moveSelection } from "@/actions/selection-move";
 import { addElement } from "@/actions/element-add";
+import { attachWire } from "@/actions/wire-attach";
 
 import { applyGridSnapSelector } from "../selectors/snap";
+import { dragWireTargetPinSelector } from "../selectors/drag";
 
 export default function dragEndReducer(
   state: AppState = defaultAppState,
@@ -29,6 +31,7 @@ export default function dragEndReducer(
     dragStart,
     dragEnd,
     dragNewElementType,
+    dragWireSource,
   } = state.services.circuitEditorUi;
 
   switch (dragMode) {
@@ -57,6 +60,13 @@ export default function dragEndReducer(
       }
       break;
     }
+    case "wire": {
+      const endPin = dragWireTargetPinSelector(state);
+      if (dragWireSource && dragEnd && endPin) {
+        state = rootReducer(state, attachWire(dragWireSource, endPin));
+      }
+      break;
+    }
   }
 
   state = fpSet(state, "services", "circuitEditorUi", (value) => ({
@@ -65,6 +75,7 @@ export default function dragEndReducer(
     dragStart: null,
     dragEnd: null,
     dragNewElementType: null,
+    dragWireSource: null,
   }));
 
   return state;
