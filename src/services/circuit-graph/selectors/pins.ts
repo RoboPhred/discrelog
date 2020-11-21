@@ -1,5 +1,4 @@
 import find from "lodash/find";
-import createCachedSelector from "re-reselect";
 
 import { CircuitGraphState } from "../state";
 import { NodePin } from "../types";
@@ -8,14 +7,14 @@ import { createCircuitGraphSelector } from "../utils";
 import { connectionsSelector } from "./connections";
 import { elementDefFromNodeIdSelector } from "./nodes";
 
-export const nodePinDirectionSelector = createCircuitGraphSelector(
-  (s: CircuitGraphState, pin: NodePin) => {
-    const def = elementDefFromNodeIdSelector.local(s, pin.nodeId);
+export const pinDirectionFromNodePinSelector = createCircuitGraphSelector(
+  (s: CircuitGraphState, nodeId: string, pinId: string) => {
+    const def = elementDefFromNodeIdSelector.local(s, nodeId);
     if (!def) {
       return null;
     }
 
-    const pinDef = find(def.pins, (p) => p.name === pin.pinId);
+    const pinDef = find(def.pins, (p) => p.name === pinId);
     if (!pinDef) {
       return null;
     }

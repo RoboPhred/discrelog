@@ -23,14 +23,11 @@ const CircuitEditor: React.FC<CircuitEditorProps> = ({ className }) => {
             {WindowMap[id]}
           </MosaicWindow>
         )}
-        resize={{
-          minimumPaneSizePercentage: 10,
-        }}
         initialValue={{
           direction: "row",
           first: "elements",
           second: "circuit-field",
-          splitPercentage: 10,
+          splitPercentage: 20,
         }}
       ></Mosaic>
     </div>

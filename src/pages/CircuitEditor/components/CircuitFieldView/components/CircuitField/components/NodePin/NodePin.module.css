@@ -1,5 +1,10 @@
-.node-pin {
+.node-pin-output {
   fill: var(--color-element-neutral);
+  stroke: var(--color-element-neutral);
+}
+
+.node-pin-input {
+  fill: transparent;
   stroke: var(--color-element-neutral);
 }
 
