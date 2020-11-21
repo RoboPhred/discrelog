@@ -45,11 +45,9 @@ module.exports = {
     alias: {
       "@": PATHS.src,
       // Force svg-arc-to-cubic-bezier to use the cjs build, due to
-      //  breaking change on 3.1.0 when ran against normalize-svg-path
-      "svg-arc-to-cubic-bezier": joinPath(
-        require.resolve("svg-arc-to-cubic-bezier"),
-        "cjs"
-      ),
+      //  breaking change on 3.1.0 when ran against normalize-svg-path.
+      // This resolves to the cjs build, which is what we want.
+      "svg-arc-to-cubic-bezier": require.resolve("svg-arc-to-cubic-bezier"),
     },
     fallback: {
       // Used by react-markdown
