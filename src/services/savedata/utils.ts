@@ -74,7 +74,7 @@ export function loadSave(state: AppState, save: SaveData): AppState {
   };
 
   try {
-    state = save.nodes.reduce(
+    state = (save.nodes ?? []).reduce(
       (state, node) =>
         rootReducer(
           state,
@@ -87,7 +87,7 @@ export function loadSave(state: AppState, save: SaveData): AppState {
       state
     );
 
-    state = save.wires.reduce(
+    state = (save.wires ?? []).reduce(
       (state, wire) =>
         rootReducer(
           state,

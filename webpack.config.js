@@ -75,6 +75,18 @@ module.exports = {
         loader: "ts-loader",
       },
 
+      // Shim process for vfile, used by react-markdown
+      {
+        test: /node_modules\/vfile\/core\.js/,
+        use: [{
+          loader: 'imports-loader',
+          options: {
+            type: 'commonjs',
+            imports: ['single process/browser process'],
+          },
+        }],
+      },
+
       // css files with the modular option.
       {
         test: /\.module\.css$/,
@@ -136,7 +148,6 @@ module.exports = {
       "process.env": {
         NODE_ENV: JSON.stringify(isDev ? "development" : "production"),
       },
-      process: 'process/browser',
     }),
     new HtmlWebpackPlugin({
       inject: true,
