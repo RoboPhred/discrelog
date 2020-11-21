@@ -47,8 +47,8 @@ module.exports = {
       // Force svg-arc-to-cubic-bezier to use the cjs build, due to
       //  breaking change on 3.1.0 when ran against normalize-svg-path
       "svg-arc-to-cubic-bezier": joinPath(
-        PATHS.node_modules,
-        "svg-arc-to-cubic-bezier/cjs"
+        require.resolve("svg-arc-to-cubic-bezier"),
+        "cjs"
       ),
     },
     fallback: {
