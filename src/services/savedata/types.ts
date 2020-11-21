@@ -26,7 +26,8 @@ export interface SaveWire {
 export const saveWireSchema = yup.object().shape({
   output: nodePinSchema.required(),
   input: nodePinSchema.required(),
-  joints: yup.array().required().of(pointSchema),
+  // Cannot make this required, as yup says required on an array is min length 1...
+  joints: yup.array().of(pointSchema),
 });
 
 export interface SaveData {
@@ -34,6 +35,7 @@ export interface SaveData {
   wires: SaveWire[];
 }
 export const saveDataSchema = yup.object().shape({
-  nodes: yup.array().required().of(saveNodeSchema),
-  wires: yup.array().required().of(saveWireSchema),
+  // Cannot make any of these required, as yup says required on an array is min length 1...
+  nodes: yup.array().of(saveNodeSchema),
+  wires: yup.array().of(saveWireSchema),
 });
