@@ -1,4 +1,4 @@
-import { ElementDefinition } from "./types";
+import { ElementDefinition } from "../types";
 
 function genCirclePath(cx: number, cy: number, r: number): string {
   return `M ${cx - r}, ${cy}
@@ -6,16 +6,19 @@ function genCirclePath(cx: number, cy: number, r: number): string {
     a ${r},${r} 0 1,0 ${-(r * 2)},0`;
 }
 
+interface LedState {
+  value: boolean;
+}
+
 const ledElementDefinition: ElementDefinition = {
   type: "led",
   visual: {
-    shapePath: [
-      genCirclePath(25, 25, 25),
-      {
-        path: genCirclePath(25, 25, 20),
-        fill: (state) => (state.value ? "lightgreen" : "darkgreen"),
-      },
-    ],
+    shapePath: {
+      path: genCirclePath(25, 25, 20),
+      stroke: "black",
+      strokeWidth: 3,
+      fill: (state: LedState) => (state.value ? "lightgreen" : "darkgreen"),
+    },
   },
   pins: {
     IN: {
@@ -25,7 +28,7 @@ const ledElementDefinition: ElementDefinition = {
       y: 25,
     },
   },
-  evolve(state, inputs, tick) {
+  evolve(state: LedState, inputs, tick) {
     return {
       state: {
         value: inputs.IN,

@@ -1,4 +1,4 @@
-import { ElementDefinition } from "./types";
+import { ElementDefinition } from "../types";
 
 const norElementDefinition: ElementDefinition = {
   type: "nor",

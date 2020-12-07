@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-import { ElementType } from "@/element-defs";
+import { ElementType } from "@/elements";
 
 export interface GraphNodeBase {
   type: string;

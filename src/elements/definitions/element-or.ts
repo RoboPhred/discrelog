@@ -1,4 +1,4 @@
-import { ElementDefinition } from "./types";
+import { ElementDefinition } from "../types";
 
 const orElementDefinition: ElementDefinition = {
   type: "or",

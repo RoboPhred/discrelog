@@ -3,8 +3,8 @@ import getBounds from "svg-path-bounds";
 
 import mapValues from "lodash/mapValues";
 
-import { ElementDefinitionsByType } from "@/element-defs";
-import { normalizeVisuals } from "@/element-defs/utils";
+import { ElementDefinitionsByType } from "@/elements";
+import { normalizeVisuals } from "@/elements";
 import { normalizeRectangle } from "@/geometry";
 
 import { nodeStatesByIdSelector } from "@/services/simulator/selectors/nodes";

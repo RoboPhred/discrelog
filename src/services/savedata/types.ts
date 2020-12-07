@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-import { ElementType } from "@/element-defs";
+import { ElementType } from "@/elements";
 import { Point, pointSchema } from "@/geometry";
 
 import { NodePin, nodePinSchema } from "../circuit-graph/types";

@@ -6,7 +6,7 @@ import {
   ElementDefinitionsByType,
   ElementType,
   LargestElementSize,
-} from "@/element-defs";
+} from "@/elements";
 
 import useMouseTracking from "@/hooks/useMouseTracking";
 

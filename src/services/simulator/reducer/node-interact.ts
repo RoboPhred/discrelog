@@ -1,6 +1,6 @@
 import { fpSet } from "@/utils";
 
-import { ElementDefinitionsByType } from "@/element-defs";
+import { ElementDefinitionsByType } from "@/elements";
 
 import { isInteractNodeAction } from "@/actions/node-interact";
 import {

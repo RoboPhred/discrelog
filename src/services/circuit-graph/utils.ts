@@ -1,6 +1,6 @@
 import find from "lodash/find";
 
-import { ElementDefinitionsByType } from "@/element-defs";
+import { ElementDefinitionsByType } from "@/elements";
 
 import {
   createServiceReducerCreator,

@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 import mapValues from "lodash/mapValues";
 
-import { ElementDefinitionsByType, ElementType } from "@/element-defs";
+import { ElementDefinitionsByType, ElementType } from "@/elements";
 
 import { createCircuitGraphSelector } from "../utils";
 import { CircuitGraphState } from "../state";

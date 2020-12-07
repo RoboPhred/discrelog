@@ -3,15 +3,8 @@ import getBounds from "svg-path-bounds";
 
 import { calcSize, union, ZeroRect } from "@/geometry";
 
-import { ElementDefinition } from "./types";
-import { normalizeVisuals } from "./utils";
-
-export * from "./types";
-
-// Many of these art assets used in these files are public domain and sourced from
-//  https://commons.wikimedia.org/wiki/Logic_gates_unified_symbols
-// Some assets have been modified for formatting or added functionality.
-// Assets that have been pulled from external sources are marked as such.
+import { normalizeVisuals } from "../utils";
+import { ElementDefinition } from "../types";
 
 export const ElementDefinitionsByType = {
   and: require("./element-and").default as ElementDefinition,

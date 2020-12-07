@@ -7,7 +7,7 @@ import {
   ElementDefinition,
   ElementDefinitionsByType,
   ElementType,
-} from "@/element-defs";
+} from "@/elements";
 import { Point, pointAdd, ZeroPoint } from "@/geometry";
 
 import { NodePin } from "@/services/circuit-graph/types";

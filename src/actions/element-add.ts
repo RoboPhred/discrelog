@@ -1,7 +1,7 @@
 import { v4 as uuidV4 } from "uuid";
 import { AnyAction } from "redux";
 
-import { ElementType } from "@/element-defs";
+import { ElementType } from "@/elements";
 import { Point } from "@/geometry";
 
 export interface AddElementOptions {

@@ -5,8 +5,8 @@ import {
   ElementDefinitionsByType,
   ElementPinDefinition,
   PinDirection,
-} from "@/element-defs";
-import { normalizeVisuals } from "@/element-defs/utils";
+} from "@/elements";
+import { normalizeVisuals } from "@/elements";
 
 export interface RenderPinProps extends ElementPinDefinition {
   id: string;

@@ -1,4 +1,4 @@
-import { ElementDefinition, ElementVisualPathDefinition } from "./types";
+import { ElementDefinition, ElementVisualPathDefinition } from "../types";
 
 const SCALE = 3;
 const OFFSET = [15, 0];

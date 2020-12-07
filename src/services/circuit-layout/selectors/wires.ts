@@ -1,6 +1,6 @@
 import { AppState } from "@/store";
 import { Point, pointAdd, ZeroPoint } from "@/geometry";
-import { ElementDefinition } from "@/element-defs";
+import { ElementDefinition } from "@/elements";
 
 import { elementDefFromNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
 

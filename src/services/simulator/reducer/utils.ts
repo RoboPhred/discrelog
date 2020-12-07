@@ -8,7 +8,7 @@ import { fpSet } from "@/utils";
 import { asArray } from "@/arrays";
 import { AppState } from "@/store";
 
-import { outputsOf } from "@/element-defs/utils";
+import { outputsOf } from "@/elements";
 
 import { inputNodesByPinIdFromSimulatorNodeIdSelector } from "@/services/simulator-graph/selectors/connections";
 import {
@@ -21,7 +21,7 @@ import {
   SimTransitionWindow,
   SimNodePinTransition as SimNodeTransition,
 } from "../types";
-import { ElementDefinitionsByType } from "@/element-defs";
+import { ElementDefinitionsByType } from "@/elements";
 
 export function simInit(
   state: SimulatorState,

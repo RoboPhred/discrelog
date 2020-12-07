@@ -1,4 +1,4 @@
-import { ElementType } from "@/element-defs";
+import { ElementType } from "@/elements";
 import { Point } from "@/geometry";
 
 import { NodePin } from "../circuit-graph/types";

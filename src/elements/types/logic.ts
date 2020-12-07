@@ -8,29 +8,6 @@ export interface ElementPinDefinition {
   x: number;
   y: number;
 }
-export interface ElementVisualPathDefinition {
-  /**
-   * The svg path of this visual element.
-   */
-  path: string;
-  /**
-   * The fill or fill-producing function for this visual element.
-   */
-  fill?: string | ((state: any) => string);
-  stroke?: string | ((state: any) => string);
-  strokeWidth?: number | ((state: any) => number);
-}
-export type ElementVisualPath = string | ElementVisualPathDefinition;
-export interface ElementVisualDefinition {
-  /**
-   * Optional SVG path string defining the hit detection of the node.
-   */
-  hitPath?: string;
-  /**
-   * The path or paths that make up the visual component of this node.
-   */
-  shapePath: ElementVisualPath | ElementVisualPath[];
-}
 
 export interface OutputTransition {
   /**
@@ -69,14 +46,3 @@ export type ElementEvolverFunction = (
   inputs: Record<string, boolean>,
   tick: number
 ) => EvolutionResult;
-
-export interface ElementDefinition {
-  type: string;
-
-  visual: ElementVisualDefinition;
-
-  pins: Record<string, ElementPinDefinition>;
-
-  interact?: ElementInteractFunction;
-  evolve?: ElementEvolverFunction;
-}

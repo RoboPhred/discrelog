@@ -2,7 +2,7 @@ import { values } from "lodash";
 import createCachedSelector from "re-reselect";
 
 import { AppState } from "@/store";
-import { ElementDefinitionsByType } from "@/element-defs";
+import { ElementDefinitionsByType } from "@/elements";
 
 import { NodePin } from "@/services/circuit-graph/types";
 
