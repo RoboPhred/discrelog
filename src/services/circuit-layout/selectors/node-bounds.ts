@@ -4,7 +4,6 @@ import getBounds from "svg-path-bounds";
 import mapValues from "lodash/mapValues";
 
 import { ElementDefinitionsByType } from "@/elements";
-import { normalizeVisuals } from "@/elements";
 import { normalizeRectangle } from "@/geometry";
 
 import { nodeStatesByIdSelector } from "@/services/simulator/selectors/nodes";
@@ -22,18 +21,7 @@ export const nodeBoundsByIdSelector = createSelector(
         return [0, 0, 0, 0];
       }
 
-      const { visual } = def;
-      if (visual.hitPath) {
-        return getBounds(visual.hitPath);
-      }
-
-      const shapePaths = normalizeVisuals(visual.shapePath, nodeStateById[id]);
-
-      if (shapePaths.length > 0) {
-        return getBounds(shapePaths[0].path);
-      }
-
-      return [0, 0, 0, 0];
+      return getBounds(def.visual.hitPath);
     })
 );
 

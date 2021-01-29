@@ -1,3 +1,4 @@
+import { createShapePathElement } from "../components/ShapePathElement";
 import { ElementDefinition } from "../types";
 
 function genCirclePath(cx: number, cy: number, r: number): string {
@@ -10,15 +11,18 @@ interface LedState {
   value: boolean;
 }
 
+const path = genCirclePath(25, 25, 20);
+
 const ledElementDefinition: ElementDefinition = {
   type: "led",
   visual: {
-    shapePath: {
-      path: genCirclePath(25, 25, 20),
+    hitPath: path,
+    component: createShapePathElement({
+      path,
       stroke: "black",
       strokeWidth: 3,
       fill: (state: LedState) => (state.value ? "lightgreen" : "darkgreen"),
-    },
+    }),
   },
   pins: {
     IN: {

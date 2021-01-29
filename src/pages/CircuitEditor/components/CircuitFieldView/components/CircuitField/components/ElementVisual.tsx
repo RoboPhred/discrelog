@@ -6,7 +6,6 @@ import {
   ElementPinDefinition,
   PinDirection,
 } from "@/elements";
-import { normalizeVisuals } from "@/elements";
 
 export interface RenderPinProps extends ElementPinDefinition {
   id: string;
@@ -17,7 +16,7 @@ export interface ElementVisualProps {
   y?: number;
   elementType: ElementType;
   nodeState: any;
-  colorOverride?: string;
+  isSelected?: boolean;
   renderPin?(props: RenderPinProps): React.ReactElement<any>;
   onClick?(e: React.MouseEvent): void;
   onMouseDown?(e: React.MouseEvent): void;
@@ -31,7 +30,7 @@ const ElementVisual: React.FC<ElementVisualProps> = ({
   y = 0,
   elementType,
   nodeState,
-  colorOverride,
+  isSelected = false,
   renderPin,
   onClick,
   onMouseDown,
@@ -45,19 +44,20 @@ const ElementVisual: React.FC<ElementVisualProps> = ({
   let hitPath: string | undefined;
   let pins: React.ReactNode = null;
   if (!def) {
-    body = <rect x={x} y={y} width={50} height={50} fill="red" />;
-  } else {
-    const { shapePath } = def.visual;
-    const visuals = normalizeVisuals(shapePath, nodeState);
-    body = visuals.map((v, i) => (
-      <path
-        key={i}
-        d={v.path}
-        fill={colorOverride || v.fill}
-        stroke={colorOverride || v.stroke}
-        strokeWidth={v.strokeWidth}
+    body = (
+      <rect
+        x={x}
+        y={y}
+        width={50}
+        height={50}
+        fill={isSelected ? "goldenrod" : "red"}
       />
-    ));
+    );
+  } else {
+    const { component: ElementComponent } = def.visual;
+    body = (
+      <ElementComponent isSelected={isSelected} elementState={nodeState} />
+    );
     hitPath = def.visual.hitPath;
 
     if (renderPin) {

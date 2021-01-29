@@ -1,3 +1,4 @@
+import { createShapePathElement } from "../components/ShapePathElement";
 import { ElementDefinition } from "../types";
 
 interface ToggleState {
@@ -24,7 +25,8 @@ const defaultToggleState: ToggleState = {
 const toggleElementDefinition: ElementDefinition = {
   type: "toggle",
   visual: {
-    shapePath: [
+    hitPath: `M5,5 L45,5 L45,45 L5,45 z`,
+    component: createShapePathElement([
       {
         path: "M5,5 L45,5 L45,45 L5,45 z",
         fill: "#AFAFAF",
@@ -36,7 +38,7 @@ const toggleElementDefinition: ElementDefinition = {
           state.toggleState ? "lightgreen" : "darkgreen",
         stroke: "black",
       },
-    ],
+    ]),
   },
   pins: {
     OUT: {

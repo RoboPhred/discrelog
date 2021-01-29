@@ -1,4 +1,7 @@
+import { createShapePathElement } from "../components/ShapePathElement";
 import { ElementDefinition, ElementVisualPathDefinition } from "../types";
+
+// Shape path from https://commons.wikimedia.org/wiki/File:7-segment_abcdefg.svg
 
 const SCALE = 3;
 const OFFSET = [15, 0];
@@ -30,8 +33,7 @@ const seg7ElementDefinition: ElementDefinition = {
   type: "seg7",
   visual: {
     hitPath: `M0,0 V63 H45 V0 z`,
-    // https://commons.wikimedia.org/wiki/File:7-segment_abcdefg.svg
-    shapePath: [
+    component: createShapePathElement([
       createSeg("A", [
         [1, 1],
         [2, 0],
@@ -88,7 +90,7 @@ const seg7ElementDefinition: ElementDefinition = {
         [8, 10],
         [2, 10],
       ]),
-    ],
+    ]),
   },
   pins: {
     A: {

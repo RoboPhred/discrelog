@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { typedKeys } from "@/utils";
 import {
+  ElementComponentType,
   ElementDefinitionsByType,
   ElementType,
   LargestElementSize,
@@ -13,8 +14,6 @@ import useMouseTracking from "@/hooks/useMouseTracking";
 import { addElement } from "@/actions/element-add";
 import { fieldDragStartNewNode } from "@/actions/field-drag-start-newnode";
 import { fieldDragEnd } from "@/actions/field-drag-end";
-
-import ElementVisual from "../ElementVisual";
 
 import styles from "./ElementTray.module.css";
 
@@ -66,10 +65,18 @@ const Element: React.FC<ElementProps> = ({ nodeType }) => {
     startTracking(e);
   }, []);
 
+  const def = ElementDefinitionsByType[nodeType];
+  let ElementComponent: ElementComponentType;
+  if (def) {
+    ElementComponent = def.visual.component;
+  } else {
+    ElementComponent = () => <rect fill="red" x1={0} y1={0} x2={50} y2={50} />;
+  }
+
   return (
     <div onMouseDown={onMouseDown}>
       <svg width={LargestElementSize.width} height={LargestElementSize.height}>
-        <ElementVisual elementType={nodeType} nodeState={{}} />
+        <ElementComponent elementState={{}} />
       </svg>
     </div>
   );

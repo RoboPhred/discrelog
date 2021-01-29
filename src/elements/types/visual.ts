@@ -17,9 +17,14 @@ export interface ElementVisualDefinition {
   /**
    * Optional SVG path string defining the hit detection of the node.
    */
-  hitPath?: string;
-  /**
-   * The path or paths that make up the visual component of this node.
-   */
-  shapePath: ElementVisualPath | ElementVisualPath[];
+  hitPath: string;
+
+  component: ElementComponentType;
 }
+
+export interface ElementComponentProps {
+  isSelected?: boolean;
+  elementState: any;
+}
+
+export type ElementComponentType = React.ComponentType<ElementComponentProps>;

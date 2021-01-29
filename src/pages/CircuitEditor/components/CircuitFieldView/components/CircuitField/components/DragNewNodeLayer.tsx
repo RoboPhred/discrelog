@@ -14,9 +14,9 @@ import { fieldRectSelector } from "@/services/circuit-layout/selectors/field";
 
 import { fieldDragContinue } from "@/actions/field-drag-continue";
 
-import ElementVisual from "@/pages/CircuitEditor/components/ElementVisual";
-
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
+
+import ElementVisual from "./ElementVisual";
 
 const DragNewNodeLayer: React.FC = () => {
   const dispatch = useDispatch();

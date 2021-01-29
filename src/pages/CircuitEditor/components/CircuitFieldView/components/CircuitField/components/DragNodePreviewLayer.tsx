@@ -12,8 +12,9 @@ import { nodePositionsByNodeIdSelector } from "@/services/circuit-layout/selecto
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 import { dragMoveOffsetSelector } from "@/services/circuit-editor-ui/selectors/drag";
 
-import ElementVisual from "@/pages/CircuitEditor/components/ElementVisual";
 import useSelector from "@/hooks/useSelector";
+
+import ElementVisual from "./ElementVisual";
 
 const selectedNodePositionsByIdSelector = createSelector(
   selectedNodeIdsSelector,

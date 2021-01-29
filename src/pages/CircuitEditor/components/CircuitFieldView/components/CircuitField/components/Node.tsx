@@ -19,7 +19,7 @@ import { fieldDragEnd } from "@/actions/field-drag-end";
 import { interactNode } from "@/actions/node-interact";
 import { selectNodes } from "@/actions/select-nodes";
 
-import ElementVisual from "@/pages/CircuitEditor/components/ElementVisual";
+import ElementVisual from "./ElementVisual";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
 
@@ -111,9 +111,7 @@ const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId }) => {
       y={y}
       elementType={nodeType}
       nodeState={nodeState}
-      // TODO: Use css vars for this.  Currently cannot do so as nodes declare their own
-      //  stroke/fill that gets set as attributes
-      colorOverride={isSelected ? "blue" : undefined}
+      isSelected={isSelected}
       onMouseDown={onMouseDown}
     />
   );

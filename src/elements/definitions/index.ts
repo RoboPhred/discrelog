@@ -3,7 +3,6 @@ import getBounds from "svg-path-bounds";
 
 import { calcSize, union, ZeroRect } from "@/geometry";
 
-import { normalizeVisuals } from "../utils";
 import { ElementDefinition } from "../types";
 
 export const ElementDefinitionsByType = {
@@ -20,25 +19,17 @@ export type ElementType = keyof typeof ElementDefinitionsByType;
 
 export const LargestElementSize = calcSize(
   values(ElementDefinitionsByType).reduce((bounds, { visual }) => {
-    const visuals = normalizeVisuals(visual.shapePath, undefined);
-    if (visual.hitPath) {
-      visuals.push({ path: visual.hitPath });
-    }
-    const rect = visuals
-      .map((path) => {
-        const bounds = getBounds(path.path);
-        return {
-          p1: {
-            x: bounds[0],
-            y: bounds[1],
-          },
-          p2: {
-            x: bounds[2],
-            y: bounds[3],
-          },
-        };
-      })
-      .reduce(union, ZeroRect);
-    return union(bounds, rect);
+    const elementBounds = getBounds(visual.hitPath);
+    const elementRect = {
+      p1: {
+        x: elementBounds[0],
+        y: elementBounds[1],
+      },
+      p2: {
+        x: elementBounds[2],
+        y: elementBounds[3],
+      },
+    };
+    return union(elementRect, bounds);
   }, ZeroRect)
 );
