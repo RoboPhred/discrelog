@@ -10,6 +10,7 @@ import {
   CircuitLayoutState,
   defaultCircuitLayoutState,
 } from "@/services/circuit-layout/state";
+import { CircuitsState, defaultCircuitsState } from "@/services/circuits/state";
 import {
   ClipboardState,
   defaultClipboardState,
@@ -29,6 +30,7 @@ export interface AppState {
     circuitEditorUi: CircuitEditorUiState;
     circuitGraph: CircuitGraphState;
     circuitLayout: CircuitLayoutState;
+    circuits: CircuitsState;
     clipboard: ClipboardState;
     dialog: DialogState;
     selection: SelectionState;
@@ -41,6 +43,7 @@ const _defaultAppState: AppState = {
     circuitEditorUi: defaultCircuitEditorUiState,
     circuitGraph: defaultCircuitGraphState,
     circuitLayout: defaultCircuitLayoutState,
+    circuits: defaultCircuitsState,
     clipboard: defaultClipboardState,
     dialog: defaultDialogState,
     selection: defaultSelectionState,

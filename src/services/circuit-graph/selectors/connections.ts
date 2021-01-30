@@ -7,7 +7,7 @@ import { createCircuitGraphSelector } from "../utils";
 export const connectionIdsSelector = createCircuitGraphSelector(
   createSelector(
     (s) => s.connectionsById,
-    (wiresById) => Object.keys(wiresById)
+    (connectionsById) => Object.keys(connectionsById)
   )
 );
 
@@ -19,7 +19,7 @@ export const connectionFromConnectionIdSelector = createCircuitGraphSelector(
 export const connectionsSelector = createCircuitGraphSelector(
   createSelector(
     (state: CircuitGraphState) => state.connectionsById,
-    (wiresById) => values(wiresById)
+    (connectionsById) => values(connectionsById)
   )
 );
 

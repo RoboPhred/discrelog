@@ -6,6 +6,7 @@ import { Point } from "@/geometry";
 
 export interface AddElementOptions {
   nodeId?: string;
+  circuitId?: string;
   position?: Point;
 }
 export const ACTION_ELEMENT_ADD = "@element/add" as const;

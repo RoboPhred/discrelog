@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 import mapValues from "lodash/mapValues";
 
-import { ElementDefinitionsByType, ElementType } from "@/elements";
+import { ElementDefinitionsByType } from "@/elements";
 
 import { createCircuitGraphSelector } from "../utils";
 import { CircuitGraphState } from "../state";
@@ -48,26 +48,4 @@ export const elementDefFromNodeIdSelector = createCircuitGraphSelector(
     }
     return ElementDefinitionsByType[node.elementType] || null;
   }
-);
-
-export const nodePinsSelector = createCircuitGraphSelector(
-  createSelector(
-    (s) => s.nodesById,
-    (nodesById: Record<string, GraphNode>) => {
-      const pins: NodePin[] = [];
-      for (const nodeId of Object.keys(nodesById)) {
-        const node = nodesById[nodeId];
-        const def = ElementDefinitionsByType[node.elementType];
-        if (def) {
-          pins.push(
-            ...Object.keys(def.pins).map((pin) => ({
-              nodeId: nodeId,
-              pinId: pin,
-            }))
-          );
-        }
-      }
-      return pins;
-    }
-  )
 );

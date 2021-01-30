@@ -2,15 +2,15 @@ import * as React from "react";
 
 import useSelector from "@/hooks/useSelector";
 
-import { nodePinsSelector } from "@/services/circuit-graph/selectors/nodes";
+import { nodeIdsForEditingCircuitSelector } from "@/services/circuit-editor-ui/selectors/nodes";
 
-import NodePin from "./NodePin";
+import NodePins from "./NodePins";
 
 const NodePinsLayer: React.FC = () => {
-  const pins = useSelector((state) => nodePinsSelector(state));
+  const nodeIds = useSelector(nodeIdsForEditingCircuitSelector);
 
-  const elements = pins.map(({ nodeId, pinId }) => (
-    <NodePin key={`${nodeId}-${pinId}`} nodeId={nodeId} pinId={pinId} />
+  const elements = nodeIds.map((nodeId) => (
+    <NodePins key={nodeId} nodeId={nodeId} />
   ));
 
   return <g id="node-pins-layer">{elements}</g>;

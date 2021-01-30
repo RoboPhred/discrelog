@@ -2,12 +2,12 @@ import * as React from "react";
 
 import useSelector from "@/hooks/useSelector";
 
-import { nodeIdsSelector } from "@/services/circuit-graph/selectors/nodes";
+import { nodeIdsForEditingCircuitSelector } from "@/services/circuit-editor-ui/selectors/nodes";
 
 import Node from "./Node";
 
 const NodesLayer: React.FC = () => {
-  const nodeIds = useSelector((state) => nodeIdsSelector(state));
+  const nodeIds = useSelector(nodeIdsForEditingCircuitSelector);
 
   const nodeElements = nodeIds.map((nodeId) => {
     return <Node key={nodeId} nodeId={nodeId} />;
