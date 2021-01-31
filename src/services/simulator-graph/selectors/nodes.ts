@@ -1,5 +1,7 @@
 import { AppState } from "@/store";
 
+import { NodeDefinitionsByType } from "@/nodes";
+
 export const simulatorNodeIdFromCircuitNodeIdSelector = (
   state: AppState,
   circuitNodeId: string
@@ -11,4 +13,11 @@ export const simulatorNodeIdsSelector = (state: AppState) =>
 export const elementTypeFromSimulatorNodeId = (
   state: AppState,
   simNodeId: string
-) => state.services.circuitGraph.nodesById[simNodeId]?.elementType ?? null;
+) => {
+  const nodeType =
+    state.services.circuitGraph.nodesById[simNodeId]?.nodeType ?? null;
+  if (!nodeType) {
+    return null;
+  }
+  return NodeDefinitionsByType[nodeType].elementType;
+};

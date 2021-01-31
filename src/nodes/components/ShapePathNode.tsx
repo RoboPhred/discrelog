@@ -1,20 +1,20 @@
 import * as React from "react";
 
 import {
-  ElementComponentProps,
-  ElementComponentType,
-  ElementVisualPath,
+  NodeComponentProps,
+  NodeComponentType,
+  NodeVisualPath,
 } from "../types";
 import { normalizeVisuals } from "../utils";
 
-export interface ShapePathElementProps extends ElementComponentProps {
+export interface ShapePathNodeProps extends NodeComponentProps {
   /**
    * The path or paths that make up the visual component of this node.
    */
-  shapePath: ElementVisualPath | ElementVisualPath[];
+  shapePath: NodeVisualPath | NodeVisualPath[];
 }
 
-const ShapePathElement: React.FC<ShapePathElementProps> = ({
+const ShapePathNode: React.FC<ShapePathNodeProps> = ({
   shapePath,
   isSelected,
   elementState,
@@ -34,10 +34,10 @@ const ShapePathElement: React.FC<ShapePathElementProps> = ({
   return <g>{body}</g>;
 };
 
-export function createShapePathElement(
-  shapePath: ElementVisualPath | ElementVisualPath[]
-): ElementComponentType {
-  return (props: ElementComponentProps) => (
-    <ShapePathElement shapePath={shapePath} {...props} />
+export function createShapePathNode(
+  shapePath: NodeVisualPath | NodeVisualPath[]
+): NodeComponentType {
+  return (props: NodeComponentProps) => (
+    <ShapePathNode shapePath={shapePath} {...props} />
   );
 }

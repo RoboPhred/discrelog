@@ -1,4 +1,4 @@
-import { ACTION_ELEMENT_ADD } from "@/actions/element-add";
+import { ACTION_NODE_ADD } from "@/actions/element-add";
 import { ACTION_PROJECT_NEW } from "@/actions/project-new";
 import { ACTION_NODE_DELETE } from "@/actions/node-delete";
 import { ACTION_PROJECT_RECEIVE } from "@/actions/project-receive";
@@ -11,7 +11,7 @@ import { createSimulatorReducer } from "../utils";
 const SIM_INVALIDATE_ACTIONS = [
   ACTION_PROJECT_NEW,
   ACTION_PROJECT_RECEIVE,
-  ACTION_ELEMENT_ADD,
+  ACTION_NODE_ADD,
   ACTION_NODE_DELETE,
   ACTION_WIRE_ATTACH,
   ACTION_WIRE_DETATCH,

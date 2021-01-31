@@ -16,7 +16,7 @@ import { fieldDragContinue } from "@/actions/field-drag-continue";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
 
-import ElementVisual from "./ElementVisual";
+import NodeVisual from "./NodeVisual";
 
 const DragNewNodeLayer: React.FC = () => {
   const dispatch = useDispatch();
@@ -43,10 +43,10 @@ const DragNewNodeLayer: React.FC = () => {
     <>
       {dragEnd && (
         <g opacity={0.5}>
-          <ElementVisual
+          <NodeVisual
             x={dragEnd.x}
             y={dragEnd.y}
-            elementType={draggingNodeType}
+            nodeType={draggingNodeType}
             nodeState={{}}
           />
         </g>

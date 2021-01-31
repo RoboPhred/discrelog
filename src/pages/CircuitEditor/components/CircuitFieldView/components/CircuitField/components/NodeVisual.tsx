@@ -1,20 +1,19 @@
 import * as React from "react";
 
-import {
-  ElementType,
-  ElementDefinitionsByType,
-  ElementPinDefinition,
-  PinDirection,
-} from "@/elements";
+import { PinDirection } from "@/elements";
 
-export interface RenderPinProps extends ElementPinDefinition {
+import { NodeType, NodeDefinitionsByType } from "@/nodes";
+
+export interface RenderPinProps {
   id: string;
   direction: PinDirection;
+  x: number;
+  y: number;
 }
-export interface ElementVisualProps {
+export interface NodeVisualProps {
   x?: number;
   y?: number;
-  elementType: ElementType;
+  nodeType: NodeType;
   nodeState: any;
   isSelected?: boolean;
   renderPin?(props: RenderPinProps): React.ReactElement<any>;
@@ -25,10 +24,10 @@ export interface ElementVisualProps {
   onMouseLeave?(e: React.MouseEvent): void;
 }
 
-const ElementVisual: React.FC<ElementVisualProps> = ({
+const NodeVisual: React.FC<NodeVisualProps> = ({
   x = 0,
   y = 0,
-  elementType,
+  nodeType,
   nodeState,
   isSelected = false,
   renderPin,
@@ -38,7 +37,7 @@ const ElementVisual: React.FC<ElementVisualProps> = ({
   onMouseUp,
   onMouseLeave,
 }) => {
-  const def = ElementDefinitionsByType[elementType];
+  const def = NodeDefinitionsByType[nodeType];
 
   let body: React.ReactNode;
   let hitPath: string | undefined;
@@ -66,6 +65,7 @@ const ElementVisual: React.FC<ElementVisualProps> = ({
         let element = renderPin({
           id: key,
           ...pin,
+          ...def.pins[key],
         });
         return React.cloneElement(element, { key: `input-${key}` });
       });
@@ -90,4 +90,4 @@ const ElementVisual: React.FC<ElementVisualProps> = ({
   );
 };
 
-export default ElementVisual;
+export default NodeVisual;

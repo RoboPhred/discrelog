@@ -1,20 +1,11 @@
 import { createSelector } from "reselect";
-import createCachedSelector from "re-reselect";
 
 import { AppState } from "@/store";
 
-import {
-  ElementDefinition,
-  ElementDefinitionsByType,
-  ElementType,
-} from "@/elements";
+import { NodeDefinitionsByType, NodeType } from "@/nodes";
 import { Point, pointAdd, ZeroPoint } from "@/geometry";
 
-import { NodePin } from "@/services/circuit-graph/types";
-import {
-  elementDefFromNodeIdSelector,
-  elementTypesByNodeIdSelector,
-} from "@/services/circuit-graph/selectors/nodes";
+import { nodeTypesByNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
 
 import { createCircuitLayoutSelector } from "../utils";
 import { CircuitLayoutState } from "../state";
@@ -29,28 +20,28 @@ export const nodePositionFromNodeIdSelector = createCircuitLayoutSelector(
 
 export const nodePinPositionsByPinIdByNodeIdSelector = createSelector(
   nodePositionsByNodeIdSelector,
-  elementTypesByNodeIdSelector,
+  nodeTypesByNodeIdSelector,
   (
     nodePositionsByNodeId: Record<string, Point>,
-    elementTypesByNodeId: Record<string, ElementType>
+    nodeTypesByNodeId: Record<string, NodeType>
   ) => {
     const nodePinPositionsByPinIdByNodeId: Record<
       string,
       Record<string, Point>
     > = {};
 
-    const nodeIds = Object.keys(elementTypesByNodeId);
+    const nodeIds = Object.keys(nodeTypesByNodeId);
     for (const nodeId of nodeIds) {
       const nodePinPositionsByPinId: Record<string, Point> = {};
       nodePinPositionsByPinIdByNodeId[nodeId] = nodePinPositionsByPinId;
 
       const nodePosition = nodePositionsByNodeId[nodeId] ?? ZeroPoint;
 
-      const elementType = elementTypesByNodeId[nodeId];
+      const elementType = nodeTypesByNodeId[nodeId];
       if (!elementType) {
         continue;
       }
-      const def = ElementDefinitionsByType[elementType];
+      const def = NodeDefinitionsByType[elementType];
       if (!def) {
         continue;
       }

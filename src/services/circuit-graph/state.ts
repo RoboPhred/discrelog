@@ -1,10 +1,10 @@
-import { GraphNode, Connection } from "./types";
+import { Node, Connection } from "./types";
 
 export interface CircuitGraphState {
   /**
    * A map of nodes by node id.
    */
-  nodesById: Record<string, GraphNode>;
+  nodesById: Record<string, Node>;
 
   /**
    * A map of connections between nodes, by connection id.

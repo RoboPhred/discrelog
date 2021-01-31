@@ -23,27 +23,26 @@ export const outputConnectionsFromSimulatorNodeIdSelector = (
 /**
  * Gets a map of node input pins to their output sources given a node id.
  */
-export const inputNodesByPinIdFromSimulatorNodeIdSelector = createCachedSelector(
+export const inputElementsByPinIdFromSimulatorNodeIdSelector = createCachedSelector(
   (s: AppState) => values(s.services.circuitGraph.connectionsById),
   (_: any, nodeId: string) => nodeId,
   elementTypeFromSimulatorNodeId,
   (connections, nodeId, elementType) => {
+    if (!elementType) {
+      return {};
+    }
+
     const def = ElementDefinitionsByType[elementType];
     if (!def) {
       return {};
     }
-
-    let inputPins: string[] = [];
-    inputPins = Object.keys(def.pins).filter(
-      (x) => def.pins[x].direction === "input"
-    );
 
     const inputConnections = connections.filter(
       (x) => x.inputPin.nodeId === nodeId
     );
 
     const result: Record<string, NodePin | null> = {};
-    for (const pin of inputPins) {
+    for (const pin of def.inputPins) {
       result[pin] = null;
     }
 

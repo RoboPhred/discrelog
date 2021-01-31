@@ -3,37 +3,37 @@ import { useDispatch } from "react-redux";
 
 import { typedKeys } from "@/utils";
 import {
-  ElementComponentType,
-  ElementDefinitionsByType,
-  ElementType,
-  LargestElementSize,
-} from "@/elements";
+  NodeComponentType,
+  NodeDefinitionsByType,
+  NodeType,
+  LargestNodeSize,
+} from "@/nodes";
 
 import useMouseTracking from "@/hooks/useMouseTracking";
 
-import { addElement } from "@/actions/element-add";
+import { addNode } from "@/actions/element-add";
 import { fieldDragStartNewNode } from "@/actions/field-drag-start-newnode";
 import { fieldDragEnd } from "@/actions/field-drag-end";
 
-import styles from "./ElementTray.module.css";
+import styles from "./NodeTray.module.css";
 
-const ElementTray: React.FC = () => {
-  const elements = typedKeys(ElementDefinitionsByType).map((type) => {
-    return <Element key={type} nodeType={type} />;
+const NodeTray: React.FC = () => {
+  const nodes = typedKeys(NodeDefinitionsByType).map((type) => {
+    return <TrayNode key={type} nodeType={type} />;
   });
 
   return (
     <div className={styles["circuittray"]}>
-      <div className={styles["circuittray-elements"]}>{elements}</div>
+      <div className={styles["circuittray-elements"]}>{nodes}</div>
     </div>
   );
 };
-export default ElementTray;
+export default NodeTray;
 
-interface ElementProps {
-  nodeType: ElementType;
+interface TrayNodeProps {
+  nodeType: NodeType;
 }
-const Element: React.FC<ElementProps> = ({ nodeType }) => {
+const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
   const dispatch = useDispatch();
   const onClick = React.useCallback(
     (e: MouseEvent) => {
@@ -41,7 +41,7 @@ const Element: React.FC<ElementProps> = ({ nodeType }) => {
         return;
       }
       e.preventDefault();
-      dispatch(addElement(nodeType));
+      dispatch(addNode(nodeType));
     },
     [nodeType]
   );
@@ -65,18 +65,18 @@ const Element: React.FC<ElementProps> = ({ nodeType }) => {
     startTracking(e);
   }, []);
 
-  const def = ElementDefinitionsByType[nodeType];
-  let ElementComponent: ElementComponentType;
+  const def = NodeDefinitionsByType[nodeType];
+  let NodeComponent: NodeComponentType;
   if (def) {
-    ElementComponent = def.visual.component;
+    NodeComponent = def.visual.component;
   } else {
-    ElementComponent = () => <rect fill="red" x1={0} y1={0} x2={50} y2={50} />;
+    NodeComponent = () => <rect fill="red" x1={0} y1={0} x2={50} y2={50} />;
   }
 
   return (
     <div onMouseDown={onMouseDown}>
-      <svg width={LargestElementSize.width} height={LargestElementSize.height}>
-        <ElementComponent elementState={{}} />
+      <svg width={LargestNodeSize.width} height={LargestNodeSize.height}>
+        <NodeComponent elementState={{}} />
       </svg>
     </div>
   );

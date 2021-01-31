@@ -7,7 +7,7 @@ import { getModifiers, getSelectMode } from "@/selection-mode";
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
 
-import { elementTypeFromNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
+import { nodeTypeFromNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
 import { nodeStateFromNodeIdSelector } from "@/services/simulator/selectors/nodes";
 import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
 import { nodePositionFromNodeIdSelector } from "@/services/circuit-layout/selectors/node-positions";
@@ -19,15 +19,15 @@ import { fieldDragEnd } from "@/actions/field-drag-end";
 import { interactNode } from "@/actions/node-interact";
 import { selectNodes } from "@/actions/select-nodes";
 
-import ElementVisual from "./ElementVisual";
+import NodeVisual from "./NodeVisual";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
 
-export interface CircuitNodeProps {
+export interface NodeProps {
   nodeId: string;
 }
 
-const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId }) => {
+const Node: React.FC<NodeProps> = ({ nodeId }) => {
   const dispatch = useDispatch();
 
   const isSimActive = useSelector(isSimActiveSelector);
@@ -35,7 +35,7 @@ const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId }) => {
   const { x, y } = useSelector((s) =>
     nodePositionFromNodeIdSelector(s, nodeId)
   );
-  const nodeType = useSelector((s) => elementTypeFromNodeIdSelector(s, nodeId));
+  const nodeType = useSelector((s) => nodeTypeFromNodeIdSelector(s, nodeId));
   const nodeState = useSelector((s) => nodeStateFromNodeIdSelector(s, nodeId));
   const isSelected = useSelector((s) =>
     isNodeSelectedFromNodeIdSelector(s, nodeId)
@@ -106,10 +106,10 @@ const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId }) => {
   }
 
   return (
-    <ElementVisual
+    <NodeVisual
       x={x}
       y={y}
-      elementType={nodeType}
+      nodeType={nodeType}
       nodeState={nodeState}
       isSelected={isSelected}
       onMouseDown={onMouseDown}
@@ -117,4 +117,4 @@ const CircuitNode: React.FC<CircuitNodeProps> = ({ nodeId }) => {
   );
 };
 
-export default CircuitNode;
+export default Node;

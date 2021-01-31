@@ -1,17 +1,10 @@
 import * as yup from "yup";
 
-import { ElementType } from "@/elements";
+import { NodeType } from "@/nodes";
 
-export interface GraphNodeBase {
-  type: string;
+export interface Node {
+  nodeType: NodeType;
 }
-
-export interface ElementGraphNode extends GraphNodeBase {
-  type: "element";
-  elementType: ElementType;
-}
-
-export type GraphNode = ElementGraphNode;
 
 /**
  * Identifies a pin on a specific node.

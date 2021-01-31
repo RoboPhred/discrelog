@@ -1,20 +1,18 @@
-import find from "lodash/find";
-
 import { CircuitGraphState } from "../state";
 import { NodePin } from "../types";
 import { createCircuitGraphSelector } from "../utils";
 
 import { connectionsSelector } from "./connections";
-import { elementDefFromNodeIdSelector } from "./nodes";
+import { nodeDefFromNodeIdSelector } from "./nodes";
 
 export const pinDirectionFromNodePinSelector = createCircuitGraphSelector(
   (s: CircuitGraphState, nodeId: string, pinId: string) => {
-    const def = elementDefFromNodeIdSelector.local(s, nodeId);
+    const def = nodeDefFromNodeIdSelector.local(s, nodeId);
     if (!def) {
       return null;
     }
 
-    const pinDef = find(def.pins, (p) => p.name === pinId);
+    const pinDef = def.pins[pinId];
     if (!pinDef) {
       return null;
     }
@@ -30,7 +28,7 @@ export const pinDirectionFromNodePinSelector = createCircuitGraphSelector(
 export const nodeOutputSourcesByPinIdFromNodeIdSelector = createCircuitGraphSelector(
   (state: CircuitGraphState, nodeId: string) => {
     const connections = connectionsSelector.local(state);
-    const nodeDef = elementDefFromNodeIdSelector.local(state, nodeId);
+    const nodeDef = nodeDefFromNodeIdSelector.local(state, nodeId);
 
     if (!nodeDef) {
       return {};

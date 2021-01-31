@@ -1,20 +1,15 @@
 export * from "./logic";
-export * from "./visual";
 
-import {
-  ElementEvolverFunction,
-  ElementInteractFunction,
-  ElementPinDefinition,
-} from "./logic";
-
-import { ElementVisualDefinition } from "./visual";
+import { ElementEvolverFunction, ElementInteractFunction } from "./logic";
 
 export interface ElementDefinition {
   type: string;
 
-  visual: ElementVisualDefinition;
+  inputPins: string[];
 
-  pins: Record<string, ElementPinDefinition>;
+  // Used for presetting all outputs to false on init.
+  // Could remove this if we assume an undefined pin is false.
+  outputPins: string[];
 
   interact?: ElementInteractFunction;
   evolve?: ElementEvolverFunction;
