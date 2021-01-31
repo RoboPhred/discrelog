@@ -24,8 +24,11 @@ export default createSimulatorReducer((state, action, appState) => {
   );
 
   const elementType = elementTypeFromSimulatorNodeId(appState, simulatorNodeId);
-  const def = ElementDefinitionsByType[elementType];
+  if (!elementType) {
+    return state;
+  }
 
+  const def = ElementDefinitionsByType[elementType];
   if (!def || !def.interact) {
     return state;
   }

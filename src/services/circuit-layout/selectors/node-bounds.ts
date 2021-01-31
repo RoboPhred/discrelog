@@ -3,20 +3,18 @@ import getBounds from "svg-path-bounds";
 
 import mapValues from "lodash/mapValues";
 
-import { ElementDefinitionsByType } from "@/elements";
+import { NodeDefinitionsByType } from "@/nodes";
 import { normalizeRectangle } from "@/geometry";
 
-import { nodeStatesByIdSelector } from "@/services/simulator/selectors/nodes";
-import { elementTypesByNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
+import { nodeTypesByNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
 
 import { nodePositionsByNodeIdSelector } from "./node-positions";
 
 export const nodeBoundsByIdSelector = createSelector(
-  elementTypesByNodeIdSelector,
-  nodeStatesByIdSelector,
-  (elementTypesByNodeId, nodeStateById) =>
+  nodeTypesByNodeIdSelector,
+  (elementTypesByNodeId) =>
     mapValues(elementTypesByNodeId, (elementType, id) => {
-      const def = ElementDefinitionsByType[elementType];
+      const def = NodeDefinitionsByType[elementType];
       if (!def) {
         return [0, 0, 0, 0];
       }

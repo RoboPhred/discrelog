@@ -1,17 +1,11 @@
-import { ElementType } from "@/elements";
+import { NodeType } from "@/nodes";
 import { Point } from "@/geometry";
 
 import { NodePin } from "../circuit-graph/types";
 
-export interface ClipboardNodeBase {
+export interface ClipboardNode {
   id: string;
-  type: string;
+  nodeType: NodeType;
   offset: Point;
-}
-
-export interface ClipboardElement extends ClipboardNodeBase {
-  type: "element";
-  elementType: ElementType;
   outputs: Record<string, NodePin[]>;
 }
-export type ClipboardNode = ClipboardElement;

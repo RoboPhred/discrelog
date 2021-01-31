@@ -2,13 +2,6 @@ import { MaybeArray } from "@/arrays";
 
 export type PinDirection = "input" | "output";
 
-export interface ElementPinDefinition {
-  name: string;
-  direction: PinDirection;
-  x: number;
-  y: number;
-}
-
 export interface OutputTransition {
   /**
    * The offset from the current tick to execute this transition.

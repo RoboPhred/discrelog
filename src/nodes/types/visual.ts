@@ -1,4 +1,4 @@
-export interface ElementVisualPathDefinition {
+export interface NodeVisualPathDefinition {
   /**
    * The svg path of this visual element.
    */
@@ -11,20 +11,20 @@ export interface ElementVisualPathDefinition {
   strokeWidth?: number | ((state: any) => number);
 }
 
-export type ElementVisualPath = string | ElementVisualPathDefinition;
+export type NodeVisualPath = string | NodeVisualPathDefinition;
 
-export interface ElementVisualDefinition {
+export interface NodeVisualDefinition {
   /**
    * Optional SVG path string defining the hit detection of the node.
    */
   hitPath: string;
 
-  component: ElementComponentType;
+  component: NodeComponentType;
 }
 
-export interface ElementComponentProps {
+export interface NodeComponentProps {
   isSelected?: boolean;
   elementState: any;
 }
 
-export type ElementComponentType = React.ComponentType<ElementComponentProps>;
+export type NodeComponentType = React.ComponentType<NodeComponentProps>;

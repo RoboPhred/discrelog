@@ -7,13 +7,13 @@ import { NodePin, nodePinSchema } from "../circuit-graph/types";
 
 export interface SaveNode {
   nodeId: string;
-  elementType: ElementType;
+  nodeType: ElementType;
   x: number;
   y: number;
 }
 export const saveNodeSchema = yup.object().shape({
   nodeId: yup.string().required().min(1),
-  elementType: yup.string().required().min(1), // TODO: Check for valid element types
+  nodeType: yup.string().required().min(1), // TODO: Check for valid element types
   x: yup.number().required(),
   y: yup.number().required(),
 });

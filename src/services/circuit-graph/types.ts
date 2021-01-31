@@ -1,17 +1,10 @@
 import * as yup from "yup";
 
-import { ElementType } from "@/elements";
+import { NodeType } from "@/nodes";
 
-export interface GraphNodeBase {
-  type: string;
+export interface Node {
+  nodeType: NodeType;
 }
-
-export interface ElementGraphNode extends GraphNodeBase {
-  type: "element";
-  elementType: ElementType;
-}
-
-export type GraphNode = ElementGraphNode;
 
 /**
  * Identifies a pin on a specific node.
@@ -32,6 +25,13 @@ export function nodePinEquals(a: NodePin, b: NodePin) {
  * A connection from a node output to a node input.
  */
 export interface Connection {
+  /**
+   * The output pin on a node, sending a value outwards.
+   */
   outputPin: NodePin;
+
+  /**
+   * The input pin on a node to receive the value.
+   */
   inputPin: NodePin;
 }

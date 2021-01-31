@@ -24,6 +24,10 @@ import {
   SimulatorState,
   defaultSimulatorState,
 } from "@/services/simulator/state";
+import {
+  SimulatorGraphState,
+  defaultSimulatorGraphState,
+} from "@/services/simulator-graph/state";
 
 export interface AppState {
   services: {
@@ -35,6 +39,7 @@ export interface AppState {
     dialog: DialogState;
     selection: SelectionState;
     simulator: SimulatorState;
+    simulatorGraph: SimulatorGraphState;
   };
 }
 
@@ -48,6 +53,7 @@ const _defaultAppState: AppState = {
     dialog: defaultDialogState,
     selection: defaultSelectionState,
     simulator: defaultSimulatorState,
+    simulatorGraph: defaultSimulatorGraphState,
   },
 };
 

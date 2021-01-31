@@ -1,6 +1,4 @@
-import find from "lodash/find";
-
-import { ElementDefinitionsByType } from "@/elements";
+import { NodeDefinitionsByType } from "@/nodes";
 
 import {
   createServiceReducerCreator,
@@ -34,15 +32,15 @@ export function pinsToConnection(
     return null;
   }
 
-  const p1Def = ElementDefinitionsByType[p1Node.elementType];
-  const p2Def = ElementDefinitionsByType[p2Node.elementType];
+  const p1Def = NodeDefinitionsByType[p1Node.nodeType];
+  const p2Def = NodeDefinitionsByType[p2Node.nodeType];
 
   if (!p1Def || !p2Def) {
     return null;
   }
 
-  const p1Pin = find(p1Def.pins, (x) => x.name == p1.pinId);
-  const p2Pin = find(p2Def.pins, (x) => x.name == p2.pinId);
+  const p1Pin = p1Def.pins[p1.pinId];
+  const p2Pin = p2Def.pins[p2.pinId];
 
   if (!p1Pin || !p2Pin) {
     return null;
