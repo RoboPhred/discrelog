@@ -1,7 +1,6 @@
 import * as React from "react";
 
-import { PinDirection } from "@/elements";
-
+import { PinDirection } from "@/logic";
 import { NodeType, NodeDefinitionsByType } from "@/nodes";
 
 export interface RenderPinProps {

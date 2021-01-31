@@ -1,6 +1,4 @@
-export * from "./logic";
-
-import { ElementEvolverFunction, ElementInteractFunction } from "./logic";
+import { ElementEvolverFunction, ElementInteractFunction } from "@/logic";
 
 export interface ElementDefinition {
   type: string;
