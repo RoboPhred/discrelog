@@ -8,7 +8,7 @@ import { fpSet } from "@/utils";
 import { asArray } from "@/arrays";
 import { AppState } from "@/store";
 
-import { inputElementsByPinIdFromSimulatorNodeIdSelector } from "@/services/simulator-graph/selectors/connections";
+import { inputPinsByPinIdFromSimulatorNodeIdSelector } from "@/services/simulator-graph/selectors/connections";
 import {
   simulatorNodeIdsSelector,
   elementTypeFromSimulatorNodeId,
@@ -86,7 +86,7 @@ export function collectNodeTransitions(
 
   // Build the current input state from the connected pins.
   const inputs: Record<string, boolean> = {};
-  const inputSourcesByPin = inputElementsByPinIdFromSimulatorNodeIdSelector(
+  const inputSourcesByPin = inputPinsByPinIdFromSimulatorNodeIdSelector(
     appState,
     nodeId
   );
@@ -97,7 +97,7 @@ export function collectNodeTransitions(
       inputs[inputPin] = false;
       continue;
     }
-    const { nodeId: sourceNodeId, pinId: sourcePinId } = inputConn;
+    const { simulatorNodeId: sourceNodeId, pinId: sourcePinId } = inputConn;
 
     inputs[inputPin] =
       state.nodeOutputValuesByNodeId[sourceNodeId]?.[sourcePinId] || false;

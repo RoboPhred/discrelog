@@ -7,7 +7,7 @@ import values from "lodash/values";
 import { createSelector } from "reselect";
 
 import { nodeTypesByNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
-import { nodeStatesByIdSelector } from "@/services/simulator/selectors/nodes";
+import { nodeStatesByNodeIdSelector } from "@/services/simulator/selectors/nodes";
 import { nodePositionsByNodeIdSelector } from "@/services/circuit-layout/selectors/node-positions";
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 import { dragMoveOffsetSelector } from "@/services/circuit-editor-ui/selectors/drag";
@@ -31,7 +31,7 @@ const selectedNodeTypesByIdSelector = createSelector(
 
 const selectedNodeStatesByIdSelector = createSelector(
   selectedNodeIdsSelector,
-  nodeStatesByIdSelector,
+  nodeStatesByNodeIdSelector,
   (selectedNodeIds, nodeStatesById) => pick(nodeStatesById, selectedNodeIds)
 );
 

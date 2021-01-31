@@ -1,12 +1,56 @@
+import { AppState } from "@/store";
+
 import { createSimulatorSelector } from "../utils";
 import { SimulatorState } from "../state";
 
-// FIXME: Exporting simulator ids when consumer expects circuit ids
-export const nodeStatesByIdSelector = createSimulatorSelector(
-  (s) => s.nodeStatesByNodeId
-);
+export const nodeStatesByNodeIdSelector = (function () {
+  let cachedSimulatorNodeIdsByCircuitNodeId: any;
+  let cachedNodeStatesBySimulatorNodeId: any;
+  let cachedNodeStatesByNodeIdSelector: Record<string, any> | null = null;
 
-// FIXME: Uses simulator id when consumer expects circuit id
-export const nodeStateFromNodeIdSelector = createSimulatorSelector(
-  (s: SimulatorState, nodeId: string) => s.nodeStatesByNodeId[nodeId]
-);
+  return (state: AppState) => {
+    const simulatorNodeIdsByCircuitNodeId =
+      state.services.simulatorGraph.simulatorNodeIdsByCircuitNodeId;
+    const nodeStatesBySimulatorNodeId =
+      state.services.simulator.nodeStatesByNodeId;
+
+    if (
+      cachedSimulatorNodeIdsByCircuitNodeId ===
+        simulatorNodeIdsByCircuitNodeId &&
+      cachedNodeStatesBySimulatorNodeId === nodeStatesBySimulatorNodeId &&
+      cachedNodeStatesByNodeIdSelector != null
+    ) {
+      return cachedNodeStatesByNodeIdSelector;
+    }
+
+    const nodeStatesByNodeId: Record<string, any> = {};
+
+    for (const circuitNodeId of Object.keys(simulatorNodeIdsByCircuitNodeId)) {
+      const simulatorNodeId = simulatorNodeIdsByCircuitNodeId[circuitNodeId];
+      nodeStatesByNodeId[circuitNodeId] =
+        nodeStatesBySimulatorNodeId[simulatorNodeId];
+    }
+
+    cachedSimulatorNodeIdsByCircuitNodeId = simulatorNodeIdsByCircuitNodeId;
+    cachedNodeStatesBySimulatorNodeId = nodeStatesBySimulatorNodeId;
+    cachedNodeStatesByNodeIdSelector = nodeStatesByNodeId;
+    return nodeStatesByNodeId;
+  };
+})();
+
+export const nodeStateFromNodeIdSelector = (
+  state: AppState,
+  nodeId: string
+) => {
+  const simulatorNodeIdsByCircuitNodeId =
+    state.services.simulatorGraph.simulatorNodeIdsByCircuitNodeId;
+  const nodeStatesBySimulatorNodeId =
+    state.services.simulator.nodeStatesByNodeId;
+
+  const simulatorNodeId = simulatorNodeIdsByCircuitNodeId[nodeId];
+  if (!simulatorNodeId) {
+    return {};
+  }
+
+  return nodeStatesBySimulatorNodeId[simulatorNodeId];
+};

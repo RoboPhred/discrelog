@@ -25,6 +25,13 @@ export function nodePinEquals(a: NodePin, b: NodePin) {
  * A connection from a node output to a node input.
  */
 export interface Connection {
+  /**
+   * The output pin on a node, sending a value outwards.
+   */
   outputPin: NodePin;
+
+  /**
+   * The input pin on a node to receive the value.
+   */
   inputPin: NodePin;
 }

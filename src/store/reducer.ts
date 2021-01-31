@@ -6,6 +6,7 @@ import dialogReducer from "@/services/dialog/reducer";
 import savedataReducer from "@/services/savedata/reducer";
 import selectionReducer from "@/services/selection/reducer";
 import simulatorReducer from "@/services/simulator/reducer";
+import simulatorGraphReducer from "@/services/simulator-graph/reducer";
 
 import { concatReducers, finalizeReducerList } from "./utils";
 
@@ -18,7 +19,8 @@ const reducer = finalizeReducerList(
     dialogReducer,
     savedataReducer,
     selectionReducer,
-    simulatorReducer
+    simulatorReducer,
+    simulatorGraphReducer
   )
 );
 

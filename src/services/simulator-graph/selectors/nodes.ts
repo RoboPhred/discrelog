@@ -1,23 +1,28 @@
-import { AppState } from "@/store";
+import { createSimulatorGraphSelector } from "../utils";
+import { SimulatorGraphState } from "../state";
 
-import { NodeDefinitionsByType } from "@/nodes";
-
-export const simulatorNodeIdFromCircuitNodeIdSelector = (
-  state: AppState,
-  circuitNodeId: string
-) => circuitNodeId;
-
-export const simulatorNodeIdsSelector = (state: AppState) =>
-  Object.keys(state.services.circuitGraph.nodesById);
-
-export const elementTypeFromSimulatorNodeId = (
-  state: AppState,
-  simNodeId: string
-) => {
-  const nodeType =
-    state.services.circuitGraph.nodesById[simNodeId]?.nodeType ?? null;
-  if (!nodeType) {
-    return null;
+export const simulatorNodeIdFromCircuitNodeIdSelector = createSimulatorGraphSelector(
+  (state: SimulatorGraphState, circuitNodeId: string) => {
+    return state.simulatorNodeIdsByCircuitNodeId[circuitNodeId];
   }
-  return NodeDefinitionsByType[nodeType].elementType;
-};
+);
+
+/**
+ * Get all simulator node ids.
+ *
+ * WARN: Not react safe.
+ */
+export const simulatorNodeIdsSelector = createSimulatorGraphSelector((state) =>
+  Object.keys(state.simulatorNodesById)
+);
+
+export const elementTypeFromSimulatorNodeId = createSimulatorGraphSelector(
+  (state: SimulatorGraphState, simulatorNodeId: string) => {
+    const simulatorNode = state.simulatorNodesById[simulatorNodeId];
+    if (!simulatorNode) {
+      return null;
+    }
+
+    return simulatorNode.elementType;
+  }
+);

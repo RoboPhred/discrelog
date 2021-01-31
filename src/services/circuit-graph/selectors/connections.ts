@@ -4,6 +4,10 @@ import { createSelector } from "reselect";
 import { CircuitGraphState } from "../state";
 import { createCircuitGraphSelector } from "../utils";
 
+export const connectionsByIdSelector = createCircuitGraphSelector(
+  (s) => s.connectionsById
+);
+
 export const connectionIdsSelector = createCircuitGraphSelector(
   createSelector(
     (s) => s.connectionsById,
