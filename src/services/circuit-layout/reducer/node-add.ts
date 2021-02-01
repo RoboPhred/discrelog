@@ -1,7 +1,7 @@
 import { fpSet } from "@/utils";
 
 import { ZeroPoint } from "@/geometry";
-import { isAddNodeAction } from "@/actions/element-add";
+import { isAddNodeAction } from "@/actions/node-add";
 
 import { createCircuitLayoutReducer } from "../utils";
 

@@ -1,6 +1,6 @@
 import { concatReducers } from "@/store/utils";
 
-import elementAddReducer from "./element-add";
+import nodeAddReducer from "./node-add";
 import projectNewReducer from "./project-new";
 
-export default concatReducers(elementAddReducer, projectNewReducer);
+export default concatReducers(nodeAddReducer, projectNewReducer);

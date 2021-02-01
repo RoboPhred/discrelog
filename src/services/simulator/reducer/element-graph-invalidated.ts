@@ -1,4 +1,4 @@
-import { ACTION_NODE_ADD } from "@/actions/element-add";
+import { ACTION_NODE_ADD } from "@/actions/node-add";
 import { ACTION_PROJECT_NEW } from "@/actions/project-new";
 import { ACTION_NODE_DELETE } from "@/actions/node-delete";
 import { ACTION_PROJECT_RECEIVE } from "@/actions/project-receive";

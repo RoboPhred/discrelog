@@ -10,7 +10,7 @@ import { fpSet } from "@/utils";
 
 import rootReducer from "@/store/reducer";
 
-import { addNode } from "@/actions/element-add";
+import { addNode } from "@/actions/node-add";
 import { attachWire } from "@/actions/wire-attach";
 import { isPasteAction } from "@/actions/clipboard-paste";
 import { selectNodes } from "@/actions/select-nodes";

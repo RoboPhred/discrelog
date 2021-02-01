@@ -2,7 +2,7 @@ import { AnyAction } from "redux";
 
 import { reducerPriority, PRIORITY_PRE } from "@/store/priorities";
 
-import { isAddNodeAction } from "@/actions/element-add";
+import { isAddNodeAction } from "@/actions/node-add";
 
 import { createCircuitGraphReducer } from "../utils";
 

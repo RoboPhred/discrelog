@@ -2,7 +2,7 @@ import * as React from "react";
 
 import useSelector from "@/hooks/useSelector";
 
-import { elementDefFromNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
+import { nodeDefFromNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
 
 import NodePin from "./NodePin";
 
@@ -11,9 +11,7 @@ export interface NodePinsProps {
 }
 
 const NodePins: React.FC<NodePinsProps> = ({ nodeId }) => {
-  const def = useSelector((state) =>
-    elementDefFromNodeIdSelector(state, nodeId)
-  );
+  const def = useSelector((state) => nodeDefFromNodeIdSelector(state, nodeId));
 
   const pins = def?.pins ?? {};
 

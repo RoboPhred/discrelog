@@ -3,7 +3,7 @@ import { AnyAction } from "redux";
 import { AppState, defaultAppState } from "@/store";
 import { reducerPriority, PRIORITY_SAVE } from "@/store/priorities";
 
-import { ACTION_NODE_ADD } from "@/actions/element-add";
+import { ACTION_NODE_ADD } from "@/actions/node-add";
 import { ACTION_NODE_DELETE } from "@/actions/node-delete";
 import { ACTION_SELECTION_MOVE } from "@/actions/selection-move";
 import { ACTION_WIRE_ATTACH } from "@/actions/wire-attach";

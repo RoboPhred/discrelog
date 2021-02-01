@@ -3,7 +3,7 @@ import { SaveData, saveDataSchema, SaveNode, SaveWire } from "./types";
 import { AppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
-import { addNode } from "@/actions/element-add";
+import { addNode } from "@/actions/node-add";
 import { attachWire } from "@/actions/wire-attach";
 
 import { defaultSelectionState } from "../selection/state";

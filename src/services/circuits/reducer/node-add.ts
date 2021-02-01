@@ -1,10 +1,10 @@
-import { isAddElementAction } from "@/actions/element-add";
+import { isAddNodeAction } from "@/actions/node-add";
 import { editingCircuitIdSelector } from "@/services/circuit-editor-ui/selectors/circuit";
 
 import { createCircuitsReducer } from "../utils";
 
 export default createCircuitsReducer((state, action, rootState) => {
-  if (!isAddElementAction(action)) {
+  if (!isAddNodeAction(action)) {
     return state;
   }
 

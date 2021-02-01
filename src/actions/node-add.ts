@@ -4,13 +4,13 @@ import { AnyAction } from "redux";
 import { NodeType } from "@/nodes";
 import { Point } from "@/geometry";
 
-export interface AddElementOptions {
+export interface AddNodeOptions {
   nodeId?: string;
   circuitId?: string;
   position?: Point;
 }
 export const ACTION_NODE_ADD = "@node/add" as const;
-export const addNode = (nodeType: NodeType, opts?: AddElementOptions) => ({
+export const addNode = (nodeType: NodeType, opts?: AddNodeOptions) => ({
   type: ACTION_NODE_ADD,
   payload: { nodeId: uuidV4(), nodeType, ...(opts || {}) },
 });

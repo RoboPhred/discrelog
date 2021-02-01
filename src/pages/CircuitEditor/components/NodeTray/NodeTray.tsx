@@ -11,7 +11,7 @@ import {
 
 import useMouseTracking from "@/hooks/useMouseTracking";
 
-import { addNode } from "@/actions/element-add";
+import { addNode } from "@/actions/node-add";
 import { fieldDragStartNewNode } from "@/actions/field-drag-start-newnode";
 import { fieldDragEnd } from "@/actions/field-drag-end";
 

@@ -1,6 +1,6 @@
 import { concatReducers } from "@/store/utils";
 
-import elementAddReducer from "./element-add";
+import nodeAddReducer from "./node-add";
 import nodeDeleteReducer from "./node-delete";
 import nodeMoveReducer from "./node-move";
 import projectNewReducer from "./project-new";
@@ -11,7 +11,7 @@ import wireJointDeleteReducer from "./wire-joint-delete";
 import wireJointMoveReducer from "./wire-joint-move";
 
 const fieldReducer = concatReducers(
-  elementAddReducer,
+  nodeAddReducer,
   projectNewReducer,
   nodeDeleteReducer,
   nodeMoveReducer,
