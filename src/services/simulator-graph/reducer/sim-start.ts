@@ -2,6 +2,7 @@ import filter from "lodash/filter";
 import { v4 as uuidV4 } from "uuid";
 
 import { NodeDefinitionsByType } from "@/nodes";
+import { PRIORITY_PRE, reducerPriority } from "@/store/priorities";
 
 import { isStartSimAction } from "@/actions/sim-start";
 
@@ -14,28 +15,34 @@ import { createSimulatorGraphReducer } from "../utils";
 import { SimulatorNode } from "../types";
 import { SimulatorGraphState } from "../state";
 
-export default createSimulatorGraphReducer((state, action, rootState) => {
-  if (!isStartSimAction(action)) {
-    return state;
-  }
+// This must run before simulator/reducer/sim-start, as we need to build up the graph before it can
+// run the first tick.
+// TODO: This makes more sense as a selector, since it transforms existing state.
+export default reducerPriority(
+  PRIORITY_PRE,
+  createSimulatorGraphReducer((state, action, rootState) => {
+    if (!isStartSimAction(action)) {
+      return state;
+    }
 
-  // This all needs to be rewritten for multiple elements per node and ICs.
+    // This all needs to be rewritten for multiple elements per node and ICs.
 
-  const circuitNodesById = nodesByNodeIdSelector(rootState);
-  const rootCircuitNodeIds = nodeIdsByCircuitIdSelector(rootState, "root");
-  const circuitConnectionsById = connectionsByIdSelector(rootState);
+    const circuitNodesById = nodesByNodeIdSelector(rootState);
+    const rootCircuitNodeIds = nodeIdsByCircuitIdSelector(rootState, "root");
+    const circuitConnectionsById = connectionsByIdSelector(rootState);
 
-  const graph = produceCircuitNodes(
-    rootCircuitNodeIds,
-    circuitNodesById,
-    circuitConnectionsById
-  );
+    const graph = produceCircuitNodes(
+      rootCircuitNodeIds,
+      circuitNodesById,
+      circuitConnectionsById
+    );
 
-  return {
-    ...state,
-    ...graph,
-  };
-});
+    return {
+      ...state,
+      ...graph,
+    };
+  })
+);
 
 type SimulatorGraph = Pick<
   SimulatorGraphState,

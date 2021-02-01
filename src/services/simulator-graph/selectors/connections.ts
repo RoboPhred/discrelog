@@ -10,7 +10,7 @@ import { SimulatorGraphState } from "../state";
 export const outputSimulatorNodeIdsFromSimulatorNodeIdSelector = createSimulatorGraphSelector(
   (state: SimulatorGraphState, simulatorNodeId: string) => {
     const simulatorNode = state.simulatorNodesById[simulatorNodeId];
-    if (!simulatorNodeId) {
+    if (!simulatorNode) {
       return [];
     }
 
