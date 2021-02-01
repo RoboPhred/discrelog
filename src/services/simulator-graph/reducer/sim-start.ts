@@ -12,7 +12,7 @@ import { connectionsByIdSelector } from "@/services/circuit-graph/selectors/conn
 import { nodesByNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
 
 import { createSimulatorGraphReducer } from "../utils";
-import { SimulatorNode } from "../types";
+import { SimulatorNode, SimulatorNodePin } from "../types";
 import { SimulatorGraphState } from "../state";
 
 // This must run before simulator/reducer/sim-start, as we need to build up the graph before it can
@@ -56,14 +56,30 @@ function produceCircuitNodes(
 ): SimulatorGraph {
   const simulatorNodesById: Record<string, SimulatorNode> = {};
   const simulatorNodeIdsByCircuitNodeId: Record<string, string> = {};
-  const circuitNodeIdsBySimulatorNodeId: Record<string, string> = {};
+
+  // TODO: These two arrays are a very inefficient means of looking up the data.
+  //  Replace them with maps-of-maps (byPinIdByNodeId)
+  const ciruitNodeInputPinMappings: {
+    circuitNodeId: string;
+    circuitNodePinId: string;
+    inputs: {
+      simulatorNodeId: string;
+      simulatorNodePinId: string;
+    }[];
+  }[] = [];
+  const simulatorNodeOutputPinMappings: {
+    simulatorNodeId: string;
+    simulatorNodePinId: string;
+    outputCircuitNodeId: string;
+    outputCircuitNodePinId: string;
+  }[] = [];
 
   // Two passes are needed.  First, create the nodes.  Then, wire up the inputs.
 
   // Create the nodes.
   for (const circuitNodeId of circuitNodeIds) {
     const { nodeType } = circuitNodesById[circuitNodeId];
-    const { elementProduction } = NodeDefinitionsByType[nodeType];
+    const { elementProduction, pins } = NodeDefinitionsByType[nodeType];
 
     // TODO: Turn production into one or more elements.
     //  Recurse into circuits if this is a circuit node.
@@ -81,38 +97,79 @@ function produceCircuitNodes(
         outputsByPin: {},
       };
       simulatorNodeIdsByCircuitNodeId[circuitNodeId] = simulatorNodeId;
-      circuitNodeIdsBySimulatorNodeId[simulatorNodeId] = circuitNodeId;
+
+      for (const pinId of Object.keys(pins)) {
+        const { direction } = pins[pinId];
+        if (direction === "input") {
+          // Basic elements have a one to one pin mapping
+          ciruitNodeInputPinMappings.push({
+            circuitNodeId,
+            circuitNodePinId: pinId,
+            inputs: [
+              {
+                simulatorNodeId,
+                simulatorNodePinId: pinId,
+              },
+            ],
+          });
+        } else {
+          simulatorNodeOutputPinMappings.push({
+            simulatorNodeId,
+            simulatorNodePinId: pinId,
+            outputCircuitNodeId: circuitNodeId,
+            outputCircuitNodePinId: pinId,
+          });
+        }
+      }
     } else {
       throw new Error("Unimplemented: Complex element productions");
     }
   }
 
   // Connect the nodes
-  for (const simulatorNodeId of Object.keys(simulatorNodesById)) {
-    const { inputsByPin, outputsByPin } = simulatorNodesById[simulatorNodeId];
-    const circuitNodeId = circuitNodeIdsBySimulatorNodeId[simulatorNodeId];
+  // Scan through each connection in the circuit, and apply it based on our
+  // translated node pins.  Keep in mind that input pins can go from one to many.
+  for (const connectionId of Object.keys(circuitConnectionsById)) {
+    const { inputPin, outputPin } = circuitConnectionsById[connectionId];
 
-    const inputConnections = filter(
-      circuitConnectionsById,
-      (conn) => conn.inputPin.nodeId === circuitNodeId
+    const simulatorOutputPin = simulatorNodeOutputPinMappings.find(
+      (x) =>
+        x.outputCircuitNodeId === outputPin.nodeId &&
+        x.outputCircuitNodePinId === outputPin.pinId
     );
-
-    for (const { inputPin, outputPin } of inputConnections) {
-      inputsByPin[inputPin.pinId] = {
-        simulatorNodeId: simulatorNodeIdsByCircuitNodeId[outputPin.nodeId],
-        pinId: outputPin.pinId,
-      };
+    if (!simulatorOutputPin) {
+      continue;
     }
 
-    const outputConnections = filter(
-      circuitConnectionsById,
-      (conn) => conn.outputPin.nodeId === circuitNodeId
+    const simulatorInputPinMapping = ciruitNodeInputPinMappings.find(
+      (x) =>
+        x.circuitNodeId === inputPin.nodeId &&
+        x.circuitNodePinId === inputPin.pinId
     );
+    if (!simulatorInputPinMapping) {
+      continue;
+    }
 
-    for (const { inputPin, outputPin } of outputConnections) {
-      outputsByPin[outputPin.pinId] = {
-        simulatorNodeId: simulatorNodeIdsByCircuitNodeId[inputPin.nodeId],
-        pinId: inputPin.pinId,
+    const outputNode = simulatorNodesById[simulatorOutputPin.simulatorNodeId];
+    let outputsByOutputPin: SimulatorNodePin[] =
+      outputNode.outputsByPin[simulatorOutputPin.outputCircuitNodePinId];
+    if (outputsByOutputPin == null) {
+      outputNode.outputsByPin[
+        simulatorOutputPin.outputCircuitNodePinId
+      ] = outputsByOutputPin = [];
+    }
+
+    // Wire up the output to all of the inputs
+    for (const simulatorInput of simulatorInputPinMapping.inputs) {
+      outputsByOutputPin.push({
+        simulatorNodeId: simulatorInput.simulatorNodeId,
+        pinId: simulatorInput.simulatorNodePinId,
+      });
+
+      const inputNode = simulatorNodesById[simulatorInput.simulatorNodeId];
+      inputNode.inputsByPin[simulatorInput.simulatorNodePinId] = {
+        simulatorNodeId: simulatorOutputPin.simulatorNodeId,
+        pinId: simulatorOutputPin.simulatorNodePinId,
       };
     }
   }

@@ -1,4 +1,5 @@
 import values from "lodash/values";
+import flatMap from "lodash/flatMap";
 
 import { createSimulatorGraphSelector } from "../utils";
 import { SimulatorGraphState } from "../state";
@@ -14,7 +15,9 @@ export const outputSimulatorNodeIdsFromSimulatorNodeIdSelector = createSimulator
       return [];
     }
 
-    return values(simulatorNode.outputsByPin).map((pin) => pin.simulatorNodeId);
+    return flatMap(values(simulatorNode.outputsByPin), (pins) =>
+      pins.map((x) => x.simulatorNodeId)
+    );
   }
 );
 

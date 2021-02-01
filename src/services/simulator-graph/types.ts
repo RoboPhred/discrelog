@@ -25,5 +25,5 @@ export interface SimulatorNode {
    * This is redundant with the opposing node's inputsByPin,
    * to increase lookup speed.
    */
-  outputsByPin: Record<string, SimulatorNodePin>;
+  outputsByPin: Record<string, SimulatorNodePin[]>;
 }
