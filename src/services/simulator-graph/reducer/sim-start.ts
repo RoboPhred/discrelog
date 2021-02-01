@@ -1,4 +1,4 @@
-import filter from "lodash/filter";
+import get from "lodash/get";
 import { v4 as uuidV4 } from "uuid";
 
 import { NodeDefinitionsByType } from "@/nodes";
@@ -7,7 +7,7 @@ import { PRIORITY_PRE, reducerPriority } from "@/store/priorities";
 import { isStartSimAction } from "@/actions/sim-start";
 
 import { nodeIdsByCircuitIdSelector } from "@/services/circuits/selectors/nodes";
-import { Node, Connection } from "@/services/circuit-graph/types";
+import { Node, Connection, NodePin } from "@/services/circuit-graph/types";
 import { connectionsByIdSelector } from "@/services/circuit-graph/selectors/connections";
 import { nodesByNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
 
@@ -57,22 +57,39 @@ function produceCircuitNodes(
   const simulatorNodesById: Record<string, SimulatorNode> = {};
   const simulatorNodeIdsByCircuitNodeId: Record<string, string> = {};
 
-  // TODO: These two arrays are a very inefficient means of looking up the data.
-  //  Replace them with maps-of-maps (byPinIdByNodeId)
-  const ciruitNodeInputPinMappings: {
-    circuitNodeId: string;
-    circuitNodePinId: string;
-    inputs: {
-      simulatorNodeId: string;
-      simulatorNodePinId: string;
-    }[];
-  }[] = [];
-  const simulatorNodeOutputPinMappings: {
-    simulatorNodeId: string;
-    simulatorNodePinId: string;
-    outputCircuitNodeId: string;
-    outputCircuitNodePinId: string;
-  }[] = [];
+  const simulatorNodePinsByCircuitNodeInput: Record<
+    string,
+    Record<string, SimulatorNodePin[]>
+  > = {};
+  function addSimulatorNodePinInputMapping(
+    circuitPin: NodePin,
+    simulatorPin: SimulatorNodePin
+  ) {
+    let byPinId = simulatorNodePinsByCircuitNodeInput[circuitPin.nodeId];
+    if (byPinId == null) {
+      byPinId = simulatorNodePinsByCircuitNodeInput[circuitPin.nodeId] = {};
+    }
+    let inputs = byPinId[circuitPin.pinId];
+    if (inputs == null) {
+      inputs = byPinId[circuitPin.pinId] = [];
+    }
+    inputs.push(simulatorPin);
+  }
+
+  const simulatorNodePinByCircuitNodeOutput: Record<
+    string,
+    Record<string, SimulatorNodePin>
+  > = {};
+  function addSimulatorNodePinOutputMapping(
+    circuitPin: NodePin,
+    simulatorPin: SimulatorNodePin
+  ) {
+    let byPinId = simulatorNodePinByCircuitNodeOutput[circuitPin.nodeId];
+    if (byPinId == null) {
+      byPinId = simulatorNodePinByCircuitNodeOutput[circuitPin.nodeId] = {};
+    }
+    byPinId[circuitPin.pinId] = simulatorPin;
+  }
 
   // Two passes are needed.  First, create the nodes.  Then, wire up the inputs.
 
@@ -100,25 +117,16 @@ function produceCircuitNodes(
 
       for (const pinId of Object.keys(pins)) {
         const { direction } = pins[pinId];
+        const circuitNodePin = { nodeId: circuitNodeId, pinId };
+        const simulatorNodePin = {
+          simulatorNodeId,
+          pinId,
+        };
         if (direction === "input") {
           // Basic elements have a one to one pin mapping
-          ciruitNodeInputPinMappings.push({
-            circuitNodeId,
-            circuitNodePinId: pinId,
-            inputs: [
-              {
-                simulatorNodeId,
-                simulatorNodePinId: pinId,
-              },
-            ],
-          });
+          addSimulatorNodePinInputMapping(circuitNodePin, simulatorNodePin);
         } else {
-          simulatorNodeOutputPinMappings.push({
-            simulatorNodeId,
-            simulatorNodePinId: pinId,
-            outputCircuitNodeId: circuitNodeId,
-            outputCircuitNodePinId: pinId,
-          });
+          addSimulatorNodePinOutputMapping(circuitNodePin, simulatorNodePin);
         }
       }
     } else {
@@ -132,44 +140,42 @@ function produceCircuitNodes(
   for (const connectionId of Object.keys(circuitConnectionsById)) {
     const { inputPin, outputPin } = circuitConnectionsById[connectionId];
 
-    const simulatorOutputPin = simulatorNodeOutputPinMappings.find(
-      (x) =>
-        x.outputCircuitNodeId === outputPin.nodeId &&
-        x.outputCircuitNodePinId === outputPin.pinId
-    );
+    const simulatorOutputPin = get(simulatorNodePinByCircuitNodeOutput, [
+      outputPin.nodeId,
+      outputPin.pinId,
+    ]);
     if (!simulatorOutputPin) {
       continue;
     }
 
-    const simulatorInputPinMapping = ciruitNodeInputPinMappings.find(
-      (x) =>
-        x.circuitNodeId === inputPin.nodeId &&
-        x.circuitNodePinId === inputPin.pinId
-    );
-    if (!simulatorInputPinMapping) {
+    const simulatorInputPins = get(simulatorNodePinsByCircuitNodeInput, [
+      inputPin.nodeId,
+      inputPin.pinId,
+    ]);
+    if (!simulatorInputPins) {
       continue;
     }
 
     const outputNode = simulatorNodesById[simulatorOutputPin.simulatorNodeId];
     let outputsByOutputPin: SimulatorNodePin[] =
-      outputNode.outputsByPin[simulatorOutputPin.outputCircuitNodePinId];
+      outputNode.outputsByPin[simulatorOutputPin.pinId];
     if (outputsByOutputPin == null) {
       outputNode.outputsByPin[
-        simulatorOutputPin.outputCircuitNodePinId
+        simulatorOutputPin.pinId
       ] = outputsByOutputPin = [];
     }
 
     // Wire up the output to all of the inputs
-    for (const simulatorInput of simulatorInputPinMapping.inputs) {
+    for (const simulatorInput of simulatorInputPins) {
       outputsByOutputPin.push({
         simulatorNodeId: simulatorInput.simulatorNodeId,
-        pinId: simulatorInput.simulatorNodePinId,
+        pinId: simulatorInput.pinId,
       });
 
       const inputNode = simulatorNodesById[simulatorInput.simulatorNodeId];
-      inputNode.inputsByPin[simulatorInput.simulatorNodePinId] = {
+      inputNode.inputsByPin[simulatorInput.pinId] = {
         simulatorNodeId: simulatorOutputPin.simulatorNodeId,
-        pinId: simulatorOutputPin.simulatorNodePinId,
+        pinId: simulatorOutputPin.pinId,
       };
     }
   }
