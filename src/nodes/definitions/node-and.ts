@@ -6,7 +6,7 @@ import { NodeDefinition } from "../types";
 
 const andNodeDefinition: NodeDefinition = {
   type: "and",
-  elementType: "and",
+  elementProduction: "and",
   visual: {
     hitPath: `
       M30 5V45H50.47619c11.267908 0 20-9.000045 20-20s-8.732091-20-20-20H30z

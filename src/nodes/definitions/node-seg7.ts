@@ -31,7 +31,7 @@ function createSeg(
 
 const seg7ElementDefinition: NodeDefinition = {
   type: "seg7",
-  elementType: "seg7",
+  elementProduction: "seg7",
   visual: {
     hitPath: `M0,0 V63 H45 V0 z`,
     component: createShapePathNode([

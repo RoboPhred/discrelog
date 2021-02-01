@@ -5,7 +5,7 @@ import { NodeDefinition } from "../types";
 
 const bufferNodeDefinition: NodeDefinition = {
   type: "buffer",
-  elementType: "buffer",
+  elementProduction: "buffer",
   visual: {
     hitPath: `
     M 28.96875,2.59375 L 28.96875,5 L 28.96875,45 L 28.96875,47.40625 L 31.125,46.34375 L 72.15625,26.34375 L 75,25 L 72.15625,23.65625 L 31.125,3.65625 L 28.96875,2.59375 z

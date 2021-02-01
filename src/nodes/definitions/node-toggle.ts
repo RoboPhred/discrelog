@@ -5,7 +5,7 @@ import { NodeDefinition } from "../types";
 
 const toggleElementDefinition: NodeDefinition = {
   type: "toggle",
-  elementType: "toggle",
+  elementProduction: "toggle",
   visual: {
     hitPath: `M5,5 L45,5 L45,45 L5,45 z`,
     component: createShapePathNode([

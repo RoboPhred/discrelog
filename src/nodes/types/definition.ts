@@ -5,16 +5,32 @@ import { NodeVisualDefinition } from "./visual";
 
 export interface NodeDefinition {
   type: string;
-  elementType: ElementType;
+  elementProduction?: NodeElementProduction;
   visual: NodeVisualDefinition;
   pins: Record<string, NodePinDefinition>;
 }
 
 export interface NodePinDefinition {
-  // While pin direction seems an element concern at first,
-  // a node might represent a collection of elements, and in
-  // that case only the node knows if the pin is input or output.
   direction: PinDirection;
   x: number;
   y: number;
 }
+
+export interface NodeElementProductionBase {
+  type: string;
+}
+
+export interface ElementNodeElementProduction {
+  type: "element";
+  elementType: ElementType;
+}
+
+export interface CircuitNodeElementProduction {
+  type: "circuit";
+  circuitId: string;
+}
+
+export type NodeElementProduction =
+  | ElementType
+  | ElementNodeElementProduction
+  | CircuitNodeElementProduction;
