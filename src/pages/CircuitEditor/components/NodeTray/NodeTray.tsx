@@ -23,8 +23,8 @@ const NodeTray: React.FC = () => {
   });
 
   return (
-    <div className={styles["circuittray"]}>
-      <div className={styles["circuittray-elements"]}>{nodes}</div>
+    <div className={styles["nodetray"]}>
+      <div className={styles["nodetray-elements"]}>{nodes}</div>
     </div>
   );
 };

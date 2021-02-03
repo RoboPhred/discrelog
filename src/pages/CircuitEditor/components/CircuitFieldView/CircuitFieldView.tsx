@@ -91,18 +91,20 @@ const CircuitFieldView: React.FC<CircuitFieldViewProps> = ({ className }) => {
       )}
       ref={viewRef}
     >
-      <div
-        className={cls(
-          "zoom-container",
-          styles["circuit-field-zoom-container"]
-        )}
-        style={{
-          transform: `scale(${scale})`,
-        }}
-      >
-        <HotKeys keyMap={keymap} handlers={keyHandlers}>
-          <CircuitField />
-        </HotKeys>
+      <div className={styles["circuit-field-content"]}>
+        <div
+          className={cls(
+            "zoom-container",
+            styles["circuit-field-zoom-container"]
+          )}
+          style={{
+            transform: `scale(${scale})`,
+          }}
+        >
+          <HotKeys keyMap={keymap} handlers={keyHandlers}>
+            <CircuitField />
+          </HotKeys>
+        </div>
       </div>
     </div>
   );

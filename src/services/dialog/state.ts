@@ -13,7 +13,14 @@ export interface SaveFileDialogState extends DialogBaseState {
   data: null;
 }
 
-export type DialogState = NoDialogState | SaveFileDialogState;
+export interface CreateCircuitDialogState extends DialogBaseState {
+  dialogType: "create-circuit";
+}
+
+export type DialogState =
+  | NoDialogState
+  | SaveFileDialogState
+  | CreateCircuitDialogState;
 export type DialogType = DialogState["dialogType"];
 
 const _defaultState: NoDialogState = {

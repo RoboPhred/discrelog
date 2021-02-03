@@ -90,7 +90,7 @@ const NodePin: React.FC<NodePinProps> = ({ nodeId, pinId }) => {
   if (direction === "input") {
     return (
       <path
-        d={describeArc(x, y, 5, -45, 225)}
+        d={describeArc(x, y, 3, -45, 225)}
         className={cls(
           styles["node-pin-input"],
           isDragTarget && styles["is-drag-target"]

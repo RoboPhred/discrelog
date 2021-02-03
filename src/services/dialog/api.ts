@@ -15,7 +15,7 @@ import {
 
 export function* displayDialogSaga(
   dialogType: DialogType,
-  data: any
+  data?: any
 ): SagaIterator<any> {
   yield put(showDialog(dialogType, data));
   const response: AcceptDialogAction | CancelDialogAction = yield take([

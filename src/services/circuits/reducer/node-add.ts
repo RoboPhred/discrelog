@@ -15,6 +15,7 @@ export default createCircuitsReducer((state, action, rootState) => {
   return {
     ...state,
     nodeIdsByCircuitId: {
+      ...state.nodeIdsByCircuitId,
       [targetCircuitId]: [...state.nodeIdsByCircuitId[targetCircuitId], nodeId],
     },
   };

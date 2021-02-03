@@ -3,6 +3,7 @@ import * as React from "react";
 import { Mosaic, MosaicWindow } from "react-mosaic-component";
 
 import CircuitFieldView from "./components/CircuitFieldView";
+import CircuitsTree from "./components/CircuitsTree";
 import NodeTray from "./components/NodeTray";
 
 export interface CircuitEditorProps {
@@ -12,6 +13,7 @@ export interface CircuitEditorProps {
 const WindowMap = {
   "node-tray": <NodeTray />,
   "circuit-field": <CircuitFieldView />,
+  "circuit-tree": <CircuitsTree />,
 };
 
 const CircuitEditor: React.FC<CircuitEditorProps> = ({ className }) => {
@@ -26,7 +28,12 @@ const CircuitEditor: React.FC<CircuitEditorProps> = ({ className }) => {
         initialValue={{
           direction: "row",
           first: "node-tray",
-          second: "circuit-field",
+          second: {
+            direction: "row",
+            first: "circuit-field",
+            second: "circuit-tree",
+            splitPercentage: 60,
+          },
           splitPercentage: 20,
         }}
       ></Mosaic>

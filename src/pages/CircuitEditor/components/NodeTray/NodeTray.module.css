@@ -1,4 +1,4 @@
-.circuittray {
+.nodetray {
   padding: 5px;
   background: white;
   overflow-y: scroll;
@@ -6,7 +6,7 @@
   height: 100%;
 }
 
-.circuittray-elements {
+.nodetray-elements {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
