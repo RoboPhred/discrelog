@@ -1,13 +1,13 @@
 import * as yup from "yup";
 
-import { ElementType } from "@/elements";
+import { NodeType } from "@/nodes";
 import { Point, pointSchema } from "@/geometry";
 
 import { NodePin, nodePinSchema } from "../circuit-graph/types";
 
 export interface SaveNode {
   nodeId: string;
-  nodeType: ElementType;
+  nodeType: NodeType;
   x: number;
   y: number;
 }

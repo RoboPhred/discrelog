@@ -11,7 +11,7 @@ export default createCircuitEditorUiReducer((state, action) => {
 
   return {
     ...state,
-    dragMode: "new-element" as const,
-    dragNewElementType: nodeType,
+    dragMode: "new-node" as const,
+    dragNewNodeType: nodeType,
   };
 });

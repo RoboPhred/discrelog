@@ -45,11 +45,11 @@ export const dragMoveOffsetSelector = createCircuitEditorUiSelector(
 );
 
 export const isDraggingNewNodeSelector = createCircuitEditorUiSelector(
-  (s) => s.dragMode === "new-element"
+  (s) => s.dragMode === "new-node"
 );
 
 export const dragNewNodeTypeSelector = createCircuitEditorUiSelector((s) =>
-  s.dragMode === "new-element" ? s.dragNewElementType : null
+  s.dragMode === "new-node" ? s.dragNewNodeType : null
 );
 
 export const dragWireTargetPinSelector = createSelector(

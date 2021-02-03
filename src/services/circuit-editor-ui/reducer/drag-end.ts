@@ -30,7 +30,7 @@ export default function dragEndReducer(
     dragMode,
     dragStart,
     dragEnd,
-    dragNewElementType,
+    dragNewNodeType: dragNewElementType,
     dragWireSource,
   } = state.services.circuitEditorUi;
 
@@ -50,7 +50,7 @@ export default function dragEndReducer(
       }
       break;
     }
-    case "new-element": {
+    case "new-node": {
       if (dragEnd) {
         const position = applyGridSnapSelector(state, dragEnd);
         state = rootReducer(state, addNode(dragNewElementType!, { position }));
@@ -71,7 +71,7 @@ export default function dragEndReducer(
     dragMode: null,
     dragStart: null,
     dragEnd: null,
-    dragNewElementType: null,
+    dragNewNodeType: null,
     dragWireSource: null,
   }));
 

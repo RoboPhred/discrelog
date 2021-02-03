@@ -1,4 +1,4 @@
-import { ElementType } from "@/elements";
+import { NodeType } from "@/nodes";
 import { Point } from "@/geometry";
 import { NodePin } from "../circuit-graph/types";
 import { ROOT_CIRCUIT_ID } from "../circuits/constants";
@@ -18,7 +18,7 @@ export interface CircuitEditorUiState {
   /**
    * The current drag operation being performed by the ui.
    */
-  dragMode: "move" | "select" | "new-element" | "wire" | null;
+  dragMode: "move" | "select" | "new-node" | "wire" | null;
   /**
    * The start of the drag operation, if applicable for the current operation.
    */
@@ -29,9 +29,9 @@ export interface CircuitEditorUiState {
    */
   dragEnd: Point | null;
   /**
-   * If dragMode is "new-element", this holds the element type being created.
+   * If dragMode is "new-node", this holds the node type being created.
    */
-  dragNewElementType: ElementType | null;
+  dragNewNodeType: NodeType | null;
   /**
    * If drag mode is "wire", this is the source pin being wired by the drag.
    */
@@ -44,7 +44,7 @@ const _defaultState: CircuitEditorUiState = {
   dragMode: null,
   dragStart: null,
   dragEnd: null,
-  dragNewElementType: null,
+  dragNewNodeType: null,
   dragWireSource: null,
 };
 
