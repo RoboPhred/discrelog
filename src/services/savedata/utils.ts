@@ -8,21 +8,21 @@ import { attachWire } from "@/actions/wire-attach";
 
 import { defaultSelectionState } from "../selection/state";
 import { defaultSimulatorState } from "../simulator/state";
-import { defaultCircuitGraphState } from "../circuit-graph/state";
+import { defaultNodeGraphState } from "../node-graph/state";
 import {
   nodeIdsSelector,
   nodeFromNodeIdSelector,
-} from "../circuit-graph/selectors/nodes";
+} from "../node-graph/selectors/nodes";
 import {
   connectionIdsSelector,
   connectionFromConnectionIdSelector,
-} from "../circuit-graph/selectors/connections";
-import { nodePositionFromNodeIdSelector } from "../circuit-layout/selectors/node-positions";
+} from "../node-graph/selectors/connections";
+import { nodePositionFromNodeIdSelector } from "../node-layout/selectors/node-positions";
 import {
   wireJointPositionsByJointIdSelector,
   wireJointIdsFromConnectionIdSelector,
-} from "../circuit-layout/selectors/wires";
-import { defaultCircuitLayoutState } from "../circuit-layout/state";
+} from "../node-layout/selectors/wires";
+import { defaultNodeLayoutState } from "../node-layout/state";
 import { SaveFormatError } from "./errors";
 
 export function createSave(state: AppState): SaveData {
@@ -66,8 +66,8 @@ export function loadSave(state: AppState, save: SaveData): AppState {
     ...state,
     services: {
       ...state.services,
-      circuitLayout: defaultCircuitLayoutState,
-      circuitGraph: defaultCircuitGraphState,
+      nodeLayout: defaultNodeLayoutState,
+      nodeGraph: defaultNodeGraphState,
       selection: defaultSelectionState,
       simulator: defaultSimulatorState,
     },

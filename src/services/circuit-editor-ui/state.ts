@@ -1,6 +1,6 @@
 import { NodeType } from "@/nodes";
 import { Point } from "@/geometry";
-import { NodePin } from "../circuit-graph/types";
+import { NodePin } from "../node-graph/types";
 import { ROOT_CIRCUIT_ID } from "../circuits/constants";
 
 export interface CircuitEditorUiState {

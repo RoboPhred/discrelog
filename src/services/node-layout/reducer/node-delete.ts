@@ -8,14 +8,14 @@ import { isDeleteNodeAction } from "@/actions/node-delete";
 import {
   nodeInputConnectionIdsFromNodeIdSelector,
   nodeOutputConnectionIdsFromNodeIdSelector,
-} from "@/services/circuit-graph/selectors/connections";
+} from "@/services/node-graph/selectors/connections";
 
-import { createCircuitLayoutReducer } from "../utils";
+import { createNodeLayoutReducer } from "../utils";
 
 // We need to run this reducer before graph runs, as we want to check what wires are connected to the node being deleted.
 export default reducerPriority(
   PRIORITY_PRE,
-  createCircuitLayoutReducer((state, action, appState) => {
+  createNodeLayoutReducer((state, action, appState) => {
     if (!isDeleteNodeAction(action)) {
       return state;
     }

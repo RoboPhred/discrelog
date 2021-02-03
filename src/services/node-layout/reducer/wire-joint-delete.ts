@@ -3,9 +3,9 @@ import mapValues from "lodash/mapValues";
 
 import { isDeleteWireJointAction } from "@/actions/wire-joint-delete";
 
-import { createCircuitLayoutReducer } from "../utils";
+import { createNodeLayoutReducer } from "../utils";
 
-export default createCircuitLayoutReducer((state, action) => {
+export default createNodeLayoutReducer((state, action) => {
   if (!isDeleteWireJointAction(action)) {
     return state;
   }

@@ -2,9 +2,9 @@ import mapValues from "lodash/mapValues";
 import pick from "lodash/pick";
 
 import { isMoveNodeAction } from "@/actions/node-move";
-import { createCircuitLayoutReducer } from "../utils";
+import { createNodeLayoutReducer } from "../utils";
 
-export default createCircuitLayoutReducer((state, action, appState) => {
+export default createNodeLayoutReducer((state, action, appState) => {
   if (!isMoveNodeAction(action)) {
     return state;
   }

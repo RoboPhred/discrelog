@@ -5,9 +5,9 @@ import pickBy from "lodash/pickBy";
 import { isDeleteNodeAction } from "@/actions/node-delete";
 
 import { Connection } from "../types";
-import { createCircuitGraphReducer } from "../utils";
+import { createNodeGraphReducer } from "../utils";
 
-export default createCircuitGraphReducer((state, action) => {
+export default createNodeGraphReducer((state, action) => {
   if (!isDeleteNodeAction(action)) {
     return state;
   }

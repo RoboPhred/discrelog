@@ -8,7 +8,7 @@ import { getSelectMode, getModifiers } from "@/selection-mode";
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
 
-import { wireJointPositionFromJointIdSelector } from "@/services/circuit-layout/selectors/wires";
+import { wireJointPositionFromJointIdSelector } from "@/services/node-layout/selectors/wires";
 import { isJointSelectedFromJointIdSelector } from "@/services/selection/selectors/selection";
 
 import { moveWireJoint } from "@/actions/wire-joint-move";

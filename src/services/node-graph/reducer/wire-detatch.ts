@@ -2,9 +2,9 @@ import pick from "lodash/pick";
 
 import { isDetatchWireAction } from "@/actions/wire-detatch";
 
-import { createCircuitGraphReducer } from "../utils";
+import { createNodeGraphReducer } from "../utils";
 
-export default createCircuitGraphReducer((state, action) => {
+export default createNodeGraphReducer((state, action) => {
   if (!isDetatchWireAction(action)) {
     return state;
   }

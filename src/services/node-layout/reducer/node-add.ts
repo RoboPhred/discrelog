@@ -3,9 +3,9 @@ import { fpSet } from "@/utils";
 import { ZeroPoint } from "@/geometry";
 import { isAddNodeAction } from "@/actions/node-add";
 
-import { createCircuitLayoutReducer } from "../utils";
+import { createNodeLayoutReducer } from "../utils";
 
-export default createCircuitLayoutReducer((state, action) => {
+export default createNodeLayoutReducer((state, action) => {
   if (!isAddNodeAction(action)) {
     return state;
   }

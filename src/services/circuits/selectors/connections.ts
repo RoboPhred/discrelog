@@ -3,7 +3,7 @@ import { includes } from "lodash";
 
 import { AppState } from "@/store";
 
-import { Connection } from "@/services/circuit-graph/types";
+import { Connection } from "@/services/node-graph/types";
 
 import { nodeIdsByCircuitIdSelector } from "./nodes";
 
@@ -17,7 +17,7 @@ import { nodeIdsByCircuitIdSelector } from "./nodes";
 export const connectionIdsByCircuitIdSelector = createSelector(
   (state: AppState, circuitId: string) =>
     nodeIdsByCircuitIdSelector(state, circuitId),
-  (state: AppState) => state.services.circuitGraph.connectionsById,
+  (state: AppState) => state.services.nodeGraph.connectionsById,
   (nodeIds: string[], connectionsById: Record<string, Connection>) => {
     return Object.keys(connectionsById).filter((connectionId) => {
       const { inputPin, outputPin } = connectionsById[connectionId];

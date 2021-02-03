@@ -1,7 +1,7 @@
 import { NodeType } from "@/nodes";
 import { Point } from "@/geometry";
 
-import { NodePin } from "../circuit-graph/types";
+import { NodePin } from "../node-graph/types";
 
 export interface ClipboardNode {
   id: string;

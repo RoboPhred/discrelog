@@ -1,12 +1,12 @@
-import { CircuitGraphState } from "../state";
+import { NodeGraphState } from "../state";
 import { NodePin } from "../types";
-import { createCircuitGraphSelector } from "../utils";
+import { createNodeGraphSelector } from "../utils";
 
 import { connectionsSelector } from "./connections";
 import { nodeDefFromNodeIdSelector } from "./nodes";
 
-export const pinDirectionFromNodePinSelector = createCircuitGraphSelector(
-  (s: CircuitGraphState, nodeId: string, pinId: string) => {
+export const pinDirectionFromNodePinSelector = createNodeGraphSelector(
+  (s: NodeGraphState, nodeId: string, pinId: string) => {
     const def = nodeDefFromNodeIdSelector.local(s, nodeId);
     if (!def) {
       return null;
@@ -25,8 +25,8 @@ export const pinDirectionFromNodePinSelector = createCircuitGraphSelector(
  *
  * WARN: Not react safe.  For reducer use only
  */
-export const nodeOutputSourcesByPinIdFromNodeIdSelector = createCircuitGraphSelector(
-  (state: CircuitGraphState, nodeId: string) => {
+export const nodeOutputSourcesByPinIdFromNodeIdSelector = createNodeGraphSelector(
+  (state: NodeGraphState, nodeId: string) => {
     const connections = connectionsSelector.local(state);
     const nodeDef = nodeDefFromNodeIdSelector.local(state, nodeId);
 

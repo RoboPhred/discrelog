@@ -4,11 +4,11 @@ import { reducerPriority, PRIORITY_PRE } from "@/store/priorities";
 
 import { isAddNodeAction } from "@/actions/node-add";
 
-import { createCircuitGraphReducer } from "../utils";
+import { createNodeGraphReducer } from "../utils";
 
 export default reducerPriority(
   PRIORITY_PRE,
-  createCircuitGraphReducer((state, action: AnyAction) => {
+  createNodeGraphReducer((state, action: AnyAction) => {
     if (!isAddNodeAction(action)) {
       return state;
     }

@@ -6,9 +6,9 @@ import values from "lodash/values";
 
 import { createSelector } from "reselect";
 
-import { nodeTypesByNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
+import { nodeTypesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 import { nodeStatesByNodeIdSelector } from "@/services/simulator/selectors/nodes";
-import { nodePositionsByNodeIdSelector } from "@/services/circuit-layout/selectors/node-positions";
+import { nodePositionsByNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 import { dragMoveOffsetSelector } from "@/services/circuit-editor-ui/selectors/drag";
 

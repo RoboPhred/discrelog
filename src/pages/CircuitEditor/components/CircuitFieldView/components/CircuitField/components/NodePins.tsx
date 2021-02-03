@@ -2,7 +2,7 @@ import * as React from "react";
 
 import useSelector from "@/hooks/useSelector";
 
-import { nodeDefFromNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
+import { nodeDefFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 
 import NodePin from "./NodePin";
 

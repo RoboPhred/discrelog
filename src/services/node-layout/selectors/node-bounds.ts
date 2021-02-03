@@ -6,7 +6,7 @@ import mapValues from "lodash/mapValues";
 import { NodeDefinitionsByType } from "@/nodes";
 import { normalizeRectangle } from "@/geometry";
 
-import { nodeTypesByNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
+import { nodeTypesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 
 import { nodePositionsByNodeIdSelector } from "./node-positions";
 

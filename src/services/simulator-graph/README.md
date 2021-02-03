@@ -1,6 +1,6 @@
 # Simulator Graph Service
 
-This service is responsible for taking the circuit as defined in the [Circuit Graph Service](../circuit-graph) and producing a purely element-based graph suitable for simulation.
+This service is responsible for taking the circuit as defined in the [Circuit Graph Service](../node-graph) and producing a purely element-based graph suitable for simulation.
 
 ## Responsibilities
 

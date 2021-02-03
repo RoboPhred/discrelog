@@ -3,7 +3,7 @@ import * as React from "react";
 import { cls } from "@/utils";
 import useSelector from "@/hooks/useSelector";
 
-import { wireJointIdsFromConnectionIdSelector } from "@/services/circuit-layout/selectors/wires";
+import { wireJointIdsFromConnectionIdSelector } from "@/services/node-layout/selectors/wires";
 import { isWireSelectedFromConnectionIdSelector } from "@/services/selection/selectors/selection";
 import { wireValueFromConnectionIdSelector } from "@/services/simulator/selectors/wires";
 

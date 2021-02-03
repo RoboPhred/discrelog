@@ -1,28 +1,27 @@
 import values from "lodash/values";
 import { createSelector } from "reselect";
 
-import { CircuitGraphState } from "../state";
-import { createCircuitGraphSelector } from "../utils";
+import { NodeGraphState } from "../state";
+import { createNodeGraphSelector } from "../utils";
 
-export const connectionsByIdSelector = createCircuitGraphSelector(
+export const connectionsByIdSelector = createNodeGraphSelector(
   (s) => s.connectionsById
 );
 
-export const connectionIdsSelector = createCircuitGraphSelector(
+export const connectionIdsSelector = createNodeGraphSelector(
   createSelector(
     (s) => s.connectionsById,
     (connectionsById) => Object.keys(connectionsById)
   )
 );
 
-export const connectionFromConnectionIdSelector = createCircuitGraphSelector(
-  (s: CircuitGraphState, connectionId: string) =>
-    s.connectionsById[connectionId]
+export const connectionFromConnectionIdSelector = createNodeGraphSelector(
+  (s: NodeGraphState, connectionId: string) => s.connectionsById[connectionId]
 );
 
-export const connectionsSelector = createCircuitGraphSelector(
+export const connectionsSelector = createNodeGraphSelector(
   createSelector(
-    (state: CircuitGraphState) => state.connectionsById,
+    (state: NodeGraphState) => state.connectionsById,
     (connectionsById) => values(connectionsById)
   )
 );
@@ -31,8 +30,8 @@ export const connectionsSelector = createCircuitGraphSelector(
  * Gets all wire ids supplying input to the specified node.
  * WARN: Not react safe.  For reducer use only.
  */
-export const nodeInputConnectionIdsFromNodeIdSelector = createCircuitGraphSelector(
-  (state: CircuitGraphState, nodeId: string) =>
+export const nodeInputConnectionIdsFromNodeIdSelector = createNodeGraphSelector(
+  (state: NodeGraphState, nodeId: string) =>
     Object.keys(state.connectionsById).filter(
       (connectionId) =>
         state.connectionsById[connectionId].inputPin.nodeId === nodeId
@@ -43,8 +42,8 @@ export const nodeInputConnectionIdsFromNodeIdSelector = createCircuitGraphSelect
  * Gets an array of wire ids leaving the given node.
  * WARN: Not react safe.  For reducer use only.
  */
-export const nodeOutputConnectionIdsFromNodeIdSelector = createCircuitGraphSelector(
-  (state: CircuitGraphState, nodeId: string) =>
+export const nodeOutputConnectionIdsFromNodeIdSelector = createNodeGraphSelector(
+  (state: NodeGraphState, nodeId: string) =>
     Object.keys(state.connectionsById).filter(
       (connectionId) =>
         state.connectionsById[connectionId].outputPin.nodeId === nodeId

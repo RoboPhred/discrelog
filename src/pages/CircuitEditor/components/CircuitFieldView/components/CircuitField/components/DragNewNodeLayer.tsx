@@ -10,7 +10,7 @@ import {
   dragEndSelector,
 } from "@/services/circuit-editor-ui/selectors/drag";
 
-import { fieldRectSelector } from "@/services/circuit-layout/selectors/field";
+import { fieldRectSelector } from "@/services/node-layout/selectors/field";
 
 import { fieldDragContinue } from "@/actions/field-drag-continue";
 

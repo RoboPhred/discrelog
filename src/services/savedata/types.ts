@@ -3,7 +3,7 @@ import * as yup from "yup";
 import { NodeType } from "@/nodes";
 import { Point, pointSchema } from "@/geometry";
 
-import { NodePin, nodePinSchema } from "../circuit-graph/types";
+import { NodePin, nodePinSchema } from "../node-graph/types";
 
 export interface SaveNode {
   nodeId: string;

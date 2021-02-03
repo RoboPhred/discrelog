@@ -3,34 +3,34 @@ import mapValues from "lodash/mapValues";
 
 import { NodeDefinitionsByType } from "@/nodes";
 
-import { createCircuitGraphSelector } from "../utils";
-import { CircuitGraphState } from "../state";
+import { createNodeGraphSelector } from "../utils";
+import { NodeGraphState } from "../state";
 import { Node } from "../types";
 
-export const nodesByNodeIdSelector = createCircuitGraphSelector(
+export const nodesByNodeIdSelector = createNodeGraphSelector(
   (s) => s.nodesById
 );
 
-export const nodeIdsSelector = createCircuitGraphSelector(
+export const nodeIdsSelector = createNodeGraphSelector(
   createSelector(
     nodesByNodeIdSelector.local,
     (nodesById: Record<string, Node>) => Object.keys(nodesById)
   )
 );
 
-export const nodeTypesByNodeIdSelector = createCircuitGraphSelector(
+export const nodeTypesByNodeIdSelector = createNodeGraphSelector(
   createSelector(
     nodesByNodeIdSelector.local,
     (nodesById: Record<string, Node>) => mapValues(nodesById, (x) => x.nodeType)
   )
 );
 
-export const nodeFromNodeIdSelector = createCircuitGraphSelector(
-  (s: CircuitGraphState, nodeId: string) => s.nodesById[nodeId] || null
+export const nodeFromNodeIdSelector = createNodeGraphSelector(
+  (s: NodeGraphState, nodeId: string) => s.nodesById[nodeId] || null
 );
 
-export const nodeTypeFromNodeIdSelector = createCircuitGraphSelector(
-  (s: CircuitGraphState, nodeId: string) => {
+export const nodeTypeFromNodeIdSelector = createNodeGraphSelector(
+  (s: NodeGraphState, nodeId: string) => {
     const node = nodeFromNodeIdSelector.local(s, nodeId);
     if (!node) {
       return null;
@@ -39,8 +39,8 @@ export const nodeTypeFromNodeIdSelector = createCircuitGraphSelector(
   }
 );
 
-export const nodeDefFromNodeIdSelector = createCircuitGraphSelector(
-  (s: CircuitGraphState, nodeId: string) => {
+export const nodeDefFromNodeIdSelector = createNodeGraphSelector(
+  (s: NodeGraphState, nodeId: string) => {
     const nodeType = nodeTypeFromNodeIdSelector.local(s, nodeId);
     if (!nodeType) {
       return null;

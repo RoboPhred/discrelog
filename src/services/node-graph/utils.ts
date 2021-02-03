@@ -4,14 +4,12 @@ import {
   createServiceReducerCreator,
   createServiceSelectorCreator,
 } from "../service-state-utils";
-import { CircuitGraphState } from "./state";
+import { NodeGraphState } from "./state";
 import { NodePin, Connection } from "./types";
 
-export const createCircuitGraphReducer = createServiceReducerCreator(
-  "circuitGraph"
-);
-export const createCircuitGraphSelector = createServiceSelectorCreator(
-  "circuitGraph"
+export const createNodeGraphReducer = createServiceReducerCreator("nodeGraph");
+export const createNodeGraphSelector = createServiceSelectorCreator(
+  "nodeGraph"
 );
 
 /**
@@ -21,7 +19,7 @@ export const createCircuitGraphSelector = createServiceSelectorCreator(
  * Does not check to see if the pins are already connected, or other connections prevent this connection from forming.
  */
 export function pinsToConnection(
-  state: CircuitGraphState,
+  state: NodeGraphState,
   p1: NodePin,
   p2: NodePin
 ): Connection | null {

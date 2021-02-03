@@ -7,9 +7,9 @@ import { PRIORITY_PRE, reducerPriority } from "@/store/priorities";
 import { isStartSimAction } from "@/actions/sim-start";
 
 import { nodeIdsByCircuitIdSelector } from "@/services/circuits/selectors/nodes";
-import { Node, Connection, NodePin } from "@/services/circuit-graph/types";
-import { connectionsByIdSelector } from "@/services/circuit-graph/selectors/connections";
-import { nodesByNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
+import { Node, Connection, NodePin } from "@/services/node-graph/types";
+import { connectionsByIdSelector } from "@/services/node-graph/selectors/connections";
+import { nodesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 
 import { createSimulatorGraphReducer } from "../utils";
 import { SimulatorNode, SimulatorNodePin } from "../types";

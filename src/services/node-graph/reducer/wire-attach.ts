@@ -2,10 +2,10 @@ import find from "lodash/find";
 
 import { isAttachWireAction } from "@/actions/wire-attach";
 
-import { createCircuitGraphReducer, pinsToConnection } from "../utils";
+import { createNodeGraphReducer, pinsToConnection } from "../utils";
 import { nodePinEquals } from "../types";
 
-export default createCircuitGraphReducer((state, action) => {
+export default createNodeGraphReducer((state, action) => {
   if (!isAttachWireAction(action)) {
     return state;
   }
