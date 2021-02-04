@@ -115,6 +115,10 @@ export const jointIdsSelector = createNodeLayoutSelector(
   (state: NodeLayoutState) => Object.keys(state.wireJointPositionsByJointId)
 );
 
+export const wireJointIdsByConnectionIdSelector = createNodeLayoutSelector(
+  (state) => state.wireJointIdsByConnectionId
+);
+
 export const wireJointIdsFromConnectionIdSelector = createNodeLayoutSelector(
   (state: NodeLayoutState, connectionId: string) =>
     state.wireJointIdsByConnectionId[connectionId]
