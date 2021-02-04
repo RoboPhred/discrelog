@@ -1,6 +1,5 @@
 import { AppState } from "@/store";
 import { Point, pointAdd, ZeroPoint } from "@/geometry";
-import { NodeType, NodeDefinitionsByType } from "@/nodes";
 
 import {
   nodeDefFromNodeIdSelector,
@@ -11,9 +10,10 @@ import { createNodeLayoutSelector } from "../utils";
 import { NodeLayoutState } from "../state";
 
 import { nodePositionFromNodeIdSelector } from "./node-positions";
+import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/node-types";
 
 interface PositionCache {
-  inputNodeType: NodeType;
+  inputNodeType: string;
   inputNodePosition: Point;
   outputPosition: Point;
 }
@@ -53,7 +53,7 @@ export const wireStartPositionFromConnectionIdSelector = (
     return cacheData.outputPosition;
   }
 
-  const nodeDef = NodeDefinitionsByType[nodeType];
+  const nodeDef = nodeDefinitionFromTypeSelector(state, nodeType);
 
   let offset = ZeroPoint;
   if (nodeDef && nodeDef.pins[pinId]) {
@@ -96,7 +96,7 @@ export const wireEndPositionFromConnectionIdSelector = (
     return cacheData.outputPosition;
   }
 
-  const nodeDef = NodeDefinitionsByType[nodeType];
+  const nodeDef = nodeDefinitionFromTypeSelector(state, nodeType);
 
   let offset = ZeroPoint;
   if (nodeDef && nodeDef.pins[pinId]) {

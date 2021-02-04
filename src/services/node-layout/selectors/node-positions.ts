@@ -2,13 +2,13 @@ import { createSelector } from "reselect";
 
 import { AppState } from "@/store";
 
-import { NodeDefinitionsByType, NodeType } from "@/nodes";
 import { Point, pointAdd, ZeroPoint } from "@/geometry";
 
 import { nodeTypesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 
 import { createNodeLayoutSelector } from "../utils";
 import { NodeLayoutState } from "../state";
+import { nodeDefinitionsByTypeSelector } from "@/services/node-types/selectors/node-types";
 
 export const nodePositionsByNodeIdSelector = createNodeLayoutSelector(
   (state) => state.nodePositionsById
@@ -19,12 +19,10 @@ export const nodePositionFromNodeIdSelector = createNodeLayoutSelector(
 );
 
 export const nodePinPositionsByPinIdByNodeIdSelector = createSelector(
+  nodeDefinitionsByTypeSelector,
   nodePositionsByNodeIdSelector,
   nodeTypesByNodeIdSelector,
-  (
-    nodePositionsByNodeId: Record<string, Point>,
-    nodeTypesByNodeId: Record<string, NodeType>
-  ) => {
+  (nodeDefsByType, nodePositionsByNodeId, nodeTypesByNodeId) => {
     const nodePinPositionsByPinIdByNodeId: Record<
       string,
       Record<string, Point>
@@ -41,7 +39,7 @@ export const nodePinPositionsByPinIdByNodeIdSelector = createSelector(
       if (!elementType) {
         continue;
       }
-      const def = NodeDefinitionsByType[elementType];
+      const def = nodeDefsByType[elementType];
       if (!def) {
         continue;
       }

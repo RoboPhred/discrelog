@@ -3,18 +3,19 @@ import getBounds from "svg-path-bounds";
 
 import mapValues from "lodash/mapValues";
 
-import { NodeDefinitionsByType } from "@/nodes";
 import { normalizeRectangle } from "@/geometry";
 
 import { nodeTypesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
+import { nodeDefinitionsByTypeSelector } from "@/services/node-types/selectors/node-types";
 
 import { nodePositionsByNodeIdSelector } from "./node-positions";
 
 export const nodeBoundsByIdSelector = createSelector(
+  nodeDefinitionsByTypeSelector,
   nodeTypesByNodeIdSelector,
-  (elementTypesByNodeId) =>
+  (nodeDefsByType, elementTypesByNodeId) =>
     mapValues(elementTypesByNodeId, (elementType, id) => {
-      const def = NodeDefinitionsByType[elementType];
+      const def = nodeDefsByType[elementType];
       if (!def) {
         return [0, 0, 0, 0];
       }

@@ -1,7 +1,7 @@
 import get from "lodash/get";
 import { v4 as uuidV4 } from "uuid";
 
-import { NodeDefinitionsByType } from "@/nodes";
+import { AppState } from "@/store";
 import { PRIORITY_PRE, reducerPriority } from "@/store/priorities";
 
 import { isStartSimAction } from "@/actions/sim-start";
@@ -10,6 +10,7 @@ import { nodeIdsByCircuitIdSelector } from "@/services/circuits/selectors/nodes"
 import { Node, Connection, NodePin } from "@/services/node-graph/types";
 import { connectionsByIdSelector } from "@/services/node-graph/selectors/connections";
 import { nodesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
+import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/node-types";
 
 import { createSimulatorGraphReducer } from "../utils";
 import { SimulatorNode, SimulatorNodePin } from "../types";
@@ -34,7 +35,8 @@ export default reducerPriority(
     const graph = produceCircuitNodes(
       rootCircuitNodeIds,
       circuitNodesById,
-      circuitConnectionsById
+      circuitConnectionsById,
+      rootState
     );
 
     return {
@@ -52,7 +54,8 @@ type SimulatorGraph = Pick<
 function produceCircuitNodes(
   circuitNodeIds: string[],
   circuitNodesById: Record<string, Node>,
-  circuitConnectionsById: Record<string, Connection>
+  circuitConnectionsById: Record<string, Connection>,
+  rootState: AppState
 ): SimulatorGraph {
   const simulatorNodesById: Record<string, SimulatorNode> = {};
   const simulatorNodeIdsByCircuitNodeId: Record<string, string> = {};
@@ -96,7 +99,12 @@ function produceCircuitNodes(
   // Create the nodes.
   for (const circuitNodeId of circuitNodeIds) {
     const { nodeType } = circuitNodesById[circuitNodeId];
-    const { elementProduction, pins } = NodeDefinitionsByType[nodeType];
+
+    const def = nodeDefinitionFromTypeSelector(rootState, nodeType);
+    if (!def) {
+      continue;
+    }
+    const { elementProduction, pins } = def;
 
     // TODO: Turn production into one or more elements.
     //  Recurse into circuits if this is a circuit node.

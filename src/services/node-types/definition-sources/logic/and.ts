@@ -1,11 +1,11 @@
-import { createShapePathNode } from "../components/ShapePathNode";
+import { createShapePathNode } from "../../components/ShapePathNode";
 
-import { NodeDefinition } from "../types";
+import { NodeDefinition } from "../../types";
 
 // Shape path from https://commons.wikimedia.org/wiki/File:AND_ANSI.svg
 
 const andNodeDefinition: NodeDefinition = {
-  type: "and",
+  type: "logic-and",
   elementProduction: "and",
   visual: {
     hitPath: `

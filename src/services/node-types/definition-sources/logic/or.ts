@@ -1,5 +1,5 @@
-import { createShapePathNode } from "../components/ShapePathNode";
-import { NodeDefinition } from "../types";
+import { createShapePathNode } from "../../components/ShapePathNode";
+import { NodeDefinition } from "../../types";
 
 // Shape path from https://commons.wikimedia.org/wiki/File:OR_ANSI.svg
 

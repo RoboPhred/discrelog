@@ -2,24 +2,26 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 
 import { typedKeys } from "@/utils";
-import {
-  NodeComponentType,
-  NodeDefinitionsByType,
-  NodeType,
-  LargestNodeSize,
-} from "@/nodes";
 
 import useMouseTracking from "@/hooks/useMouseTracking";
+
+import {
+  nodeDefinitionFromTypeSelector,
+  nodeDefinitionsSelector,
+} from "@/services/node-types/selectors/node-types";
+import { NodeComponentType } from "@/services/node-types/types/visual";
 
 import { addNode } from "@/actions/node-add";
 import { fieldDragStartNewNode } from "@/actions/field-drag-start-newnode";
 import { fieldDragEnd } from "@/actions/field-drag-end";
 
 import styles from "./NodeTray.module.css";
+import useSelector from "@/hooks/useSelector";
 
 const NodeTray: React.FC = () => {
-  const nodes = typedKeys(NodeDefinitionsByType).map((type) => {
-    return <TrayNode key={type} nodeType={type} />;
+  const nodeDefinitions = useSelector(nodeDefinitionsSelector);
+  const nodes = nodeDefinitions.map((def) => {
+    return <TrayNode key={def.type} nodeType={def.type} />;
   });
 
   return (
@@ -31,7 +33,7 @@ const NodeTray: React.FC = () => {
 export default NodeTray;
 
 interface TrayNodeProps {
-  nodeType: NodeType;
+  nodeType: string;
 }
 const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
   const dispatch = useDispatch();
@@ -65,7 +67,10 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
     startTracking(e);
   }, []);
 
-  const def = NodeDefinitionsByType[nodeType];
+  const def = useSelector((state) =>
+    nodeDefinitionFromTypeSelector(state, nodeType)
+  );
+
   let NodeComponent: NodeComponentType;
   if (def) {
     NodeComponent = def.visual.component;
@@ -75,7 +80,8 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
 
   return (
     <div onMouseDown={onMouseDown}>
-      <svg width={LargestNodeSize.width} height={LargestNodeSize.height}>
+      {/* FIXME: Settle on a decent size and shrink overly large nodes to fit */}
+      <svg width={75} height={75}>
         <NodeComponent elementState={{}} />
       </svg>
     </div>

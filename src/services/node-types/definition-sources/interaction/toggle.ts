@@ -1,10 +1,10 @@
 import { ToggleElementState } from "@/elements";
 
-import { createShapePathNode } from "../components/ShapePathNode";
-import { NodeDefinition } from "../types";
+import { createShapePathNode } from "../../components/ShapePathNode";
+import { NodeDefinition } from "../../types";
 
 const toggleElementDefinition: NodeDefinition = {
-  type: "toggle",
+  type: "interaction-toggle",
   elementProduction: "toggle",
   visual: {
     hitPath: `M5,5 L45,5 L45,45 L5,45 z`,

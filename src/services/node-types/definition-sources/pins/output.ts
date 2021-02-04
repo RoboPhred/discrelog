@@ -1,5 +1,5 @@
-import { createShapePathNode } from "../components/ShapePathNode";
-import { NodeDefinition } from "../types";
+import { createShapePathNode } from "../../components/ShapePathNode";
+import { NodeDefinition } from "../../types";
 
 const pinOutputElementDefinition: NodeDefinition = {
   type: "pin-output",

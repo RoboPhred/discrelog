@@ -1,13 +1,12 @@
 import * as yup from "yup";
 
-import { NodeType } from "@/nodes";
 import { Point, pointSchema } from "@/geometry";
 
 import { NodePin, nodePinSchema } from "../node-graph/types";
 
 export interface SaveNode {
   nodeId: string;
-  nodeType: NodeType;
+  nodeType: string;
   x: number;
   y: number;
 }

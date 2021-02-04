@@ -1,10 +1,10 @@
-import { createShapePathNode } from "../components/ShapePathNode";
-import { NodeDefinition } from "../types";
+import { createShapePathNode } from "../../components/ShapePathNode";
+import { NodeDefinition } from "../../types";
 
 // Shape path from https://commons.wikimedia.org/wiki/File:NOR_ANSI.svg
 
 const norNodeDefinition: NodeDefinition = {
-  type: "nor",
+  type: "logic-nor",
   elementProduction: "nor",
   visual: {
     hitPath: `

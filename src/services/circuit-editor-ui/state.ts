@@ -1,4 +1,3 @@
-import { NodeType } from "@/nodes";
 import { Point } from "@/geometry";
 import { NodePin } from "../node-graph/types";
 import { ROOT_CIRCUIT_ID } from "../circuits/constants";
@@ -31,7 +30,7 @@ export interface CircuitEditorUiState {
   /**
    * If dragMode is "new-node", this holds the node type being created.
    */
-  dragNewNodeType: NodeType | null;
+  dragNewNodeType: string | null;
   /**
    * If drag mode is "wire", this is the source pin being wired by the drag.
    */

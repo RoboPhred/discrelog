@@ -5,13 +5,13 @@ import { isAttachWireAction } from "@/actions/wire-attach";
 import { createNodeGraphReducer, pinsToConnection } from "../utils";
 import { nodePinEquals } from "../types";
 
-export default createNodeGraphReducer((state, action) => {
+export default createNodeGraphReducer((state, action, rootState) => {
   if (!isAttachWireAction(action)) {
     return state;
   }
 
   const { connectionId, p1, p2 } = action.payload;
-  const conn = pinsToConnection(state, p1, p2);
+  const conn = pinsToConnection(state, p1, p2, rootState);
   if (!conn) {
     return state;
   }

@@ -1,7 +1,8 @@
 import * as React from "react";
 
 import { PinDirection } from "@/logic";
-import { NodeType, NodeDefinitionsByType } from "@/nodes";
+import useSelector from "@/hooks/useSelector";
+import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/node-types";
 
 export interface RenderPinProps {
   id: string;
@@ -12,7 +13,7 @@ export interface RenderPinProps {
 export interface NodeVisualProps {
   x?: number;
   y?: number;
-  nodeType: NodeType;
+  nodeType: string;
   nodeState: any;
   isSelected?: boolean;
   renderPin?(props: RenderPinProps): React.ReactElement<any>;
@@ -36,7 +37,9 @@ const NodeVisual: React.FC<NodeVisualProps> = ({
   onMouseUp,
   onMouseLeave,
 }) => {
-  const def = NodeDefinitionsByType[nodeType];
+  const def = useSelector((state) =>
+    nodeDefinitionFromTypeSelector(state, nodeType)
+  );
 
   let body: React.ReactNode;
   let hitPath: string | undefined;

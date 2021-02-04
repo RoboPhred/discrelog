@@ -1,9 +1,12 @@
-import { NodeDefinitionsByType } from "@/nodes";
+import { AppState } from "@/store";
+
+import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/node-types";
 
 import {
   createServiceReducerCreator,
   createServiceSelectorCreator,
 } from "../service-state-utils";
+
 import { NodeGraphState } from "./state";
 import { NodePin, Connection } from "./types";
 
@@ -21,7 +24,8 @@ export const createNodeGraphSelector = createServiceSelectorCreator(
 export function pinsToConnection(
   state: NodeGraphState,
   p1: NodePin,
-  p2: NodePin
+  p2: NodePin,
+  rootState: AppState
 ): Connection | null {
   const p1Node = state.nodesById[p1.nodeId];
   const p2Node = state.nodesById[p2.nodeId];
@@ -30,8 +34,8 @@ export function pinsToConnection(
     return null;
   }
 
-  const p1Def = NodeDefinitionsByType[p1Node.nodeType];
-  const p2Def = NodeDefinitionsByType[p2Node.nodeType];
+  const p1Def = nodeDefinitionFromTypeSelector(rootState, p1Node.nodeType);
+  const p2Def = nodeDefinitionFromTypeSelector(rootState, p2Node.nodeType);
 
   if (!p1Def || !p2Def) {
     return null;

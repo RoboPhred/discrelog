@@ -1,9 +1,7 @@
 import * as yup from "yup";
 
-import { NodeType } from "@/nodes";
-
 export interface Node {
-  nodeType: NodeType;
+  nodeType: string;
 }
 
 /**

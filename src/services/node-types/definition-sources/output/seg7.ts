@@ -1,5 +1,8 @@
-import { createShapePathNode } from "../components/ShapePathNode";
-import { NodeDefinition, NodeVisualPathDefinition } from "../types";
+import {
+  createShapePathNode,
+  NodeVisualPathDefinition,
+} from "../../components/ShapePathNode";
+import { NodeDefinition } from "../../types";
 
 // Shape path from https://commons.wikimedia.org/wiki/File:7-segment_abcdefg.svg
 
@@ -30,7 +33,7 @@ function createSeg(
 }
 
 const seg7ElementDefinition: NodeDefinition = {
-  type: "seg7",
+  type: "output-seg7",
   elementProduction: "seg7",
   visual: {
     hitPath: `M0,0 V63 H45 V0 z`,
