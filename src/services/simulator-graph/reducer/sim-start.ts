@@ -1,20 +1,14 @@
 import { v4 as uuidV4 } from "uuid";
 import merge from "lodash/merge";
-import first from "lodash/first";
 import get from "lodash/get";
 
+import { AppState } from "@/store";
 import { PRIORITY_PRE, reducerPriority } from "@/store/priorities";
+
 import { isStartSimAction } from "@/actions/sim-start";
 
-import { createSimulatorGraphReducer } from "../utils";
-import { AppState } from "@/store";
-import { SimulatorGraphState } from "../state";
-import { SimulatorNode, SimulatorNodePin } from "../types";
 import { nodeIdsFromCircuitIdSelector } from "@/services/circuits/selectors/nodes";
-import {
-  nodesByNodeIdSelector,
-  nodeTypeFromNodeIdSelector,
-} from "@/services/node-graph/selectors/nodes";
+import { nodeTypeFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 import { connectionsByIdSelector } from "@/services/node-graph/selectors/connections";
 import {
   CircuitNodeElementProduction,
@@ -24,6 +18,10 @@ import {
 } from "@/services/node-types/types/element-production";
 import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/node-types";
 import { nodeDefFromNodeIdSelector } from "@/services/node-graph/selectors/node-def";
+
+import { createSimulatorGraphReducer } from "../utils";
+import { SimulatorGraphState } from "../state";
+import { SimulatorNode, SimulatorNodePin } from "../types";
 
 // This must run before simulator/reducer/sim-start, as we need to build up the graph before it can
 // run the first tick.
