@@ -65,6 +65,10 @@ const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
 
         const def: NodeDefinition = {
           type: `ic-${nodeId}`,
+          elementProduction: {
+            type: "circuit",
+            circuitId,
+          },
           visual: {
             hitPath: "M10,10 H40 V40 H10 V10 z",
             component,
@@ -79,5 +83,5 @@ const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
 export default [IntegratedCircuitDefinitionSource];
 
 function nameToId(name: string) {
-  return name.replace(/[\w]/g, "-").toLowerCase();
+  return name.replace(/[\s]/g, "-").toLowerCase();
 }

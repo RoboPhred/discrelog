@@ -14,7 +14,7 @@ const pinOutputElementDefinition: NodeDefinition = {
     ]),
   },
   pins: {
-    OUT: {
+    IN: {
       direction: "input",
       x: 10,
       y: 25,

@@ -14,7 +14,8 @@ export interface CircuitNodeElementProduction {
   circuitId: string;
 }
 
-export type NodeElementProduction =
-  | ElementType
+export type NodeElementProductionObject =
   | ElementNodeElementProduction
   | CircuitNodeElementProduction;
+
+export type NodeElementProduction = ElementType | NodeElementProductionObject;
