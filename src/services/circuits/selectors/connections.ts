@@ -5,7 +5,7 @@ import { AppState } from "@/store";
 
 import { Connection } from "@/services/node-graph/types";
 
-import { nodeIdsByCircuitIdSelector } from "./nodes";
+import { nodeIdsFromCircuitIdSelector } from "./nodes";
 
 /**
  * Get all connection ids for the given circuit id.
@@ -16,7 +16,7 @@ import { nodeIdsByCircuitIdSelector } from "./nodes";
  */
 export const connectionIdsByCircuitIdSelector = createSelector(
   (state: AppState, circuitId: string) =>
-    nodeIdsByCircuitIdSelector(state, circuitId),
+    nodeIdsFromCircuitIdSelector(state, circuitId),
   (state: AppState) => state.services.nodeGraph.connectionsById,
   (nodeIds: string[], connectionsById: Record<string, Connection>) => {
     return Object.keys(connectionsById).filter((connectionId) => {

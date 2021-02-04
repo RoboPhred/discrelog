@@ -3,7 +3,7 @@ import { AppState } from "@/store";
 import { NodePin } from "../types";
 
 import { connectionsSelector } from "./connections";
-import { nodeDefFromNodeIdSelector } from "./nodes";
+import { nodeDefFromNodeIdSelector } from "./node-def";
 
 export const pinDirectionFromNodePinSelector = (
   state: AppState,

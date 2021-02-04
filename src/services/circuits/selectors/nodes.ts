@@ -1,6 +1,10 @@
 import { createCircuitsSelector } from "../utils";
 
-export const nodeIdsByCircuitIdSelector = createCircuitsSelector<
+export const nodeIdsByCircuitIdSelector = createCircuitsSelector(
+  (state) => state.nodeIdsByCircuitId
+);
+
+export const nodeIdsFromCircuitIdSelector = createCircuitsSelector<
   string,
   string[]
 >((state, circuitId: string) => state.nodeIdsByCircuitId[circuitId]);

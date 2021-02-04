@@ -1,10 +1,7 @@
 import { AppState } from "@/store";
 import { Point, pointAdd, ZeroPoint } from "@/geometry";
 
-import {
-  nodeDefFromNodeIdSelector,
-  nodeTypeFromNodeIdSelector,
-} from "@/services/node-graph/selectors/nodes";
+import { nodeTypeFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 
 import { createNodeLayoutSelector } from "../utils";
 import { NodeLayoutState } from "../state";

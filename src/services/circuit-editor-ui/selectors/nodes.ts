@@ -1,13 +1,13 @@
 import { AppState } from "@/store";
 
-import { nodeIdsByCircuitIdSelector } from "@/services/circuits/selectors/nodes";
+import { nodeIdsFromCircuitIdSelector } from "@/services/circuits/selectors/nodes";
 import { connectionIdsByCircuitIdSelector } from "@/services/circuits/selectors/connections";
 
 import { editingCircuitIdSelector } from "./circuit";
 
 export const nodeIdsForEditingCircuitSelector = (state: AppState) => {
   const editingCircuitId = editingCircuitIdSelector(state);
-  const nodeIds = nodeIdsByCircuitIdSelector(state, editingCircuitId);
+  const nodeIds = nodeIdsFromCircuitIdSelector(state, editingCircuitId);
   return nodeIds;
 };
 

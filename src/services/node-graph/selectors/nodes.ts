@@ -3,8 +3,6 @@ import mapValues from "lodash/mapValues";
 
 import { AppState } from "@/store";
 
-import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/node-types";
-
 import { createNodeGraphSelector } from "../utils";
 import { NodeGraphState } from "../state";
 import { Node } from "../types";
@@ -40,14 +38,3 @@ export const nodeTypeFromNodeIdSelector = createNodeGraphSelector(
     return node.nodeType;
   }
 );
-
-export const nodeDefFromNodeIdSelector = (state: AppState, nodeId: string) => {
-  const nodeType = nodeTypeFromNodeIdSelector(state, nodeId);
-  if (!nodeType) {
-    return null;
-  }
-
-  const def = nodeDefinitionFromTypeSelector(state, nodeType);
-
-  return def;
-};

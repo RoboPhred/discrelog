@@ -6,7 +6,7 @@ import { PRIORITY_PRE, reducerPriority } from "@/store/priorities";
 
 import { isStartSimAction } from "@/actions/sim-start";
 
-import { nodeIdsByCircuitIdSelector } from "@/services/circuits/selectors/nodes";
+import { nodeIdsFromCircuitIdSelector } from "@/services/circuits/selectors/nodes";
 import { Node, Connection, NodePin } from "@/services/node-graph/types";
 import { connectionsByIdSelector } from "@/services/node-graph/selectors/connections";
 import { nodesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
@@ -29,7 +29,7 @@ export default reducerPriority(
     // This all needs to be rewritten for multiple elements per node and ICs.
 
     const circuitNodesById = nodesByNodeIdSelector(rootState);
-    const rootCircuitNodeIds = nodeIdsByCircuitIdSelector(rootState, "root");
+    const rootCircuitNodeIds = nodeIdsFromCircuitIdSelector(rootState, "root");
     const circuitConnectionsById = connectionsByIdSelector(rootState);
 
     const graph = produceCircuitNodes(

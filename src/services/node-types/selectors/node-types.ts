@@ -1,11 +1,11 @@
 import flatMap from "lodash/flatMap";
 import find from "lodash/find";
 
+import { asArray, MaybeArray } from "@/arrays";
 import { AppState } from "@/store";
 
 import nodeDefinitionSources from "../definition-sources";
 import { NodeDefinition, NodeDefinitionSource } from "../types";
-import { asArray, MaybeArray } from "@/arrays";
 
 /**
  * Gets an array of node definitions from the current state.
