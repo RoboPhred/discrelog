@@ -40,6 +40,11 @@ export interface SimulatorState {
    * Transition windows in ascending order of tick.
    */
   transitionWindows: SimTransitionWindow[];
+
+  /**
+   * A collection of the most recent milliseconds it has taken to run logic updates.
+   */
+  profilerLogicUpdateMsecs: number;
 }
 
 const _defaultState: SimulatorState = {
@@ -50,6 +55,7 @@ const _defaultState: SimulatorState = {
   nodeOutputValuesByNodeId: {},
   transitionsById: {},
   transitionWindows: [],
+  profilerLogicUpdateMsecs: 0,
 };
 
 export const defaultSimulatorState = Object.freeze(_defaultState);

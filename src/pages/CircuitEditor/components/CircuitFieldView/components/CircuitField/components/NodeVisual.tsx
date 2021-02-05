@@ -4,19 +4,12 @@ import { PinDirection } from "@/logic";
 import useSelector from "@/hooks/useSelector";
 import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/node-types";
 
-export interface RenderPinProps {
-  id: string;
-  direction: PinDirection;
-  x: number;
-  y: number;
-}
 export interface NodeVisualProps {
   x?: number;
   y?: number;
   nodeType: string;
   nodeState: any;
   isSelected?: boolean;
-  renderPin?(props: RenderPinProps): React.ReactElement<any>;
   onClick?(e: React.MouseEvent): void;
   onMouseDown?(e: React.MouseEvent): void;
   onMouseOver?(e: React.MouseEvent): void;
@@ -30,7 +23,6 @@ const NodeVisual: React.FC<NodeVisualProps> = ({
   nodeType,
   nodeState,
   isSelected = false,
-  renderPin,
   onClick,
   onMouseDown,
   onMouseOver,
@@ -60,18 +52,6 @@ const NodeVisual: React.FC<NodeVisualProps> = ({
       <ElementComponent isSelected={isSelected} elementState={nodeState} />
     );
     hitPath = def.visual.hitPath;
-
-    if (renderPin) {
-      pins = Object.keys(def.pins).map((key) => {
-        const pin = def.pins[key];
-        let element = renderPin({
-          id: key,
-          ...pin,
-          ...def.pins[key],
-        });
-        return React.cloneElement(element, { key: `input-${key}` });
-      });
-    }
   }
 
   const transform = x != 0 || y != 0 ? `translate(${x}, ${y})` : undefined;
@@ -87,7 +67,6 @@ const NodeVisual: React.FC<NodeVisualProps> = ({
     >
       {hitPath && <path d={hitPath} fill="transparent" onClick={onClick} />}
       {body}
-      {pins}
     </g>
   );
 };

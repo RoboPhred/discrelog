@@ -51,17 +51,17 @@ const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
           }
         }
 
-        // component: () => (
-        //   <g>
-        //     <path stroke="black" fill="none" d="M10,10 H40 V40 H10 V10 z" />
-        //     <text y={25}>{name}</text>
-        //   </g>
-        // ),
-        const component = createShapePathNode({
-          path: "M10,10 H40 V40 H10 V10 z",
-          fill: "none",
-          stroke: "black",
-        });
+        const component = () => (
+          <g>
+            <path stroke="black" fill="none" d="M10,10 H40 V40 H10 V10 z" />
+            <text y={25}>{name}</text>
+          </g>
+        );
+        // const component = createShapePathNode({
+        //   path: "M10,10 H40 V40 H10 V10 z",
+        //   fill: "none",
+        //   stroke: "black",
+        // });
 
         const def: NodeDefinition = {
           type: `ic-${nodeId}`,

@@ -16,6 +16,8 @@ export default createSimulatorReducer((state, action, appState) => {
     return state;
   }
 
+  const start = performance.now();
+
   const { tickCount } = action.payload;
 
   const endTick = state.tick + tickCount;
@@ -55,6 +57,15 @@ export default createSimulatorReducer((state, action, appState) => {
       tick: endTick,
     };
   }
+
+  const end = performance.now();
+
+  const updateTime = end - start;
+
+  state = {
+    ...state,
+    profilerLogicUpdateMsecs: updateTime,
+  };
 
   return state;
 });
