@@ -2,8 +2,10 @@ import * as React from "react";
 
 import useSelector from "@/hooks/useSelector";
 import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/node-types";
+import { cls } from "@/utils";
 
 export interface NodeVisualProps {
+  className?: string;
   x?: number;
   y?: number;
   nodeType: string;
@@ -17,6 +19,7 @@ export interface NodeVisualProps {
 }
 
 const NodeVisual: React.FC<NodeVisualProps> = ({
+  className,
   x = 0,
   y = 0,
   nodeType,
@@ -34,7 +37,6 @@ const NodeVisual: React.FC<NodeVisualProps> = ({
 
   let body: React.ReactNode;
   let hitPath: string | undefined;
-  let pins: React.ReactNode = null;
   if (!def) {
     body = (
       <rect
@@ -56,7 +58,7 @@ const NodeVisual: React.FC<NodeVisualProps> = ({
   const transform = x != 0 || y != 0 ? `translate(${x}, ${y})` : undefined;
   return (
     <g
-      className="node-visual"
+      className={cls(className, "node-visual", isSelected && "node-selected")}
       transform={transform}
       onClick={onClick}
       onMouseDown={onMouseDown}

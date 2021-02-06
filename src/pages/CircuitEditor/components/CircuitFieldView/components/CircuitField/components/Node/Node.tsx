@@ -19,9 +19,11 @@ import { fieldDragEnd } from "@/actions/field-drag-end";
 import { interactNode } from "@/actions/node-interact";
 import { selectNodes } from "@/actions/select-nodes";
 
-import NodeVisual from "./NodeVisual";
+import NodeVisual from "../NodeVisual";
 
-import { useEventMouseCoords } from "../hooks/useMouseCoords";
+import { useEventMouseCoords } from "../../hooks/useMouseCoords";
+
+import "./Node.module.css";
 
 export interface NodeProps {
   nodeId: string;
@@ -112,6 +114,7 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
 
   return (
     <NodeVisual
+      className="circuit-field-node"
       x={x}
       y={y}
       nodeType={nodeType}
