@@ -8,9 +8,7 @@ const notNodeDefinition: NodeDefinition = {
   type: "logic-not",
   elementProduction: "not",
   visual: {
-    hitPath: `
-    M28.96875 2.59375v44.8125l2.15625-1.0625 41.03125-20v-2.6875l-41.03125-20-2.15625-1.0625z
-    `,
+    hitPath: `M28.96875 2.59375v44.8125l2.15625-1.0625 41.03125-20v-2.6875l-41.03125-20-2.15625-1.0625z`,
     component: () => (
       <g>
         <path
