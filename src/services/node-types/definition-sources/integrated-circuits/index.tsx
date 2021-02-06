@@ -64,7 +64,7 @@ const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
             type: "circuit",
             circuitId,
           },
-          visual: circuitToNodeVisual(inputPinCount, outputPinCount),
+          visual: circuitToNodeVisual(circuitId, inputPinCount, outputPinCount),
           pins,
         };
         return def;
