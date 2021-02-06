@@ -1,17 +1,15 @@
-import pick from "lodash/pick";
-import difference from "lodash/difference";
-import pickBy from "lodash/pickBy";
-
 import { priorityBefore, reducerPriority } from "@/store/priorities";
 
 import { isDeleteCircuitAction } from "@/actions/circuit-delete";
 
 import { nodeIdsFromCircuitIdSelector } from "@/services/circuits/selectors/nodes";
 import circuitsCircuitDeleteReducer from "@/services/circuits/reducer/circuit-delete";
+import { circuitIdToNodeType } from "@/services/node-types/definition-sources/integrated-circuits/utils";
 
-import { Connection } from "../types";
 import { createNodeGraphReducer } from "../utils";
 import { nodeIdsFromTypeSelector } from "../selectors/nodes";
+
+import nodeDelete from "./operations/node-delete";
 
 export default reducerPriority(
   priorityBefore(circuitsCircuitDeleteReducer),
@@ -26,24 +24,11 @@ export default reducerPriority(
 
     const circuitTypeNodeIds = nodeIdsFromTypeSelector(
       rootState,
-      `ic-${circuitId}`
+      circuitIdToNodeType(circuitId)
     );
 
     const nodeIds = [...inCircuitNodeIds, ...circuitTypeNodeIds];
 
-    const remainingNodeIds = difference(Object.keys(state.nodesById), nodeIds);
-
-    function isRemainingConnection(c: Connection) {
-      return (
-        remainingNodeIds.indexOf(c.inputPin.nodeId) !== -1 &&
-        remainingNodeIds.indexOf(c.outputPin.nodeId) !== -1
-      );
-    }
-
-    return {
-      ...state,
-      nodesById: pick(state.nodesById, remainingNodeIds),
-      connectionsById: pickBy(state.connectionsById, isRemainingConnection),
-    };
+    return nodeDelete(state, nodeIds, rootState);
   })
 );

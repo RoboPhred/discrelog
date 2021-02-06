@@ -1,9 +1,13 @@
+import { PinDirection } from "@/logic";
+import { circuitIdFromNodeIdSelector } from "@/services/circuits/selectors/nodes";
+import { circuitIdToNodeType } from "@/services/node-types/definition-sources/integrated-circuits/utils";
 import { AppState } from "@/store";
 
 import { NodePin } from "../types";
 
 import { connectionsSelector } from "./connections";
 import { nodeDefFromNodeIdSelector } from "./node-def";
+import { nodeIdsFromTypeSelector, nodeTypeFromNodeIdSelector } from "./nodes";
 
 export const pinDirectionFromNodePinSelector = (
   state: AppState,
@@ -58,4 +62,29 @@ export const nodeOutputSourcesByPinIdFromNodeIdSelector = (
   }
 
   return result;
+};
+
+export const nodePinsFromPinNodeSelector = (
+  state: AppState,
+  nodeId: string
+): NodePin[] => {
+  const nodeType = nodeTypeFromNodeIdSelector(state, nodeId);
+  let direction: PinDirection;
+  if (nodeType === "pin-input") {
+    direction = "input";
+  } else if (nodeType === "pin-output") {
+    direction = "output";
+  } else {
+    return [];
+  }
+
+  const circuitId = circuitIdFromNodeIdSelector(state, nodeId);
+  if (!circuitId) {
+    return [];
+  }
+
+  const icNodeType = circuitIdToNodeType(circuitId);
+  const icNodeIds = nodeIdsFromTypeSelector(state, icNodeType);
+
+  return icNodeIds.map((icNodeId) => ({ nodeId: icNodeId, pinId: nodeId }));
 };

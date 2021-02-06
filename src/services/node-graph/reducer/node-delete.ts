@@ -1,31 +1,23 @@
-import pick from "lodash/pick";
-import difference from "lodash/difference";
-import pickBy from "lodash/pickBy";
-
 import { isDeleteNodeAction } from "@/actions/node-delete";
 
-import { Connection } from "../types";
+import { priorityBefore, reducerPriority } from "@/store/priorities";
+
+import circuitsNodeDeleteReducer from "@/services/circuits/reducer/node-delete";
+
 import { createNodeGraphReducer } from "../utils";
 
-export default createNodeGraphReducer((state, action) => {
-  if (!isDeleteNodeAction(action)) {
-    return state;
-  }
+import nodeDelete from "./operations/node-delete";
 
-  const { nodeIds } = action.payload;
+// We need to know what circuit the node was a part of
+export default reducerPriority(
+  priorityBefore(circuitsNodeDeleteReducer),
+  createNodeGraphReducer((state, action, rootState) => {
+    if (!isDeleteNodeAction(action)) {
+      return state;
+    }
 
-  const remainingNodeIds = difference(Object.keys(state.nodesById), nodeIds);
+    const { nodeIds } = action.payload;
 
-  function isRemainingConnection(c: Connection) {
-    return (
-      remainingNodeIds.indexOf(c.inputPin.nodeId) !== -1 &&
-      remainingNodeIds.indexOf(c.outputPin.nodeId) !== -1
-    );
-  }
-
-  return {
-    ...state,
-    nodesById: pick(state.nodesById, remainingNodeIds),
-    connectionsById: pickBy(state.connectionsById, isRemainingConnection),
-  };
-});
+    return nodeDelete(state, nodeIds, rootState);
+  })
+);

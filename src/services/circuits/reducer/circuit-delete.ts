@@ -3,9 +3,10 @@ import mapValues from "lodash/mapValues";
 import difference from "lodash/difference";
 
 import { isDeleteCircuitAction } from "@/actions/circuit-delete";
+import { nodeIdsFromTypeSelector } from "@/services/node-graph/selectors/nodes";
+import { circuitIdToNodeType } from "@/services/node-types/definition-sources/integrated-circuits/utils";
 
 import { createCircuitsReducer } from "../utils";
-import { nodeIdsFromTypeSelector } from "@/services/node-graph/selectors/nodes";
 
 export default createCircuitsReducer((state, action, rootState) => {
   if (!isDeleteCircuitAction(action)) {
@@ -20,7 +21,7 @@ export default createCircuitsReducer((state, action, rootState) => {
 
   const circuitTypeNodeIds = nodeIdsFromTypeSelector(
     rootState,
-    `ic-${circuitId}`
+    circuitIdToNodeType(circuitId)
   );
 
   let nodeIdsByCircuitId = pick(state.nodeIdsByCircuitId, remainingCircuitIds);

@@ -1,8 +1,6 @@
 import { createSelector } from "reselect";
 import mapValues from "lodash/mapValues";
 
-import { AppState } from "@/store";
-
 import { createNodeGraphSelector } from "../utils";
 import { NodeGraphState } from "../state";
 import { Node } from "../types";

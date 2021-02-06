@@ -16,6 +16,8 @@ import {
   circuitToNodeVisual,
 } from "./IntegratedCircuitVisual";
 
+import { circuitIdToNodeType } from "./utils";
+
 const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
   nodeIdsByCircuitIdSelector,
   nodeTypesByNodeIdSelector,
@@ -57,7 +59,7 @@ const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
         }
 
         const def: NodeDefinition = {
-          type: `ic-${circuitId}`,
+          type: circuitIdToNodeType(circuitId),
           elementProduction: {
             type: "circuit",
             circuitId,

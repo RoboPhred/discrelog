@@ -4,11 +4,12 @@ import { isDeleteCircuitAction } from "@/actions/circuit-delete";
 
 import nodeGraphCircuitDeleteReducer from "@/services/node-graph/reducer/circuit-delete";
 import { nodeIdsFromCircuitIdSelector } from "@/services/circuits/selectors/nodes";
+import { nodeIdsFromTypeSelector } from "@/services/node-graph/selectors/nodes";
+import { circuitIdToNodeType } from "@/services/node-types/definition-sources/integrated-circuits/utils";
 
 import { createNodeLayoutReducer } from "../utils";
 
 import nodeDeleteOperation from "./operations/node-delete";
-import { nodeIdsFromTypeSelector } from "@/services/node-graph/selectors/nodes";
 
 export default reducerPriority(
   // We need to run this reducer before graph runs, as we want to check what wires are connected to the node being deleted.
@@ -25,7 +26,7 @@ export default reducerPriority(
 
     const circuitTypeNodeIds = nodeIdsFromTypeSelector(
       rootState,
-      `ic-${circuitId}`
+      circuitIdToNodeType(circuitId)
     );
 
     state = nodeDeleteOperation(state, circuitTypeNodeIds, rootState);
