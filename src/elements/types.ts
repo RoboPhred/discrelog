@@ -1,8 +1,6 @@
 import { ElementEvolverFunction, ElementInteractFunction } from "@/logic";
 
 export interface ElementDefinition {
-  type: string;
-
   inputPins: string[];
 
   // Used for presetting all outputs to false on init.

@@ -5,7 +5,6 @@ export interface LedElementState {
 }
 
 const ledElementDefinition: ElementDefinition = {
-  type: "led",
   inputPins: ["IN"],
   outputPins: [],
   evolve(state: LedElementState, inputs, tick) {

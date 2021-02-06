@@ -1,7 +1,6 @@
 import { ElementDefinition } from "../types";
 
 const norElementDefinition: ElementDefinition = {
-  type: "nor",
   inputPins: ["A", "B"],
   outputPins: ["OUT"],
   evolve(state, inputs, tick) {

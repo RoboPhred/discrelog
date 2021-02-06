@@ -1,7 +1,6 @@
 import { ElementDefinition } from "../types";
 
 const notElementDefinition: ElementDefinition = {
-  type: "not",
   inputPins: ["IN"],
   outputPins: ["OUT"],
   evolve(state, inputs, tick) {

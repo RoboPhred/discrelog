@@ -8,7 +8,6 @@ const defaultToggleState: ToggleElementState = {
 };
 
 const toggleElementDefinition: ElementDefinition = {
-  type: "toggle",
   inputPins: [],
   outputPins: ["OUT"],
   interact(state: ToggleElementState = defaultToggleState) {

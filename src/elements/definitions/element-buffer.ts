@@ -1,9 +1,6 @@
 import { ElementDefinition } from "../types";
 
-// Shape path from https://commons.wikimedia.org/wiki/File:Buffer_ANSI.svg
-
 const bufferElementDefinition: ElementDefinition = {
-  type: "buffer",
   inputPins: ["IN"],
   outputPins: ["OUT"],
   evolve(state, inputs, tick) {

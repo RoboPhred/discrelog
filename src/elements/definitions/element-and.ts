@@ -1,7 +1,6 @@
 import { ElementDefinition } from "../types";
 
 const andElementDefinition: ElementDefinition = {
-  type: "and",
   inputPins: ["A", "B"],
   outputPins: ["OUT"],
   evolve(state, inputs, tick) {

@@ -1,7 +1,6 @@
 import { ElementDefinition } from "../types";
 
 const orElementDefinition: ElementDefinition = {
-  type: "or",
   inputPins: ["A", "B"],
   outputPins: ["OUT"],
   evolve(state, inputs, tick) {

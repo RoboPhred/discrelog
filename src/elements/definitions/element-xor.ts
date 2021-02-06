@@ -1,7 +1,6 @@
 import { ElementDefinition } from "../types";
 
 const xorElementDefinition: ElementDefinition = {
-  type: "xor",
   inputPins: ["A", "B"],
   outputPins: ["OUT"],
   evolve(state, inputs, tick) {
