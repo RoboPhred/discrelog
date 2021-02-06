@@ -9,18 +9,22 @@ import { ACTION_SELECTION_MOVE } from "@/actions/selection-move";
 import { ACTION_WIRE_ATTACH } from "@/actions/wire-attach";
 import { ACTION_WIRE_DETATCH } from "@/actions/wire-detatch";
 import { ACTION_WIRE_JOINT_ADD } from "@/actions/wire-joint-add";
-import { ACTION_WIRE_JOINT_MOVE } from "@/actions/wire-joint-move";
+import { ACTION_WIRE_JOINT_MOVE_END } from "@/actions/wire-joint-move";
+import { ACTION_CIRCUIT_ADD } from "@/actions/circuit-add";
+import { ACTION_CIRCUIT_DELETE } from "@/actions/circuit-delete";
 
 import { createSave, storeAutosave } from "../utils";
 
 const AUTOSAVE_TRIGGERS = [
   ACTION_NODE_ADD,
   ACTION_NODE_DELETE,
+  ACTION_CIRCUIT_ADD,
+  ACTION_CIRCUIT_DELETE,
   ACTION_SELECTION_MOVE,
   ACTION_WIRE_ATTACH,
   ACTION_WIRE_DETATCH,
   ACTION_WIRE_JOINT_ADD,
-  ACTION_WIRE_JOINT_MOVE,
+  ACTION_WIRE_JOINT_MOVE_END,
 ];
 
 export default reducerPriority(
