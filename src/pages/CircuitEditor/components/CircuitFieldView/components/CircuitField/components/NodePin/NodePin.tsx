@@ -8,7 +8,7 @@ import { getModifiers, getSelectMode } from "@/selection-mode";
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
 
-import { nodePinPositionFromNodePinSelector } from "@/services/node-layout/selectors/node-positions";
+import { nodePinPositionFromNodePinSelector } from "@/services/node-layout/selectors/node-pin-positions";
 import { pinDirectionFromNodePinSelector } from "@/services/node-graph/selectors/pins";
 import { dragWireTargetPinSelector } from "@/services/circuit-editor-ui/selectors/drag";
 

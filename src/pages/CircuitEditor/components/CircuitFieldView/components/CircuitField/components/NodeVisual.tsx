@@ -1,6 +1,5 @@
 import * as React from "react";
 
-import { PinDirection } from "@/logic";
 import useSelector from "@/hooks/useSelector";
 import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/node-types";
 

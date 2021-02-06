@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 
 import { magnitude, normalizeRectangle, pointSubtract } from "@/geometry";
 
-import { nodePinPositionsByPinIdByNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
+import { nodePinPositionsByPinIdByNodeIdSelector } from "@/services/node-layout/selectors/node-pin-positions";
 
 import { createCircuitEditorUiSelector } from "../utils";
 

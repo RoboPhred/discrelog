@@ -2,15 +2,17 @@ import { AppState } from "@/store";
 import { Point, pointAdd, ZeroPoint } from "@/geometry";
 
 import { nodeTypeFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
+import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/node-types";
+import { NodeDefinition } from "@/services/node-types/types";
+import { nodeDefFromNodeIdSelector } from "@/services/node-graph/selectors/node-def";
 
 import { createNodeLayoutSelector } from "../utils";
 import { NodeLayoutState } from "../state";
 
 import { nodePositionFromNodeIdSelector } from "./node-positions";
-import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/node-types";
 
 interface PositionCache {
-  inputNodeType: string;
+  inputNodeDef: NodeDefinition;
   inputNodePosition: Point;
   outputPosition: Point;
 }
@@ -30,8 +32,8 @@ export const wireStartPositionFromConnectionIdSelector = (
     outputPin: { nodeId, pinId },
   } = state.services.nodeGraph.connectionsById[connectionId];
 
-  const nodeType = nodeTypeFromNodeIdSelector(state, nodeId);
-  if (!nodeType) {
+  const nodeDef = nodeDefFromNodeIdSelector(state, nodeId);
+  if (!nodeDef) {
     return ZeroPoint;
   }
 
@@ -43,14 +45,12 @@ export const wireStartPositionFromConnectionIdSelector = (
   const cacheData = startPositionCacheByConnectionId[connectionId];
   if (
     cacheData &&
-    cacheData.inputNodeType === nodeType &&
+    cacheData.inputNodeDef === nodeDef &&
     cacheData.inputNodePosition.x === nodePosition.x &&
     cacheData.inputNodePosition.y === nodePosition.y
   ) {
     return cacheData.outputPosition;
   }
-
-  const nodeDef = nodeDefinitionFromTypeSelector(state, nodeType);
 
   let offset = ZeroPoint;
   if (nodeDef && nodeDef.pins[pinId]) {
@@ -58,7 +58,7 @@ export const wireStartPositionFromConnectionIdSelector = (
   }
   const position = pointAdd(nodePosition, offset);
   startPositionCacheByConnectionId[connectionId] = {
-    inputNodeType: nodeType,
+    inputNodeDef: nodeDef,
     inputNodePosition: nodePosition,
     outputPosition: position,
   };
@@ -73,8 +73,8 @@ export const wireEndPositionFromConnectionIdSelector = (
   const {
     inputPin: { nodeId, pinId },
   } = state.services.nodeGraph.connectionsById[connectionId];
-  const nodeType = nodeTypeFromNodeIdSelector(state, nodeId);
-  if (!nodeType) {
+  const nodeDef = nodeDefFromNodeIdSelector(state, nodeId);
+  if (!nodeDef) {
     return ZeroPoint;
   }
 
@@ -86,14 +86,12 @@ export const wireEndPositionFromConnectionIdSelector = (
   const cacheData = endPositionCacheByConnectionId[connectionId];
   if (
     cacheData &&
-    cacheData.inputNodeType === nodeType &&
+    cacheData.inputNodeDef === nodeDef &&
     cacheData.inputNodePosition.x === nodePosition.x &&
     cacheData.inputNodePosition.y === nodePosition.y
   ) {
     return cacheData.outputPosition;
   }
-
-  const nodeDef = nodeDefinitionFromTypeSelector(state, nodeType);
 
   let offset = ZeroPoint;
   if (nodeDef && nodeDef.pins[pinId]) {
@@ -101,7 +99,7 @@ export const wireEndPositionFromConnectionIdSelector = (
   }
   const position = pointAdd(nodePosition, offset);
   endPositionCacheByConnectionId[connectionId] = {
-    inputNodeType: nodeType,
+    inputNodeDef: nodeDef,
     inputNodePosition: nodePosition,
     outputPosition: position,
   };

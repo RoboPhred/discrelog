@@ -1,9 +1,9 @@
-import * as React from "react";
 import { createSelector } from "reselect";
+import sortBy from "lodash/sortBy";
 
-import { circuitNamesByIdSelector } from "@/services/circuits/selectors/circuits";
 import { nodeIdsByCircuitIdSelector } from "@/services/circuits/selectors/nodes";
 import { nodeTypesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
+import { nodePositionsByNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
 
 import {
   NodeDefinition,
@@ -11,49 +11,50 @@ import {
   NodePinDefinition,
 } from "../../types";
 
+import {
+  circuitPinPosition,
+  circuitToNodeVisual,
+} from "./IntegratedCircuitVisual";
+
 const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
-  circuitNamesByIdSelector,
   nodeIdsByCircuitIdSelector,
   nodeTypesByNodeIdSelector,
-  (circuitNamesById, nodeIdsByCircuitId, nodeTypesByNodeId) => {
-    return Object.keys(circuitNamesById)
+  nodePositionsByNodeIdSelector,
+  (nodeIdsByCircuitId, nodeTypesByNodeId, nodePositionsByNodeId) => {
+    return Object.keys(nodeIdsByCircuitId)
       .filter((x) => x !== "root")
       .map((circuitId) => {
-        const name = circuitNamesById[circuitId];
-
         const circuitNodeIds = nodeIdsByCircuitId[circuitId] ?? [];
-        const pinNodeIds = circuitNodeIds.filter((circuitNodeId) =>
+
+        // Sort by y axis position to get consistent pin locations.
+        let pinNodeIds = circuitNodeIds.filter((circuitNodeId) =>
           nodeTypesByNodeId[circuitNodeId].startsWith("pin-")
+        );
+        pinNodeIds = sortBy(
+          pinNodeIds,
+          (nodeId) => nodePositionsByNodeId[nodeId].y,
+          (nodeId) => nodePositionsByNodeId[nodeId].x
         );
 
         const pins: Record<string, NodePinDefinition> = {};
-        let inputY = 15;
-        let outputY = 15;
+        let inputPinCount = 0;
+        let outputPinCount = 0;
         for (const pinNodeId of pinNodeIds) {
           const type = nodeTypesByNodeId[pinNodeId];
           if (type === "pin-input") {
             pins[pinNodeId] = {
               direction: "input",
-              x: 5,
-              y: inputY,
+              ...circuitPinPosition(inputPinCount, "input"),
             };
-            inputY += 10;
+            inputPinCount++;
           } else if (type === "pin-output") {
             pins[pinNodeId] = {
               direction: "output",
-              x: 45,
-              y: outputY,
+              ...circuitPinPosition(outputPinCount, "output"),
             };
-            outputY += 10;
+            outputPinCount++;
           }
         }
-
-        const component = () => (
-          <g>
-            <path stroke="black" fill="none" d="M10,10 H40 V40 H10 V10 z" />
-            <text y={25}>{name}</text>
-          </g>
-        );
 
         const def: NodeDefinition = {
           type: `ic-${circuitId}`,
@@ -61,10 +62,7 @@ const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
             type: "circuit",
             circuitId,
           },
-          visual: {
-            hitPath: "M10,10 H40 V40 H10 V10 z",
-            component,
-          },
+          visual: circuitToNodeVisual(inputPinCount, outputPinCount),
           pins,
         };
         return def;
