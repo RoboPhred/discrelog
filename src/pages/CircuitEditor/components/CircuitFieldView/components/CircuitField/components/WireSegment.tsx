@@ -16,7 +16,7 @@ import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
 
 import { addWireJoint } from "@/actions/wire-joint-add";
-import { moveWireJoint } from "@/actions/wire-joint-move";
+import { moveWireJoint, moveWireJointEnd } from "@/actions/wire-joint-move";
 import { selectWires } from "@/actions/select-wires";
 
 import {
@@ -91,6 +91,10 @@ const WireSegment: React.FC<WireSegmentProps> = ({
     [getMouseCoords]
   );
 
+  const onDragEnd = React.useCallback(() => {
+    dispatch(moveWireJointEnd());
+  }, []);
+
   const onClick = React.useCallback(
     (e: MouseEvent) => {
       const modifiers = getModifiers(e);
@@ -104,6 +108,7 @@ const WireSegment: React.FC<WireSegmentProps> = ({
     onClick,
     onDragStart,
     onDragMove,
+    onDragEnd,
   });
 
   const onJointInsertMouseDown = React.useCallback(

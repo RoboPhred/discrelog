@@ -14,6 +14,7 @@ import { ACTION_CIRCUIT_ADD } from "@/actions/circuit-add";
 import { ACTION_CIRCUIT_DELETE } from "@/actions/circuit-delete";
 
 import { createSave, storeAutosave } from "../utils";
+import { ACTION_WIRE_JOINT_DELETE } from "@/actions/wire-joint-delete";
 
 const AUTOSAVE_TRIGGERS = [
   ACTION_NODE_ADD,
@@ -25,6 +26,7 @@ const AUTOSAVE_TRIGGERS = [
   ACTION_WIRE_DETATCH,
   ACTION_WIRE_JOINT_ADD,
   ACTION_WIRE_JOINT_MOVE_END,
+  ACTION_WIRE_JOINT_DELETE,
 ];
 
 export default reducerPriority(

@@ -23,7 +23,7 @@ export function isMoveWireJointAction(
   return action.type === ACTION_WIRE_JOINT_MOVE;
 }
 
-export const ACTION_WIRE_JOINT_MOVE_END = "@wire/joint/move:end" as const;
+export const ACTION_WIRE_JOINT_MOVE_END = "@wire/joint/end-move" as const;
 export const moveWireJointEnd = () => ({
   type: ACTION_WIRE_JOINT_MOVE_END,
 });
