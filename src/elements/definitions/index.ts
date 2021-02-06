@@ -1,8 +1,3 @@
-import values from "lodash/values";
-import getBounds from "svg-path-bounds";
-
-import { calcSize, union, ZeroRect } from "@/geometry";
-
 import { ElementDefinition } from "../types";
 
 export * from "./element-led";
@@ -17,5 +12,6 @@ export const ElementDefinitionsByType = {
   led: require("./element-led").default as ElementDefinition,
   toggle: require("./element-toggle").default as ElementDefinition,
   seg7: require("./element-seg7").default as ElementDefinition,
+  xor: require("./element-xor").default as ElementDefinition,
 };
 export type ElementType = keyof typeof ElementDefinitionsByType;

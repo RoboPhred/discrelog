@@ -97,6 +97,7 @@ function produceCircuit(
     // If this node is a pin, remember it to calculate circuit inputs and outputs.
     if (nodeType === "pin-input") {
       inputCircuitNodeIds.push(circuitNodeId);
+      inputElementPinsByCircuitPinId[circuitNodeId] = [];
       continue;
     } else if (nodeType === "pin-output") {
       outputCircuitNodeIds.push(circuitNodeId);
@@ -153,7 +154,7 @@ function produceCircuit(
     //  need to be saved for our circuit inputs
     if (inputCircuitNodeIds.indexOf(outputPin.nodeId) !== -1 && inputSimPins) {
       // pin id is the pin-input nodeId
-      inputElementPinsByCircuitPinId[outputPin.nodeId] = inputSimPins;
+      inputElementPinsByCircuitPinId[outputPin.nodeId].push(...inputSimPins);
       continue;
     } else if (
       outputCircuitNodeIds.indexOf(inputPin.nodeId) !== -1 &&
