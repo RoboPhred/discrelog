@@ -1,23 +1,23 @@
 import { AnyAction } from "redux";
 import { v4 as uuidV4 } from "uuid";
 
-export const ACTION_CIRCUIT_NEW = "@circuit/new" as const;
+export const ACTION_CIRCUIT_ADD = "@circuit/add" as const;
 export interface NewCircuitOpts {
   circuitName?: string;
   circuitId?: string;
   edit?: boolean;
 }
-export const newCircuit = ({
+export const addCircuit = ({
   circuitName,
   circuitId,
   edit,
 }: NewCircuitOpts = {}) => ({
-  type: ACTION_CIRCUIT_NEW,
+  type: ACTION_CIRCUIT_ADD,
   payload: { circuitId: circuitId ?? uuidV4(), circuitName, edit },
 });
-export type NewCircuitAction = ReturnType<typeof newCircuit>;
-export function isNewCircuitAction(
+export type AddCircuitAction = ReturnType<typeof addCircuit>;
+export function isAddCircuitAction(
   action: AnyAction
-): action is NewCircuitAction {
-  return action.type === ACTION_CIRCUIT_NEW;
+): action is AddCircuitAction {
+  return action.type === ACTION_CIRCUIT_ADD;
 }

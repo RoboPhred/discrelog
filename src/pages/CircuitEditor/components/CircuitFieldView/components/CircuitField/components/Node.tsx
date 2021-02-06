@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 
-import { Point } from "@/geometry";
+import { Point, ZeroPoint } from "@/geometry";
 import { getModifiers, getSelectMode } from "@/selection-mode";
 
 import useSelector from "@/hooks/useSelector";
@@ -32,9 +32,14 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
 
   const isSimActive = useSelector(isSimActiveSelector);
 
-  const { x, y } = useSelector((s) =>
-    nodePositionFromNodeIdSelector(s, nodeId)
-  );
+  const pos = useSelector((s) => nodePositionFromNodeIdSelector(s, nodeId));
+  if (!pos) {
+    // Caught some bad logic that was rendering non-existant nodes.
+    // Leaving this in for safty, although the underlying issue was fixed.
+    console.warn(`Rendering node id ${nodeId} that has no position.`);
+  }
+  const { x, y } = pos ?? ZeroPoint;
+
   const nodeType = useSelector((s) => nodeTypeFromNodeIdSelector(s, nodeId));
   const nodeState = useSelector((s) => nodeStateFromNodeIdSelector(s, nodeId));
   const isSelected = useSelector((s) =>

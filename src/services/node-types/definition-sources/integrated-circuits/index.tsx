@@ -1,8 +1,6 @@
 import * as React from "react";
 import { createSelector } from "reselect";
 
-import { createShapePathNode } from "../../components/ShapePathNode";
-
 import { circuitNamesByIdSelector } from "@/services/circuits/selectors/circuits";
 import { nodeIdsByCircuitIdSelector } from "@/services/circuits/selectors/nodes";
 import { nodeTypesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
@@ -22,7 +20,6 @@ const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
       .filter((x) => x !== "root")
       .map((circuitId) => {
         const name = circuitNamesById[circuitId];
-        const nodeId = nameToId(name);
 
         const circuitNodeIds = nodeIdsByCircuitId[circuitId] ?? [];
         const pinNodeIds = circuitNodeIds.filter((circuitNodeId) =>
@@ -57,14 +54,9 @@ const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
             <text y={25}>{name}</text>
           </g>
         );
-        // const component = createShapePathNode({
-        //   path: "M10,10 H40 V40 H10 V10 z",
-        //   fill: "none",
-        //   stroke: "black",
-        // });
 
         const def: NodeDefinition = {
-          type: `ic-${nodeId}`,
+          type: `ic-${circuitId}`,
           elementProduction: {
             type: "circuit",
             circuitId,
@@ -81,7 +73,3 @@ const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
 );
 
 export default [IntegratedCircuitDefinitionSource];
-
-function nameToId(name: string) {
-  return name.replace(/[\s]/g, "-").toLowerCase();
-}

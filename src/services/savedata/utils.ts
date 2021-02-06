@@ -37,7 +37,7 @@ import {
 import { defaultNodeLayoutState } from "../node-layout/state";
 
 import { SaveFormatError } from "./errors";
-import { newCircuit } from "@/actions/circuit-new";
+import { addCircuit } from "@/actions/circuit-add";
 
 export function createSave(state: AppState): SaveData {
   const jointPositions = wireJointPositionsByJointIdSelector(state);
@@ -100,7 +100,7 @@ export function loadSave(state: AppState, save: SaveData): AppState {
   try {
     state = (save.circuits ?? []).reduce(
       (state, { circuitId, circuitName }) =>
-        rootReducer(state, newCircuit({ circuitId, circuitName })),
+        rootReducer(state, addCircuit({ circuitId, circuitName })),
       state
     );
 

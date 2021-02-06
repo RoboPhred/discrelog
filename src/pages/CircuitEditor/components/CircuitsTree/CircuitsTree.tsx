@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 
 import {
@@ -9,16 +10,16 @@ import {
   ContextMenu,
 } from "@blueprintjs/core";
 
-import { Point } from "@/geometry";
 import useSelector from "@/hooks/useSelector";
+
+import { deleteCircuit } from "@/actions/circuit-delete";
 
 import { editingCircuitIdSelector } from "@/services/circuit-editor-ui/selectors/circuit";
 import { circuitNamesByIdSelector } from "@/services/circuits/selectors/circuits";
 import { editCircuit } from "@/actions/circuit-edit";
-import { newCircuit } from "@/actions/circuit-new";
+import { addCircuit } from "@/actions/circuit-add";
 
 import styles from "./CircuitsTree.module.css";
-import { Dispatch } from "redux";
 
 const CircuitsTree: React.FC = () => {
   const dispatch = useDispatch();
@@ -35,12 +36,34 @@ const CircuitsTree: React.FC = () => {
   const onContextMenu = React.useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       e.preventDefault();
+      e.stopPropagation();
+
       ContextMenu.show(<CircuitTreeContextMenu dispatch={dispatch} />, {
         left: e.pageX,
         top: e.pageY,
       });
     },
     [dispatch]
+  );
+
+  const onNodeContextMenu = React.useCallback(
+    (node: ITreeNode, nodePath: number[], e: React.MouseEvent<HTMLElement>) => {
+      if (node.id === "root") {
+        return;
+      }
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      ContextMenu.show(
+        <CircuitTreeNodeContextMenu
+          dispatch={dispatch}
+          circuitId={node.id as string}
+        />,
+        { left: e.pageX, top: e.pageY }
+      );
+    },
+    []
   );
 
   const treeItems: ITreeNode[] = React.useMemo(
@@ -55,8 +78,32 @@ const CircuitsTree: React.FC = () => {
 
   return (
     <div className={styles.circuitstree} onContextMenu={onContextMenu}>
-      <Tree contents={treeItems} onNodeClick={onNodeClick} />
+      <Tree
+        contents={treeItems}
+        onNodeClick={onNodeClick}
+        onNodeContextMenu={onNodeContextMenu}
+      />
     </div>
+  );
+};
+
+interface CircuitTreeNodeContextMenu {
+  circuitId: string;
+  // Dispatch must be passed in externally, as ContextMenu.show starts
+  //  a new redux tree and has no provider.
+  dispatch: Dispatch<any>;
+}
+const CircuitTreeNodeContextMenu: React.FC<CircuitTreeNodeContextMenu> = ({
+  circuitId,
+  dispatch,
+}) => {
+  const onDelete = React.useCallback(() => {
+    dispatch(deleteCircuit(circuitId));
+  }, [dispatch, circuitId]);
+  return (
+    <Menu>
+      <MenuItem text="Delete Circuit" onClick={onDelete} />
+    </Menu>
   );
 };
 
@@ -69,7 +116,7 @@ const CircuitTreeContextMenu: React.FC<CircuitTreeContextMenuProps> = ({
   dispatch,
 }) => {
   const onNewCircuit = React.useCallback(() => {
-    dispatch(newCircuit());
+    dispatch(addCircuit());
   }, [dispatch]);
 
   return (

@@ -61,6 +61,7 @@ export default createSimulatorReducer((state, action, appState) => {
   const end = performance.now();
 
   const updateTime = end - start;
+  console.log(updateTime);
 
   state = {
     ...state,

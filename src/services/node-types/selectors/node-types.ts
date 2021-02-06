@@ -6,29 +6,41 @@ import { AppState } from "@/store";
 
 import nodeDefinitionSources from "../definition-sources";
 import { NodeDefinition, NodeDefinitionSource } from "../types";
+import { createSelector } from "reselect";
 
 /**
  * Gets an array of node definitions from the current state.
  * WARN: Returns an unstable reference, not react safe.
  */
-// FIXME: Stabilize output for redux use.
+let cachedNodeDefinitionsSelector: NodeDefinition[] = [];
 export const nodeDefinitionsSelector = (state: AppState) => {
-  return flatMap(nodeDefinitionSources, (source) =>
+  const nodeDefinitions = flatMap(nodeDefinitionSources, (source) =>
     resolveSources(source, state)
   );
-};
 
-// FIXME: Stabilize output for redux use.
-export const nodeDefinitionsByTypeSelector = (state: AppState) => {
-  const defsByType: Record<string, NodeDefinition> = {};
-  const defs = nodeDefinitionsSelector(state);
-  for (const def of defs) {
-    defsByType[def.type] = def;
+  if (
+    nodeDefinitions.every(
+      (def, index) => def === cachedNodeDefinitionsSelector[index]
+    )
+  ) {
+    return cachedNodeDefinitionsSelector;
   }
-  return defsByType;
+
+  cachedNodeDefinitionsSelector = nodeDefinitions;
+  return nodeDefinitions;
 };
 
-// FIXME: Stabilize output for redux use.
+export const nodeDefinitionsByTypeSelector = createSelector(
+  nodeDefinitionsSelector,
+  (defs) => {
+    const defsByType: Record<string, NodeDefinition> = {};
+    for (const def of defs) {
+      defsByType[def.type] = def;
+    }
+    return defsByType;
+  }
+);
+
 export const nodeDefinitionFromTypeSelector = (
   state: AppState,
   nodeType: string

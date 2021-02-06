@@ -29,6 +29,19 @@ export const nodeFromNodeIdSelector = createNodeGraphSelector(
   (s: NodeGraphState, nodeId: string) => s.nodesById[nodeId] || null
 );
 
+export const nodeIdsFromTypeSelector = createNodeGraphSelector(
+  (s: NodeGraphState, desiredType: string) => {
+    const nodeIds: string[] = [];
+    for (const nodeId of Object.keys(s.nodesById)) {
+      const { nodeType } = s.nodesById[nodeId];
+      if (nodeType === desiredType) {
+        nodeIds.push(nodeId);
+      }
+    }
+    return nodeIds;
+  }
+);
+
 export const nodeTypeFromNodeIdSelector = createNodeGraphSelector(
   (s: NodeGraphState, nodeId: string) => {
     const node = nodeFromNodeIdSelector.local(s, nodeId);
