@@ -14,7 +14,6 @@ export const nodePinPositionsByPinIdByNodeIdSelector = createSelector(
   nodePositionsByNodeIdSelector,
   nodeTypesByNodeIdSelector,
   (nodeDefsByType, nodePositionsByNodeId, nodeTypesByNodeId) => {
-    console.log("Recalculating node pin positions");
     const nodePinPositionsByPinIdByNodeId: Record<
       string,
       Record<string, Point>
