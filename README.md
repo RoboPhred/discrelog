@@ -84,7 +84,7 @@ While the inspiration for this project is a lack of high quality, easily extensi
 
 ## Technology
 
-This application is written to be a browser-ran desktop-scale application. It has no server component, and performs all work in the client's browser.
+This application is being written to deliver a desktop quality application from within modern browsers. It has no server component, and performs all work locally.
 The UI renderer is React, with Redux providing the backing store.
 
 ## License
