@@ -1,8 +1,13 @@
+import flatten from "lodash/flatten";
+
 import { isSelectAllAction } from "@/actions/select-all";
 
-import { nodeIdsSelector } from "@/services/circuit-graph/selectors/nodes";
-import { connectionIdsSelector } from "@/services/circuit-graph/selectors/connections";
-import { jointIdsSelector } from "@/services/circuit-layout/selectors/wires";
+import { nodeIdsForEditingCircuitSelector } from "@/services/circuit-editor-ui/selectors/nodes";
+import {
+  connectionIdsSelector,
+  connectionsByIdSelector,
+} from "@/services/node-graph/selectors/connections";
+import { wireJointIdsByConnectionIdSelector } from "@/services/node-layout/selectors/wires";
 
 import { createSelectionReducer } from "../utils";
 
@@ -11,9 +16,27 @@ export default createSelectionReducer((state, action, appState) => {
     return state;
   }
 
-  const nodeIds = nodeIdsSelector(appState);
-  const connectionIds = connectionIdsSelector(appState);
-  const jointIds = jointIdsSelector(appState);
+  const nodeIds = nodeIdsForEditingCircuitSelector(appState);
+
+  let connectionIds = connectionIdsSelector(appState);
+  const connectionsById = connectionsByIdSelector(appState);
+  connectionIds = connectionIds.filter((connectionId) => {
+    const { inputPin, outputPin } = connectionsById[connectionId];
+    if (
+      nodeIds.indexOf(inputPin.nodeId) === -1 ||
+      nodeIds.indexOf(outputPin.nodeId) === -1
+    ) {
+      return false;
+    }
+    return true;
+  });
+
+  const wireJointIdsFromConnectionId = wireJointIdsByConnectionIdSelector(
+    appState
+  );
+  const jointIds = flatten(
+    connectionIds.map((connId) => wireJointIdsFromConnectionId[connId])
+  );
 
   return {
     ...state,

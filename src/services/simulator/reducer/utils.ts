@@ -8,9 +8,7 @@ import { fpSet } from "@/utils";
 import { asArray } from "@/arrays";
 import { AppState } from "@/store";
 
-import { outputsOf } from "@/element-defs/utils";
-
-import { inputNodesByPinIdFromSimulatorNodeIdSelector } from "@/services/simulator-graph/selectors/connections";
+import { inputPinsByPinIdFromSimulatorNodeIdSelector } from "@/services/simulator-graph/selectors/connections";
 import {
   simulatorNodeIdsSelector,
   elementTypeFromSimulatorNodeId,
@@ -21,7 +19,7 @@ import {
   SimTransitionWindow,
   SimNodePinTransition as SimNodeTransition,
 } from "../types";
-import { ElementDefinitionsByType } from "@/element-defs";
+import { ElementDefinitionsByType } from "@/elements";
 
 export function simInit(
   state: SimulatorState,
@@ -54,13 +52,20 @@ function initNode(
   appState: AppState
 ): SimulatorState {
   const elementType = elementTypeFromSimulatorNodeId(appState, nodeId);
+  if (!elementType) {
+    return state;
+  }
+
   const def = ElementDefinitionsByType[elementType];
   if (!def) {
     return state;
   }
 
-  const outputs = outputsOf(def);
-  const outputValues = mapValues(outputs, () => false);
+  const outputValues: Record<string, boolean> = {};
+  for (const output of def.outputPins) {
+    outputValues[output] = false;
+  }
+
   return fpSet(state, "nodeOutputValuesByNodeId", nodeId, outputValues);
 }
 
@@ -70,6 +75,10 @@ export function collectNodeTransitions(
   appState: AppState
 ): SimulatorState {
   const elementType = elementTypeFromSimulatorNodeId(appState, nodeId);
+  if (!elementType) {
+    return state;
+  }
+
   const def = ElementDefinitionsByType[elementType];
   if (!def || !def.evolve) {
     return state;
@@ -77,7 +86,7 @@ export function collectNodeTransitions(
 
   // Build the current input state from the connected pins.
   const inputs: Record<string, boolean> = {};
-  const inputSourcesByPin = inputNodesByPinIdFromSimulatorNodeIdSelector(
+  const inputSourcesByPin = inputPinsByPinIdFromSimulatorNodeIdSelector(
     appState,
     nodeId
   );
@@ -88,7 +97,7 @@ export function collectNodeTransitions(
       inputs[inputPin] = false;
       continue;
     }
-    const { nodeId: sourceNodeId, pinId: sourcePinId } = inputConn;
+    const { simulatorNodeId: sourceNodeId, pinId: sourcePinId } = inputConn;
 
     inputs[inputPin] =
       state.nodeOutputValuesByNodeId[sourceNodeId]?.[sourcePinId] || false;

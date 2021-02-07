@@ -6,7 +6,7 @@ import { calcSize } from "@/geometry";
 
 import useSelector from "@/hooks/useSelector";
 
-import { fieldRectSelector } from "@/services/circuit-layout/selectors/field";
+import { fieldRectSelector } from "@/services/node-layout/selectors/field";
 
 import { fieldMouseLeave } from "@/actions/field-mouse-leave";
 

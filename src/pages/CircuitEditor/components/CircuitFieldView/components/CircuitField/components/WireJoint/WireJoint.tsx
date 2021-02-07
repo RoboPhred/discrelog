@@ -8,10 +8,10 @@ import { getSelectMode, getModifiers } from "@/selection-mode";
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
 
-import { wireJointPositionFromJointIdSelector } from "@/services/circuit-layout/selectors/wires";
+import { wireJointPositionFromJointIdSelector } from "@/services/node-layout/selectors/wires";
 import { isJointSelectedFromJointIdSelector } from "@/services/selection/selectors/selection";
 
-import { moveWireJoint } from "@/actions/wire-joint-move";
+import { moveWireJoint, moveWireJointEnd } from "@/actions/wire-joint-move";
 import { selectWireJoints } from "@/actions/select-wire-joints";
 
 import { useEventMouseCoords } from "../../hooks/useMouseCoords";
@@ -43,6 +43,10 @@ const WireJoint: React.FC<WireJointProps> = ({ jointId }) => {
     [getMouseCoords]
   );
 
+  const onJointDragEnd = React.useCallback(() => {
+    dispatch(moveWireJointEnd());
+  }, []);
+
   const onClick = React.useCallback(
     (e: MouseEvent) => {
       const modifiers = getModifiers(e);
@@ -55,6 +59,7 @@ const WireJoint: React.FC<WireJointProps> = ({ jointId }) => {
   const { startTracking: startMoveJointTracking } = useMouseTracking({
     onClick,
     onDragMove: onJointDragMove,
+    onDragEnd: onJointDragEnd,
   });
 
   const onMouseOver = React.useCallback(() => {

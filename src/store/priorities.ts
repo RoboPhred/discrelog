@@ -11,3 +11,7 @@ export function reducerPriority(
   reducer.weight = priority;
   return reducer;
 }
+
+export function priorityBefore(reducer: AppReducer) {
+  return (reducer.weight ?? 0) - 1;
+}

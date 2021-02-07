@@ -1,6 +1,6 @@
 import { fpSet } from "@/utils";
 
-import { ElementDefinitionsByType } from "@/element-defs";
+import { ElementDefinitionsByType } from "@/elements";
 
 import { isInteractNodeAction } from "@/actions/node-interact";
 import {
@@ -24,8 +24,11 @@ export default createSimulatorReducer((state, action, appState) => {
   );
 
   const elementType = elementTypeFromSimulatorNodeId(appState, simulatorNodeId);
-  const def = ElementDefinitionsByType[elementType];
+  if (!elementType) {
+    return state;
+  }
 
+  const def = ElementDefinitionsByType[elementType];
   if (!def || !def.interact) {
     return state;
   }

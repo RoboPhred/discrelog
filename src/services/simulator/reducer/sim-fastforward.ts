@@ -5,7 +5,7 @@ import { AppState, defaultAppState } from "@/store";
 import { isFastForwardSimAction } from "@/actions/sim-fastforward";
 import { tickSim } from "@/actions/sim-tick";
 
-import evolveSimReducer from "./sim-evolve";
+import evolveSimReducer from "./sim-tick";
 
 export default function simFastForwardReducer(
   state: AppState = defaultAppState,

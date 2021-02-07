@@ -2,15 +2,15 @@
 
 A discrete logic / circuit editor and simulator written in React and Redux.
 
-_This is a work in progress, and will be for some time. It is not suitable for use as of this time._
+_This is a work in progress, and will be for some time.._
 
 ## Live work-in-progress
-
-_The interface is very much a prototype. The current incarnation is under heavy development and is not final._
 
 http://robophred.github.io/discrelog
 
 ### Usage:
+
+#### Editing:
 
 Drag circuit elements from the elements tray to the field to create them.
 Click an element to select it. Click-drag an element to move it, and click-drag the field to select multiple elements.
@@ -20,6 +20,15 @@ Click and drag between pins to connect them. An output pin (circular) can connec
 Click+drag on wires to add wire joints, which can be used to route and organize wires. Click or drag-select joints to select them.
 
 Click on wires (not wire joints) to select the entire wire.
+
+Right click in the circuit list (right hand side) to create new circuits. Circuits will appear as ICs for use in other circuits. Use input and output pin elements to create corresponding input
+and output pins on the IC.
+
+#### Running:
+
+Press the play button in the top right to compile and run your circuit. During operation, you can click on buttons to toggle their state.
+
+For the moment, only buttons and LEDs in the root circuit will function, and only root circuit connections will light up to reflect their status.
 
 ### Controls:
 
@@ -54,14 +63,16 @@ As of the time of this writing, the available logic components consist of:
 - Combinational logic (4 tick response)
   - AND
   - OR
+  - NOT
   - NOR
-- Negate / NOT (4 tick response)
+  - XOR
 - Toggle Switch (1 tick response)
 - Buffer (2 tick response)
 - 7 Segment Display (immediate visual response)
 - LED (immediate visual response)
-
-_For more details on the implementation of logic components, and how to add your own, see [/element-defs](https://github.com/RoboPhred/discrelog/tree/master/src/element-defs)._
+- IC Pins (used on circuits to create ICs)
+  - Input Pin
+  - Output Pin
 
 ## Upcomming features
 

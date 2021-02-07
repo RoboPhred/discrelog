@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 
 import { magnitude, normalizeRectangle, pointSubtract } from "@/geometry";
 
-import { nodePinPositionsByPinIdByNodeIdSelector } from "@/services/circuit-layout/selectors/node-positions";
+import { nodePinPositionsByPinIdByNodeIdSelector } from "@/services/node-layout/selectors/node-pin-positions";
 
 import { createCircuitEditorUiSelector } from "../utils";
 
@@ -45,11 +45,11 @@ export const dragMoveOffsetSelector = createCircuitEditorUiSelector(
 );
 
 export const isDraggingNewNodeSelector = createCircuitEditorUiSelector(
-  (s) => s.dragMode === "new-element"
+  (s) => s.dragMode === "new-node"
 );
 
 export const dragNewNodeTypeSelector = createCircuitEditorUiSelector((s) =>
-  s.dragMode === "new-element" ? s.dragNewElementType : null
+  s.dragMode === "new-node" ? s.dragNewNodeType : null
 );
 
 export const dragWireTargetPinSelector = createSelector(

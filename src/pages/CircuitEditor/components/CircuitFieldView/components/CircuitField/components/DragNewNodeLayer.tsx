@@ -10,13 +10,13 @@ import {
   dragEndSelector,
 } from "@/services/circuit-editor-ui/selectors/drag";
 
-import { fieldRectSelector } from "@/services/circuit-layout/selectors/field";
+import { fieldRectSelector } from "@/services/node-layout/selectors/field";
 
 import { fieldDragContinue } from "@/actions/field-drag-continue";
 
-import ElementVisual from "@/pages/CircuitEditor/components/ElementVisual";
-
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
+
+import NodeVisual from "./NodeVisual";
 
 const DragNewNodeLayer: React.FC = () => {
   const dispatch = useDispatch();
@@ -43,10 +43,10 @@ const DragNewNodeLayer: React.FC = () => {
     <>
       {dragEnd && (
         <g opacity={0.5}>
-          <ElementVisual
+          <NodeVisual
             x={dragEnd.x}
             y={dragEnd.y}
-            elementType={draggingNodeType}
+            nodeType={draggingNodeType}
             nodeState={{}}
           />
         </g>

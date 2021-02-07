@@ -6,14 +6,15 @@ import values from "lodash/values";
 
 import { createSelector } from "reselect";
 
-import { elementTypesByNodeIdSelector } from "@/services/circuit-graph/selectors/nodes";
-import { nodeStatesByIdSelector } from "@/services/simulator/selectors/nodes";
-import { nodePositionsByNodeIdSelector } from "@/services/circuit-layout/selectors/node-positions";
+import { nodeTypesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
+import { nodeStatesByNodeIdSelector } from "@/services/simulator/selectors/nodes";
+import { nodePositionsByNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 import { dragMoveOffsetSelector } from "@/services/circuit-editor-ui/selectors/drag";
 
-import ElementVisual from "@/pages/CircuitEditor/components/ElementVisual";
 import useSelector from "@/hooks/useSelector";
+
+import NodeVisual from "./NodeVisual";
 
 const selectedNodePositionsByIdSelector = createSelector(
   selectedNodeIdsSelector,
@@ -24,13 +25,13 @@ const selectedNodePositionsByIdSelector = createSelector(
 
 const selectedNodeTypesByIdSelector = createSelector(
   selectedNodeIdsSelector,
-  elementTypesByNodeIdSelector,
+  nodeTypesByNodeIdSelector,
   (selectedNodeIds, nodeTypesById) => pick(nodeTypesById, selectedNodeIds)
 );
 
 const selectedNodeStatesByIdSelector = createSelector(
   selectedNodeIdsSelector,
-  nodeStatesByIdSelector,
+  nodeStatesByNodeIdSelector,
   (selectedNodeIds, nodeStatesById) => pick(nodeStatesById, selectedNodeIds)
 );
 
@@ -46,9 +47,9 @@ const DragNodePreviewLayer: React.FC = () => {
   if (dragMoveOffset) {
     elements = values(
       mapValues(selectedNodePositionsById, (p, nodeId) => (
-        <ElementVisual
+        <NodeVisual
           key={nodeId}
-          elementType={selectedNodeTypesById[nodeId]}
+          nodeType={selectedNodeTypesById[nodeId]}
           nodeState={selectedNodeStatesById[nodeId]}
           x={p.x + dragMoveOffset.x}
           y={p.y + dragMoveOffset.y}

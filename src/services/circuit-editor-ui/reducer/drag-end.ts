@@ -10,7 +10,7 @@ import rootReducer from "@/store/reducer";
 import { isFieldDragEndAction } from "@/actions/field-drag-end";
 import { selectRegion } from "@/actions/select-region";
 import { moveSelection } from "@/actions/selection-move";
-import { addElement } from "@/actions/element-add";
+import { addNode } from "@/actions/node-add";
 import { attachWire } from "@/actions/wire-attach";
 
 import { applyGridSnapSelector } from "../selectors/snap";
@@ -30,7 +30,7 @@ export default function dragEndReducer(
     dragMode,
     dragStart,
     dragEnd,
-    dragNewElementType,
+    dragNewNodeType,
     dragWireSource,
   } = state.services.circuitEditorUi;
 
@@ -50,13 +50,10 @@ export default function dragEndReducer(
       }
       break;
     }
-    case "new-element": {
+    case "new-node": {
       if (dragEnd) {
         const position = applyGridSnapSelector(state, dragEnd);
-        state = rootReducer(
-          state,
-          addElement(dragNewElementType!, { position })
-        );
+        state = rootReducer(state, addNode(dragNewNodeType!, { position }));
       }
       break;
     }
@@ -74,7 +71,7 @@ export default function dragEndReducer(
     dragMode: null,
     dragStart: null,
     dragEnd: null,
-    dragNewElementType: null,
+    dragNewNodeType: null,
     dragWireSource: null,
   }));
 

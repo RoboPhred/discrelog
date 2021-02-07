@@ -1,0 +1,75 @@
+import { createSelector } from "reselect";
+import sortBy from "lodash/sortBy";
+
+import { nodeIdsByCircuitIdSelector } from "@/services/circuits/selectors/nodes";
+import { nodeTypesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
+import { nodePositionsByNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
+
+import {
+  NodeDefinition,
+  NodeDefinitionSource,
+  NodePinDefinition,
+} from "../../types";
+
+import {
+  circuitPinPosition,
+  circuitToNodeVisual,
+} from "./IntegratedCircuitVisual";
+
+import { circuitIdToNodeType } from "./utils";
+
+const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
+  nodeIdsByCircuitIdSelector,
+  nodeTypesByNodeIdSelector,
+  nodePositionsByNodeIdSelector,
+  (nodeIdsByCircuitId, nodeTypesByNodeId, nodePositionsByNodeId) => {
+    return Object.keys(nodeIdsByCircuitId)
+      .filter((x) => x !== "root")
+      .map((circuitId) => {
+        const circuitNodeIds = nodeIdsByCircuitId[circuitId] ?? [];
+
+        // Sort by y axis position to get consistent pin locations.
+        let pinNodeIds = circuitNodeIds.filter((circuitNodeId) =>
+          nodeTypesByNodeId[circuitNodeId].startsWith("pin-")
+        );
+        pinNodeIds = sortBy(
+          pinNodeIds,
+          (nodeId) => nodePositionsByNodeId[nodeId].y,
+          (nodeId) => nodePositionsByNodeId[nodeId].x
+        );
+
+        const pins: Record<string, NodePinDefinition> = {};
+        let inputPinCount = 0;
+        let outputPinCount = 0;
+        for (const pinNodeId of pinNodeIds) {
+          const type = nodeTypesByNodeId[pinNodeId];
+          if (type === "pin-input") {
+            pins[pinNodeId] = {
+              direction: "input",
+              ...circuitPinPosition(inputPinCount, "input"),
+            };
+            inputPinCount++;
+          } else if (type === "pin-output") {
+            pins[pinNodeId] = {
+              direction: "output",
+              ...circuitPinPosition(outputPinCount, "output"),
+            };
+            outputPinCount++;
+          }
+        }
+
+        const def: NodeDefinition = {
+          type: circuitIdToNodeType(circuitId),
+          elementProduction: {
+            type: "circuit",
+            circuitId,
+          },
+          visual: circuitToNodeVisual(circuitId, inputPinCount, outputPinCount),
+          pins,
+        };
+        return def;
+      });
+  }
+);
+
+export default [IntegratedCircuitDefinitionSource];

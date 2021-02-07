@@ -1,7 +1,7 @@
 import { AnyAction } from "redux";
 
 import { Point } from "@/geometry";
-import { NodePin } from "@/services/circuit-graph/types";
+import { NodePin } from "@/services/node-graph/types";
 
 export const ACTION_FIELD_DRAG_START_WIRE = "@field/drag/start/wire" as const;
 export const fieldDragStartWire = (dragStart: Point, pin: NodePin) => ({

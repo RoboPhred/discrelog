@@ -1,39 +1,63 @@
-import { SaveData, saveDataSchema, SaveNode, SaveWire } from "./types";
+import {
+  SaveCircuit,
+  SaveData,
+  saveDataSchema,
+  SaveNode,
+  SaveWire,
+} from "./types";
 
 import { AppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
-import { addElement } from "@/actions/element-add";
+import { addNode } from "@/actions/node-add";
 import { attachWire } from "@/actions/wire-attach";
 
 import { defaultSelectionState } from "../selection/state";
 import { defaultSimulatorState } from "../simulator/state";
-import { defaultCircuitGraphState } from "../circuit-graph/state";
+import { defaultNodeGraphState } from "../node-graph/state";
+
 import {
   nodeIdsSelector,
   nodeFromNodeIdSelector,
-} from "../circuit-graph/selectors/nodes";
+} from "../node-graph/selectors/nodes";
 import {
   connectionIdsSelector,
   connectionFromConnectionIdSelector,
-} from "../circuit-graph/selectors/connections";
-import { nodePositionFromNodeIdSelector } from "../circuit-layout/selectors/node-positions";
+} from "../node-graph/selectors/connections";
+import { nodePositionFromNodeIdSelector } from "../node-layout/selectors/node-positions";
+import {
+  circuitIdsSelector,
+  circuitNameFromIdSelector,
+} from "../circuits/selectors/circuits";
+import { circuitIdFromNodeIdSelector } from "../circuits/selectors/nodes";
 import {
   wireJointPositionsByJointIdSelector,
   wireJointIdsFromConnectionIdSelector,
-} from "../circuit-layout/selectors/wires";
-import { defaultCircuitLayoutState } from "../circuit-layout/state";
+} from "../node-layout/selectors/wires";
+import { defaultNodeLayoutState } from "../node-layout/state";
+
 import { SaveFormatError } from "./errors";
+import { addCircuit } from "@/actions/circuit-add";
 
 export function createSave(state: AppState): SaveData {
   const jointPositions = wireJointPositionsByJointIdSelector(state);
   return {
+    circuits: circuitIdsSelector(state).map((circuitId) => {
+      const circuitName = circuitNameFromIdSelector(state, circuitId);
+      const saveCircuit: SaveCircuit = {
+        circuitId,
+        circuitName,
+      };
+      return saveCircuit;
+    }),
     nodes: nodeIdsSelector(state).map((nodeId) => {
       const node = nodeFromNodeIdSelector(state, nodeId);
       const position = nodePositionFromNodeIdSelector(state, nodeId);
+      const circuitId = circuitIdFromNodeIdSelector(state, nodeId);
       const saveNode: SaveNode = {
         nodeId: nodeId,
-        elementType: node.elementType,
+        nodeType: node.nodeType,
+        circuitId: circuitId ?? "root",
         x: position.x,
         y: position.y,
       };
@@ -66,21 +90,27 @@ export function loadSave(state: AppState, save: SaveData): AppState {
     ...state,
     services: {
       ...state.services,
-      circuitLayout: defaultCircuitLayoutState,
-      circuitGraph: defaultCircuitGraphState,
+      nodeLayout: defaultNodeLayoutState,
+      nodeGraph: defaultNodeGraphState,
       selection: defaultSelectionState,
       simulator: defaultSimulatorState,
     },
   };
 
   try {
+    state = (save.circuits ?? []).reduce(
+      (state, { circuitId, circuitName }) =>
+        rootReducer(state, addCircuit({ circuitId, circuitName })),
+      state
+    );
+
     state = (save.nodes ?? []).reduce(
       (state, node) =>
         rootReducer(
           state,
-          // TODO: Could be element, could be chip.
-          addElement(node.elementType, {
+          addNode(node.nodeType, {
             nodeId: node.nodeId,
+            circuitId: node.circuitId,
             position: { x: node.x, y: node.y },
           })
         ),

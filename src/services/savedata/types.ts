@@ -1,19 +1,29 @@
 import * as yup from "yup";
 
-import { ElementType } from "@/element-defs";
 import { Point, pointSchema } from "@/geometry";
 
-import { NodePin, nodePinSchema } from "../circuit-graph/types";
+import { NodePin, nodePinSchema } from "../node-graph/types";
+
+export interface SaveCircuit {
+  circuitId: string;
+  circuitName: string;
+}
+export const saveCircuitSchema = yup.object().shape({
+  circuitId: yup.string().required().min(1),
+  circuitName: yup.string().required().min(1),
+});
 
 export interface SaveNode {
   nodeId: string;
-  elementType: ElementType;
+  nodeType: string;
+  circuitId: string;
   x: number;
   y: number;
 }
 export const saveNodeSchema = yup.object().shape({
   nodeId: yup.string().required().min(1),
-  elementType: yup.string().required().min(1), // TODO: Check for valid element types
+  nodeType: yup.string().required().min(1), // TODO: Check for valid element types
+  circuitId: yup.string().required().min(1),
   x: yup.number().required(),
   y: yup.number().required(),
 });
@@ -31,11 +41,12 @@ export const saveWireSchema = yup.object().shape({
 });
 
 export interface SaveData {
+  circuits: SaveCircuit[];
   nodes: SaveNode[];
   wires: SaveWire[];
 }
 export const saveDataSchema = yup.object().shape({
-  // Cannot make any of these required, as yup says required on an array is min length 1...
-  nodes: yup.array().of(saveNodeSchema),
-  wires: yup.array().of(saveWireSchema),
+  circuits: yup.array().of(saveCircuitSchema).min(0),
+  nodes: yup.array().of(saveNodeSchema).min(0),
+  wires: yup.array().of(saveWireSchema).min(0),
 });

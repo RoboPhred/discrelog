@@ -1,9 +1,7 @@
 import { AnyAction } from "redux";
 
-import { ElementType } from "@/element-defs";
-
 export const ACTION_FIELD_DRAG_START_NEWNODE = "@field/drag/start/new-element" as const;
-export const fieldDragStartNewNode = (nodeType: ElementType) => ({
+export const fieldDragStartNewNode = (nodeType: string) => ({
   type: ACTION_FIELD_DRAG_START_NEWNODE,
   payload: {
     nodeType,

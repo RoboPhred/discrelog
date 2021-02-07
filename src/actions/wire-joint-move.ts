@@ -22,3 +22,8 @@ export function isMoveWireJointAction(
 ): action is MoveWireJointAction {
   return action.type === ACTION_WIRE_JOINT_MOVE;
 }
+
+export const ACTION_WIRE_JOINT_MOVE_END = "@wire/joint/end-move" as const;
+export const moveWireJointEnd = () => ({
+  type: ACTION_WIRE_JOINT_MOVE_END,
+});
