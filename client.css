@@ -157,43 +157,6 @@ body,
   min-height: 0;
 }
 
-.Intro-module__intro___\[fullhash-base64-5\] {
-  box-sizing: border-box;
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  padding: 25px;
-  z-index: 9999;
-}
-
-.Intro-module__intro-content___\[fullhash-base64-5\] {
-  box-sizing: border-box;
-  border: 1px solid #888;
-  width: 100%;
-  height: 100%;
-  padding: 5px;
-  display: flex;
-  flex-direction: column;
-}
-
-.Intro-module__intro-header___\[fullhash-base64-5\] {
-  flex: 0 1 auto;
-}
-
-.Intro-module__intro-markdown___\[fullhash-base64-5\] {
-  flex: 0 1 auto;
-  overflow-y: scroll;
-  background: lightgray;
-  margin: 5px;
-  padding: 5px;
-}
-
-.Intro-module__intro-dismiss___\[fullhash-base64-5\] {
-  min-height: 2em;
-}
-
 .SimControls-module__button___\[fullhash-base64-5\] {
   margin: 0 2px;
 }
