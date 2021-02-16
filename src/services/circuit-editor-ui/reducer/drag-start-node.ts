@@ -23,6 +23,7 @@ export default function dragNodesStartReducer(
   state = fpSet(state, "services", "circuitEditorUi", (value) => ({
     ...value,
     dragMode: "move" as const,
+    dragRelativeNodeId: nodeId,
     dragStart: {
       x,
       y,

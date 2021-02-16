@@ -4,6 +4,14 @@ import { createCircuitEditorUiSelector } from "../utils";
 
 export const gridSnapSelector = createCircuitEditorUiSelector((s) => 50);
 
+export const gridSnapPointSelector = (state: AppState) => {
+  const snap = gridSnapSelector(state);
+  return {
+    x: snap,
+    y: snap,
+  };
+};
+
 export const applyGridSnapSelector = (s: AppState, p: Point) => {
   const snap = gridSnapSelector(s);
   return {

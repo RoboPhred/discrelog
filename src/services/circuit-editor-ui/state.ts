@@ -13,24 +13,27 @@ export interface CircuitEditorUiState {
    */
   viewScale: number;
 
-  // TODO: Drag stuff should probably be its own service.
   /**
    * The current drag operation being performed by the ui.
    */
   dragMode: "move" | "select" | "new-node" | "wire" | null;
+
   /**
    * The start of the drag operation, if applicable for the current operation.
    */
   dragStart: Point | null;
+
   /**
    * The current end point for the drag operation.  This does not indicate the final
    * drag position, but the cumulative position.
    */
   dragEnd: Point | null;
+
   /**
    * If dragMode is "new-node", this holds the node type being created.
    */
   dragNewNodeType: string | null;
+
   /**
    * If drag mode is "wire", this is the source pin being wired by the drag.
    */
