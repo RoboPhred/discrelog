@@ -2,7 +2,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 
 import { Point, ZeroPoint } from "@/geometry";
-import { getModifiers, getSelectMode } from "@/selection-mode";
+import { getModifiers } from "@/modifier-keys";
 
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
@@ -24,6 +24,7 @@ import NodeVisual from "../NodeVisual";
 import { useEventMouseCoords } from "../../hooks/useMouseCoords";
 
 import "./Node.module.css";
+import { getSelectMode } from "@/selection-mode";
 
 export interface NodeProps {
   nodeId: string;
@@ -56,8 +57,8 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
         dispatch(interactNode(nodeId));
       } else {
         const modifiers = getModifiers(e);
-        const mode = getSelectMode(modifiers);
-        dispatch(selectNodes(nodeId, mode));
+        const selectionMode = getSelectMode(modifiers);
+        dispatch(selectNodes(nodeId, selectionMode));
       }
     },
     [isSimActive]
@@ -67,8 +68,7 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
     (e: MouseEvent) => {
       const p = getCoords(e);
       const modifiers = getModifiers(e);
-      const mode = getSelectMode(modifiers);
-      dispatch(fieldDragStartNode(nodeId, p, mode));
+      dispatch(fieldDragStartNode(nodeId, p, modifiers));
     },
     [nodeId, getCoords]
   );
@@ -76,7 +76,8 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
   const onDragMove = React.useCallback(
     (offset: Point, e: MouseEvent) => {
       const p = getCoords(e);
-      dispatch(fieldDragContinue(p));
+      const modifierKeys = getModifiers(e);
+      dispatch(fieldDragContinue(p, modifierKeys));
     },
     [getCoords]
   );
@@ -85,8 +86,7 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
     (offset: Point, e: MouseEvent) => {
       const p = getCoords(e);
       const modifiers = getModifiers(e);
-      const mode = getSelectMode(modifiers);
-      dispatch(fieldDragEnd(p, mode));
+      dispatch(fieldDragEnd(p, modifiers));
     },
     [getCoords]
   );

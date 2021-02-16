@@ -10,7 +10,8 @@ import {
   pointAdd,
   scale,
 } from "@/geometry";
-import { getSelectMode, getModifiers } from "@/selection-mode";
+import { getModifiers } from "@/modifier-keys";
+import { getSelectMode } from "@/selection-mode";
 
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";

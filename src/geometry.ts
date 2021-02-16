@@ -78,6 +78,9 @@ export function pointSubtract(p1: Point, p2: Point): Point {
     y: p1.y - p2.y,
   };
 }
+export function pointEquals(p1: Point, p2: Point): boolean {
+  return p1.x === p2.x && p1.y === p2.y;
+}
 
 export function pointIntersects(p: Point, r: Rectangle): boolean {
   r = normalizeRectangle(r);

@@ -1,8 +1,8 @@
 import { AnyAction } from "redux";
 
 import { normalizeRectangle, pointSubtract } from "@/geometry";
-
 import { fpSet } from "@/utils";
+import { getSelectMode } from "@/selection-mode";
 
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
@@ -24,7 +24,7 @@ export default function dragEndReducer(
     return state;
   }
 
-  const { x, y, selectionMode } = action.payload;
+  const { x, y, modifierKeys } = action.payload;
 
   const {
     dragMode,
@@ -37,6 +37,7 @@ export default function dragEndReducer(
   switch (dragMode) {
     case "select": {
       if (dragStart) {
+        const selectionMode = getSelectMode(modifierKeys);
         const rect = normalizeRectangle(dragStart, { x, y });
         state = rootReducer(state, selectRegion(rect, selectionMode));
       }
@@ -45,7 +46,9 @@ export default function dragEndReducer(
     case "move": {
       if (dragStart) {
         let moveBy = pointSubtract({ x, y }, dragStart);
-        moveBy = applyGridSnapSelector(state, moveBy);
+        if (!modifierKeys.ctrlMetaKey) {
+          moveBy = applyGridSnapSelector(state, moveBy);
+        }
         state = rootReducer(state, moveSelection(moveBy.x, moveBy.y));
       }
       break;
@@ -69,6 +72,7 @@ export default function dragEndReducer(
   state = fpSet(state, "services", "circuitEditorUi", (value) => ({
     ...value,
     dragMode: null,
+    dragModifierKeys: null,
     dragStart: null,
     dragEnd: null,
     dragNewNodeType: null,

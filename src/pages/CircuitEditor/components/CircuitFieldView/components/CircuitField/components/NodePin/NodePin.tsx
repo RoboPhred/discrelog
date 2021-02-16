@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { cls } from "@/utils";
 import { Point } from "@/geometry";
-import { getModifiers, getSelectMode } from "@/selection-mode";
+import { getModifiers } from "@/modifier-keys";
 
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
@@ -49,7 +49,8 @@ const NodePin: React.FC<NodePinProps> = ({ nodeId, pinId }) => {
   const onDragMove = React.useCallback(
     (offset: Point, e: MouseEvent) => {
       const p = getMouseCoords(e);
-      dispatch(fieldDragContinue(p));
+      const modifierKeys = getModifiers(e);
+      dispatch(fieldDragContinue(p, modifierKeys));
     },
     [getMouseCoords]
   );
@@ -58,8 +59,7 @@ const NodePin: React.FC<NodePinProps> = ({ nodeId, pinId }) => {
     (offset: Point, e: MouseEvent) => {
       const p = getMouseCoords(e);
       const modifiers = getModifiers(e);
-      const mode = getSelectMode(modifiers);
-      dispatch(fieldDragEnd(p, mode));
+      dispatch(fieldDragEnd(p, modifiers));
     },
     [getMouseCoords]
   );

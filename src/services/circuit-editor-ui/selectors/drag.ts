@@ -1,6 +1,7 @@
 import { createSelector } from "reselect";
 
 import { magnitude, normalizeRectangle, pointSubtract } from "@/geometry";
+import { MODIFIER_KEYS_NONE } from "@/modifier-keys";
 
 import { nodePinPositionsByPinIdByNodeIdSelector } from "@/services/node-layout/selectors/node-pin-positions";
 
@@ -15,6 +16,10 @@ export const dragStartSelector = createCircuitEditorUiSelector(
   (s) => s.dragStart
 );
 export const dragEndSelector = createCircuitEditorUiSelector((s) => s.dragEnd);
+
+export const dragModifierKeysSelector = createCircuitEditorUiSelector(
+  (s) => s.dragModifierKeys ?? MODIFIER_KEYS_NONE
+);
 
 export const selectionRectSelector = createCircuitEditorUiSelector(
   createSelector(
@@ -31,16 +36,23 @@ export const selectionRectSelector = createCircuitEditorUiSelector(
 export const dragMoveOffsetSelector = createCircuitEditorUiSelector(
   createSelector(
     dragModeSelector.local,
+    dragModifierKeysSelector.local,
     dragStartSelector.local,
     dragEndSelector.local,
     gridSnapSelector.local,
-    (dragMode, dragStart, dragEnd, gridSnap) =>
-      dragMode === "move" && dragStart && dragEnd
-        ? {
-            x: Math.round((dragEnd.x - dragStart.x) / gridSnap) * gridSnap,
-            y: Math.round((dragEnd.y - dragStart.y) / gridSnap) * gridSnap,
-          }
-        : null
+    (dragMode, modifierKeys, dragStart, dragEnd, gridSnap) => {
+      if (dragMode !== "move" || !dragStart || !dragEnd) {
+        return null;
+      }
+
+      let offset = pointSubtract(dragEnd, dragStart);
+      if (!modifierKeys.ctrlMetaKey) {
+        offset.x = Math.round(offset.x / gridSnap) * gridSnap;
+        offset.y = Math.round(offset.y / gridSnap) * gridSnap;
+      }
+
+      return offset;
+    }
   )
 );
 

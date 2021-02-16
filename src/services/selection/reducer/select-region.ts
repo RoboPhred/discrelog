@@ -2,6 +2,7 @@ import forOwn from "lodash/forOwn";
 import pick from "lodash/pick";
 
 import { intersects, pointIntersects } from "@/geometry";
+import { combineSelection } from "@/selection-mode";
 
 import { isSelectRegionAction } from "@/actions/select-region";
 
@@ -9,7 +10,7 @@ import { nodeIdsForEditingCircuitSelector } from "@/services/circuit-editor-ui/s
 import { nodeRectsByIdSelector } from "@/services/node-layout/selectors/node-bounds";
 import { wireJointPositionsByJointIdSelector } from "@/services/node-layout/selectors/wires";
 
-import { combineSelection, createSelectionReducer } from "../utils";
+import { createSelectionReducer } from "../utils";
 
 export default createSelectionReducer((state, action, appState) => {
   if (!isSelectRegionAction(action)) {

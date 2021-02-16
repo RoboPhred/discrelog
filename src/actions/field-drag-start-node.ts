@@ -1,19 +1,19 @@
 import { AnyAction } from "redux";
 
 import { Point } from "@/geometry";
-import { SelectionMode } from "@/selection-mode";
+import { ModifierKeys } from "@/modifier-keys";
 
 export const ACTION_FIELD_DRAG_START_NODE = "@field/drag/start/node" as const;
 export const fieldDragStartNode = (
   nodeId: string,
   p: Point,
-  selectionMode: SelectionMode
+  modifierKeys: ModifierKeys
 ) => ({
   type: ACTION_FIELD_DRAG_START_NODE,
   payload: {
     ...p,
     nodeId,
-    selectionMode,
+    modifierKeys,
   },
 });
 export type FieldDragStartNodeAction = ReturnType<typeof fieldDragStartNode>;

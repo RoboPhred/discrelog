@@ -1,6 +1,7 @@
 import { AnyAction } from "redux";
 
 import { fpSet } from "@/utils";
+import { getSelectMode } from "@/selection-mode";
 
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
@@ -18,7 +19,7 @@ export default function dragNodesStartReducer(
     return state;
   }
 
-  const { nodeId, x, y, selectionMode } = action.payload;
+  const { nodeId, x, y, modifierKeys } = action.payload;
 
   state = fpSet(state, "services", "circuitEditorUi", (value) => ({
     ...value,
@@ -31,6 +32,7 @@ export default function dragNodesStartReducer(
   }));
 
   if (!isNodeSelectedFromNodeIdSelector(state, nodeId)) {
+    const selectionMode = getSelectMode(modifierKeys);
     // Dragging a node that was not previously selected.  Perform a selection on the node.
     state = rootReducer(state, selectNodes(nodeId, selectionMode));
   }

@@ -1,4 +1,6 @@
 import { Point } from "@/geometry";
+import { ModifierKeys } from "@/modifier-keys";
+
 import { NodePin } from "../node-graph/types";
 import { ROOT_CIRCUIT_ID } from "../circuits/constants";
 
@@ -17,6 +19,11 @@ export interface CircuitEditorUiState {
    * The current drag operation being performed by the ui.
    */
   dragMode: "move" | "select" | "new-node" | "wire" | null;
+
+  /**
+   * The modifier keys in play for the drag operation.
+   */
+  dragModifierKeys: ModifierKeys | null;
 
   /**
    * The start of the drag operation, if applicable for the current operation.
@@ -44,6 +51,7 @@ const _defaultState: CircuitEditorUiState = {
   editingCircuitId: ROOT_CIRCUIT_ID,
   viewScale: 1,
   dragMode: null,
+  dragModifierKeys: null,
   dragStart: null,
   dragEnd: null,
   dragNewNodeType: null,

@@ -3,7 +3,8 @@ import { useDispatch } from "react-redux";
 
 import { Point } from "@/geometry";
 import { cls } from "@/utils";
-import { getSelectMode, getModifiers } from "@/selection-mode";
+import { getModifiers } from "@/modifier-keys";
+import { getSelectMode } from "@/selection-mode";
 
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";

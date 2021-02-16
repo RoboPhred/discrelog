@@ -2,7 +2,7 @@ import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { Point } from "@/geometry";
-import { getModifiers, getSelectMode } from "@/selection-mode";
+import { getModifiers } from "@/modifier-keys";
 
 import useMouseTracking from "@/hooks/useMouseTracking";
 
@@ -39,7 +39,8 @@ const DragSelectLayer: React.FC = () => {
   const onDragMove = React.useCallback(
     (offset: Point, e: MouseEvent) => {
       const p = getCoords(e);
-      dispatch(fieldDragContinue(p));
+      const modifierKeys = getModifiers(e);
+      dispatch(fieldDragContinue(p, modifierKeys));
     },
     [getCoords]
   );
@@ -48,8 +49,7 @@ const DragSelectLayer: React.FC = () => {
     (offset: Point, e: MouseEvent) => {
       const p = getCoords(e);
       const modifiers = getModifiers(e);
-      const mode = getSelectMode(modifiers);
-      dispatch(fieldDragEnd(p, mode));
+      dispatch(fieldDragEnd(p, modifiers));
     },
     [getCoords]
   );

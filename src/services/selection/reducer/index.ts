@@ -8,6 +8,7 @@ import selectJointsReducer from "./select-joints";
 import selectNodesReducer from "./select-nodes";
 import selectRegionReducer from "./select-region";
 import selectWiresReducer from "./select-wires";
+import selectionAlignToGrid from "./selection-align-to-grid";
 import selectionCopyReducer from "./selection-copy";
 import selectionDeleteReducer from "./selection-delete";
 import selectionMoveReducer from "./selection-move";
@@ -22,6 +23,7 @@ const selectionReducer = concatReducers(
   selectNodesReducer,
   selectRegionReducer,
   selectWiresReducer,
+  selectionAlignToGrid,
   selectionCopyReducer,
   selectionDeleteReducer,
   selectionMoveReducer,

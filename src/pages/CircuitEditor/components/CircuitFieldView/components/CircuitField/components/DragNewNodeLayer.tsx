@@ -2,6 +2,8 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 
 import { calcSize } from "@/geometry";
+import { getModifiers } from "@/modifier-keys";
+
 import useSelector from "@/hooks/useSelector";
 
 import {
@@ -28,9 +30,10 @@ const DragNewNodeLayer: React.FC = () => {
   const draggingNodeType = useSelector(dragNewNodeTypeSelector);
 
   const onMouseMove = React.useCallback(
-    (e: React.MouseEvent) => {
+    (e) => {
       const p = getMouseCoords(e);
-      dispatch(fieldDragContinue(p));
+      const modifierKeys = getModifiers(e);
+      dispatch(fieldDragContinue(p, modifierKeys));
     },
     [getMouseCoords]
   );

@@ -1,15 +1,9 @@
-import { keyboardIsMac } from "./runtime-env";
+import union from "lodash/union";
+import difference from "lodash/difference";
+
+import { ModifierKeys } from "./modifier-keys";
 
 export type SelectionMode = "set" | "append" | "remove" | "toggle";
-
-export function getModifiers(e: MouseEvent): ModifierKeys {
-  const { ctrlKey, altKey, shiftKey, metaKey } = e;
-  return {
-    ctrlMetaKey: keyboardIsMac ? metaKey : ctrlKey,
-    altKey: altKey,
-    shiftKey,
-  };
-}
 
 export function getSelectMode(modifiers: ModifierKeys): SelectionMode {
   if (modifiers.shiftKey && modifiers.ctrlMetaKey) {
@@ -24,8 +18,24 @@ export function getSelectMode(modifiers: ModifierKeys): SelectionMode {
   return "set";
 }
 
-export interface ModifierKeys {
-  ctrlMetaKey: boolean;
-  shiftKey: boolean;
-  altKey: boolean;
+export function combineSelection(
+  selectedIds: string[],
+  chosenIds: string[],
+  mode: SelectionMode
+) {
+  switch (mode) {
+    case "set":
+      return chosenIds;
+    case "append":
+      return union(selectedIds, chosenIds);
+    case "remove":
+      return difference(selectedIds, chosenIds);
+    case "toggle": {
+      return difference(selectedIds, chosenIds).concat(
+        difference(chosenIds, selectedIds)
+      );
+    }
+  }
+
+  return chosenIds;
 }

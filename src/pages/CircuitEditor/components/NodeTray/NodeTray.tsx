@@ -1,9 +1,10 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 
-import { typedKeys } from "@/utils";
+import { MODIFIER_KEYS_NONE } from "@/modifier-keys";
 
 import useMouseTracking from "@/hooks/useMouseTracking";
+import useSelector from "@/hooks/useSelector";
 
 import {
   nodeDefinitionFromTypeSelector,
@@ -16,7 +17,6 @@ import { fieldDragStartNewNode } from "@/actions/field-drag-start-newnode";
 import { fieldDragEnd } from "@/actions/field-drag-end";
 
 import styles from "./NodeTray.module.css";
-import useSelector from "@/hooks/useSelector";
 
 const NodeTray: React.FC = () => {
   const nodeDefinitions = useSelector(nodeDefinitionsSelector);
@@ -54,7 +54,7 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
 
   const onDragEnd = React.useCallback(() => {
     // We do not know the point from here, and selection mode is irrelevant.
-    dispatch(fieldDragEnd({ x: -1, y: -1 }, "set"));
+    dispatch(fieldDragEnd({ x: -1, y: -1 }, MODIFIER_KEYS_NONE));
   }, []);
 
   const { startTracking } = useMouseTracking({

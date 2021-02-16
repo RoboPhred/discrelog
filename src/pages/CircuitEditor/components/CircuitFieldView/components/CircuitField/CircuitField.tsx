@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
+import { ContextMenu } from "@blueprintjs/core";
 
 import { cls } from "@/utils";
 import { calcSize } from "@/geometry";
@@ -22,6 +23,7 @@ import NodePinsLayer from "./components/NodePinsLayer";
 import DragAttachWirePreviewLayer from "./components/DragAttachWirePreviewLayer";
 
 import styles from "./CircuitField.module.css";
+import FieldContextMenu from "./components/FieldContextMenu";
 
 const CircuitField: React.FC = () => {
   const dispatch = useDispatch();
@@ -36,6 +38,16 @@ const CircuitField: React.FC = () => {
 
   const onMouseLeave = React.useCallback(() => {
     dispatch(fieldMouseLeave());
+  }, []);
+
+  const onContextMenu = React.useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    ContextMenu.show(<FieldContextMenu dispatch={dispatch} />, {
+      left: e.pageX,
+      top: e.pageY,
+    });
   }, []);
 
   return (
@@ -55,6 +67,7 @@ const CircuitField: React.FC = () => {
         height={height}
         onMouseDown={onMouseDown}
         onMouseLeave={onMouseLeave}
+        onContextMenu={onContextMenu}
       >
         <FieldSvgElementProvider value={svgRef}>
           <GridBackground />
