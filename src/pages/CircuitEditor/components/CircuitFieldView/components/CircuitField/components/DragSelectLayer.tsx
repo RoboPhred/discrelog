@@ -22,6 +22,9 @@ const DragSelectLayer: React.FC = () => {
   const getCoords = useEventMouseCoords();
 
   const onClick = React.useCallback((e: MouseEvent) => {
+    if (e.button !== 0) {
+      return;
+    }
     const modifiers = getModifiers(e);
     if (!modifiers.ctrlMetaKey && !modifiers.shiftKey) {
       dispatch(clearSelection());

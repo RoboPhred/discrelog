@@ -1,4 +1,4 @@
-import * as React from "React";
+import * as React from "react";
 import { AnyAction, Dispatch } from "redux";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
