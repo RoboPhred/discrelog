@@ -1,6 +1,11 @@
 import { createSelector } from "reselect";
 
-import { magnitude, normalizeRectangle, pointSubtract } from "@/geometry";
+import {
+  magnitude,
+  normalizeRectangle,
+  pointSubtract,
+  ZeroPoint,
+} from "@/geometry";
 import { MODIFIER_KEYS_NONE } from "@/modifier-keys";
 
 import { nodePinPositionsByPinIdByNodeIdSelector } from "@/services/node-layout/selectors/node-pin-positions";
@@ -8,6 +13,7 @@ import { nodePinPositionsByPinIdByNodeIdSelector } from "@/services/node-layout/
 import { createCircuitEditorUiSelector } from "../utils";
 
 import { gridSnapSelector } from "./snap";
+import { nodeIdsForEditingCircuitSelector } from "./nodes";
 
 export const dragModeSelector = createCircuitEditorUiSelector(
   (s) => s.dragMode
@@ -67,20 +73,27 @@ export const dragNewNodeTypeSelector = createCircuitEditorUiSelector((s) =>
 export const dragWireTargetPinSelector = createSelector(
   dragModeSelector,
   dragEndSelector,
+  nodeIdsForEditingCircuitSelector,
   nodePinPositionsByPinIdByNodeIdSelector,
-  (dragMode, dragEnd, pinPositionsByPinIdByNodeId) => {
+  (
+    dragMode,
+    dragEnd,
+    nodeIdsForEditingCircuit,
+    pinPositionsByPinIdByNodeId
+  ) => {
     if (dragMode !== "wire" || !dragEnd) {
       return null;
     }
 
-    const nodeIds = Object.keys(pinPositionsByPinIdByNodeId);
-    for (const nodeId of nodeIds) {
-      const pinPositionsByPinId = pinPositionsByPinIdByNodeId[nodeId];
+    for (const nodeId of nodeIdsForEditingCircuit) {
+      const pinPositionsByPinId =
+        pinPositionsByPinIdByNodeId[nodeId] ?? ZeroPoint;
       const pinIds = Object.keys(pinPositionsByPinId);
       for (const pinId of pinIds) {
         const pinPosition = pinPositionsByPinId[pinId];
         const offset = pointSubtract(dragEnd, pinPosition);
         const length = magnitude(offset);
+        console.log("Pin is", length, "away from node", nodeId, "pin", pinId);
         if (length <= 6) {
           return { nodeId, pinId };
         }

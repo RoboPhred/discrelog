@@ -71,18 +71,23 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
     nodeDefinitionFromTypeSelector(state, nodeType)
   );
 
-  let NodeComponent: NodeComponentType;
+  let NodeTrayComponent: React.ComponentType;
   if (def) {
-    NodeComponent = def.visual.component;
+    NodeTrayComponent =
+      def.visual.trayComponent ??
+      (() => {
+        const Component = def.visual.component;
+        return <Component elementState={{}} />;
+      });
   } else {
-    NodeComponent = () => <rect fill="red" x1={0} y1={0} x2={50} y2={50} />;
+    NodeTrayComponent = () => <rect fill="red" x1={0} y1={0} x2={50} y2={50} />;
   }
 
   return (
     <div onMouseDown={onMouseDown}>
       {/* FIXME: Settle on a decent size and shrink overly large nodes to fit */}
       <svg width={75} height={75}>
-        <NodeComponent elementState={{}} />
+        <NodeTrayComponent />
       </svg>
     </div>
   );

@@ -53,6 +53,10 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
 
   const onClick = React.useCallback(
     (e: MouseEvent) => {
+      if (e.button !== 0) {
+        return;
+      }
+
       if (isSimActive) {
         dispatch(interactNode(nodeId));
       } else {
@@ -99,10 +103,15 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
   });
   const onMouseDown = React.useCallback(
     (e: React.MouseEvent) => {
+      if (e.button !== 0) {
+        return;
+      }
+
       if (e.defaultPrevented) {
         return;
       }
       e.preventDefault();
+
       startTracking(e);
     },
     [getCoords]

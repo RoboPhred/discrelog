@@ -71,8 +71,17 @@ const NodePin: React.FC<NodePinProps> = ({ nodeId, pinId }) => {
   });
 
   const onMouseDown = React.useCallback((e: React.MouseEvent) => {
+    if (e.button !== 0) {
+      return;
+    }
+
+    if (e.defaultPrevented) {
+      return;
+    }
     e.preventDefault();
+
     e.stopPropagation();
+
     startTracking(e);
   }, []);
 
@@ -87,30 +96,44 @@ const NodePin: React.FC<NodePinProps> = ({ nodeId, pinId }) => {
 
   const { x, y } = position;
 
+  let pinVisual: JSX.Element;
+
   if (direction === "input") {
-    return (
+    pinVisual = (
       <path
         d={describeArc(x, y, 3, -45, 225)}
         className={cls(
           styles["node-pin-input"],
           isDragTarget && styles["is-drag-target"]
         )}
-        onMouseDown={onMouseDown}
+      />
+    );
+  } else {
+    pinVisual = (
+      <circle
+        className={cls(
+          styles["node-pin-output"],
+          isDragTarget && styles["is-drag-target"]
+        )}
+        cx={x}
+        cy={y}
+        r={3}
       />
     );
   }
 
   return (
-    <circle
-      className={cls(
-        styles["node-pin-output"],
-        isDragTarget && styles["is-drag-target"]
-      )}
-      cx={x}
-      cy={y}
-      r={3}
-      onMouseDown={onMouseDown}
-    />
+    <g>
+      {pinVisual}
+      <circle
+        stroke="none"
+        fill="transparent"
+        cx={x}
+        cy={y}
+        r={3}
+        onMouseDown={onMouseDown}
+      />
+    </g>
   );
 };
 

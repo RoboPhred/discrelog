@@ -3,11 +3,13 @@ import * as React from "react";
 import { Point } from "@/geometry";
 import { PinDirection } from "@/logic";
 
-import { NodeComponentProps, NodeVisualDefinition } from "../../types";
 import useSelector from "@/hooks/useSelector";
+
 import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
 
-export interface IntegratedCircuitVisualProps extends NodeComponentProps {
+import { NodeVisualDefinition } from "../../types";
+
+export interface IntegratedCircuitVisualProps {
   circuitId: string;
   inputPinCount: number;
   outputPinCount: number;
@@ -79,23 +81,46 @@ const IntegratedCircuitVisual: React.FC<IntegratedCircuitVisualProps> = ({
   );
 };
 
-export default IntegratedCircuitVisual;
+const IntegratedCircuitTrayVisual: React.FC<IntegratedCircuitVisualProps> = ({
+  circuitId,
+}) => {
+  const circuitName = useSelector((state) =>
+    circuitNameFromIdSelector(state, circuitId)
+  );
+  return (
+    <g>
+      <text textAnchor="middle" x={20} y={10}>
+        {circuitName}
+      </text>
+      <g stroke="black" strokeWidth={1}>
+        <rect x={10} y={20} width={30} height={30} fill="transparent" />
+        <line x1={10} y1={25} x2={5} y2={25} />
+        <line x1={40} y1={25} x2={45} y2={25} />
+
+        <line x1={10} y1={45} x2={5} y2={45} />
+        <line x1={40} y1={45} x2={45} y2={45} />
+      </g>
+    </g>
+  );
+};
 
 export function circuitToNodeVisual(
   circuitId: string,
   inputPinCount: number,
   outputPinCount: number
 ): NodeVisualDefinition {
+  const icProps: IntegratedCircuitVisualProps = {
+    circuitId,
+    inputPinCount,
+    outputPinCount,
+  };
+
   return {
     hitPath: getBorderPath(inputPinCount, outputPinCount),
-    component: (props) => (
-      <IntegratedCircuitVisual
-        circuitId={circuitId}
-        inputPinCount={inputPinCount}
-        outputPinCount={outputPinCount}
-        {...props}
-      />
+    trayComponent: (props) => (
+      <IntegratedCircuitTrayVisual {...icProps} {...props} />
     ),
+    component: (props) => <IntegratedCircuitVisual {...icProps} {...props} />,
   };
 }
 

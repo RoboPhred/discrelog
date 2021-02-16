@@ -4,6 +4,7 @@ export interface NodeVisualDefinition {
    */
   hitPath: string;
 
+  trayComponent?: React.ComponentType;
   component: NodeComponentType;
 }
 
