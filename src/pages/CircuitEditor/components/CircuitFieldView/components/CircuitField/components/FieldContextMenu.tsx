@@ -3,8 +3,8 @@ import { AnyAction, Dispatch } from "redux";
 
 import { Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 
-import { alignSelectionToGrid } from "@/actions/selection-align-to-grid";
-import { selectionDelete } from "@/actions/selection-delete";
+import { selectionAlignToGrid } from "@/actions/selection-align-to-grid";
+import { deleteSelection } from "@/actions/selection-delete";
 
 export interface FioeldContextMenuProps {
   /**
@@ -17,10 +17,10 @@ export interface FioeldContextMenuProps {
 
 const FieldContextMenu: React.FC<FioeldContextMenuProps> = ({ dispatch }) => {
   const onAlignToGrid = React.useCallback(() => {
-    dispatch(alignSelectionToGrid());
+    dispatch(selectionAlignToGrid());
   }, [dispatch]);
   const onDelete = React.useCallback(() => {
-    dispatch(selectionDelete());
+    dispatch(deleteSelection());
   }, [dispatch]);
   return (
     <Menu>

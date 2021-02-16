@@ -1,12 +1,12 @@
 import { AnyAction } from "redux";
 
 export const ACTION_SELECTION_COPY = "@selection/copy" as const;
-export const selectionCopy = () => ({
+export const copySelection = () => ({
   type: ACTION_SELECTION_COPY,
 });
-export type SelectionCopyAction = ReturnType<typeof selectionCopy>;
-export function isSelectionCopyAction(
+export type CopySelectionAction = ReturnType<typeof copySelection>;
+export function isCopySelectionAction(
   action: AnyAction
-): action is SelectionCopyAction {
+): action is CopySelectionAction {
   return action.type === ACTION_SELECTION_COPY;
 }

@@ -4,7 +4,7 @@ import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 import { pointEquals } from "@/geometry";
 
-import { isAlignSelectionToGridAction } from "@/actions/selection-align-to-grid";
+import { isSelectionAlignToGridAction } from "@/actions/selection-align-to-grid";
 
 import { nodePositionsByNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
 import { applyGridSnapSelector } from "@/services/circuit-editor-ui/selectors/snap";
@@ -14,7 +14,7 @@ export default function selectionAlignToGridReducer(
   state: AppState = defaultAppState,
   action: AnyAction
 ): AppState {
-  if (!isAlignSelectionToGridAction(action)) {
+  if (!isSelectionAlignToGridAction(action)) {
     return state;
   }
 

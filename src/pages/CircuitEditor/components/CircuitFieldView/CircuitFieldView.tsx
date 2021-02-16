@@ -13,8 +13,8 @@ import { viewZoom } from "@/actions/view-zoom";
 import { tickSim } from "@/actions/sim-tick";
 import { fastForwardSim } from "@/actions/sim-fastforward";
 import { paste } from "@/actions/clipboard-paste";
-import { selectionCopy } from "@/actions/selection-copy";
-import { selectionDelete } from "@/actions/selection-delete";
+import { copySelection } from "@/actions/selection-copy";
+import { deleteSelection } from "@/actions/selection-delete";
 import { selectAll } from "@/actions/select-all";
 
 import keymap, {
@@ -56,9 +56,9 @@ const CircuitFieldView: React.FC<CircuitFieldViewProps> = ({ className }) => {
       [KEYMAP_SIM_STEP]: createEventDispatcher(tickSim(1)),
       [KEYMAP_SIM_FASTFORWARD]: createEventDispatcher(fastForwardSim()),
       [KEYMAP_SELECT_ALL]: createEventDispatcher(selectAll()),
-      [KEYMAP_COPY]: createEventDispatcher(selectionCopy()),
+      [KEYMAP_COPY]: createEventDispatcher(copySelection()),
       [KEYMAP_PASTE]: createEventDispatcher(paste()),
-      [KEYMAP_DELETE]: createEventDispatcher(selectionDelete()),
+      [KEYMAP_DELETE]: createEventDispatcher(deleteSelection()),
     };
     return keyHandlers;
   }, []);
