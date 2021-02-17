@@ -12,7 +12,7 @@ import { nodePinPositionsByPinIdByNodeIdSelector } from "@/services/node-layout/
 
 import { createCircuitEditorUiSelector } from "../utils";
 
-import { gridSnapSelector } from "./snap";
+import { gridJointSnapSelector, gridNodeSnapSelector } from "./snap";
 import { nodeIdsForEditingCircuitSelector } from "./nodes";
 
 export const dragModeSelector = createCircuitEditorUiSelector(
@@ -45,11 +45,13 @@ export const dragMoveOffsetSelector = createCircuitEditorUiSelector(
     dragModifierKeysSelector.local,
     dragStartSelector.local,
     dragEndSelector.local,
-    gridSnapSelector.local,
+    gridNodeSnapSelector.local,
     (dragMode, modifierKeys, dragStart, dragEnd, gridSnap) => {
       if (dragMode !== "move" || !dragStart || !dragEnd) {
         return null;
       }
+
+      // FIXME: If we are only dragging joints, use gridJointSnapSelector.
 
       let offset = pointSubtract(dragEnd, dragStart);
       if (!modifierKeys.ctrlMetaKey) {
@@ -64,7 +66,7 @@ export const dragMoveOffsetSelector = createCircuitEditorUiSelector(
 
 export const dragNewJointPositionSelector = createCircuitEditorUiSelector(
   (state) => {
-    const gridSnap = gridSnapSelector.local(state);
+    const gridSnap = gridJointSnapSelector.local(state);
 
     const { dragMode, dragEnd, dragModifierKeys } = state;
     if (dragMode !== "new-joint" || !dragEnd || !dragModifierKeys) {

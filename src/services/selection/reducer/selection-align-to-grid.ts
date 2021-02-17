@@ -5,10 +5,15 @@ import rootReducer from "@/store/reducer";
 import { pointEquals } from "@/geometry";
 
 import { isSelectionAlignToGridAction } from "@/actions/selection-align-to-grid";
+import { moveNode } from "@/actions/node-move";
+import { moveWireJoint } from "@/actions/wire-joint-move";
 
 import { nodePositionsByNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
-import { applyGridSnapSelector } from "@/services/circuit-editor-ui/selectors/snap";
-import { moveNode } from "@/actions/node-move";
+import {
+  applyGridJointSnapSelector,
+  applyGridNodeSnapSelector,
+} from "@/services/circuit-editor-ui/selectors/snap";
+import { wireJointPositionsByJointIdSelector } from "@/services/node-layout/selectors/wires";
 
 export default function selectionAlignToGridReducer(
   state: AppState = defaultAppState,
@@ -18,7 +23,7 @@ export default function selectionAlignToGridReducer(
     return state;
   }
 
-  const selectedNodeIds = state.services.selection.selectedNodeIds;
+  const { selectedNodeIds, selectedJointIds } = state.services.selection;
 
   // Align nodes.
   const nodePositions = nodePositionsByNodeIdSelector(state);
@@ -28,13 +33,25 @@ export default function selectionAlignToGridReducer(
       continue;
     }
 
-    const snappedPos = applyGridSnapSelector(state, nodePos);
+    const snappedPos = applyGridNodeSnapSelector(state, nodePos);
     if (!pointEquals(nodePos, snappedPos)) {
       state = rootReducer(state, moveNode(nodeId, snappedPos));
     }
   }
 
-  // TODO: Align joints.
+  // Align joints.
+  const jointPositions = wireJointPositionsByJointIdSelector(state);
+  for (const jointId of selectedJointIds) {
+    const jointPos = jointPositions[jointId];
+    if (!jointPos) {
+      continue;
+    }
+
+    const snappedPos = applyGridJointSnapSelector(state, jointPos);
+    if (!pointEquals(jointPos, snappedPos)) {
+      state = rootReducer(state, moveWireJoint(jointId, snappedPos));
+    }
+  }
 
   return state;
 }

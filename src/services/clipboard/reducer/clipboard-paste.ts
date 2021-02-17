@@ -15,7 +15,7 @@ import { attachWire } from "@/actions/wire-attach";
 import { isPasteAction } from "@/actions/clipboard-paste";
 import { selectNodes } from "@/actions/select-nodes";
 
-import { gridSnapPointSelector } from "@/services/circuit-editor-ui/selectors/snap";
+import { gridNodeSnapSelector } from "@/services/circuit-editor-ui/selectors/snap";
 
 export default function clipboardPasteReducer(
   state: AppState = defaultAppState,
@@ -26,8 +26,11 @@ export default function clipboardPasteReducer(
   }
 
   const { clipboardNodes, clipboardPasteOrigin } = state.services.clipboard;
-  const snapPoint = gridSnapPointSelector(state);
-  const pastePosition = pointAdd(clipboardPasteOrigin, snapPoint);
+  const gridSnap = gridNodeSnapSelector(state);
+  const pastePosition = pointAdd(clipboardPasteOrigin, {
+    x: gridSnap,
+    y: gridSnap,
+  });
 
   const pasteIds = zipObject(
     clipboardNodes.map((x) => x.id),

@@ -14,7 +14,10 @@ import { addNode } from "@/actions/node-add";
 import { addWireJoint } from "@/actions/wire-joint-add";
 import { attachWire } from "@/actions/wire-attach";
 
-import { applyGridSnapSelector } from "../selectors/snap";
+import {
+  applyGridJointSnapSelector,
+  applyGridNodeSnapSelector,
+} from "../selectors/snap";
 import { dragWireTargetPinSelector } from "../selectors/drag";
 
 export default function dragEndReducer(
@@ -50,7 +53,7 @@ export default function dragEndReducer(
       if (dragStart) {
         let moveBy = pointSubtract({ x, y }, dragStart);
         if (!modifierKeys.ctrlMetaKey) {
-          moveBy = applyGridSnapSelector(state, moveBy);
+          moveBy = applyGridNodeSnapSelector(state, moveBy);
         }
         state = rootReducer(state, moveSelection(moveBy.x, moveBy.y));
       }
@@ -58,14 +61,14 @@ export default function dragEndReducer(
     }
     case "new-node": {
       if (dragEnd) {
-        const position = applyGridSnapSelector(state, dragEnd);
+        const position = applyGridNodeSnapSelector(state, dragEnd);
         state = rootReducer(state, addNode(dragNewNodeType!, { position }));
       }
       break;
     }
     case "new-joint": {
       if (dragEnd) {
-        const position = applyGridSnapSelector(state, dragEnd);
+        const position = applyGridJointSnapSelector(state, dragEnd);
         state = rootReducer(
           state,
           addWireJoint(
