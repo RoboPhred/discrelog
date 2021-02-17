@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
+import { MosaicWindow } from "react-mosaic-component";
 
 import { EditableText, MenuDivider } from "@blueprintjs/core";
 
@@ -25,9 +26,11 @@ import { editCircuit } from "@/actions/circuit-edit";
 import { addCircuit } from "@/actions/circuit-add";
 import { renameCircuit } from "@/actions/circuit-rename";
 
-import styles from "./CircuitsTree.module.css";
+import { WindowProps } from "../window-props";
 
-const CircuitsTree: React.FC = () => {
+import styles from "./CircuitsTreeWindow.module.css";
+
+const CircuitsTreeWindow: React.FC<WindowProps> = ({ path }) => {
   const dispatch = useDispatch();
   const editingCircuitId = useSelector(editingCircuitIdSelector);
   const circuitNamesById = useSelector(circuitNamesByIdSelector);
@@ -65,11 +68,15 @@ const CircuitsTree: React.FC = () => {
   );
 
   return (
-    <div className={styles.circuitstree} onContextMenu={onContextMenu}>
-      <Tree contents={treeItems} onNodeClick={onNodeClick} />
-    </div>
+    <MosaicWindow path={path} title="Circuits">
+      <div className={styles.circuitstree} onContextMenu={onContextMenu}>
+        <Tree contents={treeItems} onNodeClick={onNodeClick} />
+      </div>
+    </MosaicWindow>
   );
 };
+
+export default CircuitsTreeWindow;
 
 interface CircuitTreeNodeLabelProps {
   circuitId: string;
@@ -165,5 +172,3 @@ const CircuitTreeContextMenu: React.FC<CircuitTreeContextMenuProps> = ({
     </Menu>
   );
 };
-
-export default CircuitsTree;

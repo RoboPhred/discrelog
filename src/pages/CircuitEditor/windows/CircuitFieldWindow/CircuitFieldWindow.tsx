@@ -2,6 +2,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { HotKeys } from "react-hotkeys";
 import { AnyAction } from "redux";
+import { MosaicWindow } from "react-mosaic-component";
 
 import { cls } from "@/utils";
 import { useNativeEvent } from "@/hooks/useNativeEvent";
@@ -17,6 +18,8 @@ import { copySelection } from "@/actions/selection-copy";
 import { deleteSelection } from "@/actions/selection-delete";
 import { selectAll } from "@/actions/select-all";
 
+import CircuitField from "@/components/CircuitField";
+
 import keymap, {
   KeymapHandler,
   KEYMAP_SIM_STEP,
@@ -27,15 +30,11 @@ import keymap, {
   KEYMAP_SELECT_ALL,
 } from "./keymap";
 
-import CircuitField from "./components/CircuitField";
+import { WindowProps } from "../window-props";
 
-import styles from "./CircuitFieldView.module.css";
+import styles from "./CircuitFieldWindow.module.css";
 
-export interface CircuitFieldViewProps {
-  className?: string;
-}
-
-const CircuitFieldView: React.FC<CircuitFieldViewProps> = ({ className }) => {
+const CircuitFieldWindow: React.FC<WindowProps> = ({ path }) => {
   const viewRef = React.useRef<HTMLDivElement | null>(null);
   const dispatch = useDispatch();
   const scale = useSelector(viewScaleSelector);
@@ -83,31 +82,29 @@ const CircuitFieldView: React.FC<CircuitFieldViewProps> = ({ className }) => {
   useNativeEvent(viewRef, "wheel", onWheel, { passive: false });
 
   return (
-    <div
-      className={cls(
-        "circuit-field-view",
-        className,
-        styles["circuit-field-view"]
-      )}
-      ref={viewRef}
-    >
-      <div className={styles["circuit-field-content"]}>
-        <div
-          className={cls(
-            "zoom-container",
-            styles["circuit-field-zoom-container"]
-          )}
-          style={{
-            transform: `scale(${scale})`,
-          }}
-        >
-          <HotKeys keyMap={keymap} handlers={keyHandlers}>
-            <CircuitField />
-          </HotKeys>
+    <MosaicWindow path={path} title="Circuit Field">
+      <div
+        className={cls("circuit-field-view", styles["circuit-field-view"])}
+        ref={viewRef}
+      >
+        <div className={styles["circuit-field-content"]}>
+          <div
+            className={cls(
+              "zoom-container",
+              styles["circuit-field-zoom-container"]
+            )}
+            style={{
+              transform: `scale(${scale})`,
+            }}
+          >
+            <HotKeys keyMap={keymap} handlers={keyHandlers}>
+              <CircuitField />
+            </HotKeys>
+          </div>
         </div>
       </div>
-    </div>
+    </MosaicWindow>
   );
 };
 
-export default CircuitFieldView;
+export default CircuitFieldWindow;

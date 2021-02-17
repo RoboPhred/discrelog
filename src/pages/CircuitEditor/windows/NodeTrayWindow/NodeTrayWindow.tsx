@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
+import { MosaicWindow } from "react-mosaic-component";
 
 import { MODIFIER_KEYS_NONE } from "@/modifier-keys";
 
@@ -10,27 +11,30 @@ import {
   nodeDefinitionFromTypeSelector,
   nodeDefinitionsSelector,
 } from "@/services/node-types/selectors/node-types";
-import { NodeComponentType } from "@/services/node-types/types/visual";
 
 import { addNode } from "@/actions/node-add";
 import { fieldDragStartNewNode } from "@/actions/field-drag-start-newnode";
 import { fieldDragEnd } from "@/actions/field-drag-end";
 
-import styles from "./NodeTray.module.css";
+import { WindowProps } from "../window-props";
 
-const NodeTray: React.FC = () => {
+import styles from "./NodeTrayWindow.module.css";
+
+const NodeTrayWindow: React.FC<WindowProps> = ({ path }) => {
   const nodeDefinitions = useSelector(nodeDefinitionsSelector);
   const nodes = nodeDefinitions.map((def) => {
     return <TrayNode key={def.type} nodeType={def.type} />;
   });
 
   return (
-    <div className={styles["nodetray"]}>
-      <div className={styles["nodetray-elements"]}>{nodes}</div>
-    </div>
+    <MosaicWindow path={path} title="Circuit Elements">
+      <div className={styles["nodetray"]}>
+        <div className={styles["nodetray-elements"]}>{nodes}</div>
+      </div>
+    </MosaicWindow>
   );
 };
-export default NodeTray;
+export default NodeTrayWindow;
 
 interface TrayNodeProps {
   nodeType: string;
