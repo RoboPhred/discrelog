@@ -89,7 +89,7 @@ const IntegratedCircuitTrayVisual: React.FC<IntegratedCircuitVisualProps> = ({
   );
   return (
     <g>
-      <text textAnchor="middle" x={20} y={10}>
+      <text textAnchor="middle" x={25} y={10}>
         {circuitName}
       </text>
       <g stroke="black" strokeWidth={1}>

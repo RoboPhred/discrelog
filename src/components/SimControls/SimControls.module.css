@@ -1,5 +1,6 @@
 .button {
   margin: 0 2px;
+  vertical-align: middle;
 }
 
 .button-play {
@@ -40,4 +41,8 @@
 
 .button--disabled:hover {
   fill: grey;
+}
+
+.simrate {
+  padding-right: 5px;
 }

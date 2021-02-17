@@ -1,5 +1,3 @@
-import useSelector from "@/hooks/useSelector";
-import { averageMsecsPerTickSelector } from "@/services/simulator/selectors/performance";
 import * as React from "react";
 
 import { Mosaic, MosaicBranch, MosaicWindow } from "react-mosaic-component";
@@ -15,12 +13,9 @@ export interface CircuitEditorProps {
 // TODO: MosaicWindows should be implemented by these components
 const CircuitField: React.FC<{ path: MosaicBranch[]; id: string }> = ({
   path,
-  id,
 }) => {
-  const avgMsecsPerTick = useSelector(averageMsecsPerTickSelector);
-  const title = `Circuit Field (${avgMsecsPerTick} ms)`;
   return (
-    <MosaicWindow path={path} title={title}>
+    <MosaicWindow path={path} title="Circuit Field">
       <CircuitFieldView />
     </MosaicWindow>
   );

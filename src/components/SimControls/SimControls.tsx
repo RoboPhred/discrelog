@@ -15,6 +15,8 @@ import { stopSim } from "@/actions/sim-stop";
 import { pauseSim } from "@/actions/sim-pause";
 import { useAction } from "@/hooks/useAction";
 
+import { averageMsecsPerTickSelector } from "@/services/simulator/selectors/performance";
+
 import PlayIcon from "../Icons/Play";
 import StopIcon from "../Icons/Stop";
 import PauseIcon from "../Icons/Pause";
@@ -25,12 +27,19 @@ const PlayPauseButton: React.FC = () => {
   const isActive = useSelector(isSimActiveSelector);
   const isPaused = useSelector(isSimPausedSelector);
 
+  const avgMsecsPerTick = useSelector(averageMsecsPerTickSelector);
+
   const onPlayClick = useAction(startSim);
   const onStopClick = useAction(stopSim);
   const onPauseClick = useAction(pauseSim, "toggle");
 
   return (
     <span>
+      {isActive && (
+        <span className={styles["simrate"]}>
+          {avgMsecsPerTick.toFixed(2)} ms
+        </span>
+      )}
       {isActive ? (
         <StopIcon
           className={cls(styles["button"], styles["button-stop"])}
