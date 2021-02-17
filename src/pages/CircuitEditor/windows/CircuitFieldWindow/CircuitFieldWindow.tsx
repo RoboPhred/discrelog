@@ -17,6 +17,8 @@ import { paste } from "@/actions/clipboard-paste";
 import { copySelection } from "@/actions/selection-copy";
 import { deleteSelection } from "@/actions/selection-delete";
 import { selectAll } from "@/actions/select-all";
+import { undo } from "@/actions/undo";
+import { redo } from "@/actions/redo";
 
 import CircuitField from "@/components/CircuitField";
 
@@ -28,6 +30,8 @@ import keymap, {
   KEYMAP_PASTE,
   KEYMAP_DELETE,
   KEYMAP_SELECT_ALL,
+  KEYMAP_UNDO,
+  KEYMAP_REDO,
 } from "./keymap";
 
 import { WindowProps } from "../window-props";
@@ -58,6 +62,8 @@ const CircuitFieldWindow: React.FC<WindowProps> = ({ path }) => {
       [KEYMAP_COPY]: createEventDispatcher(copySelection()),
       [KEYMAP_PASTE]: createEventDispatcher(paste()),
       [KEYMAP_DELETE]: createEventDispatcher(deleteSelection()),
+      [KEYMAP_UNDO]: createEventDispatcher(undo()),
+      [KEYMAP_REDO]: createEventDispatcher(redo()),
     };
     return keyHandlers;
   }, []);

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Menu } from "@blueprintjs/core";
+import { Menu, MenuItem, MenuDivider } from "@blueprintjs/core";
 
 import { useAction } from "@/hooks/useAction";
 import { newProject } from "@/actions/project-new";
@@ -13,10 +13,10 @@ const FileMenu: React.FC = () => {
 
   return (
     <Menu>
-      <Menu.Item onClick={onNewProject} icon="new-object" text="New" />
-      <Menu.Divider />
-      <Menu.Item onClick={onLoadProject} icon="document-open" text="Load" />
-      <Menu.Item onClick={onSaveProject} icon="saved" text="Save" />
+      <MenuItem onClick={onNewProject} icon="new-object" text="New" />
+      <MenuDivider />
+      <MenuItem onClick={onLoadProject} icon="document-open" text="Load" />
+      <MenuItem onClick={onSaveProject} icon="saved" text="Save" />
     </Menu>
   );
 };

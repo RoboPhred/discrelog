@@ -1,8 +1,10 @@
-import { createStore, compose, applyMiddleware } from "redux";
+import { createStore, compose, applyMiddleware, AnyAction } from "redux";
 import freeze from "redux-freeze";
 import createSagaMiddleware from "redux-saga";
 
 import { doInit } from "@/actions/init";
+
+import undoReducer from "@/undo/reducer";
 
 import {
   actionSanitizer,
@@ -10,8 +12,18 @@ import {
   actionsBlacklist,
 } from "./devtool-sanitizer";
 
+import { AppState, defaultAppState } from "./state";
 import saga from "./saga";
-import reducer from "./reducer";
+import rootReducer from "./reducer";
+
+function finalReducer(
+  state: AppState = defaultAppState,
+  action: AnyAction
+): AppState {
+  state = undoReducer(state, action);
+  state = rootReducer(state, action);
+  return state;
+}
 
 const composeEnhancers =
   (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
@@ -25,7 +37,7 @@ const composeEnhancers =
 const sagaMiddleware = createSagaMiddleware();
 
 export const store = createStore(
-  reducer,
+  finalReducer,
   composeEnhancers(applyMiddleware(freeze, sagaMiddleware))
 );
 

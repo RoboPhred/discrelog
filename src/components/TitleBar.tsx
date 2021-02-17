@@ -3,6 +3,7 @@ import { Navbar, Alignment, Popover, Button } from "@blueprintjs/core";
 
 import SimControls from "./SimControls";
 import FileMenu from "./FileMenu";
+import EditMenu from "./EditMenu";
 
 const TitleBar: React.FC = () => {
   return (
@@ -12,6 +13,9 @@ const TitleBar: React.FC = () => {
         <Navbar.Divider />
         <Popover content={<FileMenu />}>
           <Button minimal icon="document" text="File" />
+        </Popover>
+        <Popover content={<EditMenu />}>
+          <Button minimal icon="edit" text="Edit" />
         </Popover>
       </Navbar.Group>
       <Navbar.Group align={Alignment.RIGHT}>
