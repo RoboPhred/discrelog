@@ -1,12 +1,11 @@
 import { AnyAction } from "redux";
 import last from "lodash/last";
-import pick from "lodash/pick";
+
+import { captureUndoState } from "../utils";
 
 import { AppState, defaultAppState } from "@/store";
 
 import { isUndoAction } from "@/actions/undo";
-
-import { UndoServicesStateKeys } from "../state";
 
 export default function undoReducer(
   state: AppState = defaultAppState,
@@ -32,7 +31,7 @@ export default function undoReducer(
     undo: {
       ...state.undo,
       undoStack: undoStack.slice(0, undoStack.length - 1),
-      redoStack: [...redoStack, pick(state.services, UndoServicesStateKeys)],
+      redoStack: [...redoStack, captureUndoState(state)],
     },
   };
 }
