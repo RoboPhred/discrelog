@@ -29,6 +29,8 @@ const DragNewNodeLayer: React.FC = () => {
   const dragEnd = useSelector(dragEndSelector);
   const draggingNodeType = useSelector(dragNewNodeTypeSelector);
 
+  // New node drags start on the tray, so we need to be responsible for
+  // continuing the drag.
   const onMouseMove = React.useCallback(
     (e) => {
       const p = getMouseCoords(e);

@@ -62,6 +62,25 @@ export const dragMoveOffsetSelector = createCircuitEditorUiSelector(
   )
 );
 
+export const dragNewJointPositionSelector = createCircuitEditorUiSelector(
+  (state) => {
+    const gridSnap = gridSnapSelector.local(state);
+
+    const { dragMode, dragEnd, dragModifierKeys } = state;
+    if (dragMode !== "new-joint" || !dragEnd || !dragModifierKeys) {
+      return null;
+    }
+
+    const position = { ...dragEnd };
+    if (!dragModifierKeys.ctrlMetaKey) {
+      position.x = Math.round(position.x / gridSnap) * gridSnap;
+      position.y = Math.round(position.y / gridSnap) * gridSnap;
+    }
+
+    return position;
+  }
+);
+
 export const isDraggingNewNodeSelector = createCircuitEditorUiSelector(
   (s) => s.dragMode === "new-node"
 );

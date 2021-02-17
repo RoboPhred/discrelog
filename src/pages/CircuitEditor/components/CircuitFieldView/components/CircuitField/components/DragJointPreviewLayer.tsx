@@ -1,15 +1,17 @@
 import * as React from "react";
 import { createSelector } from "reselect";
 import pick from "lodash/pick";
+import values from "lodash/values";
 
 import useSelector from "@/hooks/useSelector";
 
-import { dragMoveOffsetSelector } from "@/services/circuit-editor-ui/selectors/drag";
+import {
+  dragMoveOffsetSelector,
+  dragNewJointPositionSelector,
+} from "@/services/circuit-editor-ui/selectors/drag";
 import { selectedJointIdsSelector } from "@/services/selection/selectors/selection";
 import { wireJointPositionsByJointIdSelector } from "@/services/node-layout/selectors/wires";
-import values from "lodash/values";
-import mapValues from "lodash/mapValues";
-import WireJoint from "./WireJoint";
+
 import WireJointVisual from "./WireJointVisual";
 
 const selectedJointPositionsByIdSelector = createSelector(
@@ -25,11 +27,14 @@ const DragJointPreviewLayer: React.FC = () => {
     selectedJointPositionsByIdSelector
   );
 
+  const newJointPosition = useSelector(dragNewJointPositionSelector);
+
   let elements: React.ReactNode | null = null;
   if (dragMoveOffset) {
     elements = values(selectedNodePositionsById).map((p, index) => (
       <WireJointVisual
         key={index}
+        interactable={false}
         x={p.x + dragMoveOffset.x}
         y={p.y + dragMoveOffset.y}
         opacity={0.5}
@@ -37,11 +42,24 @@ const DragJointPreviewLayer: React.FC = () => {
     ));
   }
 
+  let newJointElement: React.ReactNode | null = null;
+  if (newJointPosition) {
+    newJointElement = (
+      <WireJointVisual
+        interactable={false}
+        x={newJointPosition.x}
+        y={newJointPosition.y}
+        opacity={0.5}
+      />
+    );
+  }
+
   // TODO: Draw transparent lines connecting the joint.
 
   return (
     <g id="drag-joint-preview-layer" opacity={0.3}>
       {elements}
+      {newJointElement}
     </g>
   );
 };

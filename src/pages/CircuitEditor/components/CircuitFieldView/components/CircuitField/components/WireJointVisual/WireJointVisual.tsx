@@ -36,7 +36,7 @@ const WireJointVisual: React.FC<WireJointVisualProps> = ({
       className={cls(styles["wire-joint"], selected && styles["selected"])}
       cx={x}
       cy={y}
-      r={mouseOver || selected ? 4 : 2}
+      r={(interactable && mouseOver) || selected ? 4 : 2}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
       {...props}
