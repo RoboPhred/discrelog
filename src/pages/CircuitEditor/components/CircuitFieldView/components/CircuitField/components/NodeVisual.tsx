@@ -16,6 +16,7 @@ export interface NodeVisualProps {
   onMouseOver?(e: React.MouseEvent): void;
   onMouseUp?(e: React.MouseEvent): void;
   onMouseLeave?(e: React.MouseEvent): void;
+  onContextMenu?(e: React.MouseEvent): void;
 }
 
 const NodeVisual: React.FC<NodeVisualProps> = ({
@@ -30,6 +31,7 @@ const NodeVisual: React.FC<NodeVisualProps> = ({
   onMouseOver,
   onMouseUp,
   onMouseLeave,
+  onContextMenu,
 }) => {
   const def = useSelector((state) =>
     nodeDefinitionFromTypeSelector(state, nodeType)
@@ -65,6 +67,7 @@ const NodeVisual: React.FC<NodeVisualProps> = ({
       onMouseOver={onMouseOver}
       onMouseUp={onMouseUp}
       onMouseLeave={onMouseLeave}
+      onContextMenu={onContextMenu}
     >
       {hitPath && <path d={hitPath} fill="transparent" onClick={onClick} />}
       {body}

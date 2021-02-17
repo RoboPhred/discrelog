@@ -16,8 +16,9 @@ import { getSelectMode } from "@/selection-mode";
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
 
-import { addWireJoint } from "@/actions/wire-joint-add";
-import { moveWireJoint, moveWireJointEnd } from "@/actions/wire-joint-move";
+import { fieldDragStartNewJoint } from "@/actions/field-drag-start-newjoint";
+import { fieldDragContinue } from "@/actions/field-drag-continue";
+import { fieldDragEnd } from "@/actions/field-drag-end";
 import { selectWires } from "@/actions/select-wires";
 
 import {
@@ -56,7 +57,6 @@ const WireSegment: React.FC<WireSegmentProps> = ({
   });
 
   const [mousePos, setMousePos] = React.useState<Point | null>(null);
-  const addedJointRef = React.useRef<string | null>(null);
 
   const onMouseMove = React.useCallback(
     (e: React.MouseEvent) => {
@@ -73,27 +73,27 @@ const WireSegment: React.FC<WireSegmentProps> = ({
   const onDragStart = React.useCallback(
     (e: MouseEvent) => {
       const p = getMouseCoords(e);
-      const jointId = uuidV4();
-      addedJointRef.current = jointId;
-      dispatch(addWireJoint(connectionId, startJointId, p, jointId));
+      const modifiers = getModifiers(e);
+      dispatch(
+        fieldDragStartNewJoint(connectionId, startJointId, p, modifiers)
+      );
     },
     [connectionId, startJointId, getMouseCoords]
   );
 
   const onDragMove = React.useCallback(
     (offset: Point, e: MouseEvent) => {
-      const jointId = addedJointRef.current;
-      if (!jointId) {
-        return;
-      }
       const p = getMouseCoords(e);
-      dispatch(moveWireJoint(jointId, p));
+      const modifiers = getModifiers(e);
+      dispatch(fieldDragContinue(p, modifiers));
     },
     [getMouseCoords]
   );
 
-  const onDragEnd = React.useCallback(() => {
-    dispatch(moveWireJointEnd());
+  const onDragEnd = React.useCallback((e: MouseEvent) => {
+    const p = getMouseCoords(e);
+    const modifiers = getModifiers(e);
+    dispatch(fieldDragEnd(p, modifiers));
   }, []);
 
   const onClick = React.useCallback(
@@ -114,6 +114,7 @@ const WireSegment: React.FC<WireSegmentProps> = ({
 
   const onJointInsertMouseDown = React.useCallback(
     (e: React.MouseEvent) => {
+      e.preventDefault();
       startTracking(e);
     },
     [startTracking]

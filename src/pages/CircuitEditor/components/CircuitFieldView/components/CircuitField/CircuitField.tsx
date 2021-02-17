@@ -15,6 +15,7 @@ import { FieldSvgElementProvider } from "./contexts/fieldSvgElement";
 
 import DragNewNodeLayer from "./components/DragNewNodeLayer";
 import DragNodePreviewLayer from "./components/DragNodePreviewLayer";
+import DragJointPreviewLayer from "./components/DragJointPreviewLayer";
 import DragSelectLayer from "./components/DragSelectLayer";
 import GridBackground from "./components/GridBackground";
 import NodesLayer from "./components/NodesLayer";
@@ -77,6 +78,7 @@ const CircuitField: React.FC = () => {
           <NodePinsLayer />
           <DragAttachWirePreviewLayer />
           <DragNodePreviewLayer />
+          <DragJointPreviewLayer />
           <DragNewNodeLayer />
         </FieldSvgElementProvider>
       </svg>

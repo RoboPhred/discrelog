@@ -18,7 +18,7 @@ export interface CircuitEditorUiState {
   /**
    * The current drag operation being performed by the ui.
    */
-  dragMode: "move" | "select" | "new-node" | "wire" | null;
+  dragMode: "move" | "select" | "new-node" | "new-joint" | "wire" | null;
 
   /**
    * The modifier keys in play for the drag operation.
@@ -42,6 +42,16 @@ export interface CircuitEditorUiState {
   dragNewNodeType: string | null;
 
   /**
+   * if dragMode is "new-joint", the connection id to create the joint on.
+   */
+  dragNewJointConnectionId: string | null;
+
+  /**
+   * If dragMode is "new-joint", the joint id to add the new joint after.
+   */
+  dragNewJointAfterJointId: string | null;
+
+  /**
    * If drag mode is "wire", this is the source pin being wired by the drag.
    */
   dragWireSource: NodePin | null;
@@ -55,6 +65,8 @@ const _defaultState: CircuitEditorUiState = {
   dragStart: null,
   dragEnd: null,
   dragNewNodeType: null,
+  dragNewJointConnectionId: null,
+  dragNewJointAfterJointId: null,
   dragWireSource: null,
 };
 

@@ -11,6 +11,7 @@ import { isFieldDragEndAction } from "@/actions/field-drag-end";
 import { selectRegion } from "@/actions/select-region";
 import { moveSelection } from "@/actions/selection-move";
 import { addNode } from "@/actions/node-add";
+import { addWireJoint } from "@/actions/wire-joint-add";
 import { attachWire } from "@/actions/wire-attach";
 
 import { applyGridSnapSelector } from "../selectors/snap";
@@ -31,6 +32,8 @@ export default function dragEndReducer(
     dragStart,
     dragEnd,
     dragNewNodeType,
+    dragNewJointAfterJointId,
+    dragNewJointConnectionId,
     dragWireSource,
   } = state.services.circuitEditorUi;
 
@@ -57,6 +60,20 @@ export default function dragEndReducer(
       if (dragEnd) {
         const position = applyGridSnapSelector(state, dragEnd);
         state = rootReducer(state, addNode(dragNewNodeType!, { position }));
+      }
+      break;
+    }
+    case "new-joint": {
+      if (dragEnd) {
+        const position = applyGridSnapSelector(state, dragEnd);
+        state = rootReducer(
+          state,
+          addWireJoint(
+            dragNewJointConnectionId!,
+            dragNewJointAfterJointId,
+            position
+          )
+        );
       }
       break;
     }

@@ -6,20 +6,20 @@ import { getSelectMode } from "@/selection-mode";
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
-import { isFieldDragStartNodeAction } from "@/actions/field-drag-start-node";
-import { selectNodes } from "@/actions/select-nodes";
+import { isFieldDragStartJointAction } from "@/actions/field-drag-start-joint";
+import { selectWireJoints } from "@/actions/select-wire-joints";
 
-import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
+import { isJointSelectedFromJointIdSelector } from "@/services/selection/selectors/selection";
 
-export default function dragStartNodeReducer(
+export default function dragStartJointReducer(
   state: AppState = defaultAppState,
   action: AnyAction
 ) {
-  if (!isFieldDragStartNodeAction(action)) {
+  if (!isFieldDragStartJointAction(action)) {
     return state;
   }
 
-  const { nodeId, x, y, modifierKeys } = action.payload;
+  const { jointId, x, y, modifierKeys } = action.payload;
 
   state = fpSet(state, "services", "circuitEditorUi", (value) => ({
     ...value,
@@ -30,10 +30,10 @@ export default function dragStartNodeReducer(
     },
   }));
 
-  if (!isNodeSelectedFromNodeIdSelector(state, nodeId)) {
+  if (!isJointSelectedFromJointIdSelector(state, jointId)) {
     const selectionMode = getSelectMode(modifierKeys);
     // Dragging a node that was not previously selected.  Perform a selection on the node.
-    state = rootReducer(state, selectNodes(nodeId, selectionMode));
+    state = rootReducer(state, selectWireJoints(jointId, selectionMode));
   }
 
   return state;

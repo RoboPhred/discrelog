@@ -58,7 +58,7 @@ const DragNodePreviewLayer: React.FC = () => {
     );
   }
   return (
-    <g id="drag-preview-layer" opacity={0.3}>
+    <g id="drag-node-preview-layer" opacity={0.3}>
       {elements}
     </g>
   );

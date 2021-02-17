@@ -68,6 +68,12 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
     [isSimActive]
   );
 
+  const onContextMenu = React.useCallback((e: React.MouseEvent) => {
+    const modifiers = getModifiers(e);
+    const selectionMode = getSelectMode(modifiers);
+    dispatch(selectNodes(nodeId, selectionMode));
+  }, []);
+
   const onDragStart = React.useCallback(
     (e: MouseEvent) => {
       const p = getCoords(e);
@@ -129,6 +135,7 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
       nodeType={nodeType}
       nodeState={nodeState}
       isSelected={isSelected}
+      onContextMenu={onContextMenu}
       onMouseDown={onMouseDown}
     />
   );
