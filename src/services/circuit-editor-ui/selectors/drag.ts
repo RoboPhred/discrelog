@@ -93,7 +93,6 @@ export const dragWireTargetPinSelector = createSelector(
         const pinPosition = pinPositionsByPinId[pinId];
         const offset = pointSubtract(dragEnd, pinPosition);
         const length = magnitude(offset);
-        console.log("Pin is", length, "away from node", nodeId, "pin", pinId);
         if (length <= 6) {
           return { nodeId, pinId };
         }
