@@ -2,6 +2,9 @@ import mapValues from "lodash/mapValues";
 import pick from "lodash/pick";
 
 import { isMoveNodeAction } from "@/actions/node-move";
+
+import { applyGridNodeSnapSelector } from "@/services/circuit-editor-ui/selectors/snap";
+
 import { createNodeLayoutReducer } from "../utils";
 
 export default createNodeLayoutReducer((state, action, appState) => {
@@ -9,14 +12,20 @@ export default createNodeLayoutReducer((state, action, appState) => {
     return state;
   }
 
-  const { nodeIds, position, relative } = action.payload;
+  const { nodeIds, position, relative, snapMode } = action.payload;
 
   const movedNodePositions = mapValues(
     pick(state.nodePositionsById, nodeIds),
-    (p) => ({
-      x: relative ? p.x + position.x : position.x,
-      y: relative ? p.y + position.y : position.y,
-    })
+    (p) => {
+      let movedP = {
+        x: relative ? p.x + position.x : position.x,
+        y: relative ? p.y + position.y : position.y,
+      };
+      if (snapMode === "node") {
+        movedP = applyGridNodeSnapSelector(appState, movedP);
+      }
+      return movedP;
+    }
   );
 
   return {

@@ -5,8 +5,8 @@ import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
 import { isMoveSelectionAction } from "@/actions/selection-move";
-import { moveNode } from "@/actions/node-move";
-import { moveWireJoint } from "@/actions/wire-joint-move";
+import { moveNode, MoveNodeOpts } from "@/actions/node-move";
+import { moveWireJoint, MoveWireJointOpts } from "@/actions/wire-joint-move";
 
 import {
   selectedNodeIdsSelector,
@@ -21,7 +21,7 @@ export default function selectionMoveReducer(
     return state;
   }
 
-  const { offsetX, offsetY } = action.payload;
+  const { offsetX, offsetY, snapMode } = action.payload;
 
   const nodeIds = selectedNodeIdsSelector(state);
   const jointIds = selectedJointIdsSelector(state);
@@ -31,8 +31,26 @@ export default function selectionMoveReducer(
     y: offsetY,
   };
 
-  state = rootReducer(state, moveNode(nodeIds, offset, true));
-  state = rootReducer(state, moveWireJoint(jointIds, offset, true));
+  let nodeSnapMode: MoveNodeOpts["snapMode"] = "none";
+  if (snapMode === "node" || snapMode === "by-type") {
+    nodeSnapMode = "node";
+  }
+
+  let jointSnapMode: MoveWireJointOpts["snapMode"] = "none";
+  if (snapMode === "by-type") {
+    jointSnapMode = "joint";
+  } else {
+    jointSnapMode = snapMode;
+  }
+
+  state = rootReducer(
+    state,
+    moveNode(nodeIds, offset, { relative: true, snapMode: nodeSnapMode })
+  );
+  state = rootReducer(
+    state,
+    moveWireJoint(jointIds, offset, { relative: true, snapMode: jointSnapMode })
+  );
 
   return state;
 }

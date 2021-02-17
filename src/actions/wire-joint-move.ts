@@ -3,17 +3,22 @@ import { AnyAction } from "redux";
 import { Point } from "@/geometry";
 import { asArray, MaybeArray } from "@/arrays";
 
+export interface MoveWireJointOpts {
+  relative?: boolean;
+  snapMode?: "none" | "node" | "joint";
+}
 export const ACTION_WIRE_JOINT_MOVE = "@wire/joint/move" as const;
 export const moveWireJoint = (
   jointId: MaybeArray<string>,
   position: Point,
-  relative = false
+  opts: MoveWireJointOpts = {}
 ) => ({
   type: ACTION_WIRE_JOINT_MOVE,
   payload: {
     jointIds: asArray(jointId),
     position,
-    relative,
+    relative: opts.relative ?? false,
+    snapMode: opts.snapMode ?? "none",
   },
 });
 export type MoveWireJointAction = ReturnType<typeof moveWireJoint>;

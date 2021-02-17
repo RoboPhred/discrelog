@@ -26,6 +26,7 @@ const DragNewNodeLayer: React.FC = () => {
   const fieldRect = useSelector(fieldRectSelector);
   const { width, height } = calcSize(fieldRect);
   const isDraggingNewNode = useSelector(isDraggingNewNodeSelector);
+  // FIXME: Apply snap if ctrl-meta not held
   const dragEnd = useSelector(dragEndSelector);
   const draggingNodeType = useSelector(dragNewNodeTypeSelector);
 

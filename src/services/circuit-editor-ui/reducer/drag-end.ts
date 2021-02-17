@@ -52,8 +52,16 @@ export default function dragEndReducer(
     case "move": {
       if (dragStart) {
         let moveBy = pointSubtract({ x, y }, dragStart);
+        let hasNodes = state.services.selection.selectedNodeIds.length > 0;
         if (!modifierKeys.ctrlMetaKey) {
-          moveBy = applyGridNodeSnapSelector(state, moveBy);
+          // We apply the snap here because we want to snap the offset, not the resulting positions.
+          // Applying the snap in moveSelection can result in different objects moving different distances
+          // depending on their snap.
+          if (hasNodes) {
+            moveBy = applyGridNodeSnapSelector(state, moveBy);
+          } else {
+            moveBy = applyGridJointSnapSelector(state, moveBy);
+          }
         }
         state = rootReducer(state, moveSelection(moveBy.x, moveBy.y));
       }

@@ -22,7 +22,7 @@ export default createNodeLayoutReducer((state, action) => {
       state.wireJointIdsByConnectionId,
       (connectionIds) => connectionIds.filter((x) => x !== jointId)
     ),
-    wireJointsByJointId: pick(
+    wireJointPositionsByJointId: pick(
       state.wireJointPositionsByJointId,
       remainingJointIds
     ),

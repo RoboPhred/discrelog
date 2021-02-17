@@ -14,6 +14,10 @@ import { createCircuitEditorUiSelector } from "../utils";
 
 import { gridJointSnapSelector, gridNodeSnapSelector } from "./snap";
 import { nodeIdsForEditingCircuitSelector } from "./nodes";
+import {
+  selectedJointIdsSelector,
+  selectedNodeIdsSelector,
+} from "@/services/selection/selectors/selection";
 
 export const dragModeSelector = createCircuitEditorUiSelector(
   (s) => s.dragMode
@@ -39,29 +43,41 @@ export const selectionRectSelector = createCircuitEditorUiSelector(
   )
 );
 
-export const dragMoveOffsetSelector = createCircuitEditorUiSelector(
-  createSelector(
-    dragModeSelector.local,
-    dragModifierKeysSelector.local,
-    dragStartSelector.local,
-    dragEndSelector.local,
-    gridNodeSnapSelector.local,
-    (dragMode, modifierKeys, dragStart, dragEnd, gridSnap) => {
-      if (dragMode !== "move" || !dragStart || !dragEnd) {
-        return null;
-      }
-
-      // FIXME: If we are only dragging joints, use gridJointSnapSelector.
-
-      let offset = pointSubtract(dragEnd, dragStart);
-      if (!modifierKeys.ctrlMetaKey) {
-        offset.x = Math.round(offset.x / gridSnap) * gridSnap;
-        offset.y = Math.round(offset.y / gridSnap) * gridSnap;
-      }
-
-      return offset;
+export const dragMoveOffsetSelector = createSelector(
+  dragModeSelector,
+  selectedNodeIdsSelector,
+  dragModifierKeysSelector,
+  dragStartSelector,
+  dragEndSelector,
+  gridNodeSnapSelector,
+  gridJointSnapSelector,
+  (
+    dragMode,
+    selectedNodeIds,
+    modifierKeys,
+    dragStart,
+    dragEnd,
+    nodeSnap,
+    jointSnap
+  ) => {
+    if (dragMode !== "move" || !dragStart || !dragEnd) {
+      return null;
     }
-  )
+
+    let gridSnap = jointSnap;
+    if (selectedNodeIds.length > 0) {
+      // If we are dragging nodes, restrict everything to the node snap size.
+      gridSnap = nodeSnap;
+    }
+
+    let offset = pointSubtract(dragEnd, dragStart);
+    if (!modifierKeys.ctrlMetaKey) {
+      offset.x = Math.round(offset.x / gridSnap) * gridSnap;
+      offset.y = Math.round(offset.y / gridSnap) * gridSnap;
+    }
+
+    return offset;
+  }
 );
 
 export const dragNewJointPositionSelector = createCircuitEditorUiSelector(
