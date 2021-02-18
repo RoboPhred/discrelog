@@ -2,15 +2,15 @@
 
 A discrete logic / circuit editor and simulator written in React and Redux.
 
-_This is a work in progress, and will be for some time.._
+_This is a work in progress, and will be for some time._
 
 ## Live work-in-progress
 
 http://robophred.github.io/discrelog
 
-### Usage:
+### Usage
 
-#### Editing:
+#### Editing
 
 Drag circuit elements from the elements tray to the field to create them.
 Click an element to select it. Click-drag an element to move it, and click-drag the field to select multiple elements.
@@ -24,13 +24,13 @@ Click on wires (not wire joints) to select the entire wire.
 Right click in the circuit list (right hand side) to create new circuits. Circuits will appear as ICs for use in other circuits. Use input and output pin elements to create corresponding input
 and output pins on the IC.
 
-#### Running:
+#### Running
 
 Press the play button in the top right to compile and run your circuit. During operation, you can click on buttons to toggle their state.
 
 For the moment, only buttons and LEDs in the root circuit will function, and only root circuit connections will light up to reflect their status.
 
-### Controls:
+### Editing Controls
 
 On Mac, `command` replaces `ctrl` and `option` replaces `alt`.
 
@@ -40,11 +40,17 @@ On Mac, `command` replaces `ctrl` and `option` replaces `alt`.
 - Remove item from current selection: `ctrl + shift + left-click`
 - Activate Button: `alt + left-click`
 - Delete Selection: `backspace` or `delete`
+- Select All in Circuit: `ctrl + a`
 - Copy Selected: `ctrl + c`
 - Paste: `ctrl + v`
-- Select All: `ctrl + a`
-- Next tick: `spacebar`
-- Fast forward to next transition: `shift + spacebar`
+- Undo: `ctrl + z`
+- Redo: `ctrl + shift + z`
+
+### Running controls
+
+- Activate button elements: `left-click`
+- Next tick (when paused): `spacebar`
+- Fast forward to next transition (when paused): `shift + spacebar`
 
 ## Circuit structure and Simulation
 
@@ -76,7 +82,17 @@ As of the time of this writing, the available logic components consist of:
 
 ## Upcomming features
 
-I am notorious for not getting back to things, so anything I write here would just be bad juju.
+The ultimate aim of this software is still up in the air.
+
+Possible upcomming features:
+
+- Histogram showing logic levels over time.
+- Custom body shapes for ICs.
+
+Possible directions for this project include:
+
+- Educational mode giving logic puzzles that must be solved with circuits.
+- Editable fixed-element LCD displays and button grids to build a hardware-esque user interface to the circuit.
 
 ## Development Philosophy
 
@@ -84,7 +100,7 @@ While the inspiration for this project is a lack of high quality, easily extensi
 
 ## Technology
 
-This application is being written to deliver a desktop quality application from within modern browsers. It has no server component, and performs all work locally.
+This application is being written to deliver a desktop quality application from within modern browsers. It has no server component, and performs all work in the user's browser.
 The UI renderer is React, with Redux providing the backing store.
 
 ## License
@@ -95,7 +111,7 @@ Some logic symbol artwork has been provided by wikimedia commons under the publi
 
 ## Alternatives
 
-There are a few notable digital (and analog) circuit editors that I have come across and arbitrarily collected. More may exist in the wild.
+These are a few notable digital (and analog) circuit editors that I have come across and arbitrarily collected. More may exist in the wild.
 
 Open source:
 
