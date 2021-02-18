@@ -1,23 +1,20 @@
 # TODO
 
-- Implement seperate build and run modes.
-  Collecting transitions on wire can reset when transitions occur,
-  which can break time-sensitive circuits.
-  Wiring should be done in a dedicated mode, and all nodes re-initialize
-  when switching to run mode.
+- IC test mode
 
-  - Update: We now have build and run modes, but live editing is still enabled.
-    Might want to keep it that way, as its useful for experimentation.
+  - Open a dialog that shows an IC with buttons on inputs and LEDs on outputs. Allow for testing ICs in isolation on the fly
+  - Requires splitting simulator logic out of simulator service.
 
-- Circuit grouping
-  Group a circuit into an IC.
-  Functionally this still needs to produce nodeIds for the simulator as each
-  node will have its own state.
-  Editing one IC should change all copies.
+- Education mode
 
-  - Could be implemented by mapping nodeId to groupNodeId, so each instance
-    of a shared IC node has the same groupNodeId. This will let us
-    make the same change to a node across all nodes of the group.
+  - Tutorials and lessons stored in app. Lesson provides a truth table or histogram and requires one to build a circuit to match it.
+  - Requires the ability for root circuit to have inputs and outputs driven by the lesson.
+
+- Histogram
+
+  - Mark node pins for inclusion in a histogram showing the logic levels of the pin as the simulator runs.
+  - Maybe instead of marking pins, have a debug / test port node to wire up. Each node creates a histogram entry.
+  - Need to limit entries in histogram due to vibrators. Keep 100 transitions, and show dashed middle-height line for unknown previous values.
 
 - re-reselect caches items forever, nothing ever clears out the cache. Might want to put a LRU on it.
 
