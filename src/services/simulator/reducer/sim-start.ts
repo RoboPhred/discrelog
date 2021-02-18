@@ -9,9 +9,5 @@ export default createSimulatorReducer((state, action, appState) => {
     return state;
   }
 
-  state = simInit(state, appState);
-
-  return {
-    ...state,
-  };
+  return simInit(state, appState);
 });

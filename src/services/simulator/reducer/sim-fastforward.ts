@@ -1,26 +1,20 @@
-import { AnyAction } from "redux";
-
-import { AppState, defaultAppState } from "@/store";
-
 import { isFastForwardSimAction } from "@/actions/sim-fastforward";
-import { tickSim } from "@/actions/sim-tick";
 
-import evolveSimReducer from "./sim-tick";
+import { createSimulatorReducer } from "../utils";
 
-export default function simFastForwardReducer(
-  state: AppState = defaultAppState,
-  action: AnyAction
-) {
+import { simTick } from "./utils";
+
+export default createSimulatorReducer((state, action, appState) => {
   if (!isFastForwardSimAction(action)) {
     return state;
   }
 
-  const { tick, transitionWindows } = state.services.simulator;
+  const { tick, transitionWindows } = state;
 
   if (transitionWindows.length === 0) {
     return state;
   }
 
   const nextWindowTick = transitionWindows[0].tick - tick;
-  return evolveSimReducer(state, tickSim(nextWindowTick));
-}
+  return simTick(state, nextWindowTick, appState);
+});
