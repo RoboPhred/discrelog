@@ -2,24 +2,14 @@ import { SimNodePinTransition, SimTransitionWindow } from "./types";
 
 export interface SimulatorState {
   /**
-   * The overall application mode.
-   * Might not belong in simulator state?
-   *
-   * - edit: User is editing, no simulator is running
-   * - step: Sim is paused and only ticks on user command
-   * - run: Sim is actively running and ticking forwards on its own.
-   */
-  mode: "edit" | "pause" | "run";
-
-  /**
-   * Tick speed in ticks per second when running.
-   */
-  ticksPerSecond: number;
-
-  /**
    * The current tick the simulator is on.
    */
   tick: number;
+
+  /**
+   * The time it took in milliseconds to process the last tick.
+   */
+  lastTickProcessingTimeMs: number;
 
   /**
    * A map of node states by node id.
@@ -40,22 +30,15 @@ export interface SimulatorState {
    * Transition windows in ascending order of tick.
    */
   transitionWindows: SimTransitionWindow[];
-
-  /**
-   * A collection of the most recent milliseconds it has taken to run logic updates.
-   */
-  profilerLogicUpdateMsecs: number;
 }
 
 const _defaultState: SimulatorState = {
-  mode: "edit",
-  ticksPerSecond: 1000,
   tick: 0,
+  lastTickProcessingTimeMs: 0,
   nodeStatesByNodeId: {},
   nodeOutputValuesByNodeId: {},
   transitionsById: {},
   transitionWindows: [],
-  profilerLogicUpdateMsecs: 0,
 };
 
 export const defaultSimulatorState = Object.freeze(_defaultState);

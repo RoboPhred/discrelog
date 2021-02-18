@@ -11,7 +11,7 @@ import { nodeTypeFromNodeIdSelector } from "@/services/node-graph/selectors/node
 import { nodeStateFromNodeIdSelector } from "@/services/simulator/selectors/nodes";
 import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
 import { nodePositionFromNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
-import { isSimActiveSelector } from "@/services/simulator/selectors/run";
+import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 
 import { fieldDragStartNode } from "@/actions/field-drag-start-node";
 import { fieldDragContinue } from "@/actions/field-drag-continue";

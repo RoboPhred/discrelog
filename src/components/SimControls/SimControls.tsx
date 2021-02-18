@@ -1,20 +1,18 @@
 import * as React from "react";
-import { useDispatch } from "react-redux";
 
 import { cls } from "@/utils";
 
 import useSelector from "@/hooks/useSelector";
-
-import {
-  isSimActiveSelector,
-  isSimPausedSelector,
-} from "@/services/simulator/selectors/run";
 
 import { startSim } from "@/actions/sim-start";
 import { stopSim } from "@/actions/sim-stop";
 import { pauseSim } from "@/actions/sim-pause";
 import { useAction } from "@/hooks/useAction";
 
+import {
+  isSimActiveSelector,
+  isSimPausedSelector,
+} from "@/services/simulator-control/selectors/run";
 import { averageMsecsPerTickSelector } from "@/services/simulator/selectors/performance";
 
 import PlayIcon from "../Icons/Play";

@@ -6,15 +6,11 @@ import {
   SaveWire,
 } from "./types";
 
-import { AppState } from "@/store";
+import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
 import { addNode } from "@/actions/node-add";
 import { attachWire } from "@/actions/wire-attach";
-
-import { defaultSelectionState } from "../selection/state";
-import { defaultSimulatorState } from "../simulator/state";
-import { defaultNodeGraphState } from "../node-graph/state";
 
 import {
   nodeIdsSelector,
@@ -34,7 +30,6 @@ import {
   wireJointPositionsByJointIdSelector,
   wireJointIdsFromConnectionIdSelector,
 } from "../node-layout/selectors/wires";
-import { defaultNodeLayoutState } from "../node-layout/state";
 
 import { SaveFormatError } from "./errors";
 import { addCircuit } from "@/actions/circuit-add";
@@ -86,16 +81,8 @@ export function loadSave(state: AppState, save: SaveData): AppState {
     throw new SaveFormatError(e.message);
   }
 
-  state = {
-    ...state,
-    services: {
-      ...state.services,
-      nodeLayout: defaultNodeLayoutState,
-      nodeGraph: defaultNodeGraphState,
-      selection: defaultSelectionState,
-      simulator: defaultSimulatorState,
-    },
-  };
+  // TODO: There may be some services that want to persist data across projects.
+  state = defaultAppState;
 
   try {
     state = (save.circuits ?? []).reduce(

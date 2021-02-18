@@ -1,4 +1,4 @@
-import { AppServicesState } from "@/services";
+import { AppServicesState } from "@/services/state";
 
 export const UndoServicesStateKeys = [
   "circuits",

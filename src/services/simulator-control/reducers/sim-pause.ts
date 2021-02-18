@@ -1,9 +1,9 @@
 import { isPauseSimAction } from "@/actions/sim-pause";
 
-import { createSimulatorReducer } from "../utils";
+import { createSimulatorControlReducer } from "../utils";
 import { isSimActiveSelector } from "../selectors/run";
 
-export default createSimulatorReducer((state, action) => {
+export default createSimulatorControlReducer((state, action) => {
   if (!isPauseSimAction(action)) {
     return state;
   }

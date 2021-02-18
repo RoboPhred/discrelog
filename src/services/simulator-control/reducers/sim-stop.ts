@@ -1,17 +1,17 @@
 import { isStopSimAction } from "@/actions/sim-stop";
 
-import { createSimulatorReducer } from "../utils";
+import { createSimulatorControlReducer } from "../utils";
 
-import { defaultSimulatorState } from "../state";
+import { defaultSimulatorControlState } from "../state";
 
-export default createSimulatorReducer((state, action, appState) => {
+export default createSimulatorControlReducer((state, action) => {
   if (!isStopSimAction(action)) {
     return state;
   }
 
   // Reset the simulator but keep the ticks per second choice.
   return {
-    ...defaultSimulatorState,
+    ...defaultSimulatorControlState,
     ticksPerSecond: state.ticksPerSecond,
   };
 });

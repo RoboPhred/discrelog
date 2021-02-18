@@ -1,33 +1,22 @@
 import {
   CircuitEditorUiState,
   defaultCircuitEditorUiState,
-} from "@/services/circuit-editor-ui/state";
-import { CircuitsState, defaultCircuitsState } from "@/services/circuits/state";
+} from "./circuit-editor-ui/state";
+import { CircuitsState, defaultCircuitsState } from "./circuits/state";
+import { ClipboardState, defaultClipboardState } from "./clipboard/state";
+import { DialogState, defaultDialogState } from "./dialog/state";
+import { NodeGraphState, defaultNodeGraphState } from "./node-graph/state";
+import { NodeLayoutState, defaultNodeLayoutState } from "./node-layout/state";
+import { SelectionState, defaultSelectionState } from "./selection/state";
+import { SimulatorState, defaultSimulatorState } from "./simulator/state";
 import {
-  ClipboardState,
-  defaultClipboardState,
-} from "@/services/clipboard/state";
-import { DialogState, defaultDialogState } from "@/services/dialog/state";
-import {
-  NodeGraphState,
-  defaultNodeGraphState,
-} from "@/services/node-graph/state";
-import {
-  NodeLayoutState,
-  defaultNodeLayoutState,
-} from "@/services/node-layout/state";
-import {
-  SelectionState,
-  defaultSelectionState,
-} from "@/services/selection/state";
-import {
-  SimulatorState,
-  defaultSimulatorState,
-} from "@/services/simulator/state";
+  SimulatorControlState,
+  defaultSimulatorControlState,
+} from "./simulator-control/state";
 import {
   SimulatorGraphState,
   defaultSimulatorGraphState,
-} from "@/services/simulator-graph/state";
+} from "./simulator-graph/state";
 
 export interface AppServicesState {
   circuitEditorUi: CircuitEditorUiState;
@@ -38,6 +27,7 @@ export interface AppServicesState {
   nodeLayout: NodeLayoutState;
   selection: SelectionState;
   simulator: SimulatorState;
+  simulatorControl: SimulatorControlState;
   simulatorGraph: SimulatorGraphState;
 }
 
@@ -50,6 +40,7 @@ const _defaultServiceState: AppServicesState = {
   dialog: defaultDialogState,
   selection: defaultSelectionState,
   simulator: defaultSimulatorState,
+  simulatorControl: defaultSimulatorControlState,
   simulatorGraph: defaultSimulatorGraphState,
 };
 

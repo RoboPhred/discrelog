@@ -63,7 +63,7 @@ export default createSimulatorReducer((state, action, appState) => {
   const updateTime = end - start;
   state = {
     ...state,
-    profilerLogicUpdateMsecs: updateTime,
+    lastTickProcessingTimeMs: updateTime,
   };
 
   return state;

@@ -18,6 +18,9 @@ import { ACTION_FIELD_DRAG_END } from "@/actions/field-drag-end";
 import { ACTION_UNDO } from "@/actions/undo";
 import { ACTION_REDO } from "@/actions/redo";
 
+import { ACTION_PROJECT_NEW } from "@/actions/project-new";
+import { ACTION_PROJECT_RECEIVE } from "@/actions/project-receive";
+
 export const PROJECT_MUTATION_ACTIONS = [
   ACTION_NODE_ADD,
   ACTION_NODE_DELETE,
@@ -45,4 +48,13 @@ export const PROJECT_MUTATION_ACTIONS = [
 
 export function isProjectMutationAction(action: AnyAction) {
   return PROJECT_MUTATION_ACTIONS.indexOf(action.type) !== -1;
+}
+
+export const PROJECT_RESET_ACTIONS = [
+  ACTION_PROJECT_NEW,
+  ACTION_PROJECT_RECEIVE,
+];
+
+export function isProjectResetAction(action: AnyAction) {
+  return PROJECT_RESET_ACTIONS.indexOf(action.type) !== -1;
 }

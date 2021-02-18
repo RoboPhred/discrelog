@@ -2,7 +2,6 @@ import binarySearch from "binary-search";
 import { v4 as uuidV4 } from "uuid";
 import findIndex from "lodash/findIndex";
 import pick from "lodash/pick";
-import mapValues from "lodash/mapValues";
 
 import { fpSet } from "@/utils";
 import { asArray } from "@/arrays";
@@ -25,13 +24,9 @@ export function simInit(
   state: SimulatorState,
   appState: AppState
 ): SimulatorState {
-  // Switching away from edit mode, initialize the simulator.
   const nodeIds = simulatorNodeIdsSelector(appState);
 
-  state = {
-    ...defaultSimulatorState,
-    ticksPerSecond: state.ticksPerSecond,
-  };
+  state = defaultSimulatorState;
 
   state = nodeIds.reduce(
     (state, nodeId) => initNode(state, nodeId, appState),
@@ -153,17 +148,10 @@ function addTransition(
     valuesByOutputPin,
   };
 
-  // Add the transition to the state, and clone transitionWindows for mutation below.
-  state = {
-    ...state,
-    transitionsById: {
-      ...state.transitionsById,
-      [transitionId]: newTransition,
-    },
-    transitionWindows: [...state.transitionWindows],
-  };
+  // Prepare the new transition window.
+  const newTransitionWindows = [...state.transitionWindows];
 
-  let index = binarySearch(state.transitionWindows, tick, (a, b) => a.tick - b);
+  let index = binarySearch(newTransitionWindows, tick, (a, b) => a.tick - b);
   if (index < 0) {
     // Need to create a new window
     index = -index - 1;
@@ -171,19 +159,23 @@ function addTransition(
       tick,
       transitionIds: [],
     };
-    // Mutation is safe here as we cloned the array above.
-    state.transitionWindows.splice(index, 0, newWindow);
+    newTransitionWindows.splice(index, 0, newWindow);
   }
 
-  // Mutation is safe here as we cloned the array above.
-  state.transitionWindows[index] = {
-    ...state.transitionWindows[index],
-    transitionIds: [
-      ...state.transitionWindows[index].transitionIds,
-      transitionId,
-    ],
+  newTransitionWindows[index] = {
+    ...newTransitionWindows[index],
+    transitionIds: [...newTransitionWindows[index].transitionIds, transitionId],
   };
-  return state;
+
+  return {
+    ...state,
+    // Add the new transition window to the id mapping.
+    transitionsById: {
+      ...state.transitionsById,
+      [transitionId]: newTransition,
+    },
+    transitionWindows: newTransitionWindows,
+  };
 }
 
 function removeTransitionsByNodeId(

@@ -1,4 +1,4 @@
-import { AppServicesState, defaultServicesState } from "@/services";
+import { AppServicesState, defaultServicesState } from "@/services/state";
 import { defaultUndoState, UndoState } from "@/undo/state";
 
 export interface AppState {
