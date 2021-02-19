@@ -1,4 +1,4 @@
-import { CircuitsState } from "../state";
+import { CircuitsServiceState } from "../state";
 import { createCircuitsSelector } from "../utils";
 
 export const circuitIdsSelector = createCircuitsSelector((state) =>
@@ -10,6 +10,6 @@ export const circuitNamesByIdSelector = createCircuitsSelector(
 );
 
 export const circuitNameFromIdSelector = createCircuitsSelector(
-  (state: CircuitsState, circuitId: string) =>
+  (state: CircuitsServiceState, circuitId: string) =>
     state.circuitNamesByCircuitId[circuitId]
 );

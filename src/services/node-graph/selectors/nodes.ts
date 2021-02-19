@@ -2,7 +2,7 @@ import { createSelector } from "reselect";
 import mapValues from "lodash/mapValues";
 
 import { createNodeGraphSelector } from "../utils";
-import { NodeGraphState } from "../state";
+import { NodeGraphServiceState } from "../state";
 import { Node } from "../types";
 
 export const nodesByNodeIdSelector = createNodeGraphSelector(
@@ -24,11 +24,11 @@ export const nodeTypesByNodeIdSelector = createNodeGraphSelector(
 );
 
 export const nodeFromNodeIdSelector = createNodeGraphSelector(
-  (s: NodeGraphState, nodeId: string) => s.nodesById[nodeId] || null
+  (s: NodeGraphServiceState, nodeId: string) => s.nodesById[nodeId] || null
 );
 
 export const nodeIdsFromTypeSelector = createNodeGraphSelector(
-  (s: NodeGraphState, desiredType: string) => {
+  (s: NodeGraphServiceState, desiredType: string) => {
     const nodeIds: string[] = [];
     for (const nodeId of Object.keys(s.nodesById)) {
       const { nodeType } = s.nodesById[nodeId];
@@ -41,7 +41,7 @@ export const nodeIdsFromTypeSelector = createNodeGraphSelector(
 );
 
 export const nodeTypeFromNodeIdSelector = createNodeGraphSelector(
-  (s: NodeGraphState, nodeId: string) => {
+  (s: NodeGraphServiceState, nodeId: string) => {
     const node = nodeFromNodeIdSelector.local(s, nodeId);
     if (!node) {
       return null;

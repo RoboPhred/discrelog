@@ -1,6 +1,6 @@
 import { SimulatorNode } from "./types";
 
-export interface SimulatorGraphState {
+export interface SimulatorGraphServiceState {
   /**
    * A map of all simulator nodes by simulator node id.
    */
@@ -12,9 +12,9 @@ export interface SimulatorGraphState {
   simulatorNodeIdsByCircuitNodeId: Record<string, string>;
 }
 
-const _defaultState: SimulatorGraphState = {
+const _defaultState: SimulatorGraphServiceState = {
   simulatorNodesById: {},
   simulatorNodeIdsByCircuitNodeId: {},
 };
 
-export const defaultSimulatorGraphState = Object.freeze(_defaultState);
+export const defaultSimulatorGraphServiceState = Object.freeze(_defaultState);

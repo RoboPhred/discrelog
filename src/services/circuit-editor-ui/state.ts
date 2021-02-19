@@ -4,7 +4,7 @@ import { ModifierKeys } from "@/modifier-keys";
 import { NodePin } from "../node-graph/types";
 import { ROOT_CIRCUIT_ID } from "../circuits/constants";
 
-export interface CircuitEditorUiState {
+export interface CircuitEditorUiServiceState {
   /**
    * The id of the circuit currently being edited.
    */
@@ -57,7 +57,7 @@ export interface CircuitEditorUiState {
   dragWireSource: NodePin | null;
 }
 
-const _defaultState: CircuitEditorUiState = {
+const _defaultState: CircuitEditorUiServiceState = {
   editingCircuitId: ROOT_CIRCUIT_ID,
   viewScale: 1,
   dragMode: null,
@@ -70,4 +70,4 @@ const _defaultState: CircuitEditorUiState = {
   dragWireSource: null,
 };
 
-export const defaultCircuitEditorUiState = Object.freeze(_defaultState);
+export const defaultCircuitEditorUiServiceState = Object.freeze(_defaultState);

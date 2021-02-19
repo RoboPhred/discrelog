@@ -1,13 +1,13 @@
-export interface SelectionState {
+export interface SelectionServiceState {
   selectedNodeIds: string[];
   selectedConnectionIds: string[];
   selectedJointIds: string[];
 }
 
-const _defaultState: SelectionState = {
+const _defaultState: SelectionServiceState = {
   selectedNodeIds: [],
   selectedConnectionIds: [],
   selectedJointIds: [],
 };
 
-export const defaultSelectionState = Object.freeze(_defaultState);
+export const defaultSelectionServiceState = Object.freeze(_defaultState);

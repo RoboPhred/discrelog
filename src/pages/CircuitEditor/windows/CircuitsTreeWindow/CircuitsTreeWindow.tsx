@@ -22,6 +22,8 @@ import {
   circuitNameFromIdSelector,
   circuitNamesByIdSelector,
 } from "@/services/circuits/selectors/circuits";
+import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
+
 import { editCircuit } from "@/actions/circuit-edit";
 import { addCircuit } from "@/actions/circuit-add";
 import { renameCircuit } from "@/actions/circuit-rename";
@@ -113,7 +115,7 @@ const CircuitTreeNodeCircuitLabel: React.FC<CircuitTreeNodeLabelProps> = ({
 
   const onContextMenu = React.useCallback(
     (e: React.MouseEvent<HTMLElement>) => {
-      if (circuitId === "root") {
+      if (circuitId === ROOT_CIRCUIT_ID) {
         return;
       }
 

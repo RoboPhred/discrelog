@@ -1,7 +1,7 @@
 import { AppState } from "@/store";
 
 import { createSimulatorSelector } from "../utils";
-import { SimulatorState } from "../state";
+import { SimulatorServiceState } from "../state";
 
 export const nodeStatesByNodeIdSelector = (function () {
   let cachedSimulatorNodeIdsByCircuitNodeId: any;

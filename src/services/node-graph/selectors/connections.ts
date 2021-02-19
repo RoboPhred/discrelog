@@ -1,7 +1,7 @@
 import values from "lodash/values";
 import { createSelector } from "reselect";
 
-import { NodeGraphState } from "../state";
+import { NodeGraphServiceState } from "../state";
 import { createNodeGraphSelector } from "../utils";
 
 export const connectionsByIdSelector = createNodeGraphSelector(
@@ -16,12 +16,13 @@ export const connectionIdsSelector = createNodeGraphSelector(
 );
 
 export const connectionFromConnectionIdSelector = createNodeGraphSelector(
-  (s: NodeGraphState, connectionId: string) => s.connectionsById[connectionId]
+  (s: NodeGraphServiceState, connectionId: string) =>
+    s.connectionsById[connectionId]
 );
 
 export const connectionsSelector = createNodeGraphSelector(
   createSelector(
-    (state: NodeGraphState) => state.connectionsById,
+    (state: NodeGraphServiceState) => state.connectionsById,
     (connectionsById) => values(connectionsById)
   )
 );
@@ -31,7 +32,7 @@ export const connectionsSelector = createNodeGraphSelector(
  * WARN: Not react safe.  For reducer use only.
  */
 export const nodeInputConnectionIdsFromNodeIdSelector = createNodeGraphSelector(
-  (state: NodeGraphState, nodeId: string) =>
+  (state: NodeGraphServiceState, nodeId: string) =>
     Object.keys(state.connectionsById).filter(
       (connectionId) =>
         state.connectionsById[connectionId].inputPin.nodeId === nodeId
@@ -43,7 +44,7 @@ export const nodeInputConnectionIdsFromNodeIdSelector = createNodeGraphSelector(
  * WARN: Not react safe.  For reducer use only.
  */
 export const nodeOutputConnectionIdsFromNodeIdSelector = createNodeGraphSelector(
-  (state: NodeGraphState, nodeId: string) =>
+  (state: NodeGraphServiceState, nodeId: string) =>
     Object.keys(state.connectionsById).filter(
       (connectionId) =>
         state.connectionsById[connectionId].outputPin.nodeId === nodeId

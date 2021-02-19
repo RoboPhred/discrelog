@@ -5,15 +5,15 @@ import flatMap from "lodash/flatMap";
 
 import { AppState } from "@/store";
 
-import { NodeGraphState } from "../../state";
+import { NodeGraphServiceState } from "../../state";
 import { Connection, nodePinEquals } from "../../types";
 import { nodePinsFromPinNodeSelector } from "../../selectors/pins";
 
 export default function nodeDelete(
-  state: NodeGraphState,
+  state: NodeGraphServiceState,
   nodeIds: string[],
   rootState: AppState
-): NodeGraphState {
+): NodeGraphServiceState {
   const remainingNodeIds = difference(Object.keys(state.nodesById), nodeIds);
 
   const removedIcPins = flatMap(nodeIds, (nodeId) =>

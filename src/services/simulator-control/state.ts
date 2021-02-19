@@ -1,4 +1,4 @@
-export interface SimulatorControlState {
+export interface SimulatorControlServiceState {
   /**
    * The overall application mode.
    * Might not belong in simulator state?
@@ -15,9 +15,9 @@ export interface SimulatorControlState {
   ticksPerSecond: number;
 }
 
-const _defaultState: SimulatorControlState = {
+const _defaultState: SimulatorControlServiceState = {
   mode: "edit",
   ticksPerSecond: 1000,
 };
 
-export const defaultSimulatorControlState = Object.freeze(_defaultState);
+export const defaultSimulatorControlServiceState = Object.freeze(_defaultState);

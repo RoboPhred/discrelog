@@ -2,12 +2,14 @@ import { Point, ZeroPoint } from "@/geometry";
 
 import { ClipboardNode } from "./types";
 
-export interface ClipboardState {
+export interface ClipboardServiceState {
   clipboardNodes: ClipboardNode[];
   clipboardPasteOrigin: Point;
 }
 
-export const defaultClipboardState: Readonly<ClipboardState> = Object.freeze({
-  clipboardNodes: [],
-  clipboardPasteOrigin: ZeroPoint,
-});
+export const defaultClipboardServiceState: Readonly<ClipboardServiceState> = Object.freeze(
+  {
+    clipboardNodes: [],
+    clipboardPasteOrigin: ZeroPoint,
+  }
+);

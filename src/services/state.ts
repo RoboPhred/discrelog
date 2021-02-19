@@ -1,47 +1,65 @@
 import {
-  CircuitEditorUiState,
-  defaultCircuitEditorUiState,
+  CircuitEditorUiServiceState,
+  defaultCircuitEditorUiServiceState,
 } from "./circuit-editor-ui/state";
-import { CircuitsState, defaultCircuitsState } from "./circuits/state";
-import { ClipboardState, defaultClipboardState } from "./clipboard/state";
-import { DialogState, defaultDialogState } from "./dialog/state";
-import { NodeGraphState, defaultNodeGraphState } from "./node-graph/state";
-import { NodeLayoutState, defaultNodeLayoutState } from "./node-layout/state";
-import { SelectionState, defaultSelectionState } from "./selection/state";
-import { SimulatorState, defaultSimulatorState } from "./simulator/state";
 import {
-  SimulatorControlState,
-  defaultSimulatorControlState,
+  CircuitsServiceState,
+  defaultCircuitsServiceState,
+} from "./circuits/state";
+import {
+  ClipboardServiceState,
+  defaultClipboardServiceState,
+} from "./clipboard/state";
+import { DialogServiceState, defaultDialogServiceState } from "./dialog/state";
+import {
+  NodeGraphServiceState,
+  defaultNodeGraphServiceState,
+} from "./node-graph/state";
+import {
+  NodeLayoutServiceState,
+  defaultNodeLayoutServiceState,
+} from "./node-layout/state";
+import {
+  SelectionServiceState,
+  defaultSelectionServiceState,
+} from "./selection/state";
+import {
+  SimulatorServiceState,
+  defaultSimulatorServiceState,
+} from "./simulator/state";
+import {
+  SimulatorControlServiceState,
+  defaultSimulatorControlServiceState,
 } from "./simulator-control/state";
 import {
-  SimulatorGraphState,
-  defaultSimulatorGraphState,
+  SimulatorGraphServiceState,
+  defaultSimulatorGraphServiceState,
 } from "./simulator-graph/state";
 
 export interface AppServicesState {
-  circuitEditorUi: CircuitEditorUiState;
-  circuits: CircuitsState;
-  clipboard: ClipboardState;
-  dialog: DialogState;
-  nodeGraph: NodeGraphState;
-  nodeLayout: NodeLayoutState;
-  selection: SelectionState;
-  simulator: SimulatorState;
-  simulatorControl: SimulatorControlState;
-  simulatorGraph: SimulatorGraphState;
+  circuitEditorUi: CircuitEditorUiServiceState;
+  circuits: CircuitsServiceState;
+  clipboard: ClipboardServiceState;
+  dialog: DialogServiceState;
+  nodeGraph: NodeGraphServiceState;
+  nodeLayout: NodeLayoutServiceState;
+  selection: SelectionServiceState;
+  simulator: SimulatorServiceState;
+  simulatorControl: SimulatorControlServiceState;
+  simulatorGraph: SimulatorGraphServiceState;
 }
 
 const _defaultServiceState: AppServicesState = {
-  circuitEditorUi: defaultCircuitEditorUiState,
-  nodeGraph: defaultNodeGraphState,
-  nodeLayout: defaultNodeLayoutState,
-  circuits: defaultCircuitsState,
-  clipboard: defaultClipboardState,
-  dialog: defaultDialogState,
-  selection: defaultSelectionState,
-  simulator: defaultSimulatorState,
-  simulatorControl: defaultSimulatorControlState,
-  simulatorGraph: defaultSimulatorGraphState,
+  circuitEditorUi: defaultCircuitEditorUiServiceState,
+  nodeGraph: defaultNodeGraphServiceState,
+  nodeLayout: defaultNodeLayoutServiceState,
+  circuits: defaultCircuitsServiceState,
+  clipboard: defaultClipboardServiceState,
+  dialog: defaultDialogServiceState,
+  selection: defaultSelectionServiceState,
+  simulator: defaultSimulatorServiceState,
+  simulatorControl: defaultSimulatorControlServiceState,
+  simulatorGraph: defaultSimulatorGraphServiceState,
 };
 
 export const defaultServicesState = Object.freeze(_defaultServiceState);

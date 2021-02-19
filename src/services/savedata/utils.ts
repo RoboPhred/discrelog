@@ -25,6 +25,8 @@ import {
   circuitIdsSelector,
   circuitNameFromIdSelector,
 } from "../circuits/selectors/circuits";
+import { ROOT_CIRCUIT_ID } from "../circuits/constants";
+
 import { circuitIdFromNodeIdSelector } from "../circuits/selectors/nodes";
 import {
   wireJointPositionsByJointIdSelector,
@@ -52,7 +54,7 @@ export function createSave(state: AppState): SaveData {
       const saveNode: SaveNode = {
         nodeId: nodeId,
         nodeType: node.nodeType,
-        circuitId: circuitId ?? "root",
+        circuitId: circuitId ?? ROOT_CIRCUIT_ID,
         x: position.x,
         y: position.y,
       };

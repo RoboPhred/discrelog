@@ -5,14 +5,14 @@ import pick from "lodash/pick";
 import { nodesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 
 import { createSelectionSelector } from "../utils";
-import { SelectionState } from "../state";
+import { SelectionServiceState } from "../state";
 
 export const selectedNodeIdsSelector = createSelectionSelector(
   (state) => state.selectedNodeIds
 );
 
 export const isNodeSelectedFromNodeIdSelector = createSelectionSelector(
-  (s: SelectionState, nodeId: string) =>
+  (s: SelectionServiceState, nodeId: string) =>
     s.selectedNodeIds.indexOf(nodeId) !== -1
 );
 
@@ -27,7 +27,7 @@ export const selectedConnectionIdsSelector = createSelectionSelector(
 );
 
 export const isWireSelectedFromConnectionIdSelector = createSelectionSelector(
-  (s: SelectionState, connectionId: string) =>
+  (s: SelectionServiceState, connectionId: string) =>
     s.selectedConnectionIds.indexOf(connectionId) !== -1
 );
 
@@ -36,6 +36,6 @@ export const selectedJointIdsSelector = createSelectionSelector(
 );
 
 export const isJointSelectedFromJointIdSelector = createSelectionSelector(
-  (s: SelectionState, jointId: string) =>
+  (s: SelectionServiceState, jointId: string) =>
     s.selectedJointIds.indexOf(jointId) !== -1
 );

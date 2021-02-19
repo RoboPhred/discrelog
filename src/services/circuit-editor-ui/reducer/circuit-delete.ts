@@ -1,4 +1,7 @@
 import { isDeleteCircuitAction } from "@/actions/circuit-delete";
+
+import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
+
 import { createCircuitEditorUiReducer } from "../utils";
 
 export default createCircuitEditorUiReducer((state, action) => {
@@ -14,6 +17,6 @@ export default createCircuitEditorUiReducer((state, action) => {
 
   return {
     ...state,
-    editingCircuitId: "root",
+    editingCircuitId: ROOT_CIRCUIT_ID,
   };
 });

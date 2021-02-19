@@ -1,8 +1,8 @@
 import { createSimulatorGraphSelector } from "../utils";
-import { SimulatorGraphState } from "../state";
+import { SimulatorGraphServiceState } from "../state";
 
 export const simulatorNodeIdFromCircuitNodeIdSelector = createSimulatorGraphSelector(
-  (state: SimulatorGraphState, circuitNodeId: string) => {
+  (state: SimulatorGraphServiceState, circuitNodeId: string) => {
     return state.simulatorNodeIdsByCircuitNodeId[circuitNodeId];
   }
 );
@@ -17,7 +17,7 @@ export const simulatorNodeIdsSelector = createSimulatorGraphSelector((state) =>
 );
 
 export const elementTypeFromSimulatorNodeId = createSimulatorGraphSelector(
-  (state: SimulatorGraphState, simulatorNodeId: string) => {
+  (state: SimulatorGraphServiceState, simulatorNodeId: string) => {
     const simulatorNode = state.simulatorNodesById[simulatorNodeId];
     if (!simulatorNode) {
       return null;

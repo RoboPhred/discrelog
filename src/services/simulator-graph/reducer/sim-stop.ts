@@ -2,7 +2,7 @@ import { isStopSimAction } from "@/actions/sim-stop";
 
 import { createSimulatorGraphReducer } from "../utils";
 
-import { defaultSimulatorGraphState } from "../state";
+import { defaultSimulatorGraphServiceState } from "../state";
 
 export default createSimulatorGraphReducer((state, action) => {
   if (!isStopSimAction(action)) {
@@ -11,6 +11,6 @@ export default createSimulatorGraphReducer((state, action) => {
 
   // Reset the simulator but keep the ticks per second choice.
   return {
-    ...defaultSimulatorGraphState,
+    ...defaultSimulatorGraphServiceState,
   };
 });

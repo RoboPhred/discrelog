@@ -8,7 +8,7 @@ import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/
 
 import { createNodeGraphReducer } from "../utils";
 import { Connection, NodePin, nodePinEquals } from "../types";
-import { NodeGraphState } from "../state";
+import { NodeGraphServiceState } from "../state";
 
 export default createNodeGraphReducer((state, action, rootState) => {
   if (!isAttachWireAction(action)) {
@@ -47,7 +47,7 @@ export default createNodeGraphReducer((state, action, rootState) => {
  * Does not check to see if the pins are already connected, or other connections prevent this connection from forming.
  */
 export function pinsToConnection(
-  state: NodeGraphState,
+  state: NodeGraphServiceState,
   p1: NodePin,
   p2: NodePin,
   rootState: AppState

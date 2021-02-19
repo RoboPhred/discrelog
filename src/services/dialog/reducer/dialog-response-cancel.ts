@@ -1,6 +1,6 @@
 import { isCancelDialogAction } from "@/actions/dialog-response-cancel";
 
-import { defaultDialogState } from "../state";
+import { defaultDialogServiceState } from "../state";
 import { createDialogReducer } from "../utils";
 
 export default createDialogReducer((state, action) => {
@@ -8,5 +8,5 @@ export default createDialogReducer((state, action) => {
     return state;
   }
 
-  return defaultDialogState;
+  return defaultDialogServiceState;
 });

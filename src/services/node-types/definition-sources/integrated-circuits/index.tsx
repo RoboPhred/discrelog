@@ -2,6 +2,7 @@ import { createSelector } from "reselect";
 import sortBy from "lodash/sortBy";
 
 import { nodeIdsByCircuitIdSelector } from "@/services/circuits/selectors/nodes";
+import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
 import { nodeTypesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 import { nodePositionsByNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
 
@@ -24,7 +25,7 @@ const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
   nodePositionsByNodeIdSelector,
   (nodeIdsByCircuitId, nodeTypesByNodeId, nodePositionsByNodeId) => {
     return Object.keys(nodeIdsByCircuitId)
-      .filter((x) => x !== "root")
+      .filter((x) => x !== ROOT_CIRCUIT_ID)
       .map((circuitId) => {
         const circuitNodeIds = nodeIdsByCircuitId[circuitId] ?? [];
 

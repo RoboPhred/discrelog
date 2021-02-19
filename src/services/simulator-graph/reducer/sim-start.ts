@@ -8,6 +8,7 @@ import { PRIORITY_PRE, reducerPriority } from "@/store/priorities";
 import { isStartSimAction } from "@/actions/sim-start";
 
 import { nodeIdsFromCircuitIdSelector } from "@/services/circuits/selectors/nodes";
+import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
 import { nodeTypeFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 import { connectionsByIdSelector } from "@/services/node-graph/selectors/connections";
 import {
@@ -20,7 +21,7 @@ import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/
 import { nodeDefFromNodeIdSelector } from "@/services/node-graph/selectors/node-def";
 
 import { createSimulatorGraphReducer } from "../utils";
-import { SimulatorGraphState } from "../state";
+import { SimulatorGraphServiceState } from "../state";
 import { SimulatorNode, SimulatorNodePin } from "../types";
 
 // This must run before simulator/reducer/sim-start, as we need to build up the graph before it can
@@ -36,7 +37,7 @@ export default reducerPriority(
     const {
       simulatorNodesById,
       simulatorNodeIdsByCircuitNodeId,
-    } = produceCircuit("root", rootState);
+    } = produceCircuit(ROOT_CIRCUIT_ID, rootState);
 
     return {
       ...state,
@@ -47,7 +48,7 @@ export default reducerPriority(
 );
 
 type CircuitProductionResult = Pick<
-  SimulatorGraphState,
+  SimulatorGraphServiceState,
   "simulatorNodeIdsByCircuitNodeId" | "simulatorNodesById"
 > & {
   inputElementPinsByCircuitPinId: Record<string, SimulatorNodePin[]>;

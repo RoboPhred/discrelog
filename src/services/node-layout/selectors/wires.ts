@@ -7,7 +7,7 @@ import { NodeDefinition } from "@/services/node-types/types";
 import { nodeDefFromNodeIdSelector } from "@/services/node-graph/selectors/node-def";
 
 import { createNodeLayoutSelector } from "../utils";
-import { NodeLayoutState } from "../state";
+import { NodeLayoutServiceState } from "../state";
 
 import { nodePositionFromNodeIdSelector } from "./node-positions";
 
@@ -110,7 +110,8 @@ export const wireEndPositionFromConnectionIdSelector = (
 // WARN: Returns new object with each invocation.  Not safe for react use.
 //  Currently used to get all joint ids in reducers.
 export const jointIdsSelector = createNodeLayoutSelector(
-  (state: NodeLayoutState) => Object.keys(state.wireJointPositionsByJointId)
+  (state: NodeLayoutServiceState) =>
+    Object.keys(state.wireJointPositionsByJointId)
 );
 
 export const wireJointIdsByConnectionIdSelector = createNodeLayoutSelector(
@@ -118,19 +119,19 @@ export const wireJointIdsByConnectionIdSelector = createNodeLayoutSelector(
 );
 
 export const wireJointIdsFromConnectionIdSelector = createNodeLayoutSelector(
-  (state: NodeLayoutState, connectionId: string) =>
+  (state: NodeLayoutServiceState, connectionId: string) =>
     state.wireJointIdsByConnectionId[connectionId]
 );
 
 export const wireJointPositionFromJointIdSelector = createNodeLayoutSelector(
-  (state: NodeLayoutState, jointId: string) =>
+  (state: NodeLayoutServiceState, jointId: string) =>
     state.wireJointPositionsByJointId[jointId]
 );
 
 // WARN: Returns new object with each invocation.  Not safe for react use.
 //  Currently used to get all joint ids in reducers.
 export const wireJointPositionsByJointIdSelector = createNodeLayoutSelector(
-  (state: NodeLayoutState) => {
+  (state: NodeLayoutServiceState) => {
     return state.wireJointPositionsByJointId;
   }
 );

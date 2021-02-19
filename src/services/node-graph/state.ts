@@ -1,6 +1,6 @@
 import { Node, Connection } from "./types";
 
-export interface NodeGraphState {
+export interface NodeGraphServiceState {
   /**
    * A map of nodes by node id.
    */
@@ -12,9 +12,9 @@ export interface NodeGraphState {
   connectionsById: Record<string, Connection>;
 }
 
-const _defaultState: NodeGraphState = {
+const _defaultState: NodeGraphServiceState = {
   nodesById: {},
   connectionsById: {},
 };
 
-export const defaultNodeGraphState = Object.freeze(_defaultState);
+export const defaultNodeGraphServiceState = Object.freeze(_defaultState);

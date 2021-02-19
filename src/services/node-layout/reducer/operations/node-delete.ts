@@ -10,15 +10,15 @@ import {
   nodeOutputConnectionIdsFromNodeIdSelector,
 } from "@/services/node-graph/selectors/connections";
 
-import { NodeLayoutState } from "../../state";
+import { NodeLayoutServiceState } from "../../state";
 import { nodePinsFromPinNodeSelector } from "@/services/node-graph/selectors/pins";
 import { nodePinEquals } from "@/services/node-graph/types";
 
 export default function nodeDelete(
-  state: NodeLayoutState,
+  state: NodeLayoutServiceState,
   nodeIds: string[],
   rootState: AppState
-): NodeLayoutState {
+): NodeLayoutServiceState {
   const removedIcPins = flatMap(nodeIds, (nodeId) =>
     nodePinsFromPinNodeSelector(rootState, nodeId)
   );

@@ -1,6 +1,6 @@
 import { SimNodePinTransition, SimTransitionWindow } from "./types";
 
-export interface SimulatorState {
+export interface SimulatorServiceState {
   /**
    * The current tick the simulator is on.
    */
@@ -32,7 +32,7 @@ export interface SimulatorState {
   transitionWindows: SimTransitionWindow[];
 }
 
-const _defaultState: SimulatorState = {
+const _defaultState: SimulatorServiceState = {
   tick: 0,
   lastTickProcessingTimeMs: 0,
   nodeStatesByNodeId: {},
@@ -41,4 +41,4 @@ const _defaultState: SimulatorState = {
   transitionWindows: [],
 };
 
-export const defaultSimulatorState = Object.freeze(_defaultState);
+export const defaultSimulatorServiceState = Object.freeze(_defaultState);

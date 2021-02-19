@@ -1,6 +1,6 @@
 import { ROOT_CIRCUIT_ID } from "./constants";
 
-export interface CircuitsState {
+export interface CircuitsServiceState {
   /**
    * The user-provided names for circuits by circuit id.
    */
@@ -12,7 +12,7 @@ export interface CircuitsState {
   nodeIdsByCircuitId: Record<string, string[]>;
 }
 
-const _defaultState: CircuitsState = {
+const _defaultState: CircuitsServiceState = {
   circuitNamesByCircuitId: {
     [ROOT_CIRCUIT_ID]: "Root",
   },
@@ -21,4 +21,4 @@ const _defaultState: CircuitsState = {
   },
 };
 
-export const defaultCircuitsState = Object.freeze(_defaultState);
+export const defaultCircuitsServiceState = Object.freeze(_defaultState);
