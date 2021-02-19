@@ -1,8 +1,6 @@
 import { AppState } from "@/store";
 import { Point, pointAdd, ZeroPoint } from "@/geometry";
 
-import { nodeTypeFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
-import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/node-types";
 import { NodeDefinition } from "@/services/node-types/types";
 import { nodeDefFromNodeIdSelector } from "@/services/node-graph/selectors/node-def";
 

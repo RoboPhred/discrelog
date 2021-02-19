@@ -16,7 +16,7 @@ const toggleElementDefinition: ElementDefinition = {
       toggleState: !state.toggleState,
     };
   },
-  evolve(state = defaultToggleState, inputs, tick) {
+  evolve(state = defaultToggleState) {
     return {
       state,
       transitions: {

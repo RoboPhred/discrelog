@@ -47,7 +47,6 @@ const CircuitsTreeWindow: React.FC<WindowProps> = ({ path }) => {
   const onContextMenu = React.useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       e.preventDefault();
-      e.stopPropagation();
 
       ContextMenu.show(<CircuitTreeContextMenu dispatch={dispatch} />, {
         left: e.pageX,

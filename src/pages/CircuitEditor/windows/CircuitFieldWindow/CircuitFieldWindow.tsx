@@ -36,11 +36,14 @@ import keymap, {
 
 import { WindowProps } from "../window-props";
 
+import { editingCircuitNameSelector } from "@/services/circuit-editor-ui/selectors/circuit";
+
 import styles from "./CircuitFieldWindow.module.css";
 
 const CircuitFieldWindow: React.FC<WindowProps> = ({ path }) => {
   const viewRef = React.useRef<HTMLDivElement | null>(null);
   const dispatch = useDispatch();
+  const circuitName = useSelector(editingCircuitNameSelector);
   const scale = useSelector(viewScaleSelector);
 
   const keyHandlers = React.useMemo(() => {
@@ -55,7 +58,7 @@ const CircuitFieldWindow: React.FC<WindowProps> = ({ path }) => {
         dispatch(action);
       };
     }
-    let keyHandlers: KeymapHandler = {
+    const keyHandlers: KeymapHandler = {
       [KEYMAP_SIM_STEP]: createEventDispatcher(tickSim(1)),
       [KEYMAP_SIM_FASTFORWARD]: createEventDispatcher(fastForwardSim()),
       [KEYMAP_SELECT_ALL]: createEventDispatcher(selectAll()),
@@ -88,7 +91,7 @@ const CircuitFieldWindow: React.FC<WindowProps> = ({ path }) => {
   useNativeEvent(viewRef, "wheel", onWheel, { passive: false });
 
   return (
-    <MosaicWindow path={path} title="Circuit Field">
+    <MosaicWindow path={path} title={`${circuitName} [Circuit]`}>
       <div
         className={cls("circuit-field-view", styles["circuit-field-view"])}
         ref={viewRef}

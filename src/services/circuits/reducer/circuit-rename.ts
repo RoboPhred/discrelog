@@ -8,7 +8,7 @@ export default createCircuitsReducer((state, action) => {
 
   const { circuitId, circuitName } = action.payload;
 
-  let trimmedName = circuitName.trim();
+  const trimmedName = circuitName.trim();
 
   if (trimmedName === "") {
     return state;

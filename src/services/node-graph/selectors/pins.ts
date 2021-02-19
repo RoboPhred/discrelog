@@ -1,4 +1,3 @@
-import { PinDirection } from "@/logic";
 import { circuitIdFromNodeIdSelector } from "@/services/circuits/selectors/nodes";
 import { circuitIdToNodeType } from "@/services/node-types/definition-sources/integrated-circuits/utils";
 import { AppState } from "@/store";
@@ -69,12 +68,7 @@ export const nodePinsFromPinNodeSelector = (
   nodeId: string
 ): NodePin[] => {
   const nodeType = nodeTypeFromNodeIdSelector(state, nodeId);
-  let direction: PinDirection;
-  if (nodeType === "pin-input") {
-    direction = "input";
-  } else if (nodeType === "pin-output") {
-    direction = "output";
-  } else {
+  if (nodeType !== "pin-input" && nodeType !== "pin-output") {
     return [];
   }
 

@@ -2,7 +2,9 @@ export function cls(...values: (string | false | undefined)[]): string {
   return values.filter((x) => Boolean(x) && x != "").join(" ");
 }
 
-export function typedKeys<T extends object>(obj: T): (keyof T)[] {
+export function typedKeys<T extends Record<string, unknown>>(
+  obj: T
+): (keyof T)[] {
   return Object.keys(obj) as (keyof T)[];
 }
 
@@ -26,7 +28,7 @@ export function fpSet<
   P3 extends keyof Target[P1][P2],
   T extends Target[P1][P2][P3]
 >(target: Target, p1: P1, p2: P2, p3: P3, value: ValueSetter<T>): Target;
-export function fpSet(...args: any[]) {
+export function fpSet(...args: any[]): any {
   let target = args[0];
   const firstPaths = args.slice(1, args.length - 2).map(String);
   const lastPath = args[args.length - 2];
@@ -49,7 +51,7 @@ export function fpSet(...args: any[]) {
   return newData;
 }
 
-function clone<T extends object | any[]>(obj: T): T {
+function clone<T extends Record<string, unknown> | any[]>(obj: T): T {
   if (Array.isArray(obj)) {
     return [...obj] as T;
   }

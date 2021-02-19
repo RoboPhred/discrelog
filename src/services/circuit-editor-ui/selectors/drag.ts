@@ -14,10 +14,7 @@ import { createCircuitEditorUiSelector } from "../utils";
 
 import { gridJointSnapSelector, gridNodeSnapSelector } from "./snap";
 import { nodeIdsForEditingCircuitSelector } from "./nodes";
-import {
-  selectedJointIdsSelector,
-  selectedNodeIdsSelector,
-} from "@/services/selection/selectors/selection";
+import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 
 export const dragModeSelector = createCircuitEditorUiSelector(
   (s) => s.dragMode
@@ -70,7 +67,7 @@ export const dragMoveOffsetSelector = createSelector(
       gridSnap = nodeSnap;
     }
 
-    let offset = pointSubtract(dragEnd, dragStart);
+    const offset = pointSubtract(dragEnd, dragStart);
     if (!modifierKeys.ctrlMetaKey) {
       offset.x = Math.round(offset.x / gridSnap) * gridSnap;
       offset.y = Math.round(offset.y / gridSnap) * gridSnap;

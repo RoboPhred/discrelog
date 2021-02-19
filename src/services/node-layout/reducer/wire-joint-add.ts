@@ -9,7 +9,7 @@ export default createNodeLayoutReducer((state, action) => {
 
   const { connectionId, addAfterJointId, position, jointId } = action.payload;
   let wireJoints = state.wireJointIdsByConnectionId[connectionId];
-  let insertionIndex = addAfterJointId
+  const insertionIndex = addAfterJointId
     ? wireJoints.indexOf(addAfterJointId) + 1
     : 0;
 

@@ -14,7 +14,7 @@ export const nodeBoundsByIdSelector = createSelector(
   nodeDefinitionsByTypeSelector,
   nodeTypesByNodeIdSelector,
   (nodeDefsByType, elementTypesByNodeId) =>
-    mapValues(elementTypesByNodeId, (elementType, id) => {
+    mapValues(elementTypesByNodeId, (elementType) => {
       const def = nodeDefsByType[elementType];
       if (!def) {
         return [0, 0, 0, 0];

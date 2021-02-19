@@ -21,7 +21,7 @@ function createSeg(
 ): NodeVisualPathDefinition {
   const start = points[0];
   let path = `M${start[0] * SCALE + OFFSET[0]},${start[1] * SCALE + OFFSET[1]}`;
-  for (let p of points.slice(1)) {
+  for (const p of points.slice(1)) {
     const [x, y] = p;
     path += `L${x * SCALE + OFFSET[0]},${y * SCALE + OFFSET[1]}`;
   }

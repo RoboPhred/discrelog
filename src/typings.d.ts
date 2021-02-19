@@ -1,6 +1,6 @@
 interface Window {
   __REDUX_DEVTOOLS_EXTENSION__?(): any;
-  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: Function;
+  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: (...args: any[]) => any;
 }
 
 declare type HotkeyHandler = (keyEvent?: KeyboardEvent) => void;

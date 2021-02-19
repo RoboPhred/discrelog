@@ -4,7 +4,7 @@ import map from "lodash/map";
 import values from "lodash/values";
 import { v4 as uuidV4 } from "uuid";
 
-import { Point, pointAdd } from "@/geometry";
+import { pointAdd } from "@/geometry";
 import { AppState, defaultAppState } from "@/store";
 import { fpSet } from "@/utils";
 
@@ -40,7 +40,7 @@ export default function clipboardPasteReducer(
   // Two passes: Create and Wire.
 
   // Create the nodes.
-  for (let node of clipboardNodes) {
+  for (const node of clipboardNodes) {
     const { id, nodeType, offset } = node;
     const p = pointAdd(pastePosition, offset);
     state = rootReducer(
@@ -50,11 +50,11 @@ export default function clipboardPasteReducer(
   }
 
   // Wire the nodes
-  for (let node of clipboardNodes) {
+  for (const node of clipboardNodes) {
     const { id, outputs } = node;
     const sourceId = pasteIds[id];
-    for (let outputPin of Object.keys(outputs)) {
-      for (let output of outputs[outputPin]) {
+    for (const outputPin of Object.keys(outputs)) {
+      for (const output of outputs[outputPin]) {
         const { nodeId: targetCopyId, pinId: targetPin } = output;
         const targetId = pasteIds[targetCopyId];
         state = rootReducer(

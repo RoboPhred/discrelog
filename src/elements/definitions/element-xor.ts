@@ -3,7 +3,7 @@ import { ElementDefinition } from "../types";
 const xorElementDefinition: ElementDefinition = {
   inputPins: ["A", "B"],
   outputPins: ["OUT"],
-  evolve(state, inputs, tick) {
+  evolve(_, inputs) {
     return {
       transitions: {
         tickOffset: 4,

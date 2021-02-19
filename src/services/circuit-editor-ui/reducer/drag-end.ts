@@ -52,7 +52,7 @@ export default function dragEndReducer(
     case "move": {
       if (dragStart) {
         let moveBy = pointSubtract({ x, y }, dragStart);
-        let hasNodes = state.services.selection.selectedNodeIds.length > 0;
+        const hasNodes = state.services.selection.selectedNodeIds.length > 0;
         if (!modifierKeys.ctrlMetaKey) {
           // We apply the snap here because we want to snap the offset, not the resulting positions.
           // Applying the snap in moveSelection can result in different objects moving different distances

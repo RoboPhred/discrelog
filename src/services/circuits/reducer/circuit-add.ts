@@ -6,7 +6,8 @@ export default createCircuitsReducer((state, action) => {
     return state;
   }
 
-  let { circuitId, circuitName } = action.payload;
+  const circuitId = action.payload.circuitId;
+  let circuitName = action.payload.circuitName;
 
   if (!circuitName) {
     circuitName = `Circuit ${

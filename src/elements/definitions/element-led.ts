@@ -7,7 +7,7 @@ export interface LedElementState {
 const ledElementDefinition: ElementDefinition = {
   inputPins: ["IN"],
   outputPins: [],
-  evolve(state: LedElementState, inputs, tick) {
+  evolve(_, inputs) {
     return {
       state: {
         value: inputs.IN,

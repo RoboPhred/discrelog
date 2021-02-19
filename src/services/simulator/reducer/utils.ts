@@ -132,7 +132,7 @@ function tickWindow(
 
   // Could benefit from being changed to a Set, although nodes usually arent hooked up to too many
   //  outputs at a time.
-  let updatedNodes = [];
+  const updatedNodes = [];
   for (const tid of window.transitionIds) {
     const { nodeId, valuesByOutputPin } = state.transitionsById[tid];
 

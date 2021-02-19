@@ -1,5 +1,4 @@
 import * as React from "react";
-import { v4 as uuidV4 } from "uuid";
 import { useDispatch } from "react-redux";
 
 import {
@@ -122,9 +121,9 @@ const WireSegment: React.FC<WireSegmentProps> = ({
 
   let insertJointPos: Point | undefined;
   if (mousePos) {
-    let lineDir = normalize(pointSubtract(end, start));
+    const lineDir = normalize(pointSubtract(end, start));
     const v = pointSubtract(mousePos, start);
-    var d = dotProduct(v, lineDir);
+    const d = dotProduct(v, lineDir);
     insertJointPos = pointAdd(start, scale(lineDir, d));
   }
 

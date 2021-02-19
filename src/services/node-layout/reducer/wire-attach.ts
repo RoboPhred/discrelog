@@ -15,7 +15,7 @@ export default createNodeLayoutReducer((state, action) => {
 
   // Might want to use addWireJoint action, but field is the only thing that cares about joints.
   if (joints.length > 0) {
-    const jointIds = joints.map((x) => uuidV4());
+    const jointIds = joints.map(() => uuidV4());
     state = fpSet(state, "wireJointIdsByConnectionId", connectionId, jointIds);
     state = fpSet(state, "wireJointPositionsByJointId", (value) => ({
       ...value,
