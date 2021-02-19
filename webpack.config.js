@@ -50,8 +50,6 @@ module.exports = {
       "svg-arc-to-cubic-bezier": require.resolve("svg-arc-to-cubic-bezier"),
     },
     fallback: {
-      // Used by react-markdown
-      path: require.resolve("path-browserify"),
       // Used by svg-path-bounds
       assert: require.resolve("assert"),
     },
@@ -75,18 +73,6 @@ module.exports = {
         loader: "ts-loader",
       },
 
-      // Shim process for vfile, used by react-markdown
-      {
-        test: /node_modules\/vfile\/core\.js/,
-        use: [{
-          loader: 'imports-loader',
-          options: {
-            type: 'commonjs',
-            imports: ['single process/browser process'],
-          },
-        }],
-      },
-
       // css files with the modular option.
       {
         test: /\.module\.css$/,
@@ -97,7 +83,7 @@ module.exports = {
             loader: "css-loader",
             options: {
               modules: {
-                localIdentName: "[name]__[local]___[fullhash:base64:5]",
+                localIdentName: "[name]__[local]",
               },
             },
           },
