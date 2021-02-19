@@ -1,5 +1,4 @@
 export interface SimNodePinTransition {
-  transitionId: string;
   nodeId: string;
   tick: number;
   valuesByOutputPin: Record<string, boolean>;
