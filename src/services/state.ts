@@ -3,6 +3,10 @@ import {
   defaultCircuitEditorUiServiceState,
 } from "./circuit-editor-ui/state";
 import {
+  CircuitEditorViewServiceState,
+  defaultCircuitEditorViewServiceState,
+} from "./circuit-editor-view/state";
+import {
   CircuitsServiceState,
   defaultCircuitsServiceState,
 } from "./circuits/state";
@@ -38,6 +42,7 @@ import {
 
 export interface AppServicesState {
   circuitEditorUi: CircuitEditorUiServiceState;
+  circuitEditorView: CircuitEditorViewServiceState;
   circuits: CircuitsServiceState;
   clipboard: ClipboardServiceState;
   dialog: DialogServiceState;
@@ -51,6 +56,7 @@ export interface AppServicesState {
 
 const _defaultServiceState: AppServicesState = {
   circuitEditorUi: defaultCircuitEditorUiServiceState,
+  circuitEditorView: defaultCircuitEditorViewServiceState,
   nodeGraph: defaultNodeGraphServiceState,
   nodeLayout: defaultNodeLayoutServiceState,
   circuits: defaultCircuitsServiceState,

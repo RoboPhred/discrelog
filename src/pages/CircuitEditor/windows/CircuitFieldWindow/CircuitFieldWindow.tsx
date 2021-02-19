@@ -19,6 +19,8 @@ import { selectAll } from "@/actions/select-all";
 import { undo } from "@/actions/undo";
 import { redo } from "@/actions/redo";
 
+import { editingCircuitNameSelector } from "@/services/circuit-editor-view/selectors/circuit";
+
 import CircuitField from "@/components/CircuitField";
 
 import keymap, {
@@ -34,8 +36,6 @@ import keymap, {
 } from "./keymap";
 
 import { WindowProps } from "../window-props";
-
-import { editingCircuitNameSelector } from "@/services/circuit-editor-ui/selectors/circuit";
 
 import styles from "./CircuitFieldWindow.module.css";
 
@@ -79,9 +79,9 @@ const CircuitFieldWindow: React.FC<WindowProps> = ({ path }) => {
   );
 };
 
-const FillParent: React.FC = ({ children }) => {
+const FillParent: React.FC = ({ children, ...props }) => {
   return (
-    <div tabIndex={-1} className={sizing["fill-parent"]}>
+    <div {...props} className={sizing["fill-parent"]}>
       {children}
     </div>
   );

@@ -10,7 +10,7 @@ import useSelector from "@/hooks/useSelector";
 import { useNativeEvent } from "@/hooks/useNativeEvent";
 
 import { fieldRectSelector } from "@/services/node-layout/selectors/field";
-import { viewScaleSelector } from "@/services/circuit-editor-ui/selectors/view";
+import { viewScaleSelector } from "@/services/circuit-editor-view/selectors/view";
 
 import { fieldMouseLeave } from "@/actions/field-mouse-leave";
 import { viewZoom } from "@/actions/view-zoom";
@@ -102,8 +102,8 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
     <div className={cls("circuit-field", styles["circuit-editor"], className)}>
       <div ref={ref} className={styles["circuit-editor-scrollarea"]}>
         <svg
-          className={styles["circuit-editor-svg-field"]}
           tabIndex={-1}
+          className={styles["circuit-editor-svg-field"]}
           ref={svgRef}
           width={width}
           height={height}

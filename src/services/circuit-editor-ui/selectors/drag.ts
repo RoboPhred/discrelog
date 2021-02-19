@@ -9,12 +9,12 @@ import {
 import { MODIFIER_KEYS_NONE } from "@/modifier-keys";
 
 import { nodePinPositionsByPinIdByNodeIdSelector } from "@/services/node-layout/selectors/node-pin-positions";
+import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
+import { nodeIdsForEditingCircuitSelector } from "@/services/circuit-editor-view/selectors/nodes";
 
 import { createCircuitEditorUiSelector } from "../utils";
 
 import { gridJointSnapSelector, gridNodeSnapSelector } from "./snap";
-import { nodeIdsForEditingCircuitSelector } from "./nodes";
-import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 
 export const dragModeSelector = createCircuitEditorUiSelector(
   (s) => s.dragMode

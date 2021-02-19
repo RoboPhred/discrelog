@@ -2,9 +2,9 @@ import { isDeleteCircuitAction } from "@/actions/circuit-delete";
 
 import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
 
-import { createCircuitEditorUiReducer } from "../utils";
+import { createCircuitEditorViewReducer } from "../utils";
 
-export default createCircuitEditorUiReducer((state, action) => {
+export default createCircuitEditorViewReducer((state, action) => {
   if (!isDeleteCircuitAction(action)) {
     return state;
   }

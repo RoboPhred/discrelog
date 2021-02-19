@@ -2,9 +2,9 @@ import { AppState } from "@/store";
 
 import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
 
-import { createCircuitEditorUiSelector } from "../utils";
+import { createCircuitEditorViewSelector } from "../utils";
 
-export const editingCircuitIdSelector = createCircuitEditorUiSelector(
+export const editingCircuitIdSelector = createCircuitEditorViewSelector(
   (state) => state.editingCircuitId
 );
 

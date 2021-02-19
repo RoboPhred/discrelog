@@ -1,7 +1,8 @@
 import * as React from "react";
 
 import useSelector from "@/hooks/useSelector";
-import { viewScaleSelector } from "@/services/circuit-editor-ui/selectors/view";
+
+import { viewScaleSelector } from "@/services/circuit-editor-view/selectors/view";
 
 const GridBackground: React.FC = () => {
   const scale = useSelector(viewScaleSelector);

@@ -1,8 +1,8 @@
 import { isAddCircuitAction } from "@/actions/circuit-add";
 
-import { createCircuitEditorUiReducer } from "../utils";
+import { createCircuitEditorViewReducer } from "../utils";
 
-export default createCircuitEditorUiReducer((state, action) => {
+export default createCircuitEditorViewReducer((state, action) => {
   if (!isAddCircuitAction(action)) {
     return state;
   }

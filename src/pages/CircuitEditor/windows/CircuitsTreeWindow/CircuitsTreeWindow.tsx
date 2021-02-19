@@ -17,7 +17,7 @@ import useSelector from "@/hooks/useSelector";
 
 import { deleteCircuit } from "@/actions/circuit-delete";
 
-import { editingCircuitIdSelector } from "@/services/circuit-editor-ui/selectors/circuit";
+import { editingCircuitIdSelector } from "@/services/circuit-editor-view/selectors/circuit";
 import {
   circuitNameFromIdSelector,
   circuitNamesByIdSelector,

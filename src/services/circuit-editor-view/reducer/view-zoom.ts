@@ -1,9 +1,10 @@
 import { isViewZoomAction } from "@/actions/view-zoom";
-import { createCircuitEditorUiReducer } from "../utils";
+
+import { createCircuitEditorViewReducer } from "../utils";
 
 const SCALE_FACTOR = 1.03;
 
-export default createCircuitEditorUiReducer((state, action) => {
+export default createCircuitEditorViewReducer((state, action) => {
   if (!isViewZoomAction(action)) {
     return state;
   }
