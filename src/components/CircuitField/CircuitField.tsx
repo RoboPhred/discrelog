@@ -39,17 +39,20 @@ const CircuitField: React.FC = () => {
 
   const onMouseLeave = React.useCallback(() => {
     dispatch(fieldMouseLeave());
-  }, []);
+  }, [dispatch]);
 
-  const onContextMenu = React.useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const onContextMenu = React.useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
 
-    ContextMenu.show(<FieldContextMenu dispatch={dispatch} />, {
-      left: e.pageX,
-      top: e.pageY,
-    });
-  }, []);
+      ContextMenu.show(<FieldContextMenu dispatch={dispatch} />, {
+        left: e.pageX,
+        top: e.pageY,
+      });
+    },
+    [dispatch]
+  );
 
   return (
     // svg seems to have an implicit bottom margin against its parent div.

@@ -105,7 +105,7 @@ const CircuitTreeNodeCircuitLabel: React.FC<CircuitTreeNodeLabelProps> = ({
       dispatch(renameCircuit(circuitId, newName));
       setIsRenaming(false);
     },
-    [circuitId]
+    [circuitId, dispatch]
   );
 
   const onDelete = React.useCallback(() => {
@@ -130,7 +130,7 @@ const CircuitTreeNodeCircuitLabel: React.FC<CircuitTreeNodeLabelProps> = ({
         { left: e.pageX, top: e.pageY }
       );
     },
-    []
+    [circuitId, onDelete, onStartRename]
   );
 
   if (isRenaming) {

@@ -24,5 +24,5 @@ export function useNativeEvent<
     return () => {
       listenTarget.removeEventListener(type, listener, options);
     };
-  }, [ref.current, type, listener]);
+  }, [type, listener, ref, options]);
 }

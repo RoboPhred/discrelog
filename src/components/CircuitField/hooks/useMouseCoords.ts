@@ -9,10 +9,10 @@ export function useMouseCoords(): (p: Point) => Point {
   const fieldRef = React.useContext(fieldSvgElementContext);
   return React.useCallback(
     (p: Point) => {
-      if (!fieldRef) {
+      if (!fieldRef.current) {
         return p;
       }
-      return getFieldCoord(fieldRef, p);
+      return getFieldCoord(fieldRef.current, p);
     },
     [fieldRef]
   );
@@ -24,14 +24,14 @@ export function useEventMouseCoords(): (
   const fieldRef = React.useContext(fieldSvgElementContext);
   return React.useCallback(
     (e: MouseEvent | React.MouseEvent) => {
-      if (!fieldRef) {
+      if (!fieldRef.current) {
         return ZeroPoint;
       }
       const p: Point = {
         x: e.pageX,
         y: e.pageY,
       };
-      return getFieldCoord(fieldRef, p);
+      return getFieldCoord(fieldRef.current, p);
     },
     [fieldRef]
   );

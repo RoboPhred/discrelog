@@ -52,12 +52,8 @@ export default function useMouseTracking(
     mouseDownRef.current = ZeroPoint;
   }, []);
 
-  React.useEffect(() => {
-    if (!isTracking) {
-      return;
-    }
-
-    function onMouseMove(e: MouseEvent) {
+  const onMouseMove = React.useCallback(
+    (e: MouseEvent) => {
       if (!isTrackingRef.current) {
         return;
       }
@@ -82,9 +78,12 @@ export default function useMouseTracking(
           }
         }
       }
-    }
+    },
+    [dragThreshold, onDragMove, onDragStart]
+  );
 
-    function onMouseUp(e: MouseEvent) {
+  const onMouseUp = React.useCallback(
+    (e: MouseEvent) => {
       if (!isTrackingRef.current) {
         return;
       }
@@ -104,6 +103,13 @@ export default function useMouseTracking(
       }
 
       cancelTracking();
+    },
+    [cancelTracking, onClick, onDragEnd]
+  );
+
+  React.useEffect(() => {
+    if (!isTracking) {
+      return;
     }
 
     document.addEventListener("mousemove", onMouseMove);
@@ -113,7 +119,7 @@ export default function useMouseTracking(
       document.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseup", onMouseUp);
     };
-  }, [isTracking]);
+  }, [isTracking, onMouseMove, onMouseUp]);
 
   return {
     startTracking,

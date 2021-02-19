@@ -69,19 +69,22 @@ const CircuitFieldWindow: React.FC<WindowProps> = ({ path }) => {
       [KEYMAP_REDO]: createEventDispatcher(redo()),
     };
     return keyHandlers;
-  }, []);
+  }, [dispatch]);
 
-  const onWheel = React.useCallback((e: WheelEvent) => {
-    if (e.defaultPrevented) {
-      return;
-    }
+  const onWheel = React.useCallback(
+    (e: WheelEvent) => {
+      if (e.defaultPrevented) {
+        return;
+      }
 
-    if (e.ctrlKey) {
-      dispatch(viewZoom(e.deltaY > 0 ? -1 : 1));
-      e.preventDefault();
-      e.stopPropagation();
-    }
-  }, []);
+      if (e.ctrlKey) {
+        dispatch(viewZoom(e.deltaY > 0 ? -1 : 1));
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    },
+    [dispatch]
+  );
 
   // React listens to the root listener for all events,
   //  and chrome assumes the root event listener for mouse events

@@ -21,22 +21,25 @@ const DragSelectLayer: React.FC = () => {
 
   const getCoords = useEventMouseCoords();
 
-  const onClick = React.useCallback((e: MouseEvent) => {
-    if (e.button !== 0) {
-      return;
-    }
-    const modifiers = getModifiers(e);
-    if (!modifiers.ctrlMetaKey && !modifiers.shiftKey) {
-      dispatch(clearSelection());
-    }
-  }, []);
+  const onClick = React.useCallback(
+    (e: MouseEvent) => {
+      if (e.button !== 0) {
+        return;
+      }
+      const modifiers = getModifiers(e);
+      if (!modifiers.ctrlMetaKey && !modifiers.shiftKey) {
+        dispatch(clearSelection());
+      }
+    },
+    [dispatch]
+  );
 
   const onDragStart = React.useCallback(
     (e: MouseEvent) => {
       const p = getCoords(e);
       dispatch(fieldDragStartSelect(p));
     },
-    [getCoords]
+    [dispatch, getCoords]
   );
 
   const onDragMove = React.useCallback(
@@ -45,7 +48,7 @@ const DragSelectLayer: React.FC = () => {
       const modifierKeys = getModifiers(e);
       dispatch(fieldDragContinue(p, modifierKeys));
     },
-    [getCoords]
+    [dispatch, getCoords]
   );
 
   const onDragEnd = React.useCallback(
@@ -54,7 +57,7 @@ const DragSelectLayer: React.FC = () => {
       const modifiers = getModifiers(e);
       dispatch(fieldDragEnd(p, modifiers));
     },
-    [getCoords]
+    [dispatch, getCoords]
   );
 
   const { startTracking } = useMouseTracking({
@@ -71,7 +74,7 @@ const DragSelectLayer: React.FC = () => {
       e.preventDefault();
       startTracking(e);
     },
-    [getCoords]
+    [startTracking]
   );
 
   return (

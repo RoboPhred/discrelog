@@ -65,14 +65,17 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
         dispatch(selectNodes(nodeId, selectionMode));
       }
     },
-    [isSimActive]
+    [dispatch, isSimActive, nodeId]
   );
 
-  const onContextMenu = React.useCallback((e: React.MouseEvent) => {
-    const modifiers = getModifiers(e);
-    const selectionMode = getSelectMode(modifiers);
-    dispatch(selectNodes(nodeId, selectionMode));
-  }, []);
+  const onContextMenu = React.useCallback(
+    (e: React.MouseEvent) => {
+      const modifiers = getModifiers(e);
+      const selectionMode = getSelectMode(modifiers);
+      dispatch(selectNodes(nodeId, selectionMode));
+    },
+    [dispatch, nodeId]
+  );
 
   const onDragStart = React.useCallback(
     (e: MouseEvent) => {
@@ -80,7 +83,7 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
       const modifiers = getModifiers(e);
       dispatch(fieldDragStartNode(nodeId, p, modifiers));
     },
-    [nodeId, getCoords]
+    [getCoords, dispatch, nodeId]
   );
 
   const onDragMove = React.useCallback(
@@ -89,7 +92,7 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
       const modifierKeys = getModifiers(e);
       dispatch(fieldDragContinue(p, modifierKeys));
     },
-    [getCoords]
+    [dispatch, getCoords]
   );
 
   const onDragEnd = React.useCallback(
@@ -98,7 +101,7 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
       const modifiers = getModifiers(e);
       dispatch(fieldDragEnd(p, modifiers));
     },
-    [getCoords]
+    [dispatch, getCoords]
   );
 
   const { startTracking } = useMouseTracking({
@@ -120,7 +123,7 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
 
       startTracking(e);
     },
-    [getCoords]
+    [startTracking]
   );
 
   if (!nodeType) {

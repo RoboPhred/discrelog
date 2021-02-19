@@ -41,7 +41,7 @@ const WireJoint: React.FC<WireJointProps> = ({ jointId }) => {
       const modifiers = getModifiers(e);
       dispatch(fieldDragStartJoint(jointId, p, modifiers));
     },
-    [getMouseCoords]
+    [dispatch, getMouseCoords, jointId]
   );
 
   const onJointDragMove = React.useCallback(
@@ -50,7 +50,7 @@ const WireJoint: React.FC<WireJointProps> = ({ jointId }) => {
       const modifiers = getModifiers(e);
       dispatch(fieldDragContinue(p, modifiers));
     },
-    [getMouseCoords]
+    [dispatch, getMouseCoords]
   );
 
   const onJointDragEnd = React.useCallback(
@@ -59,7 +59,7 @@ const WireJoint: React.FC<WireJointProps> = ({ jointId }) => {
       const modifiers = getModifiers(e);
       dispatch(fieldDragEnd(p, modifiers));
     },
-    [getMouseCoords]
+    [dispatch, getMouseCoords]
   );
 
   const onClick = React.useCallback(
@@ -68,7 +68,7 @@ const WireJoint: React.FC<WireJointProps> = ({ jointId }) => {
       const mode = getSelectMode(modifiers);
       dispatch(selectWireJoints(jointId, mode));
     },
-    [jointId]
+    [dispatch, jointId]
   );
 
   const { startTracking: startMoveJointTracking } = useMouseTracking({

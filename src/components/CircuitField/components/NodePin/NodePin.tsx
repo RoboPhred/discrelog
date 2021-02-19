@@ -43,7 +43,7 @@ const NodePin: React.FC<NodePinProps> = ({ nodeId, pinId }) => {
       const p = getMouseCoords(e);
       dispatch(fieldDragStartWire(p, { nodeId, pinId }));
     },
-    [getMouseCoords, nodeId, pinId]
+    [dispatch, getMouseCoords, nodeId, pinId]
   );
 
   const onDragMove = React.useCallback(
@@ -52,7 +52,7 @@ const NodePin: React.FC<NodePinProps> = ({ nodeId, pinId }) => {
       const modifierKeys = getModifiers(e);
       dispatch(fieldDragContinue(p, modifierKeys));
     },
-    [getMouseCoords]
+    [dispatch, getMouseCoords]
   );
 
   const onDragEnd = React.useCallback(
@@ -61,7 +61,7 @@ const NodePin: React.FC<NodePinProps> = ({ nodeId, pinId }) => {
       const modifiers = getModifiers(e);
       dispatch(fieldDragEnd(p, modifiers));
     },
-    [getMouseCoords]
+    [dispatch, getMouseCoords]
   );
 
   const { startTracking } = useMouseTracking({
@@ -70,20 +70,23 @@ const NodePin: React.FC<NodePinProps> = ({ nodeId, pinId }) => {
     onDragEnd,
   });
 
-  const onMouseDown = React.useCallback((e: React.MouseEvent) => {
-    if (e.button !== 0) {
-      return;
-    }
+  const onMouseDown = React.useCallback(
+    (e: React.MouseEvent) => {
+      if (e.button !== 0) {
+        return;
+      }
 
-    if (e.defaultPrevented) {
-      return;
-    }
-    e.preventDefault();
+      if (e.defaultPrevented) {
+        return;
+      }
+      e.preventDefault();
 
-    e.stopPropagation();
+      e.stopPropagation();
 
-    startTracking(e);
-  }, []);
+      startTracking(e);
+    },
+    [startTracking]
+  );
 
   if (!position) {
     return null;

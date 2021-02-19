@@ -49,17 +49,17 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
       e.preventDefault();
       dispatch(addNode(nodeType));
     },
-    [nodeType]
+    [dispatch, nodeType]
   );
 
   const onDragStart = React.useCallback(() => {
     dispatch(fieldDragStartNewNode(nodeType));
-  }, [nodeType]);
+  }, [dispatch, nodeType]);
 
   const onDragEnd = React.useCallback(() => {
     // We do not know the point from here, and selection mode is irrelevant.
     dispatch(fieldDragEnd({ x: -1, y: -1 }, MODIFIER_KEYS_NONE));
-  }, []);
+  }, [dispatch]);
 
   const { startTracking } = useMouseTracking({
     onClick,
@@ -67,9 +67,12 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
     onDragEnd,
   });
 
-  const onMouseDown = React.useCallback((e: React.MouseEvent) => {
-    startTracking(e);
-  }, []);
+  const onMouseDown = React.useCallback(
+    (e: React.MouseEvent) => {
+      startTracking(e);
+    },
+    [startTracking]
+  );
 
   const def = useSelector((state) =>
     nodeDefinitionFromTypeSelector(state, nodeType)

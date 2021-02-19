@@ -38,7 +38,7 @@ const DragNewNodeLayer: React.FC = () => {
       const modifierKeys = getModifiers(e);
       dispatch(fieldDragContinue(p, modifierKeys));
     },
-    [getMouseCoords]
+    [getMouseCoords, dispatch]
   );
 
   if (!isDraggingNewNode || !draggingNodeType) {

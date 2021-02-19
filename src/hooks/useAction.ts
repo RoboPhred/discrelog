@@ -22,6 +22,7 @@ export function useAction(
         dispatch(action);
       }
     },
-    [actionCreator, ...preBind]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [dispatch, actionCreator, ...preBind]
   ) as any;
 }
