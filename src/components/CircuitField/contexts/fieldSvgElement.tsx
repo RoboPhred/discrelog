@@ -1,13 +1,26 @@
 import * as React from "react";
 
+export interface FieldSvgElementContext {
+  svgRef: React.RefObject<SVGSVGElement | null>;
+  scalerRef: React.RefObject<SVGGraphicsElement | null>;
+}
+const nullRef = { current: null };
 export const fieldSvgElementContext = React.createContext<
-  React.RefObject<SVGSVGElement | null>
->({ current: null });
+  FieldSvgElementContext
+>({ svgRef: nullRef, scalerRef: nullRef });
 
 const ContextProvider = fieldSvgElementContext.Provider;
 
 export const FieldSvgElementProvider: React.FC<{
-  value: React.RefObject<SVGSVGElement | null>;
-}> = ({ value, children }) => {
-  return <ContextProvider value={value}>{children}</ContextProvider>;
+  svgRef: React.RefObject<SVGSVGElement | null>;
+  scalerRef: React.RefObject<SVGGraphicsElement | null>;
+}> = ({ svgRef, scalerRef, children }) => {
+  const context = React.useMemo(
+    () => ({
+      svgRef,
+      scalerRef,
+    }),
+    [svgRef, scalerRef]
+  );
+  return <ContextProvider value={context}>{children}</ContextProvider>;
 };

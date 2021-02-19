@@ -6,15 +6,22 @@ import { viewScaleSelector } from "@/services/circuit-editor-ui/selectors/view";
 const GridBackground: React.FC = () => {
   const scale = useSelector(viewScaleSelector);
 
+  const gridSize = 50 * scale;
+
   return (
     <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+        <pattern
+          id="grid"
+          width={gridSize}
+          height={gridSize}
+          patternUnits="userSpaceOnUse"
+        >
           <path
-            d="M 50 0 L 0 0 0 50"
+            d={`M ${gridSize} 0 L 0 0 0 ${gridSize}`}
             fill="none"
             stroke="gray"
-            strokeWidth={0.5 * (1 / scale)}
+            strokeWidth={0.5}
           />
         </pattern>
       </defs>

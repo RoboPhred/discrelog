@@ -1,7 +1,11 @@
 import { Point } from "@/geometry";
 
-export function getFieldCoord(field: SVGSVGElement, p: Point) {
-  const ctm = field.getScreenCTM();
+export function getFieldCoord(
+  field: SVGSVGElement,
+  scaler: SVGGraphicsElement,
+  p: Point
+) {
+  const ctm = scaler.getScreenCTM();
   if (!ctm) {
     return p;
   }

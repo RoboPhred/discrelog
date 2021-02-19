@@ -1,17 +1,4 @@
 .circuit-field-view {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.circuit-field-content {
-  flex: 1 1 auto;
-  overflow: auto;
-  position: relative;
-}
-
-.circuit-field-zoom-container {
-  position: absolute;
-  transform-origin: 0 0;
 }

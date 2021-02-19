@@ -7,6 +7,7 @@ import { getModifiers } from "@/modifier-keys";
 import useMouseTracking from "@/hooks/useMouseTracking";
 
 import { selectionRectSelector } from "@/services/circuit-editor-ui/selectors/drag";
+import { viewScaleSelector } from "@/services/circuit-editor-ui/selectors/view";
 
 import { clearSelection } from "@/actions/select-clear";
 import { fieldDragStartSelect } from "@/actions/field-drag-start-select";
@@ -18,6 +19,11 @@ import { useEventMouseCoords } from "../hooks/useMouseCoords";
 const DragSelectLayer: React.FC = () => {
   const dispatch = useDispatch();
   const selectionRect = useSelector(selectionRectSelector);
+
+  const scale = useSelector(viewScaleSelector);
+  function counterScale(value: number) {
+    return value * (1 / scale);
+  }
 
   const getCoords = useEventMouseCoords();
 
@@ -92,8 +98,8 @@ const DragSelectLayer: React.FC = () => {
           <rect
             width={selectionRect.p2.x - selectionRect.p1.x}
             height={selectionRect.p2.y - selectionRect.p1.y}
-            strokeWidth="2"
-            strokeDasharray="5 3"
+            strokeWidth={counterScale(2)}
+            strokeDasharray={`${counterScale(5)} ${counterScale(3)}`}
             stroke="skyblue"
             fill="transparent"
           />
