@@ -2,9 +2,9 @@ import { priorityBefore, reducerPriority } from "@/store/priorities";
 
 import { isDeleteNodeAction } from "@/actions/node-delete";
 
-import { createNodeLayoutReducer } from "../utils";
-
 import nodeGraphNodeDeleteReducer from "@/services/node-graph/reducer/node-delete";
+
+import { createNodeLayoutReducer } from "../utils";
 
 import nodeDeleteOperation from "./operations/node-delete";
 
