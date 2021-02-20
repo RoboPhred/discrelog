@@ -10,6 +10,7 @@ import nodeLayoutReducer from "./node-layout/reducer";
 import savedataReducer from "./savedata/reducer";
 import selectionReducer from "./selection/reducer";
 import simulatorReducer from "./simulator/reducer";
+import simulatorControlReducer from "./simulator-control/reducers";
 import simulatorGraphReducer from "./simulator-graph/reducer";
 
 const reducer = concatReducers(
@@ -23,6 +24,7 @@ const reducer = concatReducers(
   savedataReducer,
   selectionReducer,
   simulatorReducer,
+  simulatorControlReducer,
   simulatorGraphReducer
 );
 

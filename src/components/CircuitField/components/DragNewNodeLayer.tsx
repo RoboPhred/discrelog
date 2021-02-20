@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 
-import { calcSize } from "@/geometry";
 import { getModifiers } from "@/modifier-keys";
 
 import useSelector from "@/hooks/useSelector";
@@ -12,8 +11,6 @@ import {
   dragEndSelector,
 } from "@/services/circuit-editor-ui/selectors/drag";
 
-import { fieldRectSelector } from "@/services/node-layout/selectors/field";
-
 import { fieldDragContinue } from "@/actions/field-drag-continue";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
@@ -23,8 +20,6 @@ import NodeVisual from "./NodeVisual";
 const DragNewNodeLayer: React.FC = () => {
   const dispatch = useDispatch();
   const getMouseCoords = useEventMouseCoords();
-  const fieldRect = useSelector(fieldRectSelector);
-  const { width, height } = calcSize(fieldRect);
   const isDraggingNewNode = useSelector(isDraggingNewNodeSelector);
   // FIXME: Apply snap if ctrl-meta not held
   const dragEnd = useSelector(dragEndSelector);
@@ -58,8 +53,8 @@ const DragNewNodeLayer: React.FC = () => {
         </g>
       )}
       <rect
-        width={width}
-        height={height}
+        width="100%"
+        height="100%"
         fill="transparent"
         onMouseMove={onMouseMove}
       />

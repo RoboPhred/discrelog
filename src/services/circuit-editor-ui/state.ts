@@ -6,16 +6,6 @@ import { ROOT_CIRCUIT_ID } from "../circuits/constants";
 
 export interface CircuitEditorUiServiceState {
   /**
-   * The id of the circuit currently being edited.
-   */
-  editingCircuitId: string;
-
-  /**
-   * The scaling for rendering the circuit in the UI.
-   */
-  viewScale: number;
-
-  /**
    * The current drag operation being performed by the ui.
    */
   dragMode: "move" | "select" | "new-node" | "new-joint" | "wire" | null;
@@ -58,8 +48,6 @@ export interface CircuitEditorUiServiceState {
 }
 
 const _defaultState: CircuitEditorUiServiceState = {
-  editingCircuitId: ROOT_CIRCUIT_ID,
-  viewScale: 1,
   dragMode: null,
   dragModifierKeys: null,
   dragStart: null,
