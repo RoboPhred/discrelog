@@ -29,10 +29,12 @@ function renderWindow(window: TesselWindowItem): React.ReactElement | null {
 const CircuitEditor: React.FC<CircuitEditorProps> = ({ className }) => {
   const [tesselItems, setTesselItems] = React.useState<TesselValue>({
     direction: "row",
-    divisionPercent: 25,
+    division: {
+      firstSize: 200,
+    },
     first: {
       direction: "column",
-      divisionPercent: 30,
+      division: 30,
       first: "circuits-list",
       second: "node-tray",
     },

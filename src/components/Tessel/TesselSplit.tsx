@@ -10,7 +10,7 @@ import styles from "./Tessel.module.css";
 
 export interface TesselSplitProps {
   direction: TesselDirection;
-  onChangePercentage(percent: number): void;
+  onChangePercentage(percent: number, position: number): void;
 }
 
 const ZeroRect: DOMRect = Object.freeze({
@@ -49,20 +49,30 @@ const TesselSplit: React.FC<TesselSplitProps> = ({
             ref.current.parentElement?.getBoundingClientRect() ?? ZeroRect;
 
           let percentage = 0;
+          let position = 0;
           if (directionRef.current === "row") {
-            percentage = (e.pageX - parentRect.left) / parentRect.width;
+            position = e.pageX - parentRect.left;
+            percentage = position / parentRect.width;
+            if (isNaN(percentage)) {
+              percentage = 0;
+              position = parentRect.left;
+            } else if (percentage > 1) {
+              percentage = 1;
+              position = parentRect.right;
+            }
           } else {
-            percentage = (e.pageY - parentRect.top) / parentRect.height;
+            position = e.pageY - parentRect.top;
+            percentage = position / parentRect.height;
+            if (isNaN(percentage)) {
+              percentage = 0;
+              position = parentRect.top;
+            } else if (percentage > 1) {
+              percentage = 1;
+              position = parentRect.bottom;
+            }
           }
 
-          const onChangePercentage = onChangePercentageRef.current!;
-          if (isNaN(percentage)) {
-            onChangePercentage(0);
-          } else if (percentage > 1) {
-            onChangePercentage(100);
-          } else {
-            onChangePercentage(percentage * 100);
-          }
+          onChangePercentageRef.current!(percentage * 100, position);
         },
         1000 / 60,
         { leading: true }

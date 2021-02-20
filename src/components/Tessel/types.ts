@@ -11,11 +11,21 @@ export interface TesselWindowItem {
 
 export type TesselDirection = "row" | "column";
 
+export interface TesselPercentDivision {
+  firstPercent: number;
+}
+export interface TesselFixedDivision {
+  firstSize?: number;
+  secondSize?: number;
+}
+export type TesselDivision = TesselPercentDivision | TesselFixedDivision;
+export type TesselDivisionValue = number | TesselDivision;
+
 export interface TesselSplitItem {
   first: TesselValue;
   second: TesselValue;
   direction: TesselDirection;
-  divisionPercent: number;
+  division: TesselDivisionValue;
 }
 
 export type TesselItem = TesselWindowItem | TesselSplitItem;
@@ -37,4 +47,28 @@ export function isTesselWindow(item: TesselItem): item is TesselWindowItem {
 
 export function isTesselSplit(item: TesselItem): item is TesselSplitItem {
   return has(item, "first") && has(item, "second") && has(item, "direction");
+}
+
+export function normalizeTesselDivision(
+  value: TesselDivisionValue
+): TesselDivision {
+  if (typeof value === "number") {
+    return {
+      firstPercent: value,
+    };
+  }
+
+  return value;
+}
+
+export function isTesselPercentDivision(
+  value: TesselDivision
+): value is TesselPercentDivision {
+  return has(value, "firstPercent");
+}
+
+export function isTesselFixedDivision(
+  value: TesselDivision
+): value is TesselFixedDivision {
+  return has(value, "firstSize") || has(value, "secondSize");
 }

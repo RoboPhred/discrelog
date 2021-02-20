@@ -6,6 +6,10 @@ import sizing from "@/styles/sizing.module.css";
 import flex from "@/styles/flex.module.css";
 
 import {
+  isTesselFixedDivision,
+  isTesselPercentDivision,
+  normalizeTesselDivision,
+  TesselDivision,
   TesselItem,
   TesselSplitItem,
   TesselValue,
@@ -26,14 +30,15 @@ const TesselSplitFrame: React.FC<TesselSplitFrameProps> = ({
   renderWindow,
   onLayoutChange,
 }) => {
-  const { direction, first, second, divisionPercent } = item;
+  const { direction, first, second, division: divisionValue } = item;
   const sizeDirection = direction === "row" ? "width" : "height";
 
   const onChangePercentage = React.useCallback(
-    (percentage: number) => {
+    (percentage: number, absolute: number) => {
+      const division = normalizeTesselDivision(item.division);
       onLayoutChange({
         ...item,
-        divisionPercent: percentage,
+        division: applyDivisionChange(division, percentage, absolute),
       });
     },
     [item, onLayoutChange]
@@ -59,6 +64,29 @@ const TesselSplitFrame: React.FC<TesselSplitFrameProps> = ({
     [item, onLayoutChange]
   );
 
+  const division = normalizeTesselDivision(divisionValue);
+  let firstSize = "50%";
+  let secondSize = "50%";
+  let firstFix = false;
+  let secondFix = false;
+  if (isTesselPercentDivision(division)) {
+    const { firstPercent } = division;
+    firstSize = `${firstPercent}%`;
+    secondSize = `${100 - firstPercent}%`;
+  } else if (isTesselFixedDivision(division)) {
+    const { firstSize: firstSizeDiv, secondSize: secondSizeDiv } = division;
+    // Only support one of firstSize or secondSize
+    if (firstSizeDiv) {
+      firstSize = `${firstSizeDiv}px`;
+      firstFix = true;
+      secondSize = "100%";
+    } else {
+      firstSize = "100%";
+      secondSize = `${secondSizeDiv}px`;
+      secondFix = true;
+    }
+  }
+
   return (
     <div
       className={cls(
@@ -66,7 +94,12 @@ const TesselSplitFrame: React.FC<TesselSplitFrameProps> = ({
         flex[direction === "row" ? "flex-row" : "flex-column"]
       )}
     >
-      <div style={{ [sizeDirection]: `${divisionPercent}%` }}>
+      <div
+        className={cls(
+          firstFix ? flex["flexitem-fix"] : flex["flexitem-shrink"]
+        )}
+        style={{ [sizeDirection]: firstSize }}
+      >
         <TesselFrame
           value={first}
           renderWindow={renderWindow}
@@ -77,7 +110,12 @@ const TesselSplitFrame: React.FC<TesselSplitFrameProps> = ({
         direction={direction}
         onChangePercentage={onChangePercentage}
       />
-      <div style={{ [sizeDirection]: `${100 - divisionPercent}%` }}>
+      <div
+        className={cls(
+          secondFix ? flex["flexitem-fix"] : flex["flexitem-shrink"]
+        )}
+        style={{ [sizeDirection]: secondSize }}
+      >
         <TesselFrame
           value={second}
           renderWindow={renderWindow}
@@ -87,5 +125,29 @@ const TesselSplitFrame: React.FC<TesselSplitFrameProps> = ({
     </div>
   );
 };
+
+function applyDivisionChange(
+  division: TesselDivision,
+  percent: number,
+  absolute: number
+): TesselDivision {
+  if (isTesselPercentDivision(division)) {
+    return {
+      firstPercent: percent,
+    };
+  } else if (isTesselFixedDivision(division)) {
+    if (typeof division.secondSize === "number") {
+      return {
+        secondSize: absolute,
+      };
+    }
+
+    return {
+      firstSize: absolute,
+    };
+  }
+
+  return division;
+}
 
 export default TesselSplitFrame;
