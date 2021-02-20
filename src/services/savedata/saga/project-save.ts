@@ -1,12 +1,9 @@
-import { SagaIterator } from "redux-saga";
 import { call, select, takeEvery } from "redux-saga/effects";
 import { saveAs } from "file-saver";
 
 import { AppState } from "@/store";
 
 import { ACTION_PROJECT_SAVE } from "@/actions/project-save";
-
-import { displayDialogSaga } from "@/services/dialog/api";
 
 import { createSave } from "../utils";
 

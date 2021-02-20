@@ -1,24 +1,30 @@
 .selection-list {
+  margin: 0;
   padding: 0;
   list-style: none;
+  background: var(--color-ui-bg-light);
 }
 
 .selection-list-item {
-  background: white;
-  margin: 0 2px;
+  /* 
+  A vertical margin would be nice here, but that for some reason offsets
+  the parent div by the top margin amount, messing up the layout
+  */
+  background: var(--color-ui-bg-light);
+  box-sizing: border-box;
   cursor: default;
 }
 
 .selection-list-item:hover {
-  background-color: var(--color-ui-bg-hover);
+  background-color: var(--color-ui-bg-light-hover);
 }
 
 .selection-list-item--selected {
-  background-color: var(--color-ui-bg-selected);
+  background-color: var(--color-ui-bg-light-selected);
 }
 
 .selection-list-item--selected:hover {
-  background-color: var(--color-ui-bg-selected-hover);
+  background-color: var(--color-ui-bg-light-selected-hover);
 }
 
 .selection-list-item-content {

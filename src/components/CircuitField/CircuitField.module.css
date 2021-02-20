@@ -1,5 +1,5 @@
 .circuit-field {
-  background: white;
+  background: var(--color-ui-bg-light);
 }
 
 .circuit-field-scrollarea {

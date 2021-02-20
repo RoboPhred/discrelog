@@ -2,25 +2,50 @@ import * as React from "react";
 
 import { cls } from "@/utils";
 
-import flex from "@/styles/flex.module.css";
+import Tessel, { TesselValue, TesselWindowItem } from "@/components/Tessel";
 
 import CircuitFieldWindow from "./windows/CircuitFieldWindow";
 import CircuitsTreeWindow from "./windows/CircuitsTreeWindow";
 import NodeTrayWindow from "./windows/NodeTrayWindow";
 
-import styles from "./CircuitEditor.module.css";
-
 export interface CircuitEditorProps {
   className?: string;
 }
 
+const WindowsById: Record<string, React.ComponentType> = {
+  "node-tray": NodeTrayWindow,
+  "circuit-field": CircuitFieldWindow,
+  "circuits-list": CircuitsTreeWindow,
+};
+
+function renderWindow(window: TesselWindowItem): React.ReactElement | null {
+  const Component = WindowsById[window.windowId];
+  if (!Component) {
+    return null;
+  }
+  return <Component {...window.windowProps} />;
+}
+
 const CircuitEditor: React.FC<CircuitEditorProps> = ({ className }) => {
+  const [tesselItems, setTesselItems] = React.useState<TesselValue>({
+    direction: "row",
+    divisionPercent: 25,
+    first: {
+      direction: "column",
+      divisionPercent: 30,
+      first: "circuits-list",
+      second: "node-tray",
+    },
+    second: "circuit-field",
+  });
+
   return (
-    <div className={cls("circuit-editor", flex["flex-row"], className)}>
-      <NodeTrayWindow className={flex["flexitem-shrink"]} />
-      <CircuitFieldWindow className={styles["circuiteditor-field"]} />
-      <CircuitsTreeWindow className={flex["flexitem-shrink"]} />
-    </div>
+    <Tessel
+      className={cls("circuit-editor", className)}
+      rootItem={tesselItems}
+      onLayoutChange={setTesselItems}
+      renderWindow={renderWindow}
+    />
   );
 };
 

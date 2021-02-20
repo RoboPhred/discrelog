@@ -1,0 +1,23 @@
+.tessel {
+  background: var(--color-ui-bg-dark);
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.tessel-split:hover {
+  background: var(--color-ui-bg-light-selected-hover);
+}
+
+.tessel-split--row {
+  height: 100%;
+  width: 5px;
+  min-width: 5px;
+  cursor: col-resize;
+}
+
+.tessel-split--column {
+  height: 5px;
+  min-height: 5px;
+  width: 100%;
+  cursor: row-resize;
+}

@@ -11,16 +11,18 @@ export interface SelectionListItem {
 }
 
 export interface SelectionListProps {
+  className?: string;
   items: SelectionListItem[];
   onItemSelected(value: string): void;
 }
 
 const SelectionList: React.FC<SelectionListProps> = ({
+  className,
   items,
   onItemSelected,
 }) => {
   return (
-    <ul className={cls("selection-list", styles["selection-list"])}>
+    <ul className={cls("selection-list", styles["selection-list"], className)}>
       {items.map((item) => (
         <SelectionListItemNode
           key={item.value}

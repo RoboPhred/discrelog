@@ -1,5 +1,5 @@
 .menu {
-  background: white;
+  background: var(--color-ui-bg-light);
   border: 1px solid black;
   list-style: none;
   padding: 5px;
@@ -22,7 +22,7 @@
 }
 
 .menu-item:hover {
-  background-color: var(--color-ui-bg-hover);
+  background-color: var(--color-ui-bg-light-hover);
   text-decoration: none;
 }
 

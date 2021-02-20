@@ -5,6 +5,8 @@ import { EditableText } from "@blueprintjs/core";
 
 import { cls } from "@/utils";
 
+import sizing from "@/styles/sizing.module.css";
+
 import useSelector from "@/hooks/useSelector";
 
 import { deleteCircuit } from "@/actions/circuit-delete";
@@ -69,7 +71,11 @@ const CircuitsTreeWindow: React.FC<WindowProps> = ({ className }) => {
       className={cls(styles.circuitstree, className)}
       onContextMenu={onContextMenu}
     >
-      <SelectionList items={listItems} onItemSelected={onCircuitSelected} />
+      <SelectionList
+        className={sizing["fill-parent"]}
+        items={listItems}
+        onItemSelected={onCircuitSelected}
+      />
       {renderContextMenu(<CircuitTreeContextMenu />)}
     </div>
   );

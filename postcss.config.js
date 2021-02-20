@@ -4,7 +4,7 @@ const autoprefixer = require("autoprefixer");
 // Consider using https://github.com/csstools/postcss-preset-env
 module.exports = {
   plugins: [
-    postcssCustomProperties({ importFrom: "src/styles/variables.css" }),
+    postcssCustomProperties({ importFrom: "src/styles/colors.css" }),
     autoprefixer,
   ],
 };
