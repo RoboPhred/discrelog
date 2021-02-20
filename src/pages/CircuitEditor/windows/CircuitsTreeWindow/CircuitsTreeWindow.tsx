@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 
-import { EditableText, Tree, ITreeNode } from "@blueprintjs/core";
+import { EditableText } from "@blueprintjs/core";
 
 import { cls } from "@/utils";
 
@@ -23,6 +23,7 @@ import { useContextMenu } from "@/components/ContextMenu";
 import Menu from "@/components/Menus/Menu";
 import MenuItem from "@/components/Menus/MenuItem";
 import MenuDivider from "@/components/Menus/MenuDivider";
+import SelectionList, { SelectionListItem } from "@/components/SelectionList";
 
 import { WindowProps } from "../window-props";
 
@@ -36,9 +37,9 @@ const CircuitsTreeWindow: React.FC<WindowProps> = ({ className }) => {
 
   const { openContextMenu, renderContextMenu } = useContextMenu();
 
-  const onNodeClick = React.useCallback(
-    (node: ITreeNode) => {
-      dispatch(editCircuit(node.id as string));
+  const onCircuitSelected = React.useCallback(
+    (circuitId: string) => {
+      dispatch(editCircuit(circuitId));
     },
     [dispatch]
   );
@@ -51,11 +52,11 @@ const CircuitsTreeWindow: React.FC<WindowProps> = ({ className }) => {
     [openContextMenu]
   );
 
-  const treeItems: ITreeNode[] = React.useMemo(
+  const listItems: SelectionListItem[] = React.useMemo(
     () =>
       Object.keys(circuitNamesById).map((circuitId) => {
         return {
-          id: circuitId,
+          value: circuitId,
           label: <CircuitTreeNodeCircuitLabel circuitId={circuitId} />,
           isSelected: circuitId === editingCircuitId,
         };
@@ -68,7 +69,7 @@ const CircuitsTreeWindow: React.FC<WindowProps> = ({ className }) => {
       className={cls(styles.circuitstree, className)}
       onContextMenu={onContextMenu}
     >
-      <Tree contents={treeItems} onNodeClick={onNodeClick} />
+      <SelectionList items={listItems} onItemSelected={onCircuitSelected} />
       {renderContextMenu(<CircuitTreeContextMenu />)}
     </div>
   );

@@ -9,9 +9,3 @@
   box-sizing: border-box;
   position: relative;
 }
-
-.circuit-field-svg {
-  position: absolute;
-  top: 0;
-  left: 0;
-}

@@ -10,9 +10,6 @@ export default createCircuitEditorViewReducer((state, action, appState) => {
 
   const { circuitId } = action.payload;
 
-  // Click of "Delete Circuit" menu item is making its way back
-  // to the item in the circuit list, triggering an edit action.
-  // Should be fixed in UI, but blocking it here for now.
   if (circuitIdsSelector(appState).indexOf(circuitId) === -1) {
     return state;
   }

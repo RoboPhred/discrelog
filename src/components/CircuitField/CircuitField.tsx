@@ -64,11 +64,14 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
     dispatch(fieldMouseLeave());
   }, [dispatch]);
 
-  const onContextMenu = React.useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    openContextMenu(e);
-  }, []);
+  const onContextMenu = React.useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openContextMenu(e);
+    },
+    [openContextMenu]
+  );
 
   const onWheel = React.useCallback(
     (e: WheelEvent) => {

@@ -1,0 +1,26 @@
+.selection-list {
+  padding: 0;
+  list-style: none;
+}
+
+.selection-list-item {
+  background: white;
+  margin: 0 2px;
+  cursor: default;
+}
+
+.selection-list-item:hover {
+  background-color: rgb(218, 218, 218);
+}
+
+.selection-list-item--selected {
+  background-color: rgb(209, 224, 255);
+}
+
+.selection-list-item--selected:hover {
+  background-color: rgb(179, 194, 225);
+}
+
+.selection-list-item-content {
+  padding: 6px 10px;
+}
