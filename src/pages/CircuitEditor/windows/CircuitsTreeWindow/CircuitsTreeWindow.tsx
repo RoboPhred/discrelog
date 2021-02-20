@@ -1,8 +1,6 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 
-import { EditableText } from "@blueprintjs/core";
-
 import { cls } from "@/utils";
 
 import sizing from "@/styles/sizing.module.css";
@@ -26,6 +24,7 @@ import Menu from "@/components/Menus/Menu";
 import MenuItem from "@/components/Menus/MenuItem";
 import MenuDivider from "@/components/Menus/MenuDivider";
 import SelectionList, { SelectionListItem } from "@/components/SelectionList";
+import EditableText from "@/components/EditableText";
 
 import { WindowProps } from "../window-props";
 
@@ -98,10 +97,20 @@ const CircuitTreeNodeCircuitLabel: React.FC<CircuitTreeNodeLabelProps> = ({
 
   const { openContextMenu, renderContextMenu } = useContextMenu();
 
-  const onStartRename = React.useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsRenaming(true);
-  }, []);
+  const onStartRename = React.useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      // We totally support renaming the root, but the root is special
+      // in that its the driving circuit.  If the user looses track of it,
+      // that's a bad thing.
+      // We need some icon or something on the root list item.
+      if (circuitId === ROOT_CIRCUIT_ID) {
+        return;
+      }
+      setIsRenaming(true);
+    },
+    [circuitId]
+  );
 
   const onCancelRename = React.useCallback(() => {
     setIsRenaming(false);

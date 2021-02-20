@@ -2,7 +2,6 @@ import { Point } from "@/geometry";
 import { ModifierKeys } from "@/modifier-keys";
 
 import { NodePin } from "../node-graph/types";
-import { ROOT_CIRCUIT_ID } from "../circuits/constants";
 
 export interface CircuitEditorUiServiceState {
   /**

@@ -30,7 +30,7 @@ const AutoPopover: React.FC<AutoPopoverProps> = ({
       </div>
       <Popover
         anchorEl={anchorEl.current}
-        open={open}
+        isOpen={open}
         placement={placement}
         onRequestClose={onClose}
       >

@@ -8,12 +8,12 @@ import { useOutsideEvent } from "@/hooks/useOutsideEvent";
 export interface PopoverProps {
   anchorEl: Element | VirtualElement | null;
   placement?: Options["placement"];
-  open: boolean;
+  isOpen: boolean;
   onRequestClose(): void;
 }
 
 const Popover: React.FC<PopoverProps> = ({
-  open,
+  isOpen,
   anchorEl,
   placement = "auto",
   onRequestClose,
@@ -22,15 +22,19 @@ const Popover: React.FC<PopoverProps> = ({
   const [popoverRef, setPopoverRef] = React.useState<HTMLDivElement | null>(
     null
   );
-  const { attributes, styles } = usePopper(open ? anchorEl : null, popoverRef, {
-    placement,
-  });
+  const { attributes, styles } = usePopper(
+    isOpen ? anchorEl : null,
+    popoverRef,
+    {
+      placement,
+    }
+  );
 
   // Originally used FocusOn here, but that consumes the click.
   //  We want outside clicks to still function.
   useOutsideEvent(popoverRef, onRequestClose);
 
-  if (!open) {
+  if (!isOpen) {
     return null;
   }
 

@@ -40,7 +40,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
   return (
     <MenuCloseContextProvider value={onRequestClose}>
       <Popover
-        open={open}
+        isOpen={open}
         onRequestClose={onRequestClose}
         anchorEl={anchorEl}
         placement="bottom-start"
