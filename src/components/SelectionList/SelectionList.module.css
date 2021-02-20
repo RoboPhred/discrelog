@@ -10,15 +10,15 @@
 }
 
 .selection-list-item:hover {
-  background-color: rgb(218, 218, 218);
+  background-color: var(--color-ui-bg-hover);
 }
 
 .selection-list-item--selected {
-  background-color: rgb(209, 224, 255);
+  background-color: var(--color-ui-bg-selected);
 }
 
 .selection-list-item--selected:hover {
-  background-color: rgb(179, 194, 225);
+  background-color: var(--color-ui-bg-selected-hover);
 }
 
 .selection-list-item-content {

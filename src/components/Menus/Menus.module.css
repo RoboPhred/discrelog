@@ -17,12 +17,12 @@
 }
 
 .menu-item--disabled {
-  color: rgb(218, 218, 218);
+  color: var(--color-ui-text-disabled);
   cursor: not-allowed;
 }
 
 .menu-item:hover {
-  background-color: rgb(218, 218, 218);
+  background-color: var(--color-ui-bg-hover);
   text-decoration: none;
 }
 

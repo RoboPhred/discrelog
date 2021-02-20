@@ -1,6 +1,22 @@
+interface ShowSaveFilePickerOpts {
+  types: {
+    description: string;
+    accept: Record<string, string[]>;
+  }[];
+}
+interface FileHandle {
+  createWritable(): Promise<FileSystemWritableStream>;
+}
+
+interface FileSystemWritableStream {
+  write(contents: any): Promise<void>;
+  close(): Promise<void>;
+}
+
 interface Window {
   __REDUX_DEVTOOLS_EXTENSION__?(): any;
   __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: (...args: any[]) => any;
+  showSaveFilePicker?(opts: ShowSaveFilePickerOpts): Promise<FileHandle>;
 }
 
 declare type HotkeyHandler = (keyEvent?: KeyboardEvent) => void;

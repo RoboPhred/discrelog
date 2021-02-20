@@ -8,14 +8,7 @@ export interface EmptyDialogServiceState extends DialogServiceBaseState {
   data: null;
 }
 
-export interface SaveFileDialogServiceState extends DialogServiceBaseState {
-  dialogType: "save-project";
-  data: null;
-}
-
-export type DialogServiceState =
-  | EmptyDialogServiceState
-  | SaveFileDialogServiceState;
+export type DialogServiceState = EmptyDialogServiceState;
 export type DialogType = DialogServiceState["dialogType"];
 
 const _defaultState: EmptyDialogServiceState = {

@@ -1,3 +1,4 @@
+import { SagaIterator } from "redux-saga";
 import { call, select, takeEvery } from "redux-saga/effects";
 import { saveAs } from "file-saver";
 
@@ -16,24 +17,49 @@ export default function* projectSaveSaga() {
 function* saveProject() {
   const state: AppState = yield select();
 
-  const fileName: string | null = yield call(
-    displayDialogSaga,
-    "save-project",
-    null
-  );
-  if (!fileName) {
+  try {
+    if (window.showSaveFilePicker) {
+      yield call(saveNativeFileApi, state);
+    } else {
+      yield call(saveLegacy, state);
+    }
+  } catch (e) {
+    // TODO: Report error
+    console.warn("Failed to save project", e);
+  }
+}
+
+function* saveNativeFileApi(state: AppState) {
+  const fileHandle: FileHandle | null = yield call(window.showSaveFilePicker!, {
+    types: [
+      {
+        description: "Discrelog Project Files",
+        accept: {
+          "application/json": [".json"],
+        },
+      },
+    ],
+  });
+
+  if (!fileHandle) {
     return;
   }
 
-  try {
-    const save = createSave(state);
-    const blob = new Blob([JSON.stringify(save, null, 2)], {
-      type: "application/json;charset=utf-8",
-    });
+  const save = createSave(state);
 
-    saveAs(blob, fileName);
-  } catch (e) {
-    // TODO: Handle error
-    console.warn("Failed to save project:", e);
-  }
+  const writable: FileSystemWritableStream = yield call(
+    fileHandle.createWritable.bind(fileHandle)
+  );
+  yield call(writable.write.bind(writable), JSON.stringify(save, null, 2));
+  yield call(writable.close.bind(writable));
+}
+
+function* saveLegacy(state: AppState) {
+  const save = createSave(state);
+  const blob = new Blob([JSON.stringify(save, null, 2)], {
+    type: "application/json;charset=utf-8",
+  });
+
+  // TODO: Show dialog to get desired name.
+  saveAs(blob, "discrelog-project.json");
 }
