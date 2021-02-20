@@ -1,14 +1,14 @@
-import { isEditCircuitAction } from "@/actions/circuit-edit";
+import { isViewCircuitAction } from "@/actions/circuit-view";
 import { circuitIdsSelector } from "@/services/circuits/selectors/circuits";
 
 import { createCircuitEditorViewReducer } from "../utils";
 
 export default createCircuitEditorViewReducer((state, action, appState) => {
-  if (!isEditCircuitAction(action)) {
+  if (!isViewCircuitAction(action)) {
     return state;
   }
 
-  const { circuitId } = action.payload;
+  const { circuitId, circuitNodeIdPath } = action.payload;
 
   if (circuitIdsSelector(appState).indexOf(circuitId) === -1) {
     return state;
@@ -17,5 +17,6 @@ export default createCircuitEditorViewReducer((state, action, appState) => {
   return {
     ...state,
     editingCircuitId: circuitId,
+    editingCircuitNodeIdPath: circuitNodeIdPath,
   };
 });

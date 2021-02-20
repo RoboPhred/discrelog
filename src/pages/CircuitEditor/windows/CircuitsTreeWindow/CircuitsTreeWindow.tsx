@@ -8,7 +8,7 @@ import sizing from "@/styles/sizing.module.css";
 import useSelector from "@/hooks/useSelector";
 
 import { deleteCircuit } from "@/actions/circuit-delete";
-import { editCircuit } from "@/actions/circuit-edit";
+import { viewCircuit } from "@/actions/circuit-view";
 import { addCircuit } from "@/actions/circuit-add";
 import { renameCircuit } from "@/actions/circuit-rename";
 
@@ -40,7 +40,7 @@ const CircuitsTreeWindow: React.FC<WindowProps> = ({ className }) => {
 
   const onCircuitSelected = React.useCallback(
     (circuitId: string) => {
-      dispatch(editCircuit(circuitId));
+      dispatch(viewCircuit(circuitId));
     },
     [dispatch]
   );

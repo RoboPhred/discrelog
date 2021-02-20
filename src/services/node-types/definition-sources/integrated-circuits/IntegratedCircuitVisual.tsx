@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useDispatch } from "react-redux";
 
 import { Point } from "@/geometry";
 import { PinDirection } from "@/logic";
@@ -7,7 +8,9 @@ import useSelector from "@/hooks/useSelector";
 
 import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
 
-import { NodeVisualDefinition } from "../../types";
+import { NodeComponentProps, NodeVisualDefinition } from "../../types";
+import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-view/selectors/circuit";
+import { viewCircuit } from "@/actions/circuit-view";
 
 export interface IntegratedCircuitVisualProps {
   circuitId: string;
@@ -20,15 +23,32 @@ function getBorderPath(inputPinCount: number, outputPinCount: number) {
   return `M10,10 h80 v${height} h-80 z`;
 }
 
-const IntegratedCircuitVisual: React.FC<IntegratedCircuitVisualProps> = ({
-  circuitId,
-  inputPinCount,
-  outputPinCount,
-}) => {
+const IntegratedCircuitVisual: React.FC<
+  IntegratedCircuitVisualProps & NodeComponentProps
+> = ({ circuitNodeId, circuitId, inputPinCount, outputPinCount }) => {
+  const dispatch = useDispatch();
   const circuitName = useSelector((state) =>
     circuitNameFromIdSelector(state, circuitId)
   );
   const borderPath = getBorderPath(inputPinCount, outputPinCount);
+
+  const editCircuitIdPath = useSelector(editingCircuitNodeIdPathSelector);
+
+  const onViewCircuit = React.useCallback(
+    (e: React.MouseEvent) => {
+      if (!circuitNodeId) {
+        return;
+      }
+
+      if (e.defaultPrevented) {
+        return;
+      }
+      e.preventDefault();
+
+      dispatch(viewCircuit(circuitId, [...editCircuitIdPath, circuitNodeId]));
+    },
+    [circuitId, circuitNodeId, dispatch, editCircuitIdPath]
+  );
 
   const inputPins: JSX.Element[] = [];
   for (let i = 0; i < inputPinCount; i++) {
@@ -69,8 +89,9 @@ const IntegratedCircuitVisual: React.FC<IntegratedCircuitVisualProps> = ({
       <path
         className="node-select-highlight--stroke"
         stroke="black"
-        fill="none"
+        fill="transparent"
         d={borderPath}
+        onDoubleClick={onViewCircuit}
       />
       <text textAnchor="middle" x={50} y={30}>
         {circuitName}

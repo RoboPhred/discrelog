@@ -4,8 +4,11 @@ import useSelector from "@/hooks/useSelector";
 import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/node-types";
 import { cls } from "@/utils";
 
+// FIXME: This component does a whole lot of nothing.  Remove it.
+
 export interface NodeVisualProps {
   className?: string;
+  circuitNodeId?: string;
   x?: number;
   y?: number;
   nodeType: string;
@@ -21,6 +24,7 @@ export interface NodeVisualProps {
 
 const NodeVisual: React.FC<NodeVisualProps> = ({
   className,
+  circuitNodeId,
   x = 0,
   y = 0,
   nodeType,
@@ -52,7 +56,11 @@ const NodeVisual: React.FC<NodeVisualProps> = ({
   } else {
     const { component: ElementComponent } = def.visual;
     body = (
-      <ElementComponent isSelected={isSelected} elementState={nodeState} />
+      <ElementComponent
+        circuitNodeId={circuitNodeId}
+        isSelected={isSelected}
+        elementState={nodeState}
+      />
     );
     hitPath = def.visual.hitPath;
   }

@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { Point, ZeroPoint } from "@/geometry";
 import { getModifiers } from "@/modifier-keys";
+import { getSelectMode } from "@/selection-mode";
 
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
@@ -12,11 +13,11 @@ import { nodeStateFromCircuitNodeIdSelector } from "@/services/simulator/selecto
 import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
 import { nodePositionFromNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
+import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-view/selectors/circuit";
 
 import { fieldDragStartNode } from "@/actions/field-drag-start-node";
 import { fieldDragContinue } from "@/actions/field-drag-continue";
 import { fieldDragEnd } from "@/actions/field-drag-end";
-import { interactNode } from "@/actions/node-interact";
 import { selectNodes } from "@/actions/select-nodes";
 
 import NodeVisual from "../NodeVisual";
@@ -24,7 +25,6 @@ import NodeVisual from "../NodeVisual";
 import { useEventMouseCoords } from "../../hooks/useMouseCoords";
 
 import "./Node.module.css";
-import { getSelectMode } from "@/selection-mode";
 
 export interface NodeProps {
   nodeId: string;
@@ -34,6 +34,7 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
   const dispatch = useDispatch();
 
   const isSimActive = useSelector(isSimActiveSelector);
+  const editCircuitIdPath = useSelector(editingCircuitNodeIdPathSelector);
 
   const pos = useSelector((s) => nodePositionFromNodeIdSelector(s, nodeId));
   if (!pos) {
@@ -45,7 +46,7 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
 
   const nodeType = useSelector((s) => nodeTypeFromNodeIdSelector(s, nodeId));
   const nodeState = useSelector((s) =>
-    nodeStateFromCircuitNodeIdSelector(s, [nodeId])
+    nodeStateFromCircuitNodeIdSelector(s, [...editCircuitIdPath, nodeId])
   );
   const isSelected = useSelector((s) =>
     isNodeSelectedFromNodeIdSelector(s, nodeId)
@@ -55,17 +56,23 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
 
   const onClick = React.useCallback(
     (e: MouseEvent) => {
+      if (isSimActive) {
+        return;
+      }
+
+      if (e.defaultPrevented) {
+        return;
+      }
+
       if (e.button !== 0) {
         return;
       }
 
-      if (isSimActive) {
-        dispatch(interactNode([nodeId]));
-      } else {
-        const modifiers = getModifiers(e);
-        const selectionMode = getSelectMode(modifiers);
-        dispatch(selectNodes(nodeId, selectionMode));
-      }
+      e.preventDefault();
+
+      const modifiers = getModifiers(e);
+      const selectionMode = getSelectMode(modifiers);
+      dispatch(selectNodes(nodeId, selectionMode));
     },
     [dispatch, isSimActive, nodeId]
   );
@@ -135,6 +142,7 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
   return (
     <NodeVisual
       className="circuit-field-node"
+      circuitNodeId={nodeId}
       x={x}
       y={y}
       nodeType={nodeType}

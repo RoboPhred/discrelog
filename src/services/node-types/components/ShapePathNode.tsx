@@ -1,4 +1,11 @@
 import * as React from "react";
+import { useDispatch } from "react-redux";
+
+import useSelector from "@/hooks/useSelector";
+
+import { interactNode } from "@/actions/node-interact";
+
+import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-view/selectors/circuit";
 
 import { NodeComponentProps, NodeComponentType } from "../types";
 
@@ -25,10 +32,31 @@ export interface ShapePathNodeProps extends NodeComponentProps {
 }
 
 const ShapePathNode: React.FC<ShapePathNodeProps> = ({
+  circuitNodeId,
   shapePath,
   isSelected,
   elementState,
 }) => {
+  const dispatch = useDispatch();
+  const editCircuitIdPath = useSelector(editingCircuitNodeIdPathSelector);
+
+  const onClick = React.useCallback(
+    (e: React.MouseEvent) => {
+      if (!circuitNodeId) {
+        return;
+      }
+
+      if (e.defaultPrevented) {
+        return;
+      }
+
+      e.preventDefault();
+
+      dispatch(interactNode([...editCircuitIdPath, circuitNodeId]));
+    },
+    [circuitNodeId, dispatch, editCircuitIdPath]
+  );
+
   const visuals = normalizeVisuals(shapePath, elementState);
   const body = visuals.map((v, i) => (
     <path
@@ -41,7 +69,7 @@ const ShapePathNode: React.FC<ShapePathNodeProps> = ({
     />
   ));
 
-  return <g>{body}</g>;
+  return <g onClick={onClick}>{body}</g>;
 };
 
 export function createShapePathNode(
