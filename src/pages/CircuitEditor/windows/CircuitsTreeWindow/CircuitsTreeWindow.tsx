@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
-import { MosaicWindow } from "react-mosaic-component";
 
 import { EditableText, MenuDivider } from "@blueprintjs/core";
 
@@ -12,6 +11,8 @@ import {
   MenuItem,
   ContextMenu,
 } from "@blueprintjs/core";
+
+import { cls } from "@/utils";
 
 import useSelector from "@/hooks/useSelector";
 
@@ -32,7 +33,7 @@ import { WindowProps } from "../window-props";
 
 import styles from "./CircuitsTreeWindow.module.css";
 
-const CircuitsTreeWindow: React.FC<WindowProps> = ({ path }) => {
+const CircuitsTreeWindow: React.FC<WindowProps> = ({ className }) => {
   const dispatch = useDispatch();
   const editingCircuitId = useSelector(editingCircuitIdSelector);
   const circuitNamesById = useSelector(circuitNamesByIdSelector);
@@ -69,11 +70,12 @@ const CircuitsTreeWindow: React.FC<WindowProps> = ({ path }) => {
   );
 
   return (
-    <MosaicWindow path={path} title="Circuits">
-      <div className={styles.circuitstree} onContextMenu={onContextMenu}>
-        <Tree contents={treeItems} onNodeClick={onNodeClick} />
-      </div>
-    </MosaicWindow>
+    <div
+      className={cls(styles.circuitstree, className)}
+      onContextMenu={onContextMenu}
+    >
+      <Tree contents={treeItems} onNodeClick={onNodeClick} />
+    </div>
   );
 };
 

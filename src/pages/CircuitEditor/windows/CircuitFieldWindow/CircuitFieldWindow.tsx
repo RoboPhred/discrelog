@@ -2,13 +2,10 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { HotKeys } from "react-hotkeys";
 import { AnyAction } from "redux";
-import { MosaicWindow } from "react-mosaic-component";
 
 import { cls } from "@/utils";
 
 import sizing from "@/styles/sizing.module.css";
-
-import useSelector from "@/hooks/useSelector";
 
 import { tickSim } from "@/actions/sim-tick";
 import { fastForwardSim } from "@/actions/sim-fastforward";
@@ -18,8 +15,6 @@ import { deleteSelection } from "@/actions/selection-delete";
 import { selectAll } from "@/actions/select-all";
 import { undo } from "@/actions/undo";
 import { redo } from "@/actions/redo";
-
-import { editingCircuitNameSelector } from "@/services/circuit-editor-view/selectors/circuit";
 
 import CircuitField from "@/components/CircuitField";
 
@@ -39,9 +34,8 @@ import { WindowProps } from "../window-props";
 
 import styles from "./CircuitFieldWindow.module.css";
 
-const CircuitFieldWindow: React.FC<WindowProps> = ({ path }) => {
+const CircuitFieldWindow: React.FC<WindowProps> = ({ className }) => {
   const dispatch = useDispatch();
-  const circuitName = useSelector(editingCircuitNameSelector);
 
   const keyHandlers = React.useMemo(() => {
     function createEventDispatcher(action: AnyAction): HotkeyHandler {
@@ -69,13 +63,17 @@ const CircuitFieldWindow: React.FC<WindowProps> = ({ path }) => {
   }, [dispatch]);
 
   return (
-    <MosaicWindow path={path} title={`${circuitName} [Circuit]`}>
-      <div className={cls("circuit-field-view", styles["circuit-field-view"])}>
-        <HotKeys keyMap={keymap} handlers={keyHandlers} component={FillParent}>
-          <CircuitField className={sizing["fill-parent"]} />
-        </HotKeys>
-      </div>
-    </MosaicWindow>
+    <div
+      className={cls(
+        "circuit-field-view",
+        styles["circuit-field-view"],
+        className
+      )}
+    >
+      <HotKeys keyMap={keymap} handlers={keyHandlers} component={FillParent}>
+        <CircuitField className={sizing["fill-parent"]} />
+      </HotKeys>
+    </div>
   );
 };
 

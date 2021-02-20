@@ -13,11 +13,11 @@ import DialogManager from "../DialogManager";
 const App: React.FC = () => {
   return (
     <div className={cls(sizing["fill-parent"], flex["flex-column"])}>
-      <DialogManager />
       <TitleBar />
       <CircuitEditor
         className={cls(sizing["fill-parent"], flex["flexitem-shrink"])}
       />
+      <DialogManager />
     </div>
   );
 };

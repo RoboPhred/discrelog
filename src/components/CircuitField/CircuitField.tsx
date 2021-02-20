@@ -1,10 +1,9 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { ContextMenu } from "@blueprintjs/core";
 import useComponentSize from "@rehooks/component-size";
 
 import { cls } from "@/utils";
-import { calcSize } from "@/geometry";
+import { calcSize, Point } from "@/geometry";
 
 import useSelector from "@/hooks/useSelector";
 import { useNativeEvent } from "@/hooks/useNativeEvent";
@@ -14,6 +13,8 @@ import { viewScaleSelector } from "@/services/circuit-editor-view/selectors/view
 
 import { fieldMouseLeave } from "@/actions/field-mouse-leave";
 import { viewZoom } from "@/actions/view-zoom";
+
+import ContextMenu from "@/components/ContextMenu";
 
 import { FieldSvgElementProvider } from "./contexts/fieldSvgElement";
 
@@ -37,12 +38,20 @@ export interface CircuitFieldProps {
 const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
   const dispatch = useDispatch();
 
-  const ref = React.useRef<HTMLDivElement | null>(null);
+  const sizeRef = React.useRef<HTMLDivElement | null>(null);
   const svgRef = React.useRef<SVGSVGElement>(null);
   const scalerRef = React.useRef<SVGGElement>(null);
 
+  const [
+    fieldContextPoint,
+    setFieldContextPoint,
+  ] = React.useState<Point | null>(null);
+  const onCloseContextMenu = React.useCallback(() => {
+    setFieldContextPoint(null);
+  }, []);
+
   const { width: componentWidth, height: componentHeight } = useComponentSize(
-    ref
+    sizeRef
   );
 
   const fieldRect = useSelector(fieldRectSelector);
@@ -61,18 +70,11 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
     dispatch(fieldMouseLeave());
   }, [dispatch]);
 
-  const onContextMenu = React.useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      ContextMenu.show(<FieldContextMenu dispatch={dispatch} />, {
-        left: e.pageX,
-        top: e.pageY,
-      });
-    },
-    [dispatch]
-  );
+  const onContextMenu = React.useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setFieldContextPoint({ x: e.pageX, y: e.pageY });
+  }, []);
 
   const onWheel = React.useCallback(
     (e: WheelEvent) => {
@@ -94,42 +96,54 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
   //  never wants to preventDefault.
   // We need to take a local event listener and mark it as not passive.
   // https://github.com/facebook/react/issues/14856
-  useNativeEvent(ref, "wheel", onWheel, { passive: false });
+  useNativeEvent(sizeRef, "wheel", onWheel, { passive: false });
 
   return (
     // svg seems to have an implicit bottom margin against its parent div.
     //  Wrapping it in a div of the same size fixes it.
-    <div className={cls("circuit-field", styles["circuit-editor"], className)}>
-      <div ref={ref} className={styles["circuit-editor-scrollarea"]}>
-        <svg
-          tabIndex={-1}
-          className={styles["circuit-editor-svg-field"]}
-          ref={svgRef}
-          width={width}
-          height={height}
-          onMouseDown={onMouseDown}
-          onMouseLeave={onMouseLeave}
-          onContextMenu={onContextMenu}
-        >
-          <GridBackground />
-          <g
-            ref={scalerRef}
-            transform-origin="0 0"
-            transform={`scale(${viewScale})`}
+    <div className={cls("circuit-field", styles["circuit-field"], className)}>
+      <div className={styles["circuit-field-scrollarea"]}>
+        <div ref={sizeRef} style={{ width: "100%", height: "100%" }}>
+          <svg
+            tabIndex={-1}
+            className={styles["circuit-editor-svg-field"]}
+            ref={svgRef}
+            width={width}
+            height={height}
+            onMouseDown={onMouseDown}
+            onMouseLeave={onMouseLeave}
+            onContextMenu={onContextMenu}
           >
-            <FieldSvgElementProvider svgRef={svgRef} scalerRef={scalerRef}>
-              <DragSelectLayer />
-              <NodesLayer />
-              <WiresLayer />
-              <NodePinsLayer />
-              <DragAttachWirePreviewLayer />
-              <DragNodePreviewLayer />
-              <DragJointPreviewLayer />
-              <DragNewNodeLayer />
-            </FieldSvgElementProvider>
-          </g>
-        </svg>
+            <GridBackground />
+            <g
+              ref={scalerRef}
+              transform-origin="0 0"
+              transform={`scale(${viewScale})`}
+            >
+              <FieldSvgElementProvider svgRef={svgRef} scalerRef={scalerRef}>
+                <DragSelectLayer />
+                <NodesLayer />
+                <WiresLayer />
+                <NodePinsLayer />
+                <DragAttachWirePreviewLayer />
+                <DragNodePreviewLayer />
+                <DragJointPreviewLayer />
+                <DragNewNodeLayer />
+              </FieldSvgElementProvider>
+            </g>
+          </svg>
+        </div>
       </div>
+      {fieldContextPoint && (
+        <ContextMenu
+          open
+          x={fieldContextPoint.x}
+          y={fieldContextPoint.y}
+          onRequestClose={onCloseContextMenu}
+        >
+          <FieldContextMenu />
+        </ContextMenu>
+      )}
     </div>
   );
 };

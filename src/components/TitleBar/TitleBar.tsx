@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import { Button, Popover } from "@blueprintjs/core";
-
-import EditMenu from "../EditMenu";
+import AutoPopover from "../AutoPopover";
+import Button from "../Button";
 import FileMenu from "../FileMenu";
+import EditMenu from "../EditMenu";
 import SimControls from "../SimControls";
 
 import styles from "./TitleBar.module.css";
@@ -13,12 +13,12 @@ const TitleBar: React.FC = () => {
     <div className={styles.titlebar}>
       <span className={styles["titlebar-heading"]}>Discrelog</span>
       <div className={styles["titlebar-divider"]} />
-      <Popover content={<FileMenu />}>
-        <Button minimal icon="document" text="File" />
-      </Popover>
-      <Popover content={<EditMenu />}>
-        <Button minimal icon="edit" text="Edit" />
-      </Popover>
+      <AutoPopover content={<FileMenu />} placement="bottom-start">
+        <Button>File</Button>
+      </AutoPopover>
+      <AutoPopover content={<EditMenu />} placement="bottom-start">
+        <Button>Edit</Button>
+      </AutoPopover>
 
       <div className={styles["titlebar-controls"]}>
         <SimControls />

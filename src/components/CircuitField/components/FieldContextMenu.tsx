@@ -1,21 +1,16 @@
 import * as React from "react";
-import { AnyAction, Dispatch } from "redux";
+import { useDispatch } from "react-redux";
 
-import { Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import Menu from "@/components/Menus/Menu";
+import MenuItem from "@/components/Menus/MenuItem";
+import MenuDivider from "@/components/Menus/MenuDivider";
 
 import { selectionAlignToGrid } from "@/actions/selection-align-to-grid";
 import { deleteSelection } from "@/actions/selection-delete";
 
-export interface FioeldContextMenuProps {
-  /**
-   * The redux dispatcher.
-   * This component is intended for use in a blueprint context menu, which
-   * does not play nice with react contexts.
-   */
-  dispatch: Dispatch<AnyAction>;
-}
+const FieldContextMenu: React.FC = () => {
+  const dispatch = useDispatch();
 
-const FieldContextMenu: React.FC<FioeldContextMenuProps> = ({ dispatch }) => {
   const onAlignToGrid = React.useCallback(() => {
     dispatch(selectionAlignToGrid());
   }, [dispatch]);
@@ -24,9 +19,9 @@ const FieldContextMenu: React.FC<FioeldContextMenuProps> = ({ dispatch }) => {
   }, [dispatch]);
   return (
     <Menu>
-      <MenuItem text="Align Selection To Grid" onClick={onAlignToGrid} />
+      <MenuItem onClick={onAlignToGrid}>Align Selection To Grid</MenuItem>
       <MenuDivider />
-      <MenuItem text="Delete Selected" onClick={onDelete} />
+      <MenuItem onClick={onDelete}>Delete Selected</MenuItem>
     </Menu>
   );
 };

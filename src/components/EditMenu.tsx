@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Menu, MenuItem } from "@blueprintjs/core";
 
 import { keyboardCommandModifier } from "@/runtime-env";
 
@@ -11,6 +10,9 @@ import { canRedoSelector, canUndoSelector } from "@/undo/selectors";
 import { undo } from "@/actions/undo";
 import { redo } from "@/actions/redo";
 
+import Menu from "./Menus/Menu";
+import MenuItem from "./Menus/MenuItem";
+
 const EditMenu: React.FC = () => {
   const canUndo = useSelector(canUndoSelector);
   const onUndo = useAction(undo);
@@ -20,19 +22,19 @@ const EditMenu: React.FC = () => {
   return (
     <Menu>
       <MenuItem
-        icon="undo"
-        text="Undo"
-        label={`${keyboardCommandModifier}+z`}
         disabled={!canUndo}
+        secondary={`${keyboardCommandModifier}+z`}
         onClick={onUndo}
-      />
+      >
+        Undo
+      </MenuItem>
       <MenuItem
-        icon="redo"
-        text="Redo"
-        label={`${keyboardCommandModifier}+shift+z`}
         disabled={!canRedo}
+        secondary={`${keyboardCommandModifier}+shift+z`}
         onClick={onRedo}
-      />
+      >
+        Redo
+      </MenuItem>
     </Menu>
   );
 };

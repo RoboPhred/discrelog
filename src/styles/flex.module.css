@@ -8,6 +8,14 @@
   flex-direction: column;
 }
 
+.flex-row.flex-reverse {
+  flex-direction: row-reverse;
+}
+
+.flex-column.flex-reverse {
+  flex-direction: column-reverse;
+}
+
 .flexitem-shrink {
   flex-shrink: 1;
 }
