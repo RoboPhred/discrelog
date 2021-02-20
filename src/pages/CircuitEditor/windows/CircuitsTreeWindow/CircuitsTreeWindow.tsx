@@ -1,22 +1,16 @@
 import * as React from "react";
-import { Dispatch } from "redux";
 import { useDispatch } from "react-redux";
 
-import { EditableText, MenuDivider } from "@blueprintjs/core";
-
-import {
-  Tree,
-  ITreeNode,
-  Menu,
-  MenuItem,
-  ContextMenu,
-} from "@blueprintjs/core";
+import { EditableText, Tree, ITreeNode } from "@blueprintjs/core";
 
 import { cls } from "@/utils";
 
 import useSelector from "@/hooks/useSelector";
 
 import { deleteCircuit } from "@/actions/circuit-delete";
+import { editCircuit } from "@/actions/circuit-edit";
+import { addCircuit } from "@/actions/circuit-add";
+import { renameCircuit } from "@/actions/circuit-rename";
 
 import { editingCircuitIdSelector } from "@/services/circuit-editor-view/selectors/circuit";
 import {
@@ -25,9 +19,10 @@ import {
 } from "@/services/circuits/selectors/circuits";
 import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
 
-import { editCircuit } from "@/actions/circuit-edit";
-import { addCircuit } from "@/actions/circuit-add";
-import { renameCircuit } from "@/actions/circuit-rename";
+import { useContextMenu } from "@/components/ContextMenu";
+import Menu from "@/components/Menus/Menu";
+import MenuItem from "@/components/Menus/MenuItem";
+import MenuDivider from "@/components/Menus/MenuDivider";
 
 import { WindowProps } from "../window-props";
 
@@ -35,8 +30,11 @@ import styles from "./CircuitsTreeWindow.module.css";
 
 const CircuitsTreeWindow: React.FC<WindowProps> = ({ className }) => {
   const dispatch = useDispatch();
+
   const editingCircuitId = useSelector(editingCircuitIdSelector);
   const circuitNamesById = useSelector(circuitNamesByIdSelector);
+
+  const { openContextMenu, renderContextMenu } = useContextMenu();
 
   const onNodeClick = React.useCallback(
     (node: ITreeNode) => {
@@ -48,13 +46,9 @@ const CircuitsTreeWindow: React.FC<WindowProps> = ({ className }) => {
   const onContextMenu = React.useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       e.preventDefault();
-
-      ContextMenu.show(<CircuitTreeContextMenu dispatch={dispatch} />, {
-        left: e.pageX,
-        top: e.pageY,
-      });
+      openContextMenu(e);
     },
-    [dispatch]
+    [openContextMenu]
   );
 
   const treeItems: ITreeNode[] = React.useMemo(
@@ -75,6 +69,7 @@ const CircuitsTreeWindow: React.FC<WindowProps> = ({ className }) => {
       onContextMenu={onContextMenu}
     >
       <Tree contents={treeItems} onNodeClick={onNodeClick} />
+      {renderContextMenu(<CircuitTreeContextMenu />)}
     </div>
   );
 };
@@ -94,7 +89,10 @@ const CircuitTreeNodeCircuitLabel: React.FC<CircuitTreeNodeLabelProps> = ({
   );
   const [isRenaming, setIsRenaming] = React.useState(false);
 
-  const onStartRename = React.useCallback(() => {
+  const { openContextMenu, renderContextMenu } = useContextMenu();
+
+  const onStartRename = React.useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
     setIsRenaming(true);
   }, []);
 
@@ -110,9 +108,13 @@ const CircuitTreeNodeCircuitLabel: React.FC<CircuitTreeNodeLabelProps> = ({
     [circuitId, dispatch]
   );
 
-  const onDelete = React.useCallback(() => {
-    dispatch(deleteCircuit(circuitId));
-  }, [dispatch, circuitId]);
+  const onDelete = React.useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      dispatch(deleteCircuit(circuitId));
+    },
+    [dispatch, circuitId]
+  );
 
   const onContextMenu = React.useCallback(
     (e: React.MouseEvent<HTMLElement>) => {
@@ -122,17 +124,9 @@ const CircuitTreeNodeCircuitLabel: React.FC<CircuitTreeNodeLabelProps> = ({
 
       e.preventDefault();
       e.stopPropagation();
-
-      ContextMenu.show(
-        <Menu>
-          <MenuItem text="Rename Circuit" onClick={onStartRename} />
-          <MenuDivider />
-          <MenuItem text="Delete Circuit" onClick={onDelete} />
-        </Menu>,
-        { left: e.pageX, top: e.pageY }
-      );
+      openContextMenu(e);
     },
-    [circuitId, onDelete, onStartRename]
+    [circuitId, openContextMenu]
   );
 
   if (isRenaming) {
@@ -152,26 +146,27 @@ const CircuitTreeNodeCircuitLabel: React.FC<CircuitTreeNodeLabelProps> = ({
         onDoubleClick={onStartRename}
       >
         {circuitName}
+        {renderContextMenu(
+          <Menu>
+            <MenuItem onClick={onStartRename}>Rename Circuit</MenuItem>
+            <MenuDivider />
+            <MenuItem onClick={onDelete}>Delete Circuit</MenuItem>
+          </Menu>
+        )}
       </div>
     );
   }
 };
 
-interface CircuitTreeContextMenuProps {
-  // Dispatch must be passed in externally, as ContextMenu.show starts
-  //  a new redux tree and has no provider.
-  dispatch: Dispatch<any>;
-}
-const CircuitTreeContextMenu: React.FC<CircuitTreeContextMenuProps> = ({
-  dispatch,
-}) => {
+const CircuitTreeContextMenu: React.FC = () => {
+  const dispatch = useDispatch();
   const onNewCircuit = React.useCallback(() => {
     dispatch(addCircuit());
   }, [dispatch]);
 
   return (
     <Menu>
-      <MenuItem text="New Circuit" onClick={onNewCircuit} />
+      <MenuItem onClick={onNewCircuit}>New Circuit</MenuItem>
     </Menu>
   );
 };

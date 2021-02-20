@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import useComponentSize from "@rehooks/component-size";
 
 import { cls } from "@/utils";
-import { calcSize, Point } from "@/geometry";
+import { calcSize } from "@/geometry";
 
 import useSelector from "@/hooks/useSelector";
 import { useNativeEvent } from "@/hooks/useNativeEvent";
@@ -14,7 +14,7 @@ import { viewScaleSelector } from "@/services/circuit-editor-view/selectors/view
 import { fieldMouseLeave } from "@/actions/field-mouse-leave";
 import { viewZoom } from "@/actions/view-zoom";
 
-import ContextMenu from "@/components/ContextMenu";
+import { useContextMenu } from "@/components/ContextMenu";
 
 import { FieldSvgElementProvider } from "./contexts/fieldSvgElement";
 
@@ -42,13 +42,7 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
   const svgRef = React.useRef<SVGSVGElement>(null);
   const scalerRef = React.useRef<SVGGElement>(null);
 
-  const [
-    fieldContextPoint,
-    setFieldContextPoint,
-  ] = React.useState<Point | null>(null);
-  const onCloseContextMenu = React.useCallback(() => {
-    setFieldContextPoint(null);
-  }, []);
+  const { openContextMenu, renderContextMenu } = useContextMenu();
 
   const { width: componentWidth, height: componentHeight } = useComponentSize(
     sizeRef
@@ -73,7 +67,7 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
   const onContextMenu = React.useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setFieldContextPoint({ x: e.pageX, y: e.pageY });
+    openContextMenu(e);
   }, []);
 
   const onWheel = React.useCallback(
@@ -106,7 +100,6 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
         <div ref={sizeRef} style={{ width: "100%", height: "100%" }}>
           <svg
             tabIndex={-1}
-            className={styles["circuit-editor-svg-field"]}
             ref={svgRef}
             width={width}
             height={height}
@@ -134,16 +127,7 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
           </svg>
         </div>
       </div>
-      {fieldContextPoint && (
-        <ContextMenu
-          open
-          x={fieldContextPoint.x}
-          y={fieldContextPoint.y}
-          onRequestClose={onCloseContextMenu}
-        >
-          <FieldContextMenu />
-        </ContextMenu>
-      )}
+      {renderContextMenu(<FieldContextMenu />)}
     </div>
   );
 };
