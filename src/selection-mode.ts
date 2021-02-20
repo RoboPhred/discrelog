@@ -3,9 +3,17 @@ import difference from "lodash/difference";
 
 import { ModifierKeys } from "./modifier-keys";
 
-export type SelectionMode = "set" | "append" | "remove" | "toggle";
+export type SelectionMode =
+  | "set"
+  | "append"
+  | "remove"
+  | "toggle"
+  | "set-if-unselected";
 
-export function getSelectMode(modifiers: ModifierKeys): SelectionMode {
+export function getSelectMode(
+  modifiers: ModifierKeys,
+  defaultMode: SelectionMode = "set"
+): SelectionMode {
   if (modifiers.shiftKey && modifiers.ctrlMetaKey) {
     return "remove";
   }
@@ -15,7 +23,7 @@ export function getSelectMode(modifiers: ModifierKeys): SelectionMode {
   if (modifiers.ctrlMetaKey) {
     return "toggle";
   }
-  return "set";
+  return defaultMode;
 }
 
 export function combineSelection(
@@ -26,6 +34,15 @@ export function combineSelection(
   switch (mode) {
     case "set":
       return chosenIds;
+    case "set-if-unselected": {
+      if (chosenIds.every((chosen) => selectedIds.indexOf(chosen) !== -1)) {
+        // All were selected.
+        return selectedIds;
+      }
+
+      // One wasn't selected, set it
+      return chosenIds;
+    }
     case "append":
       return union(selectedIds, chosenIds);
     case "remove":

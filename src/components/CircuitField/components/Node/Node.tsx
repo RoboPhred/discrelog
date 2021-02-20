@@ -71,7 +71,7 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
   const onContextMenu = React.useCallback(
     (e: React.MouseEvent) => {
       const modifiers = getModifiers(e);
-      const selectionMode = getSelectMode(modifiers);
+      const selectionMode = getSelectMode(modifiers, "set-if-unselected");
       dispatch(selectNodes(nodeId, selectionMode));
     },
     [dispatch, nodeId]
