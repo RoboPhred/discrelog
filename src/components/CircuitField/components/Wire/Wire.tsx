@@ -21,7 +21,7 @@ const Wire: React.FC<WireProps> = ({ connectionId }) => {
     wireJointIdsFromConnectionIdSelector(state, connectionId)
   );
   const isPowered = useSelector((state) =>
-    wireValueFromConnectionIdSelector(state, connectionId)
+    wireValueFromConnectionIdSelector(state, [], connectionId)
   );
   const isSelected = useSelector((state) =>
     isWireSelectedFromConnectionIdSelector(state, connectionId)

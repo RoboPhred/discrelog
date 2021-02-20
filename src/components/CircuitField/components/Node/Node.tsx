@@ -8,7 +8,7 @@ import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
 
 import { nodeTypeFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
-import { nodeStateFromNodeIdSelector } from "@/services/simulator/selectors/nodes";
+import { nodeStateFromCircuitNodeIdSelector } from "@/services/simulator/selectors/nodes";
 import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
 import { nodePositionFromNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
@@ -44,7 +44,9 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
   const { x, y } = pos ?? ZeroPoint;
 
   const nodeType = useSelector((s) => nodeTypeFromNodeIdSelector(s, nodeId));
-  const nodeState = useSelector((s) => nodeStateFromNodeIdSelector(s, nodeId));
+  const nodeState = useSelector((s) =>
+    nodeStateFromCircuitNodeIdSelector(s, [nodeId])
+  );
   const isSelected = useSelector((s) =>
     isNodeSelectedFromNodeIdSelector(s, nodeId)
   );
@@ -58,7 +60,7 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
       }
 
       if (isSimActive) {
-        dispatch(interactNode(nodeId));
+        dispatch(interactNode([nodeId]));
       } else {
         const modifiers = getModifiers(e);
         const selectionMode = getSelectMode(modifiers);

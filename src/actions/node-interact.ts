@@ -1,9 +1,9 @@
 import { AnyAction } from "redux";
 
 export const ACTION_NODE_INTERACT = "@node/interact" as const;
-export const interactNode = (nodeId: string) => ({
+export const interactNode = (circuitNodeIdPath: string[]) => ({
   type: ACTION_NODE_INTERACT,
-  payload: { nodeId },
+  payload: { circuitNodeIdPath },
 });
 export type InteractNodeAction = ReturnType<typeof interactNode>;
 export function isInteractNodeAction(

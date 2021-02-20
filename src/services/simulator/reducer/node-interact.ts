@@ -17,11 +17,15 @@ export default createSimulatorReducer((state, action, appState) => {
     return state;
   }
 
-  const { nodeId: circuitNodeId } = action.payload;
+  const { circuitNodeIdPath } = action.payload;
   const simulatorNodeId = simulatorNodeIdFromCircuitNodeIdSelector(
     appState,
-    circuitNodeId
+    circuitNodeIdPath
   );
+
+  if (!simulatorNodeId) {
+    return state;
+  }
 
   const elementType = elementTypeFromSimulatorNodeId(appState, simulatorNodeId);
   if (!elementType) {

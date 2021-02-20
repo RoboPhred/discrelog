@@ -21,7 +21,10 @@ import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/
 import { nodeDefFromNodeIdSelector } from "@/services/node-graph/selectors/node-def";
 
 import { createSimulatorGraphReducer } from "../utils";
-import { SimulatorGraphServiceState } from "../state";
+import {
+  SimulatorGraphServiceState,
+  SimulatorNodeIdMappingTreeItem,
+} from "../state";
 import { SimulatorNode, SimulatorNodePin } from "../types";
 
 // This must run before simulator/reducer/sim-start, as we need to build up the graph before it can
@@ -64,11 +67,13 @@ const EMPTY_PRODUCTION = Object.freeze<CircuitProductionResult>({
 
 function produceCircuit(
   circuitId: string,
-  rootState: AppState,
-  topLevel = true
+  rootState: AppState
 ): CircuitProductionResult {
   const simulatorNodesById: Record<string, SimulatorNode> = {};
-  const simulatorNodeIdsByCircuitNodeId: Record<string, string> = {};
+  const simulatorNodeIdsByCircuitNodeId: Record<
+    string,
+    SimulatorNodeIdMappingTreeItem
+  > = {};
   const inputElementPinsByCircuitPinId: Record<string, SimulatorNodePin[]> = {};
   const outputElementPinsByCircuitPinId: Record<string, SimulatorNodePin> = {};
 
@@ -111,13 +116,10 @@ function produceCircuit(
     merge(simulatorNodesById, productionResult.simulatorNodesById);
 
     // Merge the mapping from circuit node to simulator node.
-    // FIXME: We need to figure out how to map IC nodes.
-    if (topLevel) {
-      merge(
-        simulatorNodeIdsByCircuitNodeId,
-        productionResult.simulatorNodeIdsByCircuitNodeId
-      );
-    }
+    merge(
+      simulatorNodeIdsByCircuitNodeId,
+      productionResult.simulatorNodeIdsByCircuitNodeId
+    );
 
     // Remember what these circuit node pins translate to.
     circuitNodeInputPinsByPinIdByNodeId[circuitNodeId] =
@@ -236,7 +238,10 @@ function produceElementNode(
   }
 
   const simulatorNodesById: Record<string, SimulatorNode> = {};
-  const simulatorNodeIdsByCircuitNodeId: Record<string, string> = {};
+  const simulatorNodeIdsByCircuitNodeId: Record<
+    string,
+    SimulatorNodeIdMappingTreeItem
+  > = {};
 
   const simulatorNodeId = uuidV4();
   simulatorNodesById[simulatorNodeId] = {
@@ -248,7 +253,10 @@ function produceElementNode(
     outputsByPin: {},
   };
 
-  simulatorNodeIdsByCircuitNodeId[circuitNodeId] = simulatorNodeId;
+  simulatorNodeIdsByCircuitNodeId[circuitNodeId] = {
+    simulatorNodeId,
+    subCircuitIds: {},
+  };
 
   const inputElementPinsByCircuitPinId: Record<string, SimulatorNodePin[]> = {};
   const outputElementPinsByCircuitPinId: Record<string, SimulatorNodePin> = {};
@@ -284,13 +292,17 @@ function produceCircuitNode(
   production: CircuitNodeElementProduction,
   rootState: AppState
 ): CircuitProductionResult {
-  const circuitProuction = produceCircuit(
-    production.circuitId,
-    rootState,
-    false
-  );
+  const circuitProuction = produceCircuit(production.circuitId, rootState);
 
-  return circuitProuction;
+  return {
+    ...circuitProuction,
+    simulatorNodeIdsByCircuitNodeId: {
+      [circuitNodeId]: {
+        simulatorNodeId: null,
+        subCircuitIds: circuitProuction.simulatorNodeIdsByCircuitNodeId,
+      },
+    },
+  };
 }
 
 function normalizeElementProduction(

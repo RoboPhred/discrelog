@@ -1,9 +1,15 @@
-import { createSimulatorGraphSelector } from "../utils";
+import {
+  createSimulatorGraphSelector,
+  getSimulatorNodeIdFromCircuitNodeIdPath,
+} from "../utils";
 import { SimulatorGraphServiceState } from "../state";
 
 export const simulatorNodeIdFromCircuitNodeIdSelector = createSimulatorGraphSelector(
-  (state: SimulatorGraphServiceState, circuitNodeId: string) => {
-    return state.simulatorNodeIdsByCircuitNodeId[circuitNodeId];
+  (state: SimulatorGraphServiceState, circuitNodeIdPath: string[]) => {
+    return getSimulatorNodeIdFromCircuitNodeIdPath(
+      state.simulatorNodeIdsByCircuitNodeId,
+      circuitNodeIdPath
+    );
   }
 );
 

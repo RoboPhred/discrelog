@@ -7,7 +7,6 @@ import values from "lodash/values";
 import { createSelector } from "reselect";
 
 import { nodeTypesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
-import { nodeStatesByNodeIdSelector } from "@/services/simulator/selectors/nodes";
 import { nodePositionsByNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 import { dragMoveOffsetSelector } from "@/services/circuit-editor-ui/selectors/drag";
@@ -29,18 +28,11 @@ const selectedNodeTypesByIdSelector = createSelector(
   (selectedNodeIds, nodeTypesById) => pick(nodeTypesById, selectedNodeIds)
 );
 
-const selectedNodeStatesByIdSelector = createSelector(
-  selectedNodeIdsSelector,
-  nodeStatesByNodeIdSelector,
-  (selectedNodeIds, nodeStatesById) => pick(nodeStatesById, selectedNodeIds)
-);
-
 const DragNodePreviewLayer: React.FC = () => {
   const selectedNodePositionsById = useSelector(
     selectedNodePositionsByIdSelector
   );
   const selectedNodeTypesById = useSelector(selectedNodeTypesByIdSelector);
-  const selectedNodeStatesById = useSelector(selectedNodeStatesByIdSelector);
   const dragMoveOffset = useSelector(dragMoveOffsetSelector);
 
   let elements: React.ReactNode | null = null;
@@ -50,7 +42,7 @@ const DragNodePreviewLayer: React.FC = () => {
         <NodeVisual
           key={nodeId}
           nodeType={selectedNodeTypesById[nodeId]}
-          nodeState={selectedNodeStatesById[nodeId]}
+          nodeState={{}}
           x={p.x + dragMoveOffset.x}
           y={p.y + dragMoveOffset.y}
         />

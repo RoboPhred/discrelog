@@ -1,50 +1,20 @@
 import { AppState } from "@/store";
 
-export const nodeStatesByNodeIdSelector = (function () {
-  let cachedSimulatorNodeIdsByCircuitNodeId: any;
-  let cachedNodeStatesBySimulatorNodeId: any;
-  let cachedNodeStatesByNodeIdSelector: Record<string, any> | null = null;
+import { getSimulatorNodeIdFromCircuitNodeIdPath } from "@/services/simulator-graph/utils";
 
-  return (state: AppState) => {
-    const simulatorNodeIdsByCircuitNodeId =
-      state.services.simulatorGraph.simulatorNodeIdsByCircuitNodeId;
-    const nodeStatesBySimulatorNodeId =
-      state.services.simulator.nodeStatesByNodeId;
-
-    if (
-      cachedSimulatorNodeIdsByCircuitNodeId ===
-        simulatorNodeIdsByCircuitNodeId &&
-      cachedNodeStatesBySimulatorNodeId === nodeStatesBySimulatorNodeId &&
-      cachedNodeStatesByNodeIdSelector != null
-    ) {
-      return cachedNodeStatesByNodeIdSelector;
-    }
-
-    const nodeStatesByNodeId: Record<string, any> = {};
-
-    for (const circuitNodeId of Object.keys(simulatorNodeIdsByCircuitNodeId)) {
-      const simulatorNodeId = simulatorNodeIdsByCircuitNodeId[circuitNodeId];
-      nodeStatesByNodeId[circuitNodeId] =
-        nodeStatesBySimulatorNodeId[simulatorNodeId];
-    }
-
-    cachedSimulatorNodeIdsByCircuitNodeId = simulatorNodeIdsByCircuitNodeId;
-    cachedNodeStatesBySimulatorNodeId = nodeStatesBySimulatorNodeId;
-    cachedNodeStatesByNodeIdSelector = nodeStatesByNodeId;
-    return nodeStatesByNodeId;
-  };
-})();
-
-export const nodeStateFromNodeIdSelector = (
+export const nodeStateFromCircuitNodeIdSelector = (
   state: AppState,
-  nodeId: string
+  circuitNodeIdPath: string[]
 ) => {
   const simulatorNodeIdsByCircuitNodeId =
     state.services.simulatorGraph.simulatorNodeIdsByCircuitNodeId;
   const nodeStatesBySimulatorNodeId =
     state.services.simulator.nodeStatesByNodeId;
 
-  const simulatorNodeId = simulatorNodeIdsByCircuitNodeId[nodeId];
+  const simulatorNodeId = getSimulatorNodeIdFromCircuitNodeIdPath(
+    simulatorNodeIdsByCircuitNodeId,
+    circuitNodeIdPath
+  );
   if (!simulatorNodeId) {
     return {};
   }

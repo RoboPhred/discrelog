@@ -1,18 +1,27 @@
 import createCachedSelector from "re-reselect";
+import flatMap from "lodash/flatMap";
+import get from "lodash/get";
 
 import { AppState } from "@/store";
 
 import { Connection } from "@/services/node-graph/types";
+import { SimulatorNodeIdMappingTreeItem } from "@/services/simulator-graph/state";
+import { getSimulatorNodeIdFromCircuitNodeIdPath } from "@/services/simulator-graph/utils";
 
 export const wireValueFromConnectionIdSelector = createCachedSelector(
-  (state: AppState, connectionId: string) =>
+  (state: AppState, icNodePath: string[], connectionId: string) =>
     state.services.nodeGraph.connectionsById[connectionId],
+  (state: AppState, icNodePath: string[]) => icNodePath,
   (state: AppState) =>
     state.services.simulatorGraph.simulatorNodeIdsByCircuitNodeId,
   (state: AppState) => state.services.simulator.nodeOutputValuesByNodeId,
   (
     wire: Connection,
-    simulatorNodeIdsByCircuitNodeId: Record<string, string>,
+    icNodePath: string[],
+    simulatorNodeIdsByCircuitNodeId: Record<
+      string,
+      SimulatorNodeIdMappingTreeItem
+    >,
     outputVauesByNodeId: Record<string, Record<string, boolean>>
   ) => {
     if (!wire) {
@@ -23,8 +32,17 @@ export const wireValueFromConnectionIdSelector = createCachedSelector(
       outputPin: { nodeId, pinId },
     } = wire;
 
-    const simulatorNodeId = simulatorNodeIdsByCircuitNodeId[nodeId];
+    const simulatorNodeId = getSimulatorNodeIdFromCircuitNodeIdPath(
+      simulatorNodeIdsByCircuitNodeId,
+      [...icNodePath, nodeId]
+    );
+    if (!simulatorNodeId) {
+      return false;
+    }
 
     return outputVauesByNodeId[simulatorNodeId]?.[pinId] || false;
   }
-)((_: any, connectionId: string) => connectionId);
+)(
+  (_: any, icNodePath: string[], connectionId: string) =>
+    icNodePath.join(".") + "::" + connectionId
+);
