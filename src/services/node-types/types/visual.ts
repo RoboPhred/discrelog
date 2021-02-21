@@ -1,6 +1,7 @@
 export interface NodeVisualDefinition {
   /**
-   * Optional SVG path string defining the hit detection of the node.
+   * SVG path string defining the hit area of the node.
+   * Used for selection.
    */
   hitPath: string;
 

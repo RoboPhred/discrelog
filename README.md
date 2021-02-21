@@ -28,17 +28,17 @@ and output pins on the IC.
 
 Press the play button in the top right to compile and run your circuit. During operation, you can click on buttons to toggle their state.
 
-For the moment, only buttons and LEDs in the root circuit will function, and only root circuit connections will light up to reflect their status.
+Double click on ICs to view the state of the circuit for that specific ICs. Clicking on a circuit in the circuit list will not show live values,
+as it will not have any instance of the IC to reflect.
 
 ### Editing Controls
 
-On Mac, `command` replaces `ctrl` and `option` replaces `alt`.
+On Mac, `command` replaces `ctrl`.
 
 - Select item: `left-click`
 - Toggle item in current selection: `ctrl + left-click`
 - Add item to current selection: `shift + left-click`
 - Remove item from current selection: `ctrl + shift + left-click`
-- Activate Button: `alt + left-click`
 - Delete Selection: `backspace` or `delete`
 - Select All in Circuit: `ctrl + a`
 - Copy Selected: `ctrl + c`
@@ -51,6 +51,7 @@ On Mac, `command` replaces `ctrl` and `option` replaces `alt`.
 - Activate button elements: `left-click`
 - Next tick (when paused): `spacebar`
 - Fast forward to next transition (when paused): `shift + spacebar`
+- View IC circuit: `double-click`
 
 ## Circuit structure and Simulation
 
