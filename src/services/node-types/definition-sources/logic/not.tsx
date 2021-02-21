@@ -4,13 +4,16 @@ import { NodeDefinition } from "../../types";
 
 // Shape path from https://commons.wikimedia.org/wiki/File:NOT_ANSI.svg
 
+const hitPath = `M28.96875 2.59375v44.8125l2.15625-1.0625 41.03125-20v-2.6875l-41.03125-20-2.15625-1.0625z`;
+
 const notNodeDefinition: NodeDefinition = {
   type: "logic-not",
   elementProduction: "not",
   visual: {
-    hitPath: `M28.96875 2.59375v44.8125l2.15625-1.0625 41.03125-20v-2.6875l-41.03125-20-2.15625-1.0625z`,
+    hitPath,
     component: () => (
       <g>
+        <path d={hitPath} fill="transparent" stroke="none" />
         <path
           className="node-select-highlight--stroke"
           fill="none"

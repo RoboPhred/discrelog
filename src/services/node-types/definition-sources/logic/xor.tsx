@@ -4,13 +4,16 @@ import { NodeDefinition } from "../../types";
 
 // Shape path from https://commons.wikimedia.org/wiki/File:XOR_ANSI.svg
 
+const hitPath = `M24.09375 5l2 2.4375S31.75 14.43755 31.75 25s-5.65625 17.5625-5.65625 17.5625l-2 2.4375H41.25c2.40808 0 7.6897.02451 13.625-2.40625s12.53654-7.34327 17.6875-16.875L71.25 25l1.3125-.71875C62.25939 5.21559 46.00657 5 41.25 5H24.09375z`;
+
 const xorNodeDefinition: NodeDefinition = {
   type: "logic-xor",
   elementProduction: "xor",
   visual: {
-    hitPath: `M24.09375 5l2 2.4375S31.75 14.43755 31.75 25s-5.65625 17.5625-5.65625 17.5625l-2 2.4375H41.25c2.40808 0 7.6897.02451 13.625-2.40625s12.53654-7.34327 17.6875-16.875L71.25 25l1.3125-.71875C62.25939 5.21559 46.00657 5 41.25 5H24.09375z`,
+    hitPath,
     component: () => (
       <g>
+        <path d={hitPath} fill="transparent" stroke="none" />
         <path
           className="node-select-highlight--stroke"
           fill="none"

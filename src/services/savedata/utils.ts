@@ -54,6 +54,7 @@ export function createSave(state: AppState): SaveData {
       const saveNode: SaveNode = {
         nodeId: nodeId,
         nodeType: node.nodeType,
+        nodeName: node.nodeName,
         circuitId: circuitId ?? ROOT_CIRCUIT_ID,
         x: position.x,
         y: position.y,
@@ -101,6 +102,7 @@ export function loadSave(state: AppState, save: SaveData): AppState {
             nodeId: node.nodeId,
             circuitId: node.circuitId,
             position: { x: node.x, y: node.y },
+            nodeName: node.nodeName ?? undefined,
           })
         ),
       state

@@ -4,13 +4,16 @@ import { NodeDefinition } from "../../types";
 
 // Shape path from https://commons.wikimedia.org/wiki/File:AND_ANSI.svg
 
+const hitPath = `M30 5V45H50.47619c11.267908 0 20-9.000045 20-20s-8.732091-20-20-20H30z`;
+
 const andNodeDefinition: NodeDefinition = {
   type: "logic-and",
   elementProduction: "and",
   visual: {
-    hitPath: `M30 5V45H50.47619c11.267908 0 20-9.000045 20-20s-8.732091-20-20-20H30z`,
+    hitPath,
     component: () => (
       <g>
+        <path d={hitPath} fill="transparent" stroke="none" />
         <path
           className="node-select-highlight--stroke"
           fill="none"

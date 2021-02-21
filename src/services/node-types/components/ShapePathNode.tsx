@@ -7,7 +7,11 @@ import { interactNode } from "@/actions/node-interact";
 
 import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-view/selectors/circuit";
 
-import { NodeComponentProps, NodeComponentType } from "../types";
+import {
+  NodeComponentProps,
+  NodeComponentType,
+  NodeVisualDefinition,
+} from "../types";
 
 export interface NodeVisualPathDefinition {
   /**
@@ -29,11 +33,13 @@ export interface ShapePathNodeProps extends NodeComponentProps {
    * The path or paths that make up the visual component of this node.
    */
   shapePath: NodeVisualPath | NodeVisualPath[];
+  hitPath: string;
 }
 
 const ShapePathNode: React.FC<ShapePathNodeProps> = ({
   circuitNodeId,
   shapePath,
+  hitPath,
   isSelected,
   elementState,
 }) => {
@@ -69,15 +75,24 @@ const ShapePathNode: React.FC<ShapePathNodeProps> = ({
     />
   ));
 
-  return <g onClick={onClick}>{body}</g>;
+  return (
+    <g onClick={onClick}>
+      <path d={hitPath} fill="transparent" stroke="none" />
+      {body}
+    </g>
+  );
 };
 
-export function createShapePathNode(
+export function createShapePathVisual(
+  hitPath: string,
   shapePath: NodeVisualPath | NodeVisualPath[]
-): NodeComponentType {
-  return (props: NodeComponentProps) => (
-    <ShapePathNode shapePath={shapePath} {...props} />
-  );
+): NodeVisualDefinition {
+  return {
+    component: (props: NodeComponentProps) => (
+      <ShapePathNode shapePath={shapePath} hitPath={hitPath} {...props} />
+    ),
+    hitPath,
+  };
 }
 
 export function normalizeVisuals(

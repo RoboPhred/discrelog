@@ -4,13 +4,16 @@ import { NodeDefinition } from "../../types";
 
 // Shape path from https://commons.wikimedia.org/wiki/File:Buffer_ANSI.svg
 
+const hitPath = `M 28.96875,2.59375 L 28.96875,5 L 28.96875,45 L 28.96875,47.40625 L 31.125,46.34375 L 72.15625,26.34375 L 75,25 L 72.15625,23.65625 L 31.125,3.65625 L 28.96875,2.59375 z`;
+
 const bufferNodeDefinition: NodeDefinition = {
   type: "logic-buffer",
   elementProduction: "buffer",
   visual: {
-    hitPath: `M 28.96875,2.59375 L 28.96875,5 L 28.96875,45 L 28.96875,47.40625 L 31.125,46.34375 L 72.15625,26.34375 L 75,25 L 72.15625,23.65625 L 31.125,3.65625 L 28.96875,2.59375 z`,
+    hitPath,
     component: () => (
       <g>
+        <path d={hitPath} fill="transparent" stroke="none" />
         <path
           className="node-select-highlight--stroke"
           fill="none"
