@@ -71,6 +71,11 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
 
   const onMouseDown = React.useCallback(
     (e: React.MouseEvent) => {
+      if (e.defaultPrevented) {
+        return;
+      }
+
+      e.preventDefault();
       startTracking(e);
     },
     [startTracking]
