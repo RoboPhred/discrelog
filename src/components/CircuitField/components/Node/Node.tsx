@@ -1,19 +1,24 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
+import getBounds from "svg-path-bounds";
 
+import { cls } from "@/utils";
 import { Point, ZeroPoint } from "@/geometry";
 import { getModifiers } from "@/modifier-keys";
 import { getSelectMode } from "@/selection-mode";
 
+import interaction from "@/styles/interaction.module.css";
+
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
 
-import { nodeTypeFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
+import { nodeNameFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 import { nodeStateFromCircuitNodeIdSelector } from "@/services/simulator/selectors/nodes";
 import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
 import { nodePositionFromNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-view/selectors/circuit";
+import { nodeDefFromNodeIdSelector } from "@/services/node-graph/selectors/node-def";
 
 import { fieldDragStartNode } from "@/actions/field-drag-start-node";
 import { fieldDragContinue } from "@/actions/field-drag-continue";
@@ -24,7 +29,6 @@ import { useContextMenu } from "@/components/ContextMenu";
 
 import { useEventMouseCoords } from "../../hooks/useMouseCoords";
 
-import NodeVisual from "../NodeVisual";
 import NodeContextMenu from "../NodeContextMenu";
 
 import "./Node.module.css";
@@ -41,6 +45,8 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
 
   const { openContextMenu, renderContextMenu } = useContextMenu();
 
+  const def = useSelector((state) => nodeDefFromNodeIdSelector(state, nodeId));
+  const nodeName = useSelector((s) => nodeNameFromNodeIdSelector(s, nodeId));
   const pos = useSelector((s) => nodePositionFromNodeIdSelector(s, nodeId));
   if (!pos) {
     // Caught some bad logic that was rendering non-existant nodes.
@@ -48,8 +54,6 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
     console.warn(`Rendering node id ${nodeId} that has no position.`);
   }
   const { x, y } = pos ?? ZeroPoint;
-
-  const nodeType = useSelector((s) => nodeTypeFromNodeIdSelector(s, nodeId));
   const nodeState = useSelector((s) =>
     nodeStateFromCircuitNodeIdSelector(s, [...editCircuitIdPath, nodeId])
   );
@@ -146,25 +150,57 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
     [startTracking]
   );
 
-  if (!nodeType) {
+  if (!def) {
     return null;
   }
 
-  return (
-    <>
-      <NodeVisual
-        className="circuit-field-node"
-        circuitNodeId={nodeId}
+  let body: React.ReactNode;
+  let bounds: [number, number, number, number];
+  if (!def) {
+    body = (
+      <rect
         x={x}
         y={y}
-        nodeType={nodeType}
-        nodeState={nodeState}
-        isSelected={isSelected}
-        onContextMenu={onContextMenu}
-        onMouseDown={onMouseDown}
+        width={50}
+        height={50}
+        fill={isSelected ? "goldenrod" : "red"}
       />
+    );
+    bounds = [0, 0, 50, 50];
+  } else {
+    const { component: ElementComponent, hitPath } = def.visual;
+    body = (
+      <ElementComponent
+        circuitNodeId={nodeId}
+        isSelected={isSelected}
+        elementState={nodeState}
+      />
+    );
+    bounds = getBounds(hitPath);
+  }
+
+  const transform = x != 0 || y != 0 ? `translate(${x}, ${y})` : undefined;
+  return (
+    <g transform={transform}>
+      <g
+        className={cls("circuit-field-node", isSelected && "node-selected")}
+        onMouseDown={onMouseDown}
+        onContextMenu={onContextMenu}
+      >
+        {body}
+      </g>
+      {nodeName && (
+        <text
+          className={interaction["text-unselectable"]}
+          textAnchor="middle"
+          x={bounds[0] + (bounds[2] - bounds[0]) / 2}
+          y={bounds[3] + 15}
+        >
+          {nodeName}
+        </text>
+      )}
       {renderContextMenu(<NodeContextMenu nodeId={nodeId} />)}
-    </>
+    </g>
   );
 };
 
