@@ -8,6 +8,7 @@ const hitPath = `M28.96875 2.59375v44.8125l2.15625-1.0625 41.03125-20v-2.6875l-4
 
 const notNodeDefinition: NodeDefinition = {
   type: "logic-not",
+  displayName: "NOT",
   elementProduction: "not",
   visual: {
     hitPath,

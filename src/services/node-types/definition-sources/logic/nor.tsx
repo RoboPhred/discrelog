@@ -7,6 +7,7 @@ import { NodeDefinition } from "../../types";
 const hitPath = `M24.09375 5l2 2.4375S31.75 14.437549 31.75 25s-5.65625 17.5625-5.65625 17.5625l-2 2.4375H41.25c2.408076.000001 7.689699.024514 13.625-2.40625s12.536536-7.343266 17.6875-16.875L71.25 25l1.3125-.71875C62.259387 5.21559 46.006574 5 41.25 5H24.09375z`;
 const norNodeDefinition: NodeDefinition = {
   type: "logic-nor",
+  displayName: "NOR",
   elementProduction: "nor",
   visual: {
     hitPath,

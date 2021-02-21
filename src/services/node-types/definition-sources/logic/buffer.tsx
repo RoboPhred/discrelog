@@ -8,6 +8,7 @@ const hitPath = `M 28.96875,2.59375 L 28.96875,5 L 28.96875,45 L 28.96875,47.406
 
 const bufferNodeDefinition: NodeDefinition = {
   type: "logic-buffer",
+  displayName: "Buffer",
   elementProduction: "buffer",
   visual: {
     hitPath,

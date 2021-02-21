@@ -1,7 +1,10 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
+import getBounds from "svg-path-bounds";
 
 import { cls } from "@/utils";
+
+import interaction from "@/styles/interaction.module.css";
 
 import { MODIFIER_KEYS_NONE } from "@/modifier-keys";
 
@@ -28,8 +31,8 @@ const NodeTrayWindow: React.FC<WindowProps> = ({ className }) => {
   });
 
   return (
-    <div className={cls(styles["nodetray"], className)}>
-      <div className={styles["nodetray-elements"]}>{nodes}</div>
+    <div className={cls(styles["node-tray"], className)}>
+      <ul className={styles["node-tray-elements"]}>{nodes}</ul>
     </div>
   );
 };
@@ -78,23 +81,34 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
   );
 
   let NodeTrayComponent: React.ComponentType;
+  let displayName = nodeType;
+  let viewBox = "0 0 50 50";
   if (def) {
-    NodeTrayComponent =
-      def.visual.trayComponent ??
-      (() => {
-        const Component = def.visual.component;
+    const { trayComponent, component, hitPath } = def.visual;
+    if (trayComponent) {
+      NodeTrayComponent = trayComponent;
+    } else {
+      NodeTrayComponent = () => {
+        const Component = component;
         return <Component elementState={{}} />;
-      });
+      };
+      const bounds = getBounds(hitPath);
+      viewBox = bounds.join(" ");
+    }
+    displayName = def.displayName;
   } else {
     NodeTrayComponent = () => <rect fill="red" x1={0} y1={0} x2={50} y2={50} />;
   }
 
+  /* FIXME: Settle on a decent size and shrink overly large nodes to fit */
   return (
-    <div onMouseDown={onMouseDown}>
-      {/* FIXME: Settle on a decent size and shrink overly large nodes to fit */}
-      <svg width={75} height={75}>
-        <NodeTrayComponent />
-      </svg>
-    </div>
+    <li className={styles["node-tray-item"]} onMouseDown={onMouseDown}>
+      <span className={styles["node-tray-item-preview"]}>
+        <svg width={30} height={30} viewBox={viewBox}>
+          <NodeTrayComponent />
+        </svg>
+      </span>
+      <span className={interaction["text-unselectable"]}>{displayName}</span>
+    </li>
   );
 };

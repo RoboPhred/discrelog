@@ -18,16 +18,25 @@ import {
 } from "./IntegratedCircuitVisual";
 
 import { circuitIdToNodeType } from "./utils";
+import { circuitNamesByIdSelector } from "@/services/circuits/selectors/circuits";
 
 const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
   nodeIdsByCircuitIdSelector,
   nodeTypesByNodeIdSelector,
   nodePositionsByNodeIdSelector,
-  (nodeIdsByCircuitId, nodeTypesByNodeId, nodePositionsByNodeId) => {
+  circuitNamesByIdSelector,
+  (
+    nodeIdsByCircuitId,
+    nodeTypesByNodeId,
+    nodePositionsByNodeId,
+    circuitNamesById
+  ) => {
     return Object.keys(nodeIdsByCircuitId)
       .filter((x) => x !== ROOT_CIRCUIT_ID)
       .map((circuitId) => {
         const circuitNodeIds = nodeIdsByCircuitId[circuitId] ?? [];
+        const circuitName =
+          circuitNamesById[circuitId] ?? circuitId.substr(0, 5);
 
         // Sort by y axis position to get consistent pin locations.
         let pinNodeIds = circuitNodeIds.filter((circuitNodeId) =>
@@ -61,6 +70,7 @@ const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
 
         const def: NodeDefinition = {
           type: circuitIdToNodeType(circuitId),
+          displayName: circuitName,
           elementProduction: {
             type: "circuit",
             circuitId,

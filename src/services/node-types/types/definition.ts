@@ -12,6 +12,7 @@ export type NodeDefinitionSource =
 
 export interface NodeDefinition {
   type: string;
+  displayName: string;
   elementProduction?: NodeElementProduction;
   visual: NodeVisualDefinition;
   pins: Record<string, NodePinDefinition>;

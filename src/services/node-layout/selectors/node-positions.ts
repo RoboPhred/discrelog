@@ -1,3 +1,5 @@
+import { ZeroPoint } from "@/geometry";
+
 import { createNodeLayoutSelector } from "../utils";
 import { NodeLayoutServiceState } from "../state";
 
@@ -7,5 +9,5 @@ export const nodePositionsByNodeIdSelector = createNodeLayoutSelector(
 
 export const nodePositionFromNodeIdSelector = createNodeLayoutSelector(
   (state: NodeLayoutServiceState, nodeId: string) =>
-    state.nodePositionsById[nodeId]
+    state.nodePositionsById[nodeId] ?? ZeroPoint
 );

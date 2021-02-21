@@ -34,8 +34,9 @@ function createSeg(
 
 const seg7ElementDefinition: NodeDefinition = {
   type: "output-seg7",
+  displayName: "7-Segment Display",
   elementProduction: "seg7",
-  visual: createShapePathVisual(`M0,0 V63 H45 V0 z`, [
+  visual: createShapePathVisual(`M15,0 V63 H45 V0 z`, [
     createSeg("A", [
       [1, 1],
       [2, 0],

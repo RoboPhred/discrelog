@@ -110,30 +110,16 @@ const IntegratedCircuitVisual: React.FC<
   );
 };
 
-const IntegratedCircuitTrayVisual: React.FC<IntegratedCircuitVisualProps> = ({
-  circuitId,
-}) => {
-  const circuitName = useSelector((state) =>
-    circuitNameFromIdSelector(state, circuitId)
-  );
+const IntegratedCircuitTrayVisual: React.FC<IntegratedCircuitVisualProps> = () => {
   return (
-    <g>
-      <text
-        className={interaction["text-unselectable"]}
-        textAnchor="middle"
-        x={25}
-        y={10}
-      >
-        {circuitName}
-      </text>
-      <g stroke="black" strokeWidth={1}>
-        <rect x={10} y={20} width={30} height={30} fill="transparent" />
-        <line x1={10} y1={25} x2={5} y2={25} />
-        <line x1={40} y1={25} x2={45} y2={25} />
+    <g stroke="black" strokeWidth={1}>
+      <rect x={10} y={10} width={30} height={30} fill="none" />
 
-        <line x1={10} y1={45} x2={5} y2={45} />
-        <line x1={40} y1={45} x2={45} y2={45} />
-      </g>
+      <line x1={10} y1={15} x2={5} y2={15} />
+      <line x1={40} y1={15} x2={45} y2={15} />
+
+      <line x1={10} y1={35} x2={5} y2={35} />
+      <line x1={40} y1={35} x2={45} y2={35} />
     </g>
   );
 };

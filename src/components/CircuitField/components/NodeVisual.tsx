@@ -1,10 +1,12 @@
 import * as React from "react";
 
-import useSelector from "@/hooks/useSelector";
-import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/node-types";
 import { cls } from "@/utils";
 
-// FIXME: This component does a whole lot of nothing.  Remove it.
+import useSelector from "@/hooks/useSelector";
+
+import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/node-types";
+
+// TODO: This component does a whole lot of nothing.  Remove it.
 
 export interface NodeVisualProps {
   className?: string;
@@ -42,7 +44,6 @@ const NodeVisual: React.FC<NodeVisualProps> = ({
   );
 
   let body: React.ReactNode;
-  let hitPath: string | undefined;
   if (!def) {
     body = (
       <rect
@@ -62,7 +63,6 @@ const NodeVisual: React.FC<NodeVisualProps> = ({
         elementState={nodeState}
       />
     );
-    hitPath = def.visual.hitPath;
   }
 
   const transform = x != 0 || y != 0 ? `translate(${x}, ${y})` : undefined;
@@ -77,7 +77,6 @@ const NodeVisual: React.FC<NodeVisualProps> = ({
       onMouseLeave={onMouseLeave}
       onContextMenu={onContextMenu}
     >
-      {hitPath && <path d={hitPath} fill="transparent" onClick={onClick} />}
       {body}
     </g>
   );

@@ -5,6 +5,7 @@ import { NodeDefinition } from "../../types";
 
 const toggleElementDefinition: NodeDefinition = {
   type: "interaction-toggle",
+  displayName: "Toggle Switch",
   elementProduction: "toggle",
   visual: createShapePathVisual(`M5,5 L45,5 L45,45 L5,45 z`, [
     {

@@ -1,4 +1,4 @@
-.nodetray {
+.node-tray {
   background: var(--color-ui-bg-light);
   overflow-y: scroll;
   width: 100%;
@@ -7,9 +7,27 @@
   padding: 3px;
 }
 
-.nodetray-elements {
+.node-tray-elements {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.node-tray-item {
+  padding: 6px 7px;
+  border-radius: 3px;
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
-  min-height: 0;
+  align-items: center;
+  width: 100%;
+}
+
+.node-tray-item:hover {
+  background: var(--color-ui-bg-light-hover);
+}
+
+.node-tray-item-preview {
+  width: 30px;
+  height: 30px;
+  padding-right: 10px;
 }

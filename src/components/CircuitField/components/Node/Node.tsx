@@ -19,6 +19,7 @@ import { nodePositionFromNodeIdSelector } from "@/services/node-layout/selectors
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-view/selectors/circuit";
 import { nodeDefFromNodeIdSelector } from "@/services/node-graph/selectors/node-def";
+import { viewScaleSelector } from "@/services/circuit-editor-view/selectors/view";
 
 import { fieldDragStartNode } from "@/actions/field-drag-start-node";
 import { fieldDragContinue } from "@/actions/field-drag-continue";
@@ -42,18 +43,15 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
 
   const isSimActive = useSelector(isSimActiveSelector);
   const editCircuitIdPath = useSelector(editingCircuitNodeIdPathSelector);
+  const scale = useSelector(viewScaleSelector);
 
   const { openContextMenu, renderContextMenu } = useContextMenu();
 
   const def = useSelector((state) => nodeDefFromNodeIdSelector(state, nodeId));
   const nodeName = useSelector((s) => nodeNameFromNodeIdSelector(s, nodeId));
-  const pos = useSelector((s) => nodePositionFromNodeIdSelector(s, nodeId));
-  if (!pos) {
-    // Caught some bad logic that was rendering non-existant nodes.
-    // Leaving this in for safty, although the underlying issue was fixed.
-    console.warn(`Rendering node id ${nodeId} that has no position.`);
-  }
-  const { x, y } = pos ?? ZeroPoint;
+  const { x, y } = useSelector((s) =>
+    nodePositionFromNodeIdSelector(s, nodeId)
+  );
   const nodeState = useSelector((s) =>
     nodeStateFromCircuitNodeIdSelector(s, [...editCircuitIdPath, nodeId])
   );
@@ -179,6 +177,16 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
     bounds = getBounds(hitPath);
   }
 
+  // FIXME: This is really rough, especially the y offset.
+  // There is a noticable jump in position between >1 and >1 scale.
+  const textScale = Math.max(0.7, scale);
+  let textYOffset = 15;
+  if (textScale > 1) {
+    textYOffset -= textScale * 2;
+  } else {
+    textYOffset += (1 / textScale) * 7;
+  }
+
   const transform = x != 0 || y != 0 ? `translate(${x}, ${y})` : undefined;
   return (
     <g transform={transform}>
@@ -191,10 +199,11 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
       </g>
       {nodeName && (
         <text
+          fontSize={`${1.2 / textScale}em`}
           className={interaction["text-unselectable"]}
           textAnchor="middle"
           x={bounds[0] + (bounds[2] - bounds[0]) / 2}
-          y={bounds[3] + 15}
+          y={bounds[3] + textYOffset}
         >
           {nodeName}
         </text>

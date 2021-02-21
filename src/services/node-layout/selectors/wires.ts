@@ -35,8 +35,7 @@ export const wireStartPositionFromConnectionIdSelector = (
     return ZeroPoint;
   }
 
-  const nodePosition =
-    nodePositionFromNodeIdSelector(state, nodeId) || ZeroPoint;
+  const nodePosition = nodePositionFromNodeIdSelector(state, nodeId);
 
   // Caching is to get a consistent reference to avoid component rerenders.
   //  We are not concerned about performance here.
@@ -76,8 +75,7 @@ export const wireEndPositionFromConnectionIdSelector = (
     return ZeroPoint;
   }
 
-  const nodePosition =
-    nodePositionFromNodeIdSelector(state, nodeId) || ZeroPoint;
+  const nodePosition = nodePositionFromNodeIdSelector(state, nodeId);
 
   // Caching is to get a consistent reference to avoid component rerenders.
   //  We are not concerned about performance here.

@@ -13,6 +13,7 @@ const path = genCirclePath(25, 25, 20);
 
 const ledNodeDefinition: NodeDefinition = {
   type: "output-led",
+  displayName: "Indicator Light",
   elementProduction: "led",
   visual: createShapePathVisual(path, {
     path,
