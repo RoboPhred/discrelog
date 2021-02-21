@@ -26,7 +26,7 @@
   text-decoration: none;
 }
 
-.menu-item-link {
+.menu-item-content {
   display: flex;
 }
 
@@ -37,6 +37,7 @@
 .menu-item-secondary {
   margin-left: auto;
   font-size: 0.8em;
+  align-self: flex-end;
 }
 
 .menu-divider {

@@ -20,9 +20,12 @@ import { fieldDragContinue } from "@/actions/field-drag-continue";
 import { fieldDragEnd } from "@/actions/field-drag-end";
 import { selectNodes } from "@/actions/select-nodes";
 
-import NodeVisual from "../NodeVisual";
+import { useContextMenu } from "@/components/ContextMenu";
 
 import { useEventMouseCoords } from "../../hooks/useMouseCoords";
+
+import NodeVisual from "../NodeVisual";
+import NodeContextMenu from "../NodeContextMenu";
 
 import "./Node.module.css";
 
@@ -35,6 +38,8 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
 
   const isSimActive = useSelector(isSimActiveSelector);
   const editCircuitIdPath = useSelector(editingCircuitNodeIdPathSelector);
+
+  const { openContextMenu, renderContextMenu } = useContextMenu();
 
   const pos = useSelector((s) => nodePositionFromNodeIdSelector(s, nodeId));
   if (!pos) {
@@ -79,11 +84,17 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
 
   const onContextMenu = React.useCallback(
     (e: React.MouseEvent) => {
+      if (e.defaultPrevented) {
+        return;
+      }
+      e.preventDefault();
+
       const modifiers = getModifiers(e);
       const selectionMode = getSelectMode(modifiers, "set-if-unselected");
       dispatch(selectNodes(nodeId, selectionMode));
+      openContextMenu(e);
     },
-    [dispatch, nodeId]
+    [dispatch, nodeId, openContextMenu]
   );
 
   const onDragStart = React.useCallback(
@@ -140,17 +151,20 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
   }
 
   return (
-    <NodeVisual
-      className="circuit-field-node"
-      circuitNodeId={nodeId}
-      x={x}
-      y={y}
-      nodeType={nodeType}
-      nodeState={nodeState}
-      isSelected={isSelected}
-      onContextMenu={onContextMenu}
-      onMouseDown={onMouseDown}
-    />
+    <>
+      <NodeVisual
+        className="circuit-field-node"
+        circuitNodeId={nodeId}
+        x={x}
+        y={y}
+        nodeType={nodeType}
+        nodeState={nodeState}
+        isSelected={isSelected}
+        onContextMenu={onContextMenu}
+        onMouseDown={onMouseDown}
+      />
+      {renderContextMenu(<NodeContextMenu nodeId={nodeId} />)}
+    </>
   );
 };
 

@@ -66,8 +66,10 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
 
   const onContextMenu = React.useCallback(
     (e: React.MouseEvent) => {
+      if (e.defaultPrevented) {
+        return;
+      }
       e.preventDefault();
-      e.stopPropagation();
       openContextMenu(e);
     },
     [openContextMenu]

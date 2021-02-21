@@ -33,7 +33,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
         disabled && styles["menu-item--disabled"]
       )}
     >
-      <a className={styles["menu-item-link"]} onClick={onItemClick}>
+      <a className={styles["menu-item-content"]} onClick={onItemClick}>
         <span className={styles["menu-item-text"]}>{children}</span>
         {secondary && (
           <span className={styles["menu-item-secondary"]}>{secondary}</span>

@@ -24,11 +24,12 @@ import Menu from "@/components/Menus/Menu";
 import MenuItem from "@/components/Menus/MenuItem";
 import MenuDivider from "@/components/Menus/MenuDivider";
 import SelectionList, { SelectionListItem } from "@/components/SelectionList";
-import EditableText from "@/components/EditableText";
+import AtomicTextInput from "@/components/AtomicTextInput";
 
 import { WindowProps } from "../window-props";
 
 import styles from "./CircuitsTreeWindow.module.css";
+import EditableText from "@/components/EditableText";
 
 const CircuitsTreeWindow: React.FC<WindowProps> = ({ className }) => {
   const dispatch = useDispatch();
@@ -97,20 +98,12 @@ const CircuitTreeNodeCircuitLabel: React.FC<CircuitTreeNodeLabelProps> = ({
 
   const { openContextMenu, renderContextMenu } = useContextMenu();
 
-  const onStartRename = React.useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      // We totally support renaming the root, but the root is special
-      // in that its the driving circuit.  If the user looses track of it,
-      // that's a bad thing.
-      // We need some icon or something on the root list item.
-      if (circuitId === ROOT_CIRCUIT_ID) {
-        return;
-      }
-      setIsRenaming(true);
-    },
-    [circuitId]
-  );
+  const onRequestRename = React.useCallback(() => {
+    if (circuitId === ROOT_CIRCUIT_ID) {
+      return;
+    }
+    setIsRenaming(true);
+  }, [circuitId]);
 
   const onCancelRename = React.useCallback(() => {
     setIsRenaming(false);
@@ -145,33 +138,28 @@ const CircuitTreeNodeCircuitLabel: React.FC<CircuitTreeNodeLabelProps> = ({
     [circuitId, openContextMenu]
   );
 
-  if (isRenaming) {
-    return (
+  return (
+    <div
+      style={{ width: "100%" }}
+      onContextMenu={onContextMenu}
+      onDoubleClick={onRequestRename}
+    >
       <EditableText
-        isEditing={true}
         defaultValue={circuitName}
-        onConfirm={onRename}
+        isEditing={isRenaming}
+        onRequestEdit={onRequestRename}
+        onCommit={onRename}
         onCancel={onCancelRename}
       />
-    );
-  } else {
-    return (
-      <div
-        style={{ width: "100%" }}
-        onContextMenu={onContextMenu}
-        onDoubleClick={onStartRename}
-      >
-        {circuitName}
-        {renderContextMenu(
-          <Menu>
-            <MenuItem onClick={onStartRename}>Rename Circuit</MenuItem>
-            <MenuDivider />
-            <MenuItem onClick={onDelete}>Delete Circuit</MenuItem>
-          </Menu>
-        )}
-      </div>
-    );
-  }
+      {renderContextMenu(
+        <Menu>
+          <MenuItem onClick={onRequestRename}>Rename Circuit</MenuItem>
+          <MenuDivider />
+          <MenuItem onClick={onDelete}>Delete Circuit</MenuItem>
+        </Menu>
+      )}
+    </div>
+  );
 };
 
 const CircuitTreeContextMenu: React.FC = () => {
