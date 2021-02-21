@@ -5,6 +5,7 @@ import { Point } from "@/geometry";
 
 export interface AddNodeOptions {
   nodeId?: string;
+  nodeName?: string;
   circuitId?: string;
   position?: Point;
 }

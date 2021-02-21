@@ -49,3 +49,14 @@ export const nodeTypeFromNodeIdSelector = createNodeGraphSelector(
     return node.nodeType;
   }
 );
+
+export const nodeNameFromNodeIdSelector = createNodeGraphSelector(
+  (s: NodeGraphServiceState, nodeId: string) => {
+    const node = nodeFromNodeIdSelector.local(s, nodeId);
+    if (!node) {
+      return null;
+    }
+
+    return node.nodeName ?? nodeId.substr(0, 4);
+  }
+);

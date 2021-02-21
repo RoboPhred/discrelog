@@ -4,13 +4,16 @@ import { useDispatch } from "react-redux";
 import { Point } from "@/geometry";
 import { PinDirection } from "@/logic";
 
+import interaction from "@/styles/interaction.module.css";
+
 import useSelector from "@/hooks/useSelector";
 
+import { viewCircuit } from "@/actions/circuit-view";
+
 import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
+import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-view/selectors/circuit";
 
 import { NodeComponentProps, NodeVisualDefinition } from "../../types";
-import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-view/selectors/circuit";
-import { viewCircuit } from "@/actions/circuit-view";
 
 export interface IntegratedCircuitVisualProps {
   circuitId: string;
@@ -93,7 +96,12 @@ const IntegratedCircuitVisual: React.FC<
         d={borderPath}
         onDoubleClick={onViewCircuit}
       />
-      <text textAnchor="middle" x={50} y={30}>
+      <text
+        className={interaction["text-unselectable"]}
+        textAnchor="middle"
+        x={50}
+        y={30}
+      >
         {circuitName}
       </text>
       {inputPins}
@@ -110,7 +118,12 @@ const IntegratedCircuitTrayVisual: React.FC<IntegratedCircuitVisualProps> = ({
   );
   return (
     <g>
-      <text textAnchor="middle" x={25} y={10}>
+      <text
+        className={interaction["text-unselectable"]}
+        textAnchor="middle"
+        x={25}
+        y={10}
+      >
         {circuitName}
       </text>
       <g stroke="black" strokeWidth={1}>

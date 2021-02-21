@@ -2,6 +2,8 @@ import * as React from "react";
 
 import { cls } from "@/utils";
 
+import interaction from "@/styles/interaction.module.css";
+
 import styles from "./SelectionList.module.css";
 
 export interface SelectionListItem {
@@ -67,7 +69,14 @@ const SelectionListItemNode: React.FC<SelectionListItemNodeProps> = ({
       )}
       onClick={onClick}
     >
-      <div className={styles["selection-list-item-content"]}>{label}</div>
+      <div
+        className={cls(
+          styles["selection-list-item-content"],
+          interaction["text-unselectable"]
+        )}
+      >
+        {label}
+      </div>
     </li>
   );
 };

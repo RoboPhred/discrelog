@@ -1,7 +1,15 @@
 import * as yup from "yup";
 
 export interface Node {
+  /**
+   * The type of this node.
+   */
   nodeType: string;
+
+  /**
+   * The user provided name of this node.
+   */
+  nodeName: string | null;
 }
 
 /**

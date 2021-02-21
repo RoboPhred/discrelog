@@ -6,6 +6,7 @@ import { AnyAction } from "redux";
 import { cls } from "@/utils";
 
 import sizing from "@/styles/sizing.module.css";
+import flex from "@/styles/flex.module.css";
 
 import { tickSim } from "@/actions/sim-tick";
 import { fastForwardSim } from "@/actions/sim-fastforward";
@@ -16,6 +17,7 @@ import { selectAll } from "@/actions/select-all";
 import { undo } from "@/actions/undo";
 import { redo } from "@/actions/redo";
 
+import CircuitNodeBreadcrumb from "@/components/CircuitNodeBreadcrumb";
 import CircuitField from "@/components/CircuitField";
 
 import keymap, {
@@ -31,8 +33,6 @@ import keymap, {
 } from "./keymap";
 
 import { WindowProps } from "../window-props";
-
-import styles from "./CircuitFieldWindow.module.css";
 
 const CircuitFieldWindow: React.FC<WindowProps> = ({ className }) => {
   const dispatch = useDispatch();
@@ -63,17 +63,21 @@ const CircuitFieldWindow: React.FC<WindowProps> = ({ className }) => {
   }, [dispatch]);
 
   return (
-    <div
-      className={cls(
-        "circuit-field-view",
-        styles["circuit-field-view"],
-        className
-      )}
-    >
-      <HotKeys keyMap={keymap} handlers={keyHandlers} component={FillParent}>
-        <CircuitField className={sizing["fill-parent"]} />
-      </HotKeys>
-    </div>
+    <HotKeys keyMap={keymap} handlers={keyHandlers} component={FillParent}>
+      <div
+        className={cls(
+          "circuit-field-view",
+          sizing["fill-parent"],
+          flex["flex-column"],
+          className
+        )}
+      >
+        <CircuitNodeBreadcrumb />
+        <CircuitField
+          className={cls(sizing["fill-parent"], flex["flexitem-shrink"])}
+        />
+      </div>
+    </HotKeys>
   );
 };
 

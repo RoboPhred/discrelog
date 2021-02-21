@@ -13,13 +13,14 @@ export default reducerPriority(
       return state;
     }
 
-    const { nodeId: id, nodeType } = action.payload;
+    const { nodeId: id, nodeType, nodeName } = action.payload;
     return {
       ...state,
       nodesById: {
         ...state.nodesById,
         [id]: {
           nodeType,
+          nodeName: nodeName ?? null,
         },
       },
     };
