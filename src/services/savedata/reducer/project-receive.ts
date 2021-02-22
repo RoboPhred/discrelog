@@ -16,8 +16,9 @@ export default function projectReceiveReducer(
 
   try {
     return loadSave(state, action.payload.saveData);
-  } catch {
+  } catch (e) {
     // TODO: display error
+    console.error("Failed to load save", e);
     return state;
   }
 }

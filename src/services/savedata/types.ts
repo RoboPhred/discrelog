@@ -23,8 +23,8 @@ export interface SaveNode {
 }
 export const saveNodeSchema = yup.object().shape({
   nodeId: yup.string().required().min(1),
-  nodeType: yup.string().required().min(1), // TODO: Check for valid element types
-  nodeName: yup.string(),
+  nodeType: yup.string().required().min(1),
+  nodeName: yup.string().nullable().min(1),
   circuitId: yup.string().required().min(1),
   x: yup.number().required(),
   y: yup.number().required(),

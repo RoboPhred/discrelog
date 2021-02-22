@@ -5,7 +5,7 @@ import { cls } from "@/utils";
 import flex from "@/styles/flex.module.css";
 import sizing from "@/styles/sizing.module.css";
 
-import CircuitEditor from "@/pages/CircuitEditor";
+import Routes from "@/router";
 
 import TitleBar from "../TitleBar";
 import DialogManager from "../DialogManager";
@@ -13,10 +13,10 @@ import DialogManager from "../DialogManager";
 const App: React.FC = () => {
   return (
     <div className={cls(sizing["fill-parent"], flex["flex-column"])}>
-      <TitleBar />
-      <CircuitEditor
-        className={cls(sizing["fill-parent"], flex["flexitem-shrink"])}
-      />
+      <TitleBar className={flex["flexitem-fix"]} />
+      <div className={cls(sizing["fill-parent"], flex["flexitem-shrink"])}>
+        <Routes />
+      </div>
       <DialogManager />
     </div>
   );

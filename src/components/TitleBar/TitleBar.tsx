@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { cls } from "@/utils";
+
 import AutoPopover from "../AutoPopover";
 import Button from "../Button";
 import FileMenu from "../FileMenu";
@@ -8,9 +10,12 @@ import SimControls from "../SimControls";
 
 import styles from "./TitleBar.module.css";
 
-const TitleBar: React.FC = () => {
+export interface TitleBarProps {
+  className?: string;
+}
+const TitleBar: React.FC<TitleBarProps> = ({ className }) => {
   return (
-    <div className={styles.titlebar}>
+    <div className={cls(styles.titlebar, className)}>
       <span className={styles["titlebar-heading"]}>Discrelog</span>
       <div className={styles["titlebar-divider"]} />
       <AutoPopover content={<FileMenu />} placement="bottom-start">

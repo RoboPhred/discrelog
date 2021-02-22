@@ -2,15 +2,13 @@ import * as React from "react";
 
 import { cls } from "@/utils";
 
+import sizing from "@/styles/sizing.module.css";
+
 import Tessel, { TesselValue, TesselWindowItem } from "@/components/Tessel";
 
 import CircuitFieldWindow from "./windows/CircuitFieldWindow";
 import CircuitsTreeWindow from "./windows/CircuitsTreeWindow";
 import NodeTrayWindow from "./windows/NodeTrayWindow";
-
-export interface CircuitEditorProps {
-  className?: string;
-}
 
 const WindowsById: Record<string, React.ComponentType> = {
   "node-tray": NodeTrayWindow,
@@ -26,7 +24,7 @@ function renderWindow(window: TesselWindowItem): React.ReactElement | null {
   return <Component {...window.windowProps} />;
 }
 
-const CircuitEditor: React.FC<CircuitEditorProps> = ({ className }) => {
+const CircuitEditorPage: React.FC = () => {
   const [tesselItems, setTesselItems] = React.useState<TesselValue>({
     direction: "row",
     division: {
@@ -43,7 +41,7 @@ const CircuitEditor: React.FC<CircuitEditorProps> = ({ className }) => {
 
   return (
     <Tessel
-      className={cls("circuit-editor", className)}
+      className={cls("circuit-editor", sizing["fill-parent"])}
       rootItem={tesselItems}
       onLayoutChange={setTesselItems}
       renderWindow={renderWindow}
@@ -51,4 +49,4 @@ const CircuitEditor: React.FC<CircuitEditorProps> = ({ className }) => {
   );
 };
 
-export default CircuitEditor;
+export default CircuitEditorPage;

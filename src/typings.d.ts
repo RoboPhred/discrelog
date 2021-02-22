@@ -19,6 +19,8 @@ interface Window {
   showSaveFilePicker?(opts: ShowSaveFilePickerOpts): Promise<FileHandle>;
 }
 
+declare let __webpack_public_path__: string;
+
 declare type HotkeyHandler = (keyEvent?: KeyboardEvent) => void;
 
 type IsFunction<T> = T extends (...args: any[]) => any ? T : never;
