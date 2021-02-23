@@ -10,7 +10,11 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const isProd = process.env["NODE_ENV"] === "production";
+const publicPath = process.env["PUBLIC_PATH"] ?? (isProd ? "/discrelog/" : "/");
 const isDev = !isProd;
+
+console.log("Production:", isProd);
+console.log("Public Path:", publicPath);
 
 const ROOT = __dirname;
 const PATHS = {
@@ -18,7 +22,6 @@ const PATHS = {
   dist: resolvePath(ROOT, "./dist"),
   node_modules: resolvePath(ROOT, "./node_modules"),
 };
-const PUBLIC_URL = isProd ? "/discrelog/" : "/";
 
 module.exports = {
   mode: isDev ? "development" : "production",
@@ -36,7 +39,7 @@ module.exports = {
   output: {
     filename: "[name].[fullhash].bundle.js",
     path: PATHS.dist,
-    publicPath: PUBLIC_URL,
+    publicPath,
   },
 
   resolve: {
