@@ -2,7 +2,7 @@ import { call, select, takeEvery } from "redux-saga/effects";
 import { Buffer } from "buffer";
 import { deflate } from "pako";
 
-import { rootUrl } from "@/runtime-env";
+import { rootUrl } from "@/env";
 import history from "@/history";
 
 import { AppState } from "@/store";

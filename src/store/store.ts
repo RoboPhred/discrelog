@@ -1,6 +1,15 @@
-import { createStore, compose, applyMiddleware, AnyAction } from "redux";
+import {
+  createStore,
+  compose,
+  applyMiddleware,
+  AnyAction,
+  Middleware,
+} from "redux";
 import freeze from "redux-freeze";
 import createSagaMiddleware from "redux-saga";
+
+import { isTruthy } from "@/utils";
+import { isProd } from "@/env";
 
 import { doInit } from "@/actions/init";
 
@@ -36,9 +45,14 @@ const composeEnhancers =
 
 const sagaMiddleware = createSagaMiddleware();
 
+const middleware: Middleware<any, any, any>[] = [
+  !isProd && freeze,
+  sagaMiddleware,
+].filter(isTruthy);
+
 export const store = createStore(
   finalReducer,
-  composeEnhancers(applyMiddleware(freeze, sagaMiddleware))
+  composeEnhancers(applyMiddleware(...middleware))
 );
 
 sagaMiddleware.run(saga);

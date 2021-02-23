@@ -57,3 +57,7 @@ function clone<T extends Record<string, unknown> | any[]>(obj: T): T {
   }
   return { ...obj };
 }
+
+export function isTruthy<T>(value: T | null | undefined | false): value is T {
+  return Boolean(value);
+}
