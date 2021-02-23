@@ -1,0 +1,8 @@
+.export-link-dialog-link-container {
+  max-height: 400px;
+  overflow: auto;
+}
+
+.export-link-dialog-link {
+  overflow-wrap: break-word;
+}

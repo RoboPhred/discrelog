@@ -8,7 +8,18 @@ export interface EmptyDialogServiceState extends DialogServiceBaseState {
   data: null;
 }
 
-export type DialogServiceState = EmptyDialogServiceState;
+export interface ExportProjectLinkDialogData {
+  projectLink: string;
+}
+export interface ExportProjectLinkDialogServiceState
+  extends DialogServiceBaseState {
+  dialogType: "export-project-link";
+  data: ExportProjectLinkDialogData;
+}
+
+export type DialogServiceState =
+  | EmptyDialogServiceState
+  | ExportProjectLinkDialogServiceState;
 export type DialogType = DialogServiceState["dialogType"];
 
 const _defaultState: EmptyDialogServiceState = {

@@ -1,0 +1,54 @@
+import * as React from "react";
+
+import useSelector from "@/hooks/useSelector";
+import { useAction } from "@/hooks/useAction";
+
+import { acceptDialog } from "@/actions/dialog-response-accept";
+
+import { dialogDataSelector } from "@/services/dialog/selectors/dialog";
+import { ExportProjectLinkDialogData } from "@/services/dialog/state";
+
+import Button from "@/components/Button";
+import Dialog from "@/components/Dialog";
+
+import styles from "./ExportLinkDialog.module.css";
+
+const ExportProjectLinkDialog: React.FC = () => {
+  const onCloseDialog = useAction(acceptDialog);
+  const dialogData: ExportProjectLinkDialogData | null = useSelector(
+    dialogDataSelector
+  );
+
+  const projectLink = dialogData?.projectLink;
+
+  const onCopy = React.useCallback(() => {
+    if (!projectLink) {
+      return;
+    }
+    // TODO: Show link in dialog on failure
+    navigator.clipboard.writeText(projectLink).catch(() => {
+      /* do nothing */
+    });
+  }, [projectLink]);
+
+  if (!projectLink) {
+    return null;
+  }
+
+  const dialogFooter = <Button onClick={onCopy}>Copy to Clipboard</Button>;
+
+  return (
+    <Dialog
+      isOpen={true}
+      cancelText="Close"
+      onCancel={onCloseDialog}
+      footer={dialogFooter}
+    >
+      <div className={styles["export-link-dialog-link-container"]}>
+        <code className={styles["export-link-dialog-link"]}>{projectLink}</code>
+      </div>
+    </Dialog>
+  );
+};
+
+export default ExportProjectLinkDialog;

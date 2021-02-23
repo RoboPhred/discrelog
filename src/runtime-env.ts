@@ -6,4 +6,6 @@ export const keyboardIsMac = OS_MAC.test((os || "undefined").toString());
 
 export const keyboardCommandModifier = keyboardIsMac ? "command" : "ctrl";
 
-export const rootUrl = `${window.location.host}/${__webpack_public_path__}`;
+const rootUrlBuilder = new URL(window.location.host);
+rootUrlBuilder.pathname = __webpack_public_path__;
+export const rootUrl = rootUrlBuilder.toString();
