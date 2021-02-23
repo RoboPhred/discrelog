@@ -1,3 +1,4 @@
+import { ELEMENT_TRANSISTER_RESPONSE_TIME } from "../constants";
 import { ElementDefinition } from "../types";
 
 const norElementDefinition: ElementDefinition = {
@@ -6,7 +7,7 @@ const norElementDefinition: ElementDefinition = {
   evolve(_, inputs) {
     return {
       transitions: {
-        tickOffset: 4,
+        tickOffset: ELEMENT_TRANSISTER_RESPONSE_TIME,
         valuesByPin: { OUT: !(inputs.A || inputs.B) },
       },
     };

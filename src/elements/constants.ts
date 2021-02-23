@@ -1,0 +1,1 @@
+export const ELEMENT_TRANSISTER_RESPONSE_TIME = 1;
