@@ -172,7 +172,7 @@ const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
         elementState={nodeState}
       />
     );
-    bounds = [0, 0, 50, 50]; //getBounds(hitPath);
+    bounds = getBounds(hitPath);
   }
 
   const transform = x != 0 || y != 0 ? `translate(${x}, ${y})` : undefined;
