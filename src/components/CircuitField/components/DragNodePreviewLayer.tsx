@@ -28,32 +28,34 @@ const selectedNodeTypesByIdSelector = createSelector(
   (selectedNodeIds, nodeTypesById) => pick(nodeTypesById, selectedNodeIds)
 );
 
-const DragNodePreviewLayer: React.FC = () => {
-  const selectedNodePositionsById = useSelector(
-    selectedNodePositionsByIdSelector
-  );
-  const selectedNodeTypesById = useSelector(selectedNodeTypesByIdSelector);
-  const dragMoveOffset = useSelector(dragMoveOffsetSelector);
+const DragNodePreviewLayer: React.FC = React.memo(
+  function DragNodePreviewLayer() {
+    const selectedNodePositionsById = useSelector(
+      selectedNodePositionsByIdSelector
+    );
+    const selectedNodeTypesById = useSelector(selectedNodeTypesByIdSelector);
+    const dragMoveOffset = useSelector(dragMoveOffsetSelector);
 
-  let elements: React.ReactNode | null = null;
-  if (dragMoveOffset) {
-    elements = values(
-      mapValues(selectedNodePositionsById, (p, nodeId) => (
-        <NodeVisual
-          key={nodeId}
-          nodeType={selectedNodeTypesById[nodeId]}
-          nodeState={{}}
-          x={p.x + dragMoveOffset.x}
-          y={p.y + dragMoveOffset.y}
-        />
-      ))
+    let elements: React.ReactNode | null = null;
+    if (dragMoveOffset) {
+      elements = values(
+        mapValues(selectedNodePositionsById, (p, nodeId) => (
+          <NodeVisual
+            key={nodeId}
+            nodeType={selectedNodeTypesById[nodeId]}
+            nodeState={{}}
+            x={p.x + dragMoveOffset.x}
+            y={p.y + dragMoveOffset.y}
+          />
+        ))
+      );
+    }
+    return (
+      <g id="drag-node-preview-layer" opacity={0.3}>
+        {elements}
+      </g>
     );
   }
-  return (
-    <g id="drag-node-preview-layer" opacity={0.3}>
-      {elements}
-    </g>
-  );
-};
+);
 
 export default DragNodePreviewLayer;

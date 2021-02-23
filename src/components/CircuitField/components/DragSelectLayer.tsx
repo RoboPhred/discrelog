@@ -16,7 +16,7 @@ import { fieldDragEnd } from "@/actions/field-drag-end";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
 
-const DragSelectLayer: React.FC = () => {
+const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
   const dispatch = useDispatch();
   const selectionRect = useSelector(selectionRectSelector);
 
@@ -86,8 +86,13 @@ const DragSelectLayer: React.FC = () => {
   return (
     <g id="drag-select-layer">
       <rect
-        width="100%"
-        height="100%"
+        /*
+         Our width and height get scaled by the parent scaler.
+         We have to be inside the parent scaler to make our mouse coordinate values match up.
+         Scale us back out so we continue to cover the whole screen.
+         */
+        width={`${counterScale(1) * 100}%`}
+        height={`${counterScale(1) * 100}%`}
         fill="transparent"
         onMouseDown={onMouseDown}
       />
@@ -107,6 +112,6 @@ const DragSelectLayer: React.FC = () => {
       )}
     </g>
   );
-};
+});
 
 export default DragSelectLayer;

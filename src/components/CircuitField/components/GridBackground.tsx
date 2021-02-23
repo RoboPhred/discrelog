@@ -4,7 +4,7 @@ import useSelector from "@/hooks/useSelector";
 
 import { viewScaleSelector } from "@/services/circuit-editor-view/selectors/view";
 
-const GridBackground: React.FC = () => {
+const GridBackground: React.FC = React.memo(function GridBackground() {
   const scale = useSelector(viewScaleSelector);
 
   const gridSize = 50 * scale;
@@ -30,6 +30,6 @@ const GridBackground: React.FC = () => {
       <rect width="100%" height="100%" fill="url(#grid)" />
     </svg>
   );
-};
+});
 
 export default GridBackground;

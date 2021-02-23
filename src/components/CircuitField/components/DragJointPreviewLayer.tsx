@@ -21,47 +21,49 @@ const selectedJointPositionsByIdSelector = createSelector(
     pick(jointPositionsById, selectedJointIds)
 );
 
-const DragJointPreviewLayer: React.FC = () => {
-  const dragMoveOffset = useSelector(dragMoveOffsetSelector);
-  const selectedNodePositionsById = useSelector(
-    selectedJointPositionsByIdSelector
-  );
+const DragJointPreviewLayer: React.FC = React.memo(
+  function DragJointPreviewLayer() {
+    const dragMoveOffset = useSelector(dragMoveOffsetSelector);
+    const selectedNodePositionsById = useSelector(
+      selectedJointPositionsByIdSelector
+    );
 
-  const newJointPosition = useSelector(dragNewJointPositionSelector);
+    const newJointPosition = useSelector(dragNewJointPositionSelector);
 
-  let elements: React.ReactNode | null = null;
-  if (dragMoveOffset) {
-    elements = values(selectedNodePositionsById).map((p, index) => (
-      <WireJointVisual
-        key={index}
-        interactable={false}
-        x={p.x + dragMoveOffset.x}
-        y={p.y + dragMoveOffset.y}
-        opacity={0.5}
-      />
-    ));
-  }
+    let elements: React.ReactNode | null = null;
+    if (dragMoveOffset) {
+      elements = values(selectedNodePositionsById).map((p, index) => (
+        <WireJointVisual
+          key={index}
+          interactable={false}
+          x={p.x + dragMoveOffset.x}
+          y={p.y + dragMoveOffset.y}
+          opacity={0.5}
+        />
+      ));
+    }
 
-  let newJointElement: React.ReactNode | null = null;
-  if (newJointPosition) {
-    newJointElement = (
-      <WireJointVisual
-        interactable={false}
-        x={newJointPosition.x}
-        y={newJointPosition.y}
-        opacity={0.5}
-      />
+    let newJointElement: React.ReactNode | null = null;
+    if (newJointPosition) {
+      newJointElement = (
+        <WireJointVisual
+          interactable={false}
+          x={newJointPosition.x}
+          y={newJointPosition.y}
+          opacity={0.5}
+        />
+      );
+    }
+
+    // TODO: Draw transparent lines connecting the joint.
+
+    return (
+      <g id="drag-joint-preview-layer" opacity={0.3}>
+        {elements}
+        {newJointElement}
+      </g>
     );
   }
-
-  // TODO: Draw transparent lines connecting the joint.
-
-  return (
-    <g id="drag-joint-preview-layer" opacity={0.3}>
-      {elements}
-      {newJointElement}
-    </g>
-  );
-};
+);
 
 export default DragJointPreviewLayer;

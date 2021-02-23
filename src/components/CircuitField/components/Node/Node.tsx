@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import getBounds from "svg-path-bounds";
 
 import { cls } from "@/utils";
-import { Point, ZeroPoint } from "@/geometry";
+import { Point } from "@/geometry";
 import { getModifiers } from "@/modifier-keys";
 import { getSelectMode } from "@/selection-mode";
 
@@ -38,17 +38,15 @@ export interface NodeProps {
   nodeId: string;
 }
 
-const Node: React.FC<NodeProps> = ({ nodeId }) => {
+const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
   const dispatch = useDispatch();
 
   const isSimActive = useSelector(isSimActiveSelector);
   const editCircuitIdPath = useSelector(editingCircuitNodeIdPathSelector);
-  const scale = useSelector(viewScaleSelector);
 
   const { openContextMenu, renderContextMenu } = useContextMenu();
 
   const def = useSelector((state) => nodeDefFromNodeIdSelector(state, nodeId));
-  const nodeName = useSelector((s) => nodeNameFromNodeIdSelector(s, nodeId));
   const { x, y } = useSelector((s) =>
     nodePositionFromNodeIdSelector(s, nodeId)
   );
@@ -174,17 +172,7 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
         elementState={nodeState}
       />
     );
-    bounds = getBounds(hitPath);
-  }
-
-  // FIXME: This is really rough, especially the y offset.
-  // There is a noticable jump in position between >1 and >1 scale.
-  const textScale = Math.max(0.7, scale);
-  let textYOffset = 15;
-  if (textScale > 1) {
-    textYOffset -= textScale * 2;
-  } else {
-    textYOffset += (1 / textScale) * 7;
+    bounds = [0, 0, 50, 50]; //getBounds(hitPath);
   }
 
   const transform = x != 0 || y != 0 ? `translate(${x}, ${y})` : undefined;
@@ -197,20 +185,47 @@ const Node: React.FC<NodeProps> = ({ nodeId }) => {
       >
         {body}
       </g>
-      {nodeName && (
-        <text
-          fontSize={`${1.2 / textScale}em`}
-          className={interaction["text-unselectable"]}
-          textAnchor="middle"
-          x={bounds[0] + (bounds[2] - bounds[0]) / 2}
-          y={bounds[3] + textYOffset}
-        >
-          {nodeName}
-        </text>
-      )}
+      <NodeName nodeId={nodeId} bounds={bounds} />
       {renderContextMenu(<NodeContextMenu nodeId={nodeId} />)}
     </g>
   );
-};
+});
+
+interface NodeNameProps extends NodeProps {
+  bounds: [number, number, number, number];
+}
+const NodeName: React.FC<NodeNameProps> = React.memo(function NodeName({
+  nodeId,
+  bounds,
+}) {
+  const scale = useSelector(viewScaleSelector);
+  const nodeName = useSelector((s) => nodeNameFromNodeIdSelector(s, nodeId));
+
+  // FIXME: This is really rough, especially the y offset.
+  // There is a noticable jump in position between >1 and >1 scale.
+  const textScale = Math.max(0.7, scale);
+  let textYOffset = 15;
+  if (textScale > 1) {
+    textYOffset -= textScale * 2;
+  } else {
+    textYOffset += (1 / textScale) * 7;
+  }
+
+  if (!nodeName) {
+    return null;
+  }
+
+  return (
+    <text
+      fontSize={`${1.2 / textScale}em`}
+      className={interaction["text-unselectable"]}
+      textAnchor="middle"
+      x={bounds[0] + (bounds[2] - bounds[0]) / 2}
+      y={bounds[3] + textYOffset}
+    >
+      {nodeName}
+    </text>
+  );
+});
 
 export default Node;

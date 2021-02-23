@@ -6,7 +6,7 @@ import { nodeIdsForEditingCircuitSelector } from "@/services/circuit-editor-view
 
 import Node from "./Node";
 
-const NodesLayer: React.FC = () => {
+const NodesLayer: React.FC = React.memo(function NodesLayer() {
   const nodeIds = useSelector(nodeIdsForEditingCircuitSelector);
 
   const nodeElements = nodeIds.map((nodeId) => {
@@ -14,5 +14,5 @@ const NodesLayer: React.FC = () => {
   });
 
   return <g id="nodes-layer">{nodeElements}</g>;
-};
+});
 export default NodesLayer;

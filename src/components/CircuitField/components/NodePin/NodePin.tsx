@@ -25,7 +25,10 @@ export interface NodePinProps {
   pinId: string;
 }
 
-const NodePin: React.FC<NodePinProps> = ({ nodeId, pinId }) => {
+const NodePin: React.FC<NodePinProps> = React.memo(function NodePin({
+  nodeId,
+  pinId,
+}) {
   const getMouseCoords = useEventMouseCoords();
   const dispatch = useDispatch();
 
@@ -138,7 +141,7 @@ const NodePin: React.FC<NodePinProps> = ({ nodeId, pinId }) => {
       />
     </g>
   );
-};
+});
 
 export default NodePin;
 

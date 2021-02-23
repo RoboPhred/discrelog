@@ -33,118 +33,116 @@ export interface WireSegmentProps {
   startJointId: string | null;
   endJointId: string | null;
 }
-const WireSegment: React.FC<WireSegmentProps> = ({
-  connectionId,
-  startJointId,
-  endJointId,
-}) => {
-  const dispatch = useDispatch();
-  const getMouseCoords = useEventMouseCoords();
+const WireSegment: React.FC<WireSegmentProps> = React.memo(
+  function WireSegment({ connectionId, startJointId, endJointId }) {
+    const dispatch = useDispatch();
+    const getMouseCoords = useEventMouseCoords();
 
-  const start = useSelector((state) => {
-    if (startJointId == null) {
-      return wireStartPositionFromConnectionIdSelector(state, connectionId);
+    const start = useSelector((state) => {
+      if (startJointId == null) {
+        return wireStartPositionFromConnectionIdSelector(state, connectionId);
+      }
+      return wireJointPositionFromJointIdSelector(state, startJointId);
+    });
+
+    const end = useSelector((state) => {
+      if (endJointId == null) {
+        return wireEndPositionFromConnectionIdSelector(state, connectionId);
+      }
+      return wireJointPositionFromJointIdSelector(state, endJointId);
+    });
+
+    const [mousePos, setMousePos] = React.useState<Point | null>(null);
+
+    const onMouseMove = React.useCallback(
+      (e: React.MouseEvent) => {
+        const p = getMouseCoords(e);
+        setMousePos(p);
+      },
+      [getMouseCoords]
+    );
+
+    const onMouseLeave = React.useCallback(() => {
+      setMousePos(null);
+    }, []);
+
+    const onDragStart = React.useCallback(
+      (e: MouseEvent) => {
+        const p = getMouseCoords(e);
+        const modifiers = getModifiers(e);
+        dispatch(
+          fieldDragStartNewJoint(connectionId, startJointId, p, modifiers)
+        );
+      },
+      [getMouseCoords, dispatch, connectionId, startJointId]
+    );
+
+    const onDragMove = React.useCallback(
+      (offset: Point, e: MouseEvent) => {
+        const p = getMouseCoords(e);
+        const modifiers = getModifiers(e);
+        dispatch(fieldDragContinue(p, modifiers));
+      },
+      [dispatch, getMouseCoords]
+    );
+
+    const onDragEnd = React.useCallback(
+      (e: MouseEvent) => {
+        const p = getMouseCoords(e);
+        const modifiers = getModifiers(e);
+        dispatch(fieldDragEnd(p, modifiers));
+      },
+      [dispatch, getMouseCoords]
+    );
+
+    const onClick = React.useCallback(
+      (e: MouseEvent) => {
+        const modifiers = getModifiers(e);
+        const mode = getSelectMode(modifiers);
+        dispatch(selectWires(connectionId, mode));
+      },
+      [connectionId, dispatch]
+    );
+
+    const { startTracking } = useMouseTracking({
+      onClick,
+      onDragStart,
+      onDragMove,
+      onDragEnd,
+    });
+
+    const onJointInsertMouseDown = React.useCallback(
+      (e: React.MouseEvent) => {
+        e.preventDefault();
+        startTracking(e);
+      },
+      [startTracking]
+    );
+
+    let insertJointPos: Point | undefined;
+    if (mousePos) {
+      const lineDir = normalize(pointSubtract(end, start));
+      const v = pointSubtract(mousePos, start);
+      const d = dotProduct(v, lineDir);
+      insertJointPos = pointAdd(start, scale(lineDir, d));
     }
-    return wireJointPositionFromJointIdSelector(state, startJointId);
-  });
 
-  const end = useSelector((state) => {
-    if (endJointId == null) {
-      return wireEndPositionFromConnectionIdSelector(state, connectionId);
-    }
-    return wireJointPositionFromJointIdSelector(state, endJointId);
-  });
-
-  const [mousePos, setMousePos] = React.useState<Point | null>(null);
-
-  const onMouseMove = React.useCallback(
-    (e: React.MouseEvent) => {
-      const p = getMouseCoords(e);
-      setMousePos(p);
-    },
-    [getMouseCoords]
-  );
-
-  const onMouseLeave = React.useCallback(() => {
-    setMousePos(null);
-  }, []);
-
-  const onDragStart = React.useCallback(
-    (e: MouseEvent) => {
-      const p = getMouseCoords(e);
-      const modifiers = getModifiers(e);
-      dispatch(
-        fieldDragStartNewJoint(connectionId, startJointId, p, modifiers)
-      );
-    },
-    [getMouseCoords, dispatch, connectionId, startJointId]
-  );
-
-  const onDragMove = React.useCallback(
-    (offset: Point, e: MouseEvent) => {
-      const p = getMouseCoords(e);
-      const modifiers = getModifiers(e);
-      dispatch(fieldDragContinue(p, modifiers));
-    },
-    [dispatch, getMouseCoords]
-  );
-
-  const onDragEnd = React.useCallback(
-    (e: MouseEvent) => {
-      const p = getMouseCoords(e);
-      const modifiers = getModifiers(e);
-      dispatch(fieldDragEnd(p, modifiers));
-    },
-    [dispatch, getMouseCoords]
-  );
-
-  const onClick = React.useCallback(
-    (e: MouseEvent) => {
-      const modifiers = getModifiers(e);
-      const mode = getSelectMode(modifiers);
-      dispatch(selectWires(connectionId, mode));
-    },
-    [connectionId, dispatch]
-  );
-
-  const { startTracking } = useMouseTracking({
-    onClick,
-    onDragStart,
-    onDragMove,
-    onDragEnd,
-  });
-
-  const onJointInsertMouseDown = React.useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      startTracking(e);
-    },
-    [startTracking]
-  );
-
-  let insertJointPos: Point | undefined;
-  if (mousePos) {
-    const lineDir = normalize(pointSubtract(end, start));
-    const v = pointSubtract(mousePos, start);
-    const d = dotProduct(v, lineDir);
-    insertJointPos = pointAdd(start, scale(lineDir, d));
+    return (
+      <g onMouseMove={onMouseMove} onMouseLeave={onMouseLeave}>
+        <line x1={start.x} y1={start.y} x2={end.x} y2={end.y} strokeWidth={2} />
+        {insertJointPos && (
+          <circle
+            cx={insertJointPos.x}
+            cy={insertJointPos.y}
+            r={3}
+            stroke="none"
+            fill="red"
+            onMouseDown={onJointInsertMouseDown}
+          />
+        )}
+      </g>
+    );
   }
-
-  return (
-    <g onMouseMove={onMouseMove} onMouseLeave={onMouseLeave}>
-      <line x1={start.x} y1={start.y} x2={end.x} y2={end.y} strokeWidth={2} />
-      {insertJointPos && (
-        <circle
-          cx={insertJointPos.x}
-          cy={insertJointPos.y}
-          r={3}
-          stroke="none"
-          fill="red"
-          onMouseDown={onJointInsertMouseDown}
-        />
-      )}
-    </g>
-  );
-};
+);
 
 export default WireSegment;

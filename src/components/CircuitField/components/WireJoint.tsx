@@ -24,7 +24,9 @@ interface WireJointProps {
   jointId: string;
 }
 
-const WireJoint: React.FC<WireJointProps> = ({ jointId }) => {
+const WireJoint: React.FC<WireJointProps> = React.memo(function WireJoint({
+  jointId,
+}) {
   const getMouseCoords = useEventMouseCoords();
   const dispatch = useDispatch();
 
@@ -94,6 +96,6 @@ const WireJoint: React.FC<WireJointProps> = ({ jointId }) => {
       onMouseDown={mouseDown}
     />
   );
-};
+});
 
 export default WireJoint;

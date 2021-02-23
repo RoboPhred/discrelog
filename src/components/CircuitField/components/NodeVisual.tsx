@@ -24,7 +24,7 @@ export interface NodeVisualProps {
   onContextMenu?(e: React.MouseEvent): void;
 }
 
-const NodeVisual: React.FC<NodeVisualProps> = ({
+const NodeVisual: React.FC<NodeVisualProps> = React.memo(function NodeVisual({
   className,
   circuitNodeId,
   x = 0,
@@ -38,7 +38,7 @@ const NodeVisual: React.FC<NodeVisualProps> = ({
   onMouseUp,
   onMouseLeave,
   onContextMenu,
-}) => {
+}) {
   const def = useSelector((state) =>
     nodeDefinitionFromTypeSelector(state, nodeType)
   );
@@ -80,6 +80,6 @@ const NodeVisual: React.FC<NodeVisualProps> = ({
       {body}
     </g>
   );
-};
+});
 
 export default NodeVisual;

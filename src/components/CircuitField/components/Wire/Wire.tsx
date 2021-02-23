@@ -17,7 +17,7 @@ export interface WireProps {
   connectionId: string;
 }
 
-const Wire: React.FC<WireProps> = ({ connectionId }) => {
+const Wire: React.FC<WireProps> = React.memo(function Wire({ connectionId }) {
   const editCircuitIdPath = useSelector(editingCircuitNodeIdPathSelector);
 
   const jointIds = useSelector((state) =>
@@ -59,6 +59,6 @@ const Wire: React.FC<WireProps> = ({ connectionId }) => {
       {jointElements}
     </g>
   );
-};
+});
 
 export default Wire;

@@ -17,7 +17,7 @@ import { useEventMouseCoords } from "../hooks/useMouseCoords";
 
 import NodeVisual from "./NodeVisual";
 
-const DragNewNodeLayer: React.FC = () => {
+const DragNewNodeLayer: React.FC = React.memo(function DragNewNodeLayer() {
   const dispatch = useDispatch();
   const getMouseCoords = useEventMouseCoords();
   const isDraggingNewNode = useSelector(isDraggingNewNodeSelector);
@@ -60,6 +60,6 @@ const DragNewNodeLayer: React.FC = () => {
       />
     </>
   );
-};
+});
 
 export default DragNewNodeLayer;

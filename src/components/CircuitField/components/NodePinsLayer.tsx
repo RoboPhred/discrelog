@@ -6,7 +6,7 @@ import { nodeIdsForEditingCircuitSelector } from "@/services/circuit-editor-view
 
 import NodePins from "./NodePins";
 
-const NodePinsLayer: React.FC = () => {
+const NodePinsLayer: React.FC = React.memo(function NodePinsLayer() {
   const nodeIds = useSelector(nodeIdsForEditingCircuitSelector);
 
   const elements = nodeIds.map((nodeId) => (
@@ -14,6 +14,6 @@ const NodePinsLayer: React.FC = () => {
   ));
 
   return <g id="node-pins-layer">{elements}</g>;
-};
+});
 
 export default NodePinsLayer;

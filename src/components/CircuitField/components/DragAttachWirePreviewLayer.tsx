@@ -8,25 +8,27 @@ import {
   dragStartSelector,
 } from "@/services/circuit-editor-ui/selectors/drag";
 
-const DragAttachWirePreviewLayer: React.FC = () => {
-  const dragMode = useSelector(dragModeSelector);
-  const dragStart = useSelector(dragStartSelector);
-  const dragEnd = useSelector(dragEndSelector);
+const DragAttachWirePreviewLayer: React.FC = React.memo(
+  function DragAttachWirePreviewLayer() {
+    const dragMode = useSelector(dragModeSelector);
+    const dragStart = useSelector(dragStartSelector);
+    const dragEnd = useSelector(dragEndSelector);
 
-  if (dragMode != "wire" || !dragStart || !dragEnd) {
-    return null;
+    if (dragMode != "wire" || !dragStart || !dragEnd) {
+      return null;
+    }
+
+    return (
+      <line
+        x1={dragStart.x}
+        y1={dragStart.y}
+        x2={dragEnd.x}
+        y2={dragEnd.y}
+        stroke="black"
+        strokeWidth={1}
+      />
+    );
   }
-
-  return (
-    <line
-      x1={dragStart.x}
-      y1={dragStart.y}
-      x2={dragEnd.x}
-      y2={dragEnd.y}
-      stroke="black"
-      strokeWidth={1}
-    />
-  );
-};
+);
 
 export default DragAttachWirePreviewLayer;

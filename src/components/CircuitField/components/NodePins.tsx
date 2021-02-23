@@ -10,7 +10,9 @@ export interface NodePinsProps {
   nodeId: string;
 }
 
-const NodePins: React.FC<NodePinsProps> = ({ nodeId }) => {
+const NodePins: React.FC<NodePinsProps> = React.memo(function NodePins({
+  nodeId,
+}) {
   const def = useSelector((state) => nodeDefFromNodeIdSelector(state, nodeId));
 
   const pins = def?.pins ?? {};
@@ -20,6 +22,6 @@ const NodePins: React.FC<NodePinsProps> = ({ nodeId }) => {
   ));
 
   return <>{elements}</>;
-};
+});
 
 export default NodePins;
