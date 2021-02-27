@@ -7,7 +7,6 @@ import { useOutsideEvent } from "@/hooks/useOutsideEvent";
 import {
   PopoverChildContextProvider,
   usePopoverChild,
-  usePopoverChildContext,
 } from "./PopoverChildContext";
 import { useArrayState } from "@/hooks/useArrayState";
 

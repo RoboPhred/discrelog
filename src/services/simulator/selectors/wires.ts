@@ -1,6 +1,4 @@
 import createCachedSelector from "re-reselect";
-import flatMap from "lodash/flatMap";
-import get from "lodash/get";
 
 import { AppState } from "@/store";
 

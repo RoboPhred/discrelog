@@ -24,7 +24,6 @@ import Menu from "@/components/Menus/Menu";
 import MenuItem from "@/components/Menus/MenuItem";
 import DividerMenuItem from "@/components/Menus/DividerMenuItem";
 import SelectionList, { SelectionListItem } from "@/components/SelectionList";
-import AtomicTextInput from "@/components/AtomicTextInput";
 
 import { WindowProps } from "../window-props";
 

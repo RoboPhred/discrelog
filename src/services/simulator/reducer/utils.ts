@@ -1,6 +1,5 @@
 import binarySearch from "binary-search";
 import { v4 as uuidV4 } from "uuid";
-import findIndex from "lodash/findIndex";
 import pick from "lodash/pick";
 import difference from "lodash/difference";
 

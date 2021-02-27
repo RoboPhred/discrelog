@@ -2,10 +2,7 @@ import * as React from "react";
 import { Options } from "@popperjs/core";
 
 import Popover from "./Popover";
-import {
-  MenuCloseContextProvider,
-  useMenuCloseContext,
-} from "./Menus/MenuCloseContext";
+import { MenuCloseContextProvider } from "./Menus/MenuCloseContext";
 
 export interface AutoPopoverProps {
   content: JSX.Element;

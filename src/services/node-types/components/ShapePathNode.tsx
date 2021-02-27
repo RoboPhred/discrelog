@@ -7,11 +7,7 @@ import { interactNode } from "@/actions/node-interact";
 
 import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
 
-import {
-  NodeComponentProps,
-  NodeComponentType,
-  NodeVisualDefinition,
-} from "../types";
+import { NodeComponentProps, NodeVisualDefinition } from "../types";
 
 export interface NodeVisualPathDefinition {
   /**
