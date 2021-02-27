@@ -6,6 +6,7 @@ import AutoPopover from "../AutoPopover";
 import Button from "../Button";
 import FileMenu from "../FileMenu";
 import EditMenu from "../EditMenu";
+import ViewMenu from "../ViewMenu";
 import SimControls from "../SimControls";
 
 import styles from "./TitleBar.module.css";
@@ -23,6 +24,9 @@ const TitleBar: React.FC<TitleBarProps> = ({ className }) => {
       </AutoPopover>
       <AutoPopover content={<EditMenu />} placement="bottom-start">
         <Button>Edit</Button>
+      </AutoPopover>
+      <AutoPopover content={<ViewMenu />} placement="bottom-start">
+        <Button>View</Button>
       </AutoPopover>
 
       <div className={styles["titlebar-controls"]}>

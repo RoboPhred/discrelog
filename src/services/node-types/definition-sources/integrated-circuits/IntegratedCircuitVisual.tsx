@@ -11,7 +11,7 @@ import useSelector from "@/hooks/useSelector";
 import { viewCircuit } from "@/actions/circuit-view";
 
 import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
-import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-view/selectors/circuit";
+import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
 
 import { NodeComponentProps, NodeVisualDefinition } from "../../types";
 

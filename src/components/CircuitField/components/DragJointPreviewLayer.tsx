@@ -8,7 +8,7 @@ import useSelector from "@/hooks/useSelector";
 import {
   dragMoveOffsetSelector,
   dragNewJointPositionSelector,
-} from "@/services/circuit-editor-ui/selectors/drag";
+} from "@/services/circuit-editor-ui-drag/selectors/drag";
 import { selectedJointIdsSelector } from "@/services/selection/selectors/selection";
 import { wireJointPositionsByJointIdSelector } from "@/services/node-layout/selectors/wires";
 

@@ -1,6 +1,6 @@
 import { isAddNodeAction } from "@/actions/node-add";
 
-import { editingCircuitIdSelector } from "@/services/circuit-editor-view/selectors/circuit";
+import { editingCircuitIdSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
 
 import { createCircuitsReducer } from "../utils";
 

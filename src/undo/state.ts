@@ -2,14 +2,14 @@ import { AppServicesState } from "@/services/state";
 
 export const UndoServicesStateKeys = [
   // Include view to jump us back to the circuit the operation took place on.
-  "circuitEditorView",
+  "circuitEditorUiViewport",
   "circuits",
   "nodeGraph",
   "nodeLayout",
 ] as const;
 export type UndoServicesStates = Pick<
   AppServicesState,
-  "circuitEditorView" | "circuits" | "nodeGraph" | "nodeLayout"
+  "circuitEditorUiViewport" | "circuits" | "nodeGraph" | "nodeLayout"
 >;
 
 export interface UndoState {

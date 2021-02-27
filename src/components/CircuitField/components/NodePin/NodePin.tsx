@@ -10,7 +10,7 @@ import useMouseTracking from "@/hooks/useMouseTracking";
 
 import { nodePinPositionFromNodePinSelector } from "@/services/node-layout/selectors/node-pin-positions";
 import { pinDirectionFromNodePinSelector } from "@/services/node-graph/selectors/pins";
-import { dragWireTargetPinSelector } from "@/services/circuit-editor-ui/selectors/drag";
+import { dragWireTargetPinSelector } from "@/services/circuit-editor-ui-drag/selectors/drag";
 
 import { fieldDragStartWire } from "@/actions/field-drag-start-wire";
 import { fieldDragEnd } from "@/actions/field-drag-end";

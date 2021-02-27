@@ -2,6 +2,7 @@ import { AppState } from "@/store";
 
 import { getSimulatorNodeIdFromCircuitNodeIdPath } from "@/services/simulator-graph/utils";
 
+const EmptyState = Object.freeze({});
 export const nodeStateFromCircuitNodeIdSelector = (
   state: AppState,
   circuitNodeIdPath: string[]
@@ -16,7 +17,7 @@ export const nodeStateFromCircuitNodeIdSelector = (
     circuitNodeIdPath
   );
   if (!simulatorNodeId) {
-    return {};
+    return EmptyState;
   }
 
   return nodeStatesBySimulatorNodeId[simulatorNodeId];

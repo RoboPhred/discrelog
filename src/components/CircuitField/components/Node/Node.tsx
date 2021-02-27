@@ -12,14 +12,14 @@ import interaction from "@/styles/interaction.module.css";
 import useSelector from "@/hooks/useSelector";
 import useMouseTracking from "@/hooks/useMouseTracking";
 
-import { nodeNameFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 import { nodeStateFromCircuitNodeIdSelector } from "@/services/simulator/selectors/nodes";
 import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
 import { nodePositionFromNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
-import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-view/selectors/circuit";
+import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
 import { nodeDefFromNodeIdSelector } from "@/services/node-graph/selectors/node-def";
-import { viewScaleSelector } from "@/services/circuit-editor-view/selectors/view";
+import { viewScaleSelector } from "@/services/circuit-editor-ui-viewport/selectors/view";
+import { nodeFieldDisplayNameFromNodeId } from "@/services/circuit-editor-ui-settings/selectors/node-name";
 
 import { fieldDragStartNode } from "@/actions/field-drag-start-node";
 import { fieldDragContinue } from "@/actions/field-drag-continue";
@@ -199,7 +199,9 @@ const NodeName: React.FC<NodeNameProps> = React.memo(function NodeName({
   bounds,
 }) {
   const scale = useSelector(viewScaleSelector);
-  const nodeName = useSelector((s) => nodeNameFromNodeIdSelector(s, nodeId));
+  const nodeName = useSelector((s) =>
+    nodeFieldDisplayNameFromNodeId(s, nodeId)
+  );
 
   // FIXME: This is really rough, especially the y offset.
   // There is a noticable jump in position between >1 and >1 scale.

@@ -50,7 +50,7 @@ export const nodeTypeFromNodeIdSelector = createNodeGraphSelector(
   }
 );
 
-export const nodeNameFromNodeIdSelector = createNodeGraphSelector(
+export const nodeNameOrDefaultFromNodeIdSelector = createNodeGraphSelector(
   (s: NodeGraphServiceState, nodeId: string) => {
     const node = nodeFromNodeIdSelector.local(s, nodeId);
     if (!node) {
@@ -58,5 +58,16 @@ export const nodeNameFromNodeIdSelector = createNodeGraphSelector(
     }
 
     return node.nodeName ?? nodeId.substr(0, 4);
+  }
+);
+
+export const nodeNameFromNodeIdSelector = createNodeGraphSelector(
+  (s: NodeGraphServiceState, nodeId: string) => {
+    const node = nodeFromNodeIdSelector.local(s, nodeId);
+    if (!node) {
+      return null;
+    }
+
+    return node.nodeName;
   }
 );

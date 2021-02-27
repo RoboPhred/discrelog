@@ -6,7 +6,7 @@ import { combineSelection } from "@/selection-mode";
 
 import { isSelectRegionAction } from "@/actions/select-region";
 
-import { nodeIdsForEditingCircuitSelector } from "@/services/circuit-editor-view/selectors/nodes";
+import { nodeIdsForEditingCircuitSelector } from "@/services/circuit-editor-ui-viewport/selectors/nodes";
 import { nodeRectsByIdSelector } from "@/services/node-layout/selectors/node-bounds";
 import { wireJointPositionsByJointIdSelector } from "@/services/node-layout/selectors/wires";
 

@@ -9,7 +9,7 @@ import useSelector from "@/hooks/useSelector";
 import { useNativeEvent } from "@/hooks/useNativeEvent";
 
 import { fieldRectSelector } from "@/services/node-layout/selectors/field";
-import { viewScaleSelector } from "@/services/circuit-editor-view/selectors/view";
+import { viewScaleSelector } from "@/services/circuit-editor-ui-viewport/selectors/view";
 
 import { fieldMouseLeave } from "@/actions/field-mouse-leave";
 import { viewZoom } from "@/actions/view-zoom";

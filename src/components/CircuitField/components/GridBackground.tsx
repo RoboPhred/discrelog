@@ -2,7 +2,7 @@ import * as React from "react";
 
 import useSelector from "@/hooks/useSelector";
 
-import { viewScaleSelector } from "@/services/circuit-editor-view/selectors/view";
+import { viewScaleSelector } from "@/services/circuit-editor-ui-viewport/selectors/view";
 
 const GridBackground: React.FC = React.memo(function GridBackground() {
   const scale = useSelector(viewScaleSelector);

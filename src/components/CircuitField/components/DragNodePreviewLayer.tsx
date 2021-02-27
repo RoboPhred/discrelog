@@ -9,7 +9,7 @@ import { createSelector } from "reselect";
 import { nodeTypesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 import { nodePositionsByNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
-import { dragMoveOffsetSelector } from "@/services/circuit-editor-ui/selectors/drag";
+import { dragMoveOffsetSelector } from "@/services/circuit-editor-ui-drag/selectors/drag";
 
 import useSelector from "@/hooks/useSelector";
 

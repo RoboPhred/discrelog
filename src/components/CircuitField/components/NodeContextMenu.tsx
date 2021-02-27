@@ -5,14 +5,14 @@ import useSelector from "@/hooks/useSelector";
 
 import { selectionAlignToGrid } from "@/actions/selection-align-to-grid";
 import { deleteSelection } from "@/actions/selection-delete";
+import { renameNode } from "@/actions/node-rename";
 
-import { nodeNameFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
+import { nodeNameOrDefaultFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 
 import Menu from "@/components/Menus/Menu";
 import MenuItem from "@/components/Menus/MenuItem";
-import MenuDivider from "@/components/Menus/MenuDivider";
-import MenuEditableText from "@/components/Menus/MenuEditableText";
-import { renameNode } from "@/actions/node-rename";
+import DividerMenuItem from "@/components/Menus/DividerMenuItem";
+import EditableTextMenuItem from "@/components/Menus/EditableTextMenuItem";
 
 export interface NodeContextMenuProps {
   nodeId: string;
@@ -22,7 +22,7 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({ nodeId }) => {
   const dispatch = useDispatch();
 
   const nodeName = useSelector((state) =>
-    nodeNameFromNodeIdSelector(state, nodeId)
+    nodeNameOrDefaultFromNodeIdSelector(state, nodeId)
   );
   const [isRenaming, setIsRenaming] = React.useState(false);
   const onRename = React.useCallback(() => {
@@ -48,7 +48,7 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({ nodeId }) => {
 
   return (
     <Menu>
-      <MenuEditableText
+      <EditableTextMenuItem
         defaultValue={nodeName ?? "<unknown>"}
         label={<span style={{ fontWeight: "bold" }}>{nodeName}</span>}
         isEditing={isRenaming}
@@ -56,9 +56,9 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({ nodeId }) => {
         onCommit={onRenameCommit}
         onCancel={onRenameCancel}
       />
-      <MenuDivider />
+      <DividerMenuItem />
       <MenuItem onClick={onAlignToGrid}>Align Selection To Grid</MenuItem>
-      <MenuDivider />
+      <DividerMenuItem />
       <MenuItem onClick={onDelete}>Delete Selected</MenuItem>
     </Menu>
   );

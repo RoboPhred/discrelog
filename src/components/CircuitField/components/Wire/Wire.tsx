@@ -6,7 +6,7 @@ import useSelector from "@/hooks/useSelector";
 import { wireJointIdsFromConnectionIdSelector } from "@/services/node-layout/selectors/wires";
 import { isWireSelectedFromConnectionIdSelector } from "@/services/selection/selectors/selection";
 import { wireValueFromConnectionIdSelector } from "@/services/simulator/selectors/wires";
-import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-view/selectors/circuit";
+import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
 
 import WireSegment from "../WireSegment";
 import WireJoint from "../WireJoint";

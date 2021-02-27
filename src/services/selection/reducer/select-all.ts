@@ -2,7 +2,7 @@ import flatten from "lodash/flatten";
 
 import { isSelectAllAction } from "@/actions/select-all";
 
-import { nodeIdsForEditingCircuitSelector } from "@/services/circuit-editor-view/selectors/nodes";
+import { nodeIdsForEditingCircuitSelector } from "@/services/circuit-editor-ui-viewport/selectors/nodes";
 import {
   connectionIdsSelector,
   connectionsByIdSelector,

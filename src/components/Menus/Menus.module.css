@@ -40,6 +40,11 @@
   align-self: flex-end;
 }
 
+.menu-item-icon {
+  margin-left: auto;
+  align-self: center;
+}
+
 .menu-divider {
   border-bottom: 1px solid rgba(0, 0, 0, 20%);
   margin: 5px;

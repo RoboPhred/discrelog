@@ -3,7 +3,7 @@ import pick from "lodash/pick";
 
 import { isMoveNodeAction } from "@/actions/node-move";
 
-import { applyGridNodeSnapSelector } from "@/services/circuit-editor-ui/selectors/snap";
+import { applyGridNodeSnapSelector } from "@/services/circuit-editor-ui-drag/selectors/snap";
 
 import { createNodeLayoutReducer } from "../utils";
 

@@ -12,7 +12,7 @@ import { nodePositionsByNodeIdSelector } from "@/services/node-layout/selectors/
 import {
   applyGridJointSnapSelector,
   applyGridNodeSnapSelector,
-} from "@/services/circuit-editor-ui/selectors/snap";
+} from "@/services/circuit-editor-ui-drag/selectors/snap";
 import { wireJointPositionsByJointIdSelector } from "@/services/node-layout/selectors/wires";
 
 export default function selectionAlignToGridReducer(

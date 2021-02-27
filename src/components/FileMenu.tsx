@@ -8,7 +8,7 @@ import { exportProjectLink } from "@/actions/project-export-link";
 
 import Menu from "./Menus/Menu";
 import MenuItem from "./Menus/MenuItem";
-import MenuDivider from "./Menus/MenuDivider";
+import DividerMenuItem from "./Menus/DividerMenuItem";
 
 const FileMenu: React.FC = () => {
   const onNewProject = useAction(newProject);
@@ -19,10 +19,10 @@ const FileMenu: React.FC = () => {
   return (
     <Menu>
       <MenuItem onClick={onNewProject}>New</MenuItem>
-      <MenuDivider />
+      <DividerMenuItem />
       <MenuItem onClick={onLoadProject}>Load</MenuItem>
       <MenuItem onClick={onSaveProject}>Save</MenuItem>
-      <MenuDivider />
+      <DividerMenuItem />
       <MenuItem onClick={onExportLink}>Export Link</MenuItem>
     </Menu>
   );

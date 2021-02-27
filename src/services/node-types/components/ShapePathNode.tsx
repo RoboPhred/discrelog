@@ -5,7 +5,7 @@ import useSelector from "@/hooks/useSelector";
 
 import { interactNode } from "@/actions/node-interact";
 
-import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-view/selectors/circuit";
+import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
 
 import {
   NodeComponentProps,

@@ -9,7 +9,7 @@ import {
   isDraggingNewNodeSelector,
   dragNewNodeTypeSelector,
   dragEndSelector,
-} from "@/services/circuit-editor-ui/selectors/drag";
+} from "@/services/circuit-editor-ui-drag/selectors/drag";
 
 import { fieldDragContinue } from "@/actions/field-drag-continue";
 

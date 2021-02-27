@@ -12,7 +12,7 @@ import { viewCircuit } from "@/actions/circuit-view";
 import { addCircuit } from "@/actions/circuit-add";
 import { renameCircuit } from "@/actions/circuit-rename";
 
-import { editingCircuitIdSelector } from "@/services/circuit-editor-view/selectors/circuit";
+import { editingCircuitIdSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
 import {
   circuitNameFromIdSelector,
   circuitNamesByIdSelector,
@@ -22,7 +22,7 @@ import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
 import { useContextMenu } from "@/components/ContextMenu";
 import Menu from "@/components/Menus/Menu";
 import MenuItem from "@/components/Menus/MenuItem";
-import MenuDivider from "@/components/Menus/MenuDivider";
+import DividerMenuItem from "@/components/Menus/DividerMenuItem";
 import SelectionList, { SelectionListItem } from "@/components/SelectionList";
 import AtomicTextInput from "@/components/AtomicTextInput";
 
@@ -154,7 +154,7 @@ const CircuitTreeNodeCircuitLabel: React.FC<CircuitTreeNodeLabelProps> = ({
       {renderContextMenu(
         <Menu>
           <MenuItem onClick={onRequestRename}>Rename Circuit</MenuItem>
-          <MenuDivider />
+          <DividerMenuItem />
           <MenuItem onClick={onDelete}>Delete Circuit</MenuItem>
         </Menu>
       )}

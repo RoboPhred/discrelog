@@ -6,7 +6,7 @@ import {
   dragEndSelector,
   dragModeSelector,
   dragStartSelector,
-} from "@/services/circuit-editor-ui/selectors/drag";
+} from "@/services/circuit-editor-ui-drag/selectors/drag";
 
 const DragAttachWirePreviewLayer: React.FC = React.memo(
   function DragAttachWirePreviewLayer() {

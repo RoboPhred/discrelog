@@ -10,9 +10,9 @@ import { viewCircuit } from "@/actions/circuit-view";
 import {
   editingCircuitNameSelector,
   editingCircuitNodeIdPathSelector,
-} from "@/services/circuit-editor-view/selectors/circuit";
+} from "@/services/circuit-editor-ui-viewport/selectors/circuit";
 import {
-  nodeNameFromNodeIdSelector,
+  nodeNameOrDefaultFromNodeIdSelector,
   nodeTypeFromNodeIdSelector,
 } from "@/services/node-graph/selectors/nodes";
 import { nodeTypeToCircuitId } from "@/services/node-types/definition-sources/integrated-circuits/utils";
@@ -89,7 +89,7 @@ const CircuitNodeBreadcrumbItem: React.FC<CircuitNodeBreadcrumbItemProps> = ({
     nodeTypeFromNodeIdSelector(state, circuitNodeId)
   );
   const nodeName = useSelector((state) =>
-    nodeNameFromNodeIdSelector(state, circuitNodeId)
+    nodeNameOrDefaultFromNodeIdSelector(state, circuitNodeId)
   );
 
   const circuitId = nodeType ? nodeTypeToCircuitId(nodeType) : null;

@@ -252,9 +252,9 @@ function addTransition(
   };
 
   // Prepare the new transition window.
-  const newTransitionWindows = [...state.transitionWindows];
+  const transitionWindows = [...state.transitionWindows];
 
-  let index = binarySearch(newTransitionWindows, tick, (a, b) => a.tick - b);
+  let index = binarySearch(transitionWindows, tick, (a, b) => a.tick - b);
   if (index < 0) {
     // Need to create a new window
     index = -index - 1;
@@ -262,12 +262,12 @@ function addTransition(
       tick,
       transitionIds: [],
     };
-    newTransitionWindows.splice(index, 0, newWindow);
+    transitionWindows.splice(index, 0, newWindow);
   }
 
-  newTransitionWindows[index] = {
-    ...newTransitionWindows[index],
-    transitionIds: [...newTransitionWindows[index].transitionIds, transitionId],
+  transitionWindows[index] = {
+    ...transitionWindows[index],
+    transitionIds: [...transitionWindows[index].transitionIds, transitionId],
   };
 
   return {
@@ -277,7 +277,7 @@ function addTransition(
       ...state.transitionsById,
       [transitionId]: newTransition,
     },
-    transitionWindows: newTransitionWindows,
+    transitionWindows,
   };
 }
 
@@ -314,11 +314,12 @@ export function removeTransitionById(
   );
   let transitionWindows = state.transitionWindows;
 
-  const transitionWindowIndex = findIndex(
+  const transitionWindowIndex = binarySearch(
     transitionWindows,
-    (x) => x.tick === transition.tick
+    transition.tick,
+    (a, b) => a.tick - b
   );
-  if (transitionWindowIndex !== -1) {
+  if (transitionWindowIndex >= 0) {
     const transitionWindow = transitionWindows[transitionWindowIndex];
 
     const tickWindowTransitionIndex = transitionWindow.transitionIds.indexOf(

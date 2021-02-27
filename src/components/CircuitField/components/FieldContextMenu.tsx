@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import Menu from "@/components/Menus/Menu";
 import MenuItem from "@/components/Menus/MenuItem";
-import MenuDivider from "@/components/Menus/MenuDivider";
+import DividerMenuItem from "@/components/Menus/DividerMenuItem";
 
 import { selectionAlignToGrid } from "@/actions/selection-align-to-grid";
 import { deleteSelection } from "@/actions/selection-delete";
@@ -20,7 +20,7 @@ const FieldContextMenu: React.FC = () => {
   return (
     <Menu>
       <MenuItem onClick={onAlignToGrid}>Align Selection To Grid</MenuItem>
-      <MenuDivider />
+      <DividerMenuItem />
       <MenuItem onClick={onDelete}>Delete Selected</MenuItem>
     </Menu>
   );

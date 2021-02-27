@@ -2,7 +2,7 @@ import * as React from "react";
 
 import useSelector from "@/hooks/useSelector";
 
-import { nodeIdsForEditingCircuitSelector } from "@/services/circuit-editor-view/selectors/nodes";
+import { nodeIdsForEditingCircuitSelector } from "@/services/circuit-editor-ui-viewport/selectors/nodes";
 
 import Node from "./Node";
 

@@ -7,7 +7,7 @@ import { createNodeLayoutReducer } from "../utils";
 import {
   applyGridJointSnapSelector,
   applyGridNodeSnapSelector,
-} from "@/services/circuit-editor-ui/selectors/snap";
+} from "@/services/circuit-editor-ui-drag/selectors/snap";
 
 export default createNodeLayoutReducer((state, action, appState) => {
   if (!isMoveWireJointAction(action)) {
