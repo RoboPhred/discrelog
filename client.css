@@ -536,6 +536,11 @@ body,
   align-self: flex-end;
 }
 
+.menu-item-icon--JTlha {
+  margin-left: auto;
+  align-self: center;
+}
+
 .menu-divider--1QPGp {
   border-bottom: 1px solid rgba(0, 0, 0, 20%);
   margin: 5px;
@@ -692,6 +697,10 @@ body,
   width: 30px;
   height: 30px;
   padding-right: 10px;
+}
+
+.checkbox-span--1EWGs {
+  padding-right: 5px;
 }
 
 .button--1Syge {
