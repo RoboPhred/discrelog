@@ -1,3 +1,6 @@
+import { AppState } from "@/store";
+import { ElementDefinitionsByType } from "@/elements";
+
 import {
   createSimulatorGraphSelector,
   getSimulatorNodeIdFromCircuitNodeIdPath,
@@ -32,3 +35,15 @@ export const elementTypeFromSimulatorNodeId = createSimulatorGraphSelector(
     return simulatorNode.elementType;
   }
 );
+
+export const elementDefFromSimulatorNodeId = (
+  state: AppState,
+  nodeId: string
+) => {
+  const type = elementTypeFromSimulatorNodeId(state, nodeId);
+  if (!type) {
+    return null;
+  }
+
+  return ElementDefinitionsByType[type] ?? null;
+};

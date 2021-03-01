@@ -4,8 +4,9 @@ import pick from "lodash/pick";
 import difference from "lodash/difference";
 
 import { fpSet } from "@/utils";
-import { asArray } from "@/arrays";
+import { asArray, dropIndexFp } from "@/arrays";
 import { AppState } from "@/store";
+import { OutputTransition } from "@/logic";
 
 import {
   inputPinsByPinIdFromSimulatorNodeIdSelector,
@@ -13,19 +14,15 @@ import {
 } from "@/services/simulator-graph/selectors/connections";
 import {
   simulatorNodeIdsSelector,
-  elementTypeFromSimulatorNodeId,
+  elementDefFromSimulatorNodeId,
 } from "@/services/simulator-graph/selectors/nodes";
 
 import { SimulatorServiceState, defaultSimulatorServiceState } from "../state";
-import {
-  SimTransitionWindow,
-  SimNodePinTransition as SimNodeTransition,
-} from "../types";
-import { ElementDefinitionsByType } from "@/elements";
+import { SimTransitionWindow, SimNodePinTransition } from "../types";
 
 export function simInit(
-  state: SimulatorServiceState,
-  appState: AppState
+  state: Readonly<SimulatorServiceState>,
+  appState: Readonly<AppState>
 ): SimulatorServiceState {
   const nodeIds = simulatorNodeIdsSelector(appState);
 
@@ -45,32 +42,27 @@ export function simInit(
 }
 
 function initNode(
-  state: SimulatorServiceState,
+  state: Readonly<SimulatorServiceState>,
   nodeId: string,
-  appState: AppState
+  appState: Readonly<AppState>
 ): SimulatorServiceState {
-  const elementType = elementTypeFromSimulatorNodeId(appState, nodeId);
-  if (!elementType) {
-    return state;
-  }
-
-  const def = ElementDefinitionsByType[elementType];
+  const def = elementDefFromSimulatorNodeId(appState, nodeId);
   if (!def) {
     return state;
   }
 
   const outputValues: Record<string, boolean> = {};
-  for (const output of def.outputPins) {
+  def.outputPins.forEach((output) => {
     outputValues[output] = false;
-  }
+  });
 
   return fpSet(state, "nodeOutputValuesByNodeId", nodeId, outputValues);
 }
 
 export function simTick(
-  state: SimulatorServiceState,
+  state: Readonly<SimulatorServiceState>,
   tickCount: number,
-  appState: AppState
+  appState: Readonly<AppState>
 ): SimulatorServiceState {
   const endTick = state.tick + tickCount;
 
@@ -113,22 +105,29 @@ export function simTick(
 }
 
 function tickWindow(
-  state: SimulatorServiceState,
+  readonlyState: Readonly<SimulatorServiceState>,
   window: SimTransitionWindow,
-  appState: AppState
+  appState: Readonly<AppState>
 ): SimulatorServiceState {
+  if (window.transitionIds.length === 0) {
+    return readonlyState;
+  }
+
   // Update the current tick, as it is referenced
   //  during transition collection.
-  state = Object.assign({}, state, {
+  let state = Object.assign({}, readonlyState, {
     tick: window.tick,
     // pre-clone outputs for mutation below
-    nodeOutputValuesByNodeId: Object.assign({}, state.nodeOutputValuesByNodeId),
-  });
+    nodeOutputValuesByNodeId: Object.assign(
+      {},
+      readonlyState.nodeOutputValuesByNodeId
+    ),
+  }) as SimulatorServiceState;
 
   // Could benefit from being changed to a Set, although nodes usually arent hooked up to too many
   //  outputs at a time.
-  const updatedNodes = [];
-  for (const tid of window.transitionIds) {
+  const updatedNodes = new Set<string>();
+  window.transitionIds.forEach((tid) => {
     const { nodeId, valuesByOutputPin } = state.transitionsById[tid];
 
     if (
@@ -138,7 +137,7 @@ function tickWindow(
       )
     ) {
       // Values are unchanged from current, node will not update.
-      continue;
+      return;
     }
 
     // nodeOutputValuesByNodeId is pre-cloned
@@ -153,12 +152,8 @@ function tickWindow(
       appState,
       nodeId
     );
-    for (const nodeId of outputNodeIds) {
-      if (updatedNodes.indexOf(nodeId) === -1) {
-        updatedNodes.push(nodeId);
-      }
-    }
-  }
+    outputNodeIds.forEach((nodeId) => updatedNodes.add(nodeId));
+  });
 
   // Remove all window transitions as they have been consumed.
   // State is cloned above
@@ -178,49 +173,21 @@ function isOutputsUpdated(
   outputs: Record<string, boolean>,
   updates: Record<string, boolean>
 ) {
-  for (const key of Object.keys(updates)) {
-    if (outputs[key] !== updates[key]) {
-      return true;
-    }
-  }
-
-  return false;
+  return Object.keys(updates).some((key) => outputs[key] !== updates[key]);
 }
 
 export function collectNodeTransitions(
-  state: SimulatorServiceState,
+  state: Readonly<SimulatorServiceState>,
   nodeId: string,
-  appState: AppState
+  appState: Readonly<AppState>
 ): SimulatorServiceState {
-  const elementType = elementTypeFromSimulatorNodeId(appState, nodeId);
-  if (!elementType) {
-    return state;
-  }
-
-  const def = ElementDefinitionsByType[elementType];
+  const def = elementDefFromSimulatorNodeId(appState, nodeId);
   if (!def || !def.evolve) {
     return state;
   }
 
   // Build the current input state from the connected pins.
-  const inputs: Record<string, boolean> = {};
-  const inputSourcesByPin = inputPinsByPinIdFromSimulatorNodeIdSelector(
-    appState,
-    nodeId
-  );
-
-  for (const inputPin of Object.keys(inputSourcesByPin)) {
-    const inputConn = inputSourcesByPin[inputPin];
-    if (!inputConn) {
-      inputs[inputPin] = false;
-      continue;
-    }
-    const { simulatorNodeId: sourceNodeId, pinId: sourcePinId } = inputConn;
-
-    inputs[inputPin] =
-      state.nodeOutputValuesByNodeId[sourceNodeId]?.[sourcePinId] || false;
-  }
-
+  const inputs = collectNodeInputs(state, nodeId, appState);
   const result = def.evolve(
     state.nodeStatesByNodeId[nodeId],
     inputs,
@@ -233,27 +200,59 @@ export function collectNodeTransitions(
 
   if (result.transitions) {
     const transitions = asArray(result.transitions);
-    for (const transition of transitions) {
-      const {
-        tickOffset,
-        valuesByPin,
-        transitionMerger = "replace",
-      } = transition;
-
-      // Sanity check that we are not producing transitions for the past or current tick.
-      const transitionTick = state.tick + (tickOffset > 0 ? tickOffset : 1);
-
-      // We originally removed old transitions when scheduling new transitions.
-      //  Experimenting without this.
-      if (transitionMerger === "replace") {
-        state = removeTransitionsByNodeId(state, nodeId);
-      }
-
-      state = addTransition(state, nodeId, transitionTick, valuesByPin);
-    }
+    state = transitions.reduce(
+      (state, transition) => applyOutputTransition(state, nodeId, transition),
+      state
+    );
   }
 
   return state;
+}
+
+function collectNodeInputs(
+  state: Readonly<SimulatorServiceState>,
+  nodeId: string,
+  appState: Readonly<AppState>
+): Record<string, boolean> {
+  // Build the current input state from the connected pins.
+  const inputs: Record<string, boolean> = {};
+  const inputSourcesByPin = inputPinsByPinIdFromSimulatorNodeIdSelector(
+    appState,
+    nodeId
+  );
+
+  Object.keys(inputSourcesByPin).forEach((inputPin) => {
+    const inputConn = inputSourcesByPin[inputPin];
+    if (!inputConn) {
+      inputs[inputPin] = false;
+      return;
+    }
+
+    const { simulatorNodeId: sourceNodeId, pinId: sourcePinId } = inputConn;
+    inputs[inputPin] =
+      state.nodeOutputValuesByNodeId[sourceNodeId]?.[sourcePinId] || false;
+  });
+
+  return inputs;
+}
+
+function applyOutputTransition(
+  state: Readonly<SimulatorServiceState>,
+  nodeId: string,
+  transition: OutputTransition
+): SimulatorServiceState {
+  const { tickOffset, valuesByPin, transitionMerger = "replace" } = transition;
+
+  // Sanity check that we are not producing transitions for the past or current tick.
+  const transitionTick = state.tick + (tickOffset > 0 ? tickOffset : 1);
+
+  // We originally removed old transitions when scheduling new transitions.
+  //  Experimenting without this.
+  if (transitionMerger === "replace") {
+    state = removeTransitionsByNodeId(state, nodeId);
+  }
+
+  return addTransition(state, nodeId, transitionTick, valuesByPin);
 }
 
 function addTransition(
@@ -264,7 +263,7 @@ function addTransition(
 ): SimulatorServiceState {
   const transitionId = uuidV4();
 
-  const newTransition: SimNodeTransition = {
+  const newTransition: SimNodePinTransition = {
     nodeId,
     tick,
     valuesByOutputPin,
@@ -306,7 +305,7 @@ function removeTransitionsByNodeId(
   state: Readonly<SimulatorServiceState>,
   nodeId: string
 ): SimulatorServiceState {
-  function isNodeTransition(transition: SimNodeTransition) {
+  function isNodeTransition(transition: SimNodePinTransition) {
     return transition.nodeId === nodeId;
   }
 
@@ -349,29 +348,30 @@ export function removeTransitionById(
     if (tickWindowTransitionIndex !== -1) {
       if (transitionWindow.transitionIds.length === 1) {
         // Only one element left, remove the window.
-        transitionWindows = [
-          ...transitionWindows.slice(0, transitionWindowIndex),
-          ...transitionWindows.slice(transitionWindowIndex + 1),
-        ];
+        transitionWindows = dropIndexFp(
+          transitionWindows,
+          transitionWindowIndex
+        );
       } else {
         // Remove the transition from the tick window.
-        transitionWindows = [...transitionWindows];
-        const transitionIds =
-          transitionWindows[transitionWindowIndex].transitionIds;
-        transitionWindows[transitionWindowIndex] = {
-          ...transitionWindows[transitionWindowIndex],
-          transitionIds: [
-            ...transitionIds.slice(0, tickWindowTransitionIndex),
-            ...transitionIds.slice(tickWindowTransitionIndex + 1),
-          ],
-        };
+        transitionWindows = transitionWindows.slice();
+        const { transitionIds } = transitionWindows[transitionWindowIndex];
+        transitionWindows[transitionWindowIndex] = Object.assign(
+          {},
+          transitionWindows[transitionWindowIndex],
+          {
+            transitionIds: dropIndexFp(
+              transitionIds,
+              tickWindowTransitionIndex
+            ),
+          }
+        );
       }
     }
   }
 
-  return {
-    ...state,
+  return Object.assign({}, state, {
     transitionsById,
     transitionWindows,
-  };
+  });
 }
