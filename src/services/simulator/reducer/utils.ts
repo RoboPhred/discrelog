@@ -78,10 +78,9 @@ export function simTick(
   //  for future ticks.
 
   // Pre-clone windows as we wil be repeatedly modifying it.
-  state = {
-    ...state,
-    transitionWindows: [...state.transitionWindows],
-  };
+  state = Object.assign({}, state, {
+    transitionWindows: state.transitionWindows.slice(),
+  });
 
   let saftyCount = tickCount + 1;
   while (
@@ -120,14 +119,11 @@ function tickWindow(
 ): SimulatorServiceState {
   // Update the current tick, as it is referenced
   //  during transition collection.
-  state = {
-    ...state,
+  state = Object.assign({}, state, {
     tick: window.tick,
     // pre-clone outputs for mutation below
-    nodeOutputValuesByNodeId: {
-      ...state.nodeOutputValuesByNodeId,
-    },
-  };
+    nodeOutputValuesByNodeId: Object.assign({}, state.nodeOutputValuesByNodeId),
+  });
 
   // Could benefit from being changed to a Set, although nodes usually arent hooked up to too many
   //  outputs at a time.
@@ -135,11 +131,22 @@ function tickWindow(
   for (const tid of window.transitionIds) {
     const { nodeId, valuesByOutputPin } = state.transitionsById[tid];
 
+    if (
+      !isOutputsUpdated(
+        state.nodeOutputValuesByNodeId[nodeId],
+        valuesByOutputPin
+      )
+    ) {
+      // Values are unchanged from current, node will not update.
+      continue;
+    }
+
     // nodeOutputValuesByNodeId is pre-cloned
-    state.nodeOutputValuesByNodeId[nodeId] = {
-      ...state.nodeOutputValuesByNodeId[nodeId],
-      ...valuesByOutputPin,
-    };
+    state.nodeOutputValuesByNodeId[nodeId] = Object.assign(
+      {},
+      state.nodeOutputValuesByNodeId[nodeId],
+      valuesByOutputPin
+    );
 
     // Add each node we output to, to the output list.
     const outputNodeIds = outputSimulatorNodeIdsFromSimulatorNodeIdSelector(
@@ -165,6 +172,19 @@ function tickWindow(
   }
 
   return state;
+}
+
+function isOutputsUpdated(
+  outputs: Record<string, boolean>,
+  updates: Record<string, boolean>
+) {
+  for (const key of Object.keys(updates)) {
+    if (outputs[key] !== updates[key]) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 export function collectNodeTransitions(
@@ -251,7 +271,7 @@ function addTransition(
   };
 
   // Prepare the new transition window.
-  const transitionWindows = [...state.transitionWindows];
+  const transitionWindows = state.transitionWindows.slice();
 
   let index = binarySearch(transitionWindows, tick, (a, b) => a.tick - b);
   if (index < 0) {
@@ -264,20 +284,22 @@ function addTransition(
     transitionWindows.splice(index, 0, newWindow);
   }
 
-  transitionWindows[index] = {
-    ...transitionWindows[index],
-    transitionIds: [...transitionWindows[index].transitionIds, transitionId],
-  };
+  const transitionIds = transitionWindows[index].transitionIds.slice();
+  transitionIds.push(transitionId);
 
-  return {
-    ...state,
+  transitionWindows[index] = Object.assign({}, transitionWindows[index], {
+    transitionIds,
+  });
+
+  const transitionsById = Object.assign({}, state.transitionsById, {
+    [transitionId]: newTransition,
+  });
+
+  return Object.assign({}, state, {
     // Add the new transition window to the id mapping.
-    transitionsById: {
-      ...state.transitionsById,
-      [transitionId]: newTransition,
-    },
+    transitionsById: transitionsById,
     transitionWindows,
-  };
+  });
 }
 
 function removeTransitionsByNodeId(
