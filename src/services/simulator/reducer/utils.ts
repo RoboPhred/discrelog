@@ -95,10 +95,9 @@ export function simTick(
 
   // If we did not encounter a window on our last tick, jump ahead to that tick.
   if (state.tick != endTick) {
-    state = {
-      ...state,
+    state = Object.assign({}, state, {
       tick: endTick,
-    };
+    });
   }
 
   return state;
@@ -296,7 +295,7 @@ function addTransition(
 
   return Object.assign({}, state, {
     // Add the new transition window to the id mapping.
-    transitionsById: transitionsById,
+    transitionsById,
     transitionWindows,
   });
 }
