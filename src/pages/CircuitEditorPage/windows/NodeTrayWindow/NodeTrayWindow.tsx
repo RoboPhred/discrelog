@@ -17,6 +17,7 @@ import {
 } from "@/services/node-types/selectors/node-types";
 import { editingCircuitIdSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
 import { circuitIdToNodeType } from "@/services/node-types/definition-sources/integrated-circuits/utils";
+import { NodeComponentProps } from "@/services/node-types/types";
 
 import { addNode } from "@/actions/node-add";
 import { fieldDragStartNewNode } from "@/actions/field-drag-start-newnode";
@@ -119,33 +120,42 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
     nodeDefinitionFromTypeSelector(state, nodeType)
   );
 
-  let NodeTrayComponent: React.ComponentType;
+  let nodeTrayVisual: JSX.Element;
   let displayName = nodeType;
   let viewBox = "0 0 50 50";
   if (def) {
     const { trayComponent, component, hitRect } = def.visual;
     if (trayComponent) {
-      NodeTrayComponent = trayComponent;
+      const TrayComponent = trayComponent;
+      nodeTrayVisual = <TrayComponent />;
     } else {
-      NodeTrayComponent = () => {
-        const Component = component;
-        return <Component elementState={{}} />;
-      };
+      nodeTrayVisual = <NodeTrayNodeComponent component={component} />;
       viewBox = `${hitRect.p1.x} ${hitRect.p1.y} ${hitRect.p2.x} ${hitRect.p2.y}`;
     }
     displayName = def.displayName;
   } else {
-    NodeTrayComponent = () => <rect fill="red" x1={0} y1={0} x2={50} y2={50} />;
+    nodeTrayVisual = <NodeTrayErrorComponent />;
   }
 
   return (
     <li className={styles["node-tray-item"]} onMouseDown={onMouseDown}>
       <span className={styles["node-tray-item-preview"]}>
         <svg width={30} height={30} viewBox={viewBox}>
-          <NodeTrayComponent />
+          {nodeTrayVisual}
         </svg>
       </span>
       <span className={interaction["text-unselectable"]}>{displayName}</span>
     </li>
   );
 };
+
+const NodeTrayNodeComponent: React.FC<{
+  component: React.ComponentType<NodeComponentProps>;
+}> = ({ component }) => {
+  const Component = component;
+  return <Component elementState={{}} />;
+};
+
+const NodeTrayErrorComponent = () => (
+  <rect fill="red" x1={0} y1={0} x2={50} y2={50} />
+);
