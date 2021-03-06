@@ -1,9 +1,8 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import getBounds from "svg-path-bounds";
 
 import { cls } from "@/utils";
-import { Point } from "@/geometry";
+import { Point, Rectangle, ZeroPoint } from "@/geometry";
 import { getModifiers } from "@/modifier-keys";
 import { getSelectMode } from "@/selection-mode";
 
@@ -151,7 +150,7 @@ const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
   }
 
   let body: React.ReactNode;
-  let bounds: [number, number, number, number];
+  let rect: Rectangle;
   if (!def) {
     body = (
       <rect
@@ -162,11 +161,11 @@ const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
         fill={isSelected ? "goldenrod" : "red"}
       />
     );
-    bounds = [0, 0, 50, 50];
+    rect = { p1: ZeroPoint, p2: { x: 50, y: 50 } };
   } else {
-    const { component: ElementComponent, hitPath } = def.visual;
+    const { component: ElementComponent, hitRect } = def.visual;
     body = <ElementComponent circuitNodeId={nodeId} elementState={nodeState} />;
-    bounds = getBounds(hitPath);
+    rect = hitRect;
   }
 
   const transform = x != 0 || y != 0 ? `translate(${x}, ${y})` : undefined;
@@ -179,18 +178,18 @@ const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
       >
         {body}
       </g>
-      <NodeName nodeId={nodeId} bounds={bounds} />
+      <NodeName nodeId={nodeId} hitRect={rect} />
       {renderContextMenu(<NodeContextMenu nodeId={nodeId} />)}
     </g>
   );
 });
 
 interface NodeNameProps extends NodeProps {
-  bounds: [number, number, number, number];
+  hitRect: Rectangle;
 }
 const NodeName: React.FC<NodeNameProps> = React.memo(function NodeName({
   nodeId,
-  bounds,
+  hitRect,
 }) {
   const scale = useSelector(viewScaleSelector);
   const nodeName = useSelector((s) =>
@@ -216,8 +215,8 @@ const NodeName: React.FC<NodeNameProps> = React.memo(function NodeName({
       fontSize={`${1.2 / textScale}em`}
       className={interaction["text-unselectable"]}
       textAnchor="middle"
-      x={bounds[0] + (bounds[2] - bounds[0]) / 2}
-      y={bounds[3] + textYOffset}
+      x={hitRect.p1.x + (hitRect.p2.x - hitRect.p1.x) / 2}
+      y={hitRect.p2.y + textYOffset}
     >
       {nodeName}
     </text>

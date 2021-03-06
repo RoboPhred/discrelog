@@ -1,4 +1,7 @@
 import * as React from "react";
+import getBounds from "svg-path-bounds";
+
+import { boundsToRect } from "@/geometry";
 
 import { NodeDefinition } from "../../types";
 
@@ -12,7 +15,7 @@ const xorNodeDefinition: NodeDefinition = {
   displayName: "XOR",
   elementProduction: "xor",
   visual: {
-    hitPath,
+    hitRect: boundsToRect(getBounds(hitPath)),
     component: () => (
       <g>
         <path d={hitPath} fill="transparent" stroke="none" />

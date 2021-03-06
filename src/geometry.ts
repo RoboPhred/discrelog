@@ -19,8 +19,18 @@ export interface Rectangle {
   p2: Point;
 }
 
+// Bit silly to have two ways of tracking a rectangular region, but this is inherited from svg-path-bounds
+export type Bounds = [left: number, top: number, right: number, bottom: number];
+
 export const ZeroPoint = Object.freeze({ x: 0, y: 0 });
 export const ZeroRect = Object.freeze({ p1: ZeroPoint, p2: ZeroPoint });
+
+export function boundsToRect(bounds: Bounds): Rectangle {
+  return {
+    p1: { x: bounds[0], y: bounds[1] },
+    p2: { x: bounds[2], y: bounds[3] },
+  };
+}
 
 export function magnitude(v: Point): number {
   return Math.sqrt(v.x * v.x + v.y * v.y);
@@ -63,6 +73,13 @@ export function normalizeRectangle(...args: any[]): Rectangle {
       x: Math.max(p1.x, p2.x),
       y: Math.max(p1.y, p2.y),
     },
+  };
+}
+
+export function offsetRectangle(rect: Rectangle, offset: Point) {
+  return {
+    p1: pointAdd(rect.p1, offset),
+    p2: pointAdd(rect.p2, offset),
   };
 }
 

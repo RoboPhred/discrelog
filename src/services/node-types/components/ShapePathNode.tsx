@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
+import getBounds from "svg-path-bounds";
 
+import { boundsToRect } from "@/geometry";
 import useSelector from "@/hooks/useSelector";
 
 import { interactNode } from "@/actions/node-interact";
@@ -86,7 +88,7 @@ export function createShapePathVisual(
     component: (props: NodeComponentProps) => (
       <ShapePathNode shapePath={shapePath} hitPath={hitPath} {...props} />
     ),
-    hitPath,
+    hitRect: boundsToRect(getBounds(hitPath)),
   };
 }
 

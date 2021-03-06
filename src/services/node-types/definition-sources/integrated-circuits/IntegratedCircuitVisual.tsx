@@ -1,7 +1,8 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
+import getBounds from "svg-path-bounds";
 
-import { Point } from "@/geometry";
+import { boundsToRect, Point } from "@/geometry";
 import { PinDirection } from "@/logic";
 
 import interaction from "@/styles/interaction.module.css";
@@ -136,7 +137,9 @@ export function circuitToNodeVisual(
   };
 
   return {
-    hitPath: getBorderPath(inputPinCount, outputPinCount),
+    hitRect: boundsToRect(
+      getBounds(getBorderPath(inputPinCount, outputPinCount))
+    ),
     trayComponent: (props) => (
       <IntegratedCircuitTrayVisual {...icProps} {...props} />
     ),

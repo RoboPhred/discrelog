@@ -124,7 +124,7 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
   let displayName = nodeType;
   let viewBox = "0 0 50 50";
   if (def) {
-    const { trayComponent, component, hitPath } = def.visual;
+    const { trayComponent, component, hitRect } = def.visual;
     if (trayComponent) {
       NodeTrayComponent = trayComponent;
     } else {
@@ -132,8 +132,7 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
         const Component = component;
         return <Component elementState={{}} />;
       };
-      const bounds = getBounds(hitPath);
-      viewBox = bounds.join(" ");
+      viewBox = `${hitRect.p1.x} ${hitRect.p1.y} ${hitRect.p2.x} ${hitRect.p2.y}`;
     }
     displayName = def.displayName;
   } else {

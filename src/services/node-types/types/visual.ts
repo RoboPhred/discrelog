@@ -1,9 +1,11 @@
+import { Rectangle } from "@/geometry";
+
 export interface NodeVisualDefinition {
   /**
-   * SVG path string defining the hit area of the node.
-   * Used for selection.
+   * Rectangle relative to the node's position defining the hit area of the node.
+   * Used to calculate selected nodes during region selections.
    */
-  hitPath: string;
+  hitRect: Rectangle;
 
   trayComponent?: React.ComponentType;
   component: NodeComponentType;
