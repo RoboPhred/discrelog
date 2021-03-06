@@ -36,7 +36,6 @@ const ShapePathNode: React.FC<ShapePathNodeProps> = ({
   circuitNodeId,
   shapePath,
   hitPath,
-  isSelected,
   elementState,
 }) => {
   const dispatch = useDispatch();
@@ -64,9 +63,9 @@ const ShapePathNode: React.FC<ShapePathNodeProps> = ({
     <path
       key={i}
       d={v.path}
-      // FIXME: If selected, this should use variable --color-element-selected
-      fill={isSelected ? "goldenrod" : v.fill}
-      stroke={isSelected ? "goldenrod" : v.stroke}
+      className="node-select-highlight--stroke node-select-highlight--fill"
+      fill={v.fill}
+      stroke={v.stroke}
       strokeWidth={v.strokeWidth}
     />
   ));

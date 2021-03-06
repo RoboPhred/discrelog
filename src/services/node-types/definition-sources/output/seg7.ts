@@ -29,6 +29,7 @@ function createSeg(
   return {
     path,
     fill: (state) => (state[name] ? "red" : "gray"),
+    strokeWidth: 0,
   };
 }
 

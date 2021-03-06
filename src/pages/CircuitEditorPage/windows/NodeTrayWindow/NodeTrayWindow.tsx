@@ -16,6 +16,8 @@ import {
   nodeDefinitionFromTypeSelector,
   nodeDefinitionsSelector,
 } from "@/services/node-types/selectors/node-types";
+import { editingCircuitIdSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
+import { circuitIdToNodeType } from "@/services/node-types/definition-sources/integrated-circuits/utils";
 
 import { addNode } from "@/actions/node-add";
 import { fieldDragStartNewNode } from "@/actions/field-drag-start-newnode";
@@ -47,7 +49,17 @@ interface TrayCategoryProps {
 
 const TrayCategory: React.FC<TrayCategoryProps> = ({ category }) => {
   const nodeDefinitions = useSelector(nodeDefinitionsSelector);
-  const nodes = nodeDefinitions
+  const editingCircuitId = useSelector(editingCircuitIdSelector);
+
+  let defs = nodeDefinitions.filter((def) => def.category === category);
+  if (category === "ic") {
+    // FIXME: This only filters out immediate parents.
+    // We need to filter out all ics that also contain our editing ic.
+    const editingType = circuitIdToNodeType(editingCircuitId);
+    defs = defs.filter((def) => def.type !== editingType);
+  }
+
+  const nodes = defs
     .filter((def) => def.category === category)
     .map((def) => {
       return <TrayNode key={def.type} nodeType={def.type} />;

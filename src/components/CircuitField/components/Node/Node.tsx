@@ -165,13 +165,7 @@ const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
     bounds = [0, 0, 50, 50];
   } else {
     const { component: ElementComponent, hitPath } = def.visual;
-    body = (
-      <ElementComponent
-        circuitNodeId={nodeId}
-        isSelected={isSelected}
-        elementState={nodeState}
-      />
-    );
+    body = <ElementComponent circuitNodeId={nodeId} elementState={nodeState} />;
     bounds = getBounds(hitPath);
   }
 

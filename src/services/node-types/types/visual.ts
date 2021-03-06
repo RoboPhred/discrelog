@@ -9,7 +9,7 @@ export interface NodeVisualDefinition {
   component: NodeComponentType;
 }
 
-// FIXME: Many of these are optional because these are also used as tray components.
+// TODO: Many of these are optional because these are also used as tray components.
 //  Should remove components as tray components and rely on the trayComponent def.
 export interface NodeComponentProps {
   /**
@@ -17,12 +17,7 @@ export interface NodeComponentProps {
    */
   circuitNodeId?: string;
 
-  /**
-   * Whether this node is selected.
-   */
-  isSelected?: boolean;
-
-  // FIXME: Nodes can be made of multiple elements.
+  // TODO: Nodes can be made of multiple elements.
   // Allow specifying tag names for element productions, and receive
   //  a record of tag names to element states.
   /**
