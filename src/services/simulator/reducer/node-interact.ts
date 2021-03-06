@@ -1,5 +1,3 @@
-import { fpSet } from "@/utils";
-
 import { ElementDefinitionsByType } from "@/elements";
 
 import { isInteractNodeAction } from "@/actions/node-interact";
@@ -10,7 +8,7 @@ import {
 
 import { createSimulatorReducer } from "../utils";
 
-import { collectNodeTransitions } from "./utils";
+import { applyEvolutionResult } from "./utils";
 
 export default createSimulatorReducer((state, action, appState) => {
   if (!isInteractNodeAction(action)) {
@@ -38,8 +36,7 @@ export default createSimulatorReducer((state, action, appState) => {
   }
 
   const nodeState = state.nodeStatesByNodeId[simulatorNodeId];
-  const newState = def.interact(nodeState);
-  state = fpSet(state, "nodeStatesByNodeId", simulatorNodeId, newState);
+  const evolutionResult = def.interact(nodeState);
 
-  return collectNodeTransitions(state, simulatorNodeId, appState);
+  return applyEvolutionResult(state, simulatorNodeId, evolutionResult);
 });

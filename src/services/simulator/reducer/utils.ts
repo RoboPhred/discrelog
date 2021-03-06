@@ -6,7 +6,7 @@ import difference from "lodash/difference";
 import { fpSet } from "@/utils";
 import { asArray, dropIndexFp } from "@/arrays";
 import { AppState } from "@/store";
-import { OutputTransition } from "@/logic";
+import { EvolutionResult, OutputTransition } from "@/logic";
 
 import {
   inputPinsByPinIdFromSimulatorNodeIdSelector,
@@ -193,13 +193,23 @@ export function collectNodeTransitions(
     state.tick
   );
 
-  if (result.state) {
-    state = fpSet(state, "nodeStatesByNodeId", nodeId, result.state);
+  return applyEvolutionResult(state, nodeId, result);
+}
+
+export function applyEvolutionResult(
+  state: Readonly<SimulatorServiceState>,
+  nodeId: string,
+  evolutionResult: EvolutionResult
+) {
+  const { state: nodeState, transitions } = evolutionResult;
+
+  if (nodeState) {
+    state = fpSet(state, "nodeStatesByNodeId", nodeId, nodeState);
   }
 
-  if (result.transitions) {
-    const transitions = asArray(result.transitions);
-    state = transitions.reduce(
+  if (transitions) {
+    const transitionsArray = asArray(transitions);
+    state = transitionsArray.reduce(
       (state, transition) => applyOutputTransition(state, nodeId, transition),
       state
     );
