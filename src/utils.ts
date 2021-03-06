@@ -53,9 +53,9 @@ export function fpSet(...args: any[]): any {
 
 function clone<T extends Record<string, unknown> | any[]>(obj: T): T {
   if (Array.isArray(obj)) {
-    return [...obj] as T;
+    return obj.slice() as T;
   }
-  return { ...obj };
+  return Object.assign({}, obj);
 }
 
 export function isTruthy<T>(value: T | null | undefined | false): value is T {

@@ -13,7 +13,18 @@
   padding: 0;
 }
 
+.node-tray-category {
+  box-sizing: border-box;
+  font-weight: bold;
+  width: 100%;
+  text-transform: uppercase;
+  border-bottom: 1px solid black;
+  padding-bottom: 2px;
+  margin-bottom: 3px;
+}
+
 .node-tray-item {
+  box-sizing: border-box;
   padding: 6px 7px;
   border-radius: 3px;
   display: flex;

@@ -28,6 +28,10 @@ import {
   defaultNodeLayoutServiceState,
 } from "./node-layout/state";
 import {
+  ProjectServiceState,
+  defaultProjectServiceState,
+} from "./project/state";
+import {
   SelectionServiceState,
   defaultSelectionServiceState,
 } from "./selection/state";
@@ -53,6 +57,7 @@ export interface AppServicesState {
   dialog: DialogServiceState;
   nodeGraph: NodeGraphServiceState;
   nodeLayout: NodeLayoutServiceState;
+  project: ProjectServiceState;
   selection: SelectionServiceState;
   simulator: SimulatorServiceState;
   simulatorControl: SimulatorControlServiceState;
@@ -68,6 +73,7 @@ const _defaultServiceState: AppServicesState = {
   circuits: defaultCircuitsServiceState,
   clipboard: defaultClipboardServiceState,
   dialog: defaultDialogServiceState,
+  project: defaultProjectServiceState,
   selection: defaultSelectionServiceState,
   simulator: defaultSimulatorServiceState,
   simulatorControl: defaultSimulatorControlServiceState,

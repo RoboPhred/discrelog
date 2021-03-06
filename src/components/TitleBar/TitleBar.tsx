@@ -2,6 +2,13 @@ import * as React from "react";
 
 import { cls } from "@/utils";
 
+import useSelector from "@/hooks/useSelector";
+
+import {
+  projectModifiedSelector,
+  projectNameSelector,
+} from "@/services/project/selectors/project";
+
 import AutoPopover from "../AutoPopover";
 import Button from "../Button";
 import FileMenu from "../FileMenu";
@@ -15,6 +22,8 @@ export interface TitleBarProps {
   className?: string;
 }
 const TitleBar: React.FC<TitleBarProps> = ({ className }) => {
+  const projectName = useSelector(projectNameSelector);
+  const projectModified = useSelector(projectModifiedSelector);
   return (
     <div className={cls(styles.titlebar, className)}>
       <span className={styles["titlebar-heading"]}>Discrelog</span>
@@ -28,7 +37,10 @@ const TitleBar: React.FC<TitleBarProps> = ({ className }) => {
       <AutoPopover content={<ViewMenu />} placement="bottom-start">
         <Button>View</Button>
       </AutoPopover>
-
+      <div className={styles["titlebar-projectname"]}>
+        {projectName}
+        {projectModified && "*"}
+      </div>
       <div className={styles["titlebar-controls"]}>
         <SimControls />
       </div>

@@ -1,15 +1,17 @@
+import { Rectangle } from "@/geometry";
+
 export interface NodeVisualDefinition {
   /**
-   * SVG path string defining the hit area of the node.
-   * Used for selection.
+   * Rectangle relative to the node's position defining the hit area of the node.
+   * Used to calculate selected nodes during region selections.
    */
-  hitPath: string;
+  hitRect: Rectangle;
 
   trayComponent?: React.ComponentType;
   component: NodeComponentType;
 }
 
-// FIXME: Many of these are optional because these are also used as tray components.
+// TODO: Many of these are optional because these are also used as tray components.
 //  Should remove components as tray components and rely on the trayComponent def.
 export interface NodeComponentProps {
   /**
@@ -17,12 +19,7 @@ export interface NodeComponentProps {
    */
   circuitNodeId?: string;
 
-  /**
-   * Whether this node is selected.
-   */
-  isSelected?: boolean;
-
-  // FIXME: Nodes can be made of multiple elements.
+  // TODO: Nodes can be made of multiple elements.
   // Allow specifying tag names for element productions, and receive
   //  a record of tag names to element states.
   /**

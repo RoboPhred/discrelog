@@ -11,7 +11,7 @@ import { displayDialogSaga } from "@/services/dialog/api";
 
 import { ACTION_PROJECT_EXPORT_LINK } from "@/actions/project-export-link";
 
-import { createSave } from "../utils";
+import { createSave } from "@/services/savedata/api";
 
 export default function* projectExportLinkSaga() {
   yield takeEvery(ACTION_PROJECT_EXPORT_LINK, onExportLink);

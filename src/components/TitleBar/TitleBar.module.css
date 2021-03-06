@@ -11,6 +11,11 @@
   margin-right: 15px;
 }
 
+.titlebar-projectname {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .titlebar-divider {
   display: inline;
   border-right: 1px solid rgba(0, 0, 0, 20%);

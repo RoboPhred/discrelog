@@ -2,12 +2,16 @@ import { concatReducers } from "@/store/utils";
 
 import autosaveReducer from "./autosave";
 import initReducer from "./init";
+import projectModifiedReducer from "./project-modified";
 import projectNewReducer from "./project-new";
 import projectReceiveReducer from "./project-receive";
+import projectRenameReducer from "./project-rename";
 
 export default concatReducers(
   autosaveReducer,
-  projectNewReducer,
   initReducer,
-  projectReceiveReducer
+  projectModifiedReducer,
+  projectNewReducer,
+  projectReceiveReducer,
+  projectRenameReducer
 );

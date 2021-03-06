@@ -11,14 +11,19 @@ const toggleElementDefinition: ElementDefinition = {
   inputPins: [],
   outputPins: ["OUT"],
   interact(state: ToggleElementState = defaultToggleState) {
+    const nextState = !state.toggleState;
     return {
-      ...state,
-      toggleState: !state.toggleState,
+      state: Object.assign({}, state, {
+        toggleState: nextState,
+      }),
+      transitions: {
+        tickOffset: 1,
+        valuesByPin: { OUT: nextState },
+      },
     };
   },
-  evolve(state = defaultToggleState) {
+  evolve: (state: ToggleElementState = defaultToggleState) => {
     return {
-      state,
       transitions: {
         tickOffset: 1,
         valuesByPin: { OUT: state.toggleState },

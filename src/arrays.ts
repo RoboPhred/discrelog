@@ -9,3 +9,11 @@ const EmptyArray: ReadonlyArray<unknown> = Object.freeze([]);
 export function immutableEmptyArray<T>(): T[] {
   return EmptyArray as any;
 }
+
+export function dropIndexFp<T>(array: T[], index: number) {
+  const newArray = array.slice(0, index);
+  for (let i = index + 1; i < array.length; i++) {
+    newArray.push(array[index]);
+  }
+  return newArray;
+}

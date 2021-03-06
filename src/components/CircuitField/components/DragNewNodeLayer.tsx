@@ -44,12 +44,7 @@ const DragNewNodeLayer: React.FC = React.memo(function DragNewNodeLayer() {
     <>
       {dragEnd && (
         <g opacity={0.5}>
-          <NodeVisual
-            x={dragEnd.x}
-            y={dragEnd.y}
-            nodeType={draggingNodeType}
-            nodeState={{}}
-          />
+          <NodeVisual x={dragEnd.x} y={dragEnd.y} nodeType={draggingNodeType} />
         </g>
       )}
       <rect

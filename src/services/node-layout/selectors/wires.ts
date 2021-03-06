@@ -1,8 +1,13 @@
+import flatMap from "lodash/flatMap";
+import uniq from "lodash/uniq";
+
 import { AppState } from "@/store";
 import { Point, pointAdd, ZeroPoint } from "@/geometry";
 
 import { NodeDefinition } from "@/services/node-types/types";
 import { nodeDefFromNodeIdSelector } from "@/services/node-graph/selectors/node-def";
+import { nodeIdsForEditingCircuitSelector } from "@/services/circuit-editor-ui-viewport/selectors/nodes";
+import { nodeConnectionIdsFromNodeIdSelector } from "@/services/node-graph/selectors/connections";
 
 import { createNodeLayoutSelector } from "../utils";
 import { NodeLayoutServiceState } from "../state";
@@ -109,6 +114,21 @@ export const jointIdsSelector = createNodeLayoutSelector(
   (state: NodeLayoutServiceState) =>
     Object.keys(state.wireJointPositionsByJointId)
 );
+
+/**
+ * Gets all joint ids in the editing circuit.
+ * WARN: Not react safe, for reducer use only.
+ */
+export const jointIdsForEditingCircuitSelector = (state: AppState) => {
+  const nodeIds = nodeIdsForEditingCircuitSelector(state);
+  const connectionIds = flatMap(nodeIds, (nodeId) =>
+    nodeConnectionIdsFromNodeIdSelector(state, nodeId)
+  );
+  const jointIds = flatMap(connectionIds, (connectionId) =>
+    wireJointIdsFromConnectionIdSelector(state, connectionId)
+  );
+  return uniq(jointIds);
+};
 
 export const wireJointIdsByConnectionIdSelector = createNodeLayoutSelector(
   (state) => state.wireJointIdsByConnectionId
