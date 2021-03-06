@@ -32,5 +32,8 @@
   // (They are a decision point if we have no default case, however)
   "codemetrics.nodeconfiguration.SwitchStatement": 0,
   // breaks are not decision points on their own.
-  "codemetrics.nodeconfiguration.BreakStatement": 0
+  "codemetrics.nodeconfiguration.BreakStatement": 0,
+  // JSX elements are not decision points
+  "codemetrics.nodeconfiguration.JsxElement": 0,
+  "codemetrics.nodeconfiguration.JsxSelfClosingElement": 0,
 }
