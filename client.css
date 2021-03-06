@@ -679,7 +679,18 @@ body,
   padding: 0;
 }
 
+.node-tray-category---Phmh {
+  box-sizing: border-box;
+  font-weight: bold;
+  width: 100%;
+  text-transform: uppercase;
+  border-bottom: 1px solid black;
+  padding-bottom: 2px;
+  margin-bottom: 3px;
+}
+
 .node-tray-item--2_AyH {
+  box-sizing: border-box;
   padding: 6px 7px;
   border-radius: 3px;
   display: flex;
@@ -763,6 +774,11 @@ body,
 .titlebar-heading--3RAl1 {
   font-size: 16px;
   margin-right: 15px;
+}
+
+.titlebar-projectname--1vIUJ {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .titlebar-divider--Wl_27 {
