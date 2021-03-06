@@ -8,6 +8,7 @@ const hitPath = `M30 5V45H50.47619c11.267908 0 20-9.000045 20-20s-8.732091-20-20
 
 const andNodeDefinition: NodeDefinition = {
   type: "logic-and",
+  category: "logic",
   displayName: "AND",
   elementProduction: "and",
   visual: {

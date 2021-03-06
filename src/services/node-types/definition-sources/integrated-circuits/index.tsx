@@ -70,6 +70,7 @@ const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
 
         const def: NodeDefinition = {
           type: circuitIdToNodeType(circuitId),
+          category: "ic",
           displayName: circuitName,
           elementProduction: {
             type: "circuit",

@@ -8,6 +8,7 @@ const hitPath = `M24.09375 5l2 2.4375S31.75 14.43755 31.75 25s-5.65625 17.5625-5
 
 const xorNodeDefinition: NodeDefinition = {
   type: "logic-xor",
+  category: "logic",
   displayName: "XOR",
   elementProduction: "xor",
   visual: {

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import getBounds from "svg-path-bounds";
+import uniq from "lodash/uniq";
 
 import { cls } from "@/utils";
 
@@ -26,17 +27,39 @@ import styles from "./NodeTrayWindow.module.css";
 
 const NodeTrayWindow: React.FC<WindowProps> = ({ className }) => {
   const nodeDefinitions = useSelector(nodeDefinitionsSelector);
-  const nodes = nodeDefinitions.map((def) => {
-    return <TrayNode key={def.type} nodeType={def.type} />;
-  });
+  const categories = uniq(nodeDefinitions.map((x) => x.category));
 
   return (
     <div className={cls(styles["node-tray"], className)}>
-      <ul className={styles["node-tray-elements"]}>{nodes}</ul>
+      <ul className={styles["node-tray-elements"]}>
+        {categories.map((category) => (
+          <TrayCategory category={category} />
+        ))}
+      </ul>
     </div>
   );
 };
 export default NodeTrayWindow;
+
+interface TrayCategoryProps {
+  category: string;
+}
+
+const TrayCategory: React.FC<TrayCategoryProps> = ({ category }) => {
+  const nodeDefinitions = useSelector(nodeDefinitionsSelector);
+  const nodes = nodeDefinitions
+    .filter((def) => def.category === category)
+    .map((def) => {
+      return <TrayNode key={def.type} nodeType={def.type} />;
+    });
+
+  return (
+    <>
+      <li className={styles["node-tray-category"]}>{category}</li>
+      {nodes}
+    </>
+  );
+};
 
 interface TrayNodeProps {
   nodeType: string;
