@@ -35,7 +35,7 @@ const NodeTrayWindow: React.FC<WindowProps> = ({ className }) => {
     <div className={cls(styles["node-tray"], className)}>
       <ul className={styles["node-tray-elements"]}>
         {categories.map((category) => (
-          <TrayCategory category={category} />
+          <TrayCategory key={category} category={category} />
         ))}
       </ul>
     </div>
