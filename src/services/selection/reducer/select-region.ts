@@ -8,7 +8,10 @@ import { isSelectRegionAction } from "@/actions/select-region";
 
 import { nodeIdsForEditingCircuitSelector } from "@/services/circuit-editor-ui-viewport/selectors/nodes";
 import { nodeRectsByIdSelector } from "@/services/node-layout/selectors/node-bounds";
-import { wireJointPositionsByJointIdSelector } from "@/services/node-layout/selectors/wires";
+import {
+  jointIdsForEditingCircuitSelector,
+  wireJointPositionsByJointIdSelector,
+} from "@/services/node-layout/selectors/wires";
 
 import { createSelectionReducer } from "../utils";
 
@@ -29,12 +32,11 @@ export default createSelectionReducer((state, action, appState) => {
     }
   });
 
-  const chosenJointIds: string[] = [];
   const jointPositions = wireJointPositionsByJointIdSelector(appState);
-  forOwn(jointPositions, (p, jointId) => {
-    if (pointIntersects(p, region)) {
-      chosenJointIds.push(jointId);
-    }
+  const jointIds = jointIdsForEditingCircuitSelector(appState);
+  const chosenJointIds = jointIds.filter((jointId) => {
+    const position = jointPositions[jointId];
+    return pointIntersects(position, region);
   });
 
   return {

@@ -1,4 +1,5 @@
 import values from "lodash/values";
+import uniq from "lodash/uniq";
 import { createSelector } from "reselect";
 
 import { NodeGraphServiceState } from "../state";
@@ -28,7 +29,7 @@ export const connectionsSelector = createNodeGraphSelector(
 );
 
 /**
- * Gets all wire ids supplying input to the specified node.
+ * Gets an array of connection ids supplying input to the specified node.
  * WARN: Not react safe.  For reducer use only.
  */
 export const nodeInputConnectionIdsFromNodeIdSelector = createNodeGraphSelector(
@@ -40,7 +41,7 @@ export const nodeInputConnectionIdsFromNodeIdSelector = createNodeGraphSelector(
 );
 
 /**
- * Gets an array of wire ids leaving the given node.
+ * Gets an array of connection ids leaving the given node.
  * WARN: Not react safe.  For reducer use only.
  */
 export const nodeOutputConnectionIdsFromNodeIdSelector = createNodeGraphSelector(
@@ -49,4 +50,22 @@ export const nodeOutputConnectionIdsFromNodeIdSelector = createNodeGraphSelector
       (connectionId) =>
         state.connectionsById[connectionId].outputPin.nodeId === nodeId
     )
+);
+
+/**
+ * Gets an array of connection ids attached to the given node.
+ * WARN: Not react safe.  For reducer use only.
+ */
+export const nodeConnectionIdsFromNodeIdSelector = createNodeGraphSelector(
+  (state: NodeGraphServiceState, nodeId: string) => {
+    const inputs = nodeInputConnectionIdsFromNodeIdSelector.local(
+      state,
+      nodeId
+    );
+    const outputs = nodeOutputConnectionIdsFromNodeIdSelector.local(
+      state,
+      nodeId
+    );
+    return uniq([...inputs, ...outputs]);
+  }
 );
