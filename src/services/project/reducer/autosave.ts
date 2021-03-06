@@ -4,7 +4,7 @@ import { AppState, defaultAppState } from "@/store";
 import { reducerPriority, PRIORITY_SAVE } from "@/store/priorities";
 import { isProjectMutationAction } from "@/project-mutation-actions";
 
-import { createSave, storeAutosave } from "../utils";
+import { createSave, storeAutosave } from "@/services/savedata/api";
 
 export default reducerPriority(
   PRIORITY_SAVE,
