@@ -24,13 +24,12 @@ import Menu from "@/components/Menus/Menu";
 import MenuItem from "@/components/Menus/MenuItem";
 import DividerMenuItem from "@/components/Menus/DividerMenuItem";
 import SelectionList, { SelectionListItem } from "@/components/SelectionList";
-
-import { WindowProps } from "../window-props";
+import EditableText from "@/components/EditableText";
+import TesselWindow from "@/components/Tessel/TesselWindow";
 
 import styles from "./CircuitsTreeWindow.module.css";
-import EditableText from "@/components/EditableText";
 
-const CircuitsTreeWindow: React.FC<WindowProps> = ({ className }) => {
+const CircuitsTreeWindow: React.FC = () => {
   const dispatch = useDispatch();
 
   const editingCircuitId = useSelector(editingCircuitIdSelector);
@@ -66,17 +65,16 @@ const CircuitsTreeWindow: React.FC<WindowProps> = ({ className }) => {
   );
 
   return (
-    <div
-      className={cls(styles.circuitstree, className)}
-      onContextMenu={onContextMenu}
-    >
-      <SelectionList
-        className={sizing["fill-parent"]}
-        items={listItems}
-        onItemSelected={onCircuitSelected}
-      />
+    <TesselWindow title="Circuits" className={cls(styles.circuitstree)}>
+      <div className={sizing["fill-parent"]} onContextMenu={onContextMenu}>
+        <SelectionList
+          className={sizing["fill-parent"]}
+          items={listItems}
+          onItemSelected={onCircuitSelected}
+        />
+      </div>
       {renderContextMenu(<CircuitTreeContextMenu />)}
-    </div>
+    </TesselWindow>
   );
 };
 

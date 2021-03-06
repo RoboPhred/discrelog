@@ -19,6 +19,7 @@ import { redo } from "@/actions/redo";
 
 import CircuitNodeBreadcrumb from "@/components/CircuitNodeBreadcrumb";
 import CircuitField from "@/components/CircuitField";
+import TesselWindow from "@/components/Tessel/TesselWindow";
 
 import keymap, {
   KeymapHandler,
@@ -32,9 +33,7 @@ import keymap, {
   KEYMAP_REDO,
 } from "./keymap";
 
-import { WindowProps } from "../window-props";
-
-const CircuitFieldWindow: React.FC<WindowProps> = ({ className }) => {
+const CircuitFieldWindow: React.FC = () => {
   const dispatch = useDispatch();
 
   const keyHandlers = React.useMemo(() => {
@@ -63,21 +62,22 @@ const CircuitFieldWindow: React.FC<WindowProps> = ({ className }) => {
   }, [dispatch]);
 
   return (
-    <HotKeys keyMap={keymap} handlers={keyHandlers} component={FillParent}>
-      <div
-        className={cls(
-          "circuit-field-view",
-          sizing["fill-parent"],
-          flex["flex-column"],
-          className
-        )}
-      >
-        <CircuitNodeBreadcrumb />
-        <CircuitField
-          className={cls(sizing["fill-parent"], flex["flexitem-shrink"])}
-        />
-      </div>
-    </HotKeys>
+    <TesselWindow title="Circuit Field">
+      <HotKeys keyMap={keymap} handlers={keyHandlers} component={FillParent}>
+        <div
+          className={cls(
+            "circuit-field-view",
+            sizing["fill-parent"],
+            flex["flex-column"]
+          )}
+        >
+          <CircuitNodeBreadcrumb />
+          <CircuitField
+            className={cls(sizing["fill-parent"], flex["flexitem-shrink"])}
+          />
+        </div>
+      </HotKeys>
+    </TesselWindow>
   );
 };
 

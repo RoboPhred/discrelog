@@ -2,8 +2,6 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import uniq from "lodash/uniq";
 
-import { cls } from "@/utils";
-
 import interaction from "@/styles/interaction.module.css";
 
 import { MODIFIER_KEYS_NONE } from "@/modifier-keys";
@@ -23,22 +21,22 @@ import { addNode } from "@/actions/node-add";
 import { fieldDragStartNewNode } from "@/actions/field-drag-start-newnode";
 import { fieldDragEnd } from "@/actions/field-drag-end";
 
-import { WindowProps } from "../window-props";
+import TesselWindow from "@/components/Tessel/TesselWindow";
 
 import styles from "./NodeTrayWindow.module.css";
 
-const NodeTrayWindow: React.FC<WindowProps> = ({ className }) => {
+const NodeTrayWindow: React.FC = () => {
   const nodeDefinitions = useSelector(nodeDefinitionsSelector);
   const categories = uniq(nodeDefinitions.map((x) => x.category));
 
   return (
-    <div className={cls(styles["node-tray"], className)}>
+    <TesselWindow title="Elements" className={styles["node-tray"]}>
       <ul className={styles["node-tray-elements"]}>
         {categories.map((category) => (
           <TrayCategory key={category} category={category} />
         ))}
       </ul>
-    </div>
+    </TesselWindow>
   );
 };
 export default NodeTrayWindow;

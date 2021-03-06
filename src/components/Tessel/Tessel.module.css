@@ -21,3 +21,36 @@
   width: 100%;
   cursor: row-resize;
 }
+
+.tessel-window {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-ui-bg-light);
+  border-radius: 3px;
+}
+
+.tessel-window-titlebar {
+  background: var(--color-ui-bg-surface);
+  flex-grow: 0;
+  flex-shrink: 0;
+  font-size: 0.8em;
+  font-weight: bold;
+  padding: 3px 5px;
+  box-sizing: border-box;
+  cursor: default;
+  user-select: none;
+  border-radius: 3px;
+  border-bottom: 2px solid var(--color-ui-bg-surface-border);
+}
+
+.tessel-window-content {
+  width: 100%;
+  height: 100%;
+  padding: 2px;
+  flex-shrink: 1;
+  min-height: 0;
+  box-sizing: border-box;
+}
