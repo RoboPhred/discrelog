@@ -68,6 +68,9 @@ export default function dragEndReducer(
       break;
     }
     case "new-node": {
+      // We have to use previousDragEnd here, as drag info comes from dragContinue of
+      // CircuitEditor, and dragEnd is raised by the node tray which does not know where
+      // on the circuit editor the drag ended.
       if (previousDragEnd) {
         const position = applyGridNodeSnapSelector(state, previousDragEnd);
         state = rootReducer(state, addNode(dragNewNodeType!, { position }));

@@ -139,7 +139,6 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
     NodeTrayComponent = () => <rect fill="red" x1={0} y1={0} x2={50} y2={50} />;
   }
 
-  /* FIXME: Settle on a decent size and shrink overly large nodes to fit */
   return (
     <li className={styles["node-tray-item"]} onMouseDown={onMouseDown}>
       <span className={styles["node-tray-item-preview"]}>
