@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import getBounds from "svg-path-bounds";
 import uniq from "lodash/uniq";
 
 import { cls } from "@/utils";
