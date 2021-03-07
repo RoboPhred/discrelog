@@ -40,6 +40,13 @@ export function fpSetByArray<T extends Record<string, any>>(
   path: (string | number)[],
   value: ValueSetter<any>
 ): T {
+  if (path.length === 0) {
+    if (typeof value === "function") {
+      return value(target);
+    }
+    return value;
+  }
+
   const firstPaths = path.slice(0, path.length - 1).map(String);
   const lastPath = path[path.length - 1];
 

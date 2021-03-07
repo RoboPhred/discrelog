@@ -18,7 +18,7 @@ import {
 
 import TesselSplit from "./TesselSplit";
 import TesselFrame from "./TesselFrame";
-import TesselPathProvider from "./TesselContext";
+import { TesselPathProvider } from "./TesselContext";
 
 export interface TesselSplitFrameProps {
   item: TesselSplitItem;

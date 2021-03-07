@@ -1,22 +1,26 @@
 import * as React from "react";
+import get from "lodash/get";
 
 import { cls, fpSetByArray } from "@/utils";
 
-import { TesselValue, TesselWindowRenderer } from "./types";
+import {
+  isTesselSplit,
+  normalizeTesselItem,
+  TesselDropPosition,
+  TesselItem,
+  TesselValue,
+  TesselWindowRenderer,
+} from "./types";
 
 import TesselFrame from "./TesselFrame";
 import TesselDropCapture from "./TesselDropCapture";
 
 import styles from "./Tessel.module.css";
-import { useDrop } from "react-dnd";
-import {
-  isTesselWindowDragObject,
-  TESSEL_WINDOW_DRAG_OBJECT,
-} from "./drag-items/tessel-window";
+import { TesselInteractionProvider } from "./TesselContext";
 
 export interface TesselProps {
   className?: string;
-  rootItem: TesselValue;
+  rootItem: TesselValue | null;
   renderWindow: TesselWindowRenderer;
   onLayoutChange(rootItem: TesselValue): void;
 }
@@ -27,45 +31,104 @@ const Tessel: React.FC<TesselProps> = ({
   renderWindow,
   onLayoutChange,
 }) => {
-  const [{ draggingPath }, dropRef] = useDrop({
-    accept: TESSEL_WINDOW_DRAG_OBJECT,
-    collect: (monitor) => {
-      const item = monitor.getItem();
-      const isOver = monitor.isOver({ shallow: false });
-      if (isOver && isTesselWindowDragObject(item)) {
-        return { draggingPath: item.payload.path };
+  const moveWindow = React.useCallback(
+    (from: string[], to: string[], position: TesselDropPosition) => {
+      if (from.length === 0) {
+        // If we have a window at the root, there is no place to drag it to.
+        return;
       }
 
-      return {};
-    },
-  });
+      let newRoot = rootItem;
+      const movingElement = get(newRoot, from);
+      // If rootItem is a string (implicit window), than there is no way we can find our
+      // from target inside of it (given that from is not the root).
+      // This would be covered by movingElement being undefined, but we add
+      // the extra check to inform typescript of this condition.
+      if (!newRoot || typeof newRoot === "string" || !movingElement) {
+        return;
+      }
 
-  // const transientValue = React.useMemo(() => {
-  //   if (draggingPath == null) {
-  //     return rootItem;
-  //   }
-  //   if (typeof rootItem === "string") {
-  //     // Dragging our only item?
-  //     return null;
-  //   }
-  //   return fpSetByArray(rootItem, draggingPath, null);
-  // }, [rootItem, draggingPath]);
+      // Target must exist, or be the root.
+      if (to.length > 0 && !get(newRoot, to)) {
+        return;
+      }
+
+      // First, null out the from path.
+      // We cannot clean up the stack at this point as that might remove path
+      // elements that we are moving to.  Cleanup will be done later.
+      newRoot = fpSetByArray(newRoot, from, null);
+
+      // Now, insert the window at the new location
+      newRoot = fpSetByArray(newRoot, to, (item: TesselValue) => {
+        let newItem: TesselItem;
+        if (position === "left" || position === "right") {
+          newItem = {
+            direction: "row",
+            division: 50,
+            first: position === "left" ? movingElement : item,
+            second: position === "right" ? movingElement : item,
+          };
+        } else if (position === "top" || position === "bottom") {
+          newItem = {
+            direction: "column",
+            division: 50,
+            first: position === "top" ? movingElement : item,
+            second: position === "bottom" ? movingElement : item,
+          };
+        } else {
+          // Unknown position
+          throw new Error(`Unknown tessel position: ${position}`);
+        }
+        return newItem;
+      });
+
+      // Remove the empty entry from the removal of the from element.
+      newRoot = pruneTesselValue(newRoot);
+
+      onLayoutChange(newRoot);
+    },
+    [rootItem, onLayoutChange]
+  );
 
   return (
-    <div ref={dropRef} className={cls("tessel", styles["tessel"], className)}>
-      <TesselDropCapture>
-        <div className={styles["tessel-content"]}>
-          {rootItem && (
-            <TesselFrame
-              value={rootItem}
-              renderWindow={renderWindow}
-              onLayoutChange={onLayoutChange}
-            />
-          )}
-        </div>
-      </TesselDropCapture>
+    <div className={cls("tessel", styles["tessel"], className)}>
+      <TesselInteractionProvider moveWindow={moveWindow}>
+        <TesselDropCapture>
+          <div className={styles["tessel-content"]}>
+            {rootItem && (
+              <TesselFrame
+                value={rootItem}
+                renderWindow={renderWindow}
+                onLayoutChange={onLayoutChange}
+              />
+            )}
+          </div>
+        </TesselDropCapture>
+      </TesselInteractionProvider>
     </div>
   );
 };
 
 export default Tessel;
+
+function pruneTesselValue(value: TesselValue): TesselValue {
+  if (typeof value === "string") {
+    return value;
+  }
+
+  if (isTesselSplit(value)) {
+    if (value.first == null) {
+      return pruneTesselValue(value.second);
+    }
+    if (value.second == null) {
+      return pruneTesselValue(value.first);
+    }
+    return {
+      ...value,
+      first: pruneTesselValue(value.first),
+      second: pruneTesselValue(value.second),
+    };
+  }
+
+  return value;
+}

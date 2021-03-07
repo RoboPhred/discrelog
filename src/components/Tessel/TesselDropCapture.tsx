@@ -2,7 +2,7 @@ import { arrayEquals } from "@/arrays";
 import { useComponentBounds } from "@/hooks/useComponentBounds";
 import { cls } from "@/utils";
 import * as React from "react";
-import { useDrop } from "react-dnd";
+import { DropTargetMonitor, DragObjectWithType, useDrop } from "react-dnd";
 
 import {
   isTesselWindowDragObject,
@@ -10,7 +10,8 @@ import {
 } from "./drag-items/tessel-window";
 
 import styles from "./Tessel.module.css";
-import { useTesselPath } from "./TesselContext";
+import { useTesselInteraction, useTesselPath } from "./TesselContext";
+import { TesselDropPosition } from "./types";
 
 export interface TesselDropCaptureProps {
   className?: string;
@@ -21,11 +22,86 @@ const TesselDropCapture = React.forwardRef<
   TesselDropCaptureProps
 >(({ className, children }, forwardRef) => {
   const tesselPath = useTesselPath();
+  const { moveWindow } = useTesselInteraction();
+
   const ref = React.useRef<HTMLDivElement | null>(null);
   const { top, left, right, bottom } = useComponentBounds(ref);
-  const [dropPos, setDropPos] = React.useState<
-    "left" | "top" | "right" | "bottom" | null
-  >(null);
+
+  const [dropPos, setDropPos] = React.useState<TesselDropPosition | null>(null);
+
+  const onHover = React.useCallback(
+    (item: DragObjectWithType, monitor: DropTargetMonitor) => {
+      if (!monitor.isOver({ shallow: true })) {
+        setDropPos(null);
+        return;
+      }
+
+      const pos = monitor.getClientOffset();
+      if (item == null || pos == null || !isTesselWindowDragObject(item)) {
+        setDropPos(null);
+        return;
+      }
+
+      if (pos.x < left || pos.x > right) {
+        setDropPos(null);
+        return;
+      }
+
+      if (pos.y < top || pos.y > bottom) {
+        setDropPos(null);
+        return;
+      }
+
+      const relX = pos.x - left;
+      const xPercent = relX / (right - left);
+      if (xPercent <= 0.3) {
+        setDropPos("left");
+        return;
+      }
+      if (xPercent >= 0.6) {
+        setDropPos("right");
+        return;
+      }
+
+      const relY = pos.y - top;
+      const yPercent = relY / (bottom - top);
+      if (yPercent <= 0.3) {
+        setDropPos("top");
+        return;
+      }
+      if (yPercent >= 0.6) {
+        setDropPos("bottom");
+        return;
+      }
+
+      setDropPos(null);
+    },
+    [top, left, right, bottom]
+  );
+
+  const onDrop = React.useCallback(
+    (item: DragObjectWithType, monitor: DropTargetMonitor) => {
+      if (!monitor.isOver({ shallow: true })) {
+        return;
+      }
+
+      if (!isTesselWindowDragObject(item)) {
+        return;
+      }
+      const { path: draggingPath } = item.payload;
+
+      if (arrayEquals(draggingPath, tesselPath)) {
+        return;
+      }
+
+      if (dropPos == null) {
+        return;
+      }
+
+      moveWindow(draggingPath, tesselPath, dropPos);
+    },
+    [tesselPath, dropPos, moveWindow]
+  );
 
   const [{ draggingSelf }, dropRef] = useDrop(
     {
@@ -46,54 +122,10 @@ const TesselDropCapture = React.forwardRef<
           draggingSelf: arrayEquals(item.payload.path, tesselPath),
         };
       },
-      hover: (item, monitor) => {
-        if (!monitor.isOver({ shallow: true })) {
-          setDropPos(null);
-          return;
-        }
-
-        const pos = monitor.getClientOffset();
-        if (item == null || pos == null || !isTesselWindowDragObject(item)) {
-          setDropPos(null);
-          return;
-        }
-
-        if (pos.x < left || pos.x > right) {
-          setDropPos(null);
-          return;
-        }
-
-        if (pos.y < top || pos.y > bottom) {
-          setDropPos(null);
-          return;
-        }
-
-        const relX = pos.x - left;
-        const xPercent = relX / (right - left);
-        if (xPercent <= 0.3) {
-          setDropPos("left");
-          return;
-        }
-        if (xPercent >= 0.6) {
-          setDropPos("right");
-          return;
-        }
-
-        const relY = pos.y - top;
-        const yPercent = relY / (bottom - top);
-        if (yPercent <= 0.3) {
-          setDropPos("top");
-          return;
-        }
-        if (yPercent >= 0.6) {
-          setDropPos("bottom");
-          return;
-        }
-
-        setDropPos(null);
-      },
+      hover: onHover,
+      drop: onDrop,
     },
-    [top, left, right, bottom]
+    [onHover, onDrop]
   );
 
   let dropMarkerClassname = styles["tessel-drop-marker"] + " ";
