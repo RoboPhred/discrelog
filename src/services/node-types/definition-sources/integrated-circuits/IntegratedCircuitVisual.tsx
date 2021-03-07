@@ -4,6 +4,7 @@ import getBounds from "svg-path-bounds";
 
 import { boundsToRect, Point } from "@/geometry";
 import { PinDirection } from "@/logic";
+import { cls } from "@/utils";
 
 import interaction from "@/styles/interaction.module.css";
 
@@ -13,30 +14,32 @@ import { viewCircuit } from "@/actions/circuit-view";
 
 import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
 import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
+import { nodeNamesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 
 import { NodeComponentProps, NodeVisualDefinition } from "../../types";
-
-export interface IntegratedCircuitVisualProps {
-  circuitId: string;
-  inputPinCount: number;
-  outputPinCount: number;
-}
 
 function getBorderPath(inputPinCount: number, outputPinCount: number) {
   const height = Math.max(inputPinCount, outputPinCount, 1) * 50 - 20;
   return `M10,10 h80 v${height} h-80 z`;
 }
 
+export interface IntegratedCircuitVisualProps {
+  circuitId: string;
+  inputPinIds: string[];
+  outputPinIds: string[];
+}
+
 const IntegratedCircuitVisual: React.FC<
   IntegratedCircuitVisualProps & NodeComponentProps
-> = ({ circuitNodeId, circuitId, inputPinCount, outputPinCount }) => {
+> = ({ circuitNodeId, circuitId, inputPinIds, outputPinIds }) => {
   const dispatch = useDispatch();
   const circuitName = useSelector((state) =>
     circuitNameFromIdSelector(state, circuitId)
   );
-  const borderPath = getBorderPath(inputPinCount, outputPinCount);
-
   const editCircuitIdPath = useSelector(editingCircuitNodeIdPathSelector);
+  const nodeNamesById = useSelector(nodeNamesByNodeIdSelector);
+
+  const borderPath = getBorderPath(inputPinIds.length, outputPinIds.length);
 
   const onViewCircuit = React.useCallback(
     (e: React.MouseEvent) => {
@@ -54,42 +57,66 @@ const IntegratedCircuitVisual: React.FC<
     [circuitId, circuitNodeId, dispatch, editCircuitIdPath]
   );
 
-  const inputPins: JSX.Element[] = [];
-  for (let i = 0; i < inputPinCount; i++) {
+  const inputPins = inputPinIds.map((pinId, i) => {
     const y = i * 50 + 25;
-    inputPins.push(
-      <line
-        key={i}
-        className="node-select-highlight--stroke"
-        stroke="black"
-        strokeWidth={2}
-        x1={0}
-        y1={y}
-        x2={10}
-        y2={y}
-      />
+    return (
+      <g key={pinId}>
+        <line
+          className="node-select-highlight--stroke"
+          stroke="black"
+          strokeWidth={2}
+          x1={0}
+          y1={y}
+          x2={10}
+          y2={y}
+        />
+        <text x={15} y={y} alignmentBaseline="middle" fontSize=".7em">
+          {nodeNamesById[pinId]}
+        </text>
+      </g>
     );
-  }
+  });
 
-  const outputPins: JSX.Element[] = [];
-  for (let i = 0; i < outputPinCount; i++) {
+  const outputPins = outputPinIds.map((pinId, i) => {
     const y = i * 50 + 25;
-    outputPins.push(
-      <line
-        key={i}
-        className="node-select-highlight--stroke"
-        stroke="black"
-        strokeWidth={2}
-        x1={90}
-        y1={y}
-        x2={100}
-        y2={y}
-      />
+    return (
+      <g key={pinId}>
+        <line
+          key={i}
+          className="node-select-highlight--stroke"
+          stroke="black"
+          strokeWidth={2}
+          x1={90}
+          y1={y}
+          x2={100}
+          y2={y}
+        />
+        <text
+          x={85}
+          y={y}
+          textAnchor="end"
+          alignmentBaseline="middle"
+          fontSize=".7em"
+        >
+          {nodeNamesById[pinId]}
+        </text>
+      </g>
     );
-  }
+  });
 
   return (
     <g>
+      <text
+        className={cls(
+          interaction["text-unselectable"],
+          "node-select-highlight--fill"
+        )}
+        textAnchor="middle"
+        x={50}
+        y={0}
+      >
+        {circuitName}
+      </text>
       <path
         className="node-select-highlight--stroke node-select-highlight--fill"
         stroke="black"
@@ -97,14 +124,6 @@ const IntegratedCircuitVisual: React.FC<
         d={borderPath}
         onDoubleClick={onViewCircuit}
       />
-      <text
-        className={interaction["text-unselectable"]}
-        textAnchor="middle"
-        x={50}
-        y={30}
-      >
-        {circuitName}
-      </text>
       {inputPins}
       {outputPins}
     </g>
@@ -127,18 +146,18 @@ const IntegratedCircuitTrayVisual: React.FC<IntegratedCircuitVisualProps> = () =
 
 export function circuitToNodeVisual(
   circuitId: string,
-  inputPinCount: number,
-  outputPinCount: number
+  inputPinIds: string[],
+  outputPinIds: string[]
 ): NodeVisualDefinition {
   const icProps: IntegratedCircuitVisualProps = {
     circuitId,
-    inputPinCount,
-    outputPinCount,
+    inputPinIds,
+    outputPinIds,
   };
 
   return {
     hitRect: boundsToRect(
-      getBounds(getBorderPath(inputPinCount, outputPinCount))
+      getBounds(getBorderPath(inputPinIds.length, outputPinIds.length))
     ),
     trayComponent: (props) => (
       <IntegratedCircuitTrayVisual {...icProps} {...props} />

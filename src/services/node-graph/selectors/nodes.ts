@@ -50,6 +50,15 @@ export const nodeTypeFromNodeIdSelector = createNodeGraphSelector(
   }
 );
 
+export const nodeNamesByNodeIdSelector = createNodeGraphSelector(
+  createSelector(
+    (state) => state.nodesById,
+    (nodesById) => {
+      return mapValues(nodesById, (node) => node.nodeName);
+    }
+  )
+);
+
 export const nodeNameOrDefaultFromNodeIdSelector = createNodeGraphSelector(
   (s: NodeGraphServiceState, nodeId: string) => {
     const node = nodeFromNodeIdSelector.local(s, nodeId);

@@ -49,22 +49,22 @@ const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
         );
 
         const pins: Record<string, NodePinDefinition> = {};
-        let inputPinCount = 0;
-        let outputPinCount = 0;
+        const inputPinIds: string[] = [];
+        const outputPinIds: string[] = [];
         for (const pinNodeId of pinNodeIds) {
           const type = nodeTypesByNodeId[pinNodeId];
           if (type === "pin-input") {
             pins[pinNodeId] = {
               direction: "input",
-              ...circuitPinPosition(inputPinCount, "input"),
+              ...circuitPinPosition(inputPinIds.length, "input"),
             };
-            inputPinCount++;
+            inputPinIds.push(pinNodeId);
           } else if (type === "pin-output") {
             pins[pinNodeId] = {
               direction: "output",
-              ...circuitPinPosition(outputPinCount, "output"),
+              ...circuitPinPosition(outputPinIds.length, "output"),
             };
-            outputPinCount++;
+            outputPinIds.push(pinNodeId);
           }
         }
 
@@ -76,7 +76,7 @@ const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
             type: "circuit",
             circuitId,
           },
-          visual: circuitToNodeVisual(circuitId, inputPinCount, outputPinCount),
+          visual: circuitToNodeVisual(circuitId, inputPinIds, outputPinIds),
           pins,
         };
         return def;
