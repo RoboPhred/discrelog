@@ -6,6 +6,7 @@ import projectModifiedReducer from "./project-modified";
 import projectNewReducer from "./project-new";
 import projectReceiveReducer from "./project-receive";
 import projectRenameReducer from "./project-rename";
+import projectSaveSuccessReducer from "./project-save-success";
 
 export default concatReducers(
   autosaveReducer,
@@ -13,5 +14,6 @@ export default concatReducers(
   projectModifiedReducer,
   projectNewReducer,
   projectReceiveReducer,
-  projectRenameReducer
+  projectRenameReducer,
+  projectSaveSuccessReducer
 );

@@ -16,7 +16,6 @@ import { nodeOutputsFromCircuitNodeIdSelector } from "@/services/simulator/selec
 
 const ToggleElementComponent = ({
   circuitNodeId,
-  elementState,
 }: NodeComponentProps<ToggleElementState>) => {
   const dispatch = useDispatch();
   const editCircuitIdPath = useSelector(editingCircuitNodeIdPathSelector);

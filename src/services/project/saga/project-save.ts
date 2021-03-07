@@ -4,7 +4,10 @@ import { saveAs } from "file-saver";
 
 import { AppState } from "@/store";
 
-import { ACTION_PROJECT_SAVE } from "@/actions/project-save";
+import {
+  ACTION_PROJECT_SAVE,
+  saveProjectSuccess,
+} from "@/actions/project-save";
 import { renameProject } from "@/actions/project-rename";
 
 import { createSave } from "@/services/savedata/api";
@@ -24,6 +27,7 @@ function* saveProject() {
     } else {
       yield call(saveLegacy, state);
     }
+    yield put(saveProjectSuccess());
   } catch (e) {
     // TODO: Report error
     console.warn("Failed to save project", e);
@@ -62,6 +66,7 @@ function* saveNativeFileApi(state: AppState): SagaIterator {
     name = fileHandle.getFile().name;
   }
   if (name) {
+    name = name.substr(0, name.lastIndexOf(".json"));
     yield put(renameProject(name));
   }
 

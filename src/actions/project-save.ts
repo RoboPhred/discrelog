@@ -10,3 +10,14 @@ export function isSaveProjectAction(
 ): action is SaveProjectAction {
   return action.type === ACTION_PROJECT_SAVE;
 }
+
+export const ACTION_PROJECT_SAVE_SUCCESS = "@project/save:success" as const;
+export const saveProjectSuccess = () => ({
+  type: ACTION_PROJECT_SAVE_SUCCESS,
+});
+export type SaveProjectSuccessAction = ReturnType<typeof saveProjectSuccess>;
+export function isSaveProjectSuccessAction(
+  action: AnyAction
+): action is SaveProjectSuccessAction {
+  return action.type === ACTION_PROJECT_SAVE_SUCCESS;
+}
