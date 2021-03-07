@@ -31,6 +31,8 @@ import DragAttachWirePreviewLayer from "./components/DragAttachWirePreviewLayer"
 import FieldContextMenu from "./components/FieldContextMenu";
 
 import styles from "./CircuitField.module.css";
+import { useDrag, useDrop } from "react-dnd";
+import { NEW_NODE_DRAG_OBJECT } from "./drag-items/new-node";
 
 export interface CircuitFieldProps {
   className?: string;
@@ -40,8 +42,8 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
   const dispatch = useDispatch();
 
   const sizeRef = React.useRef<HTMLDivElement | null>(null);
-  const svgRef = React.useRef<SVGSVGElement>(null);
-  const scalerRef = React.useRef<SVGGElement>(null);
+  const svgRef = React.useRef<SVGSVGElement | null>(null);
+  const scalerRef = React.useRef<SVGGElement | null>(null);
 
   const isSimActive = useSelector(isSimActiveSelector);
 
@@ -100,6 +102,22 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
   // https://github.com/facebook/react/issues/14856
   useNativeEvent(sizeRef, "wheel", onWheel, { passive: false });
 
+  // We need to capture the drag event at a deeper parent,
+  // because mouse events cannot pass through DragNewNodeLayer's
+  // drag capture rect to the underlying DragSelectLayer and other elements.
+  // In contrast, we cannot handle the drag here as
+  // we do not know the coordinate system from our scaler.
+  // Instead, just capture whether or not we are being dragged into,
+  // and enable the new node drag layer only when we are dragging.
+  const [{ isDragging }, dragRef] = useDrop({
+    accept: NEW_NODE_DRAG_OBJECT,
+    collect: (monitor) => {
+      return {
+        isDragging: monitor.isOver(),
+      };
+    },
+  });
+
   return (
     // svg seems to have an implicit bottom margin against its parent div.
     //  Wrapping it in a div of the same size fixes it.
@@ -108,7 +126,10 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
         <div ref={sizeRef} style={{ width: "100%", height: "100%" }}>
           <svg
             tabIndex={-1}
-            ref={svgRef}
+            ref={(ref) => {
+              svgRef.current = ref;
+              dragRef(ref);
+            }}
             width={width}
             height={height}
             onMouseDown={onMouseDown}
@@ -123,7 +144,6 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
               transform={`scale(${viewScale})`}
             >
               <FieldSvgElementProvider svgRef={svgRef} scalerRef={scalerRef}>
-                <DragNewNodeLayer />
                 <DragSelectLayer />
                 <NodesLayer />
                 <WiresLayer />
@@ -131,6 +151,7 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
                 <DragAttachWirePreviewLayer />
                 <DragNodePreviewLayer />
                 <DragJointPreviewLayer />
+                {isDragging && <DragNewNodeLayer />}
               </FieldSvgElementProvider>
             </g>
           </svg>

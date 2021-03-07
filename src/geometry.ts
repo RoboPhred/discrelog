@@ -32,6 +32,13 @@ export function boundsToRect(bounds: Bounds): Rectangle {
   };
 }
 
+export function snapPoint(p: Point, snap: number) {
+  return {
+    x: Math.round(p.x / snap) * snap,
+    y: Math.round(p.y / snap) * snap,
+  };
+}
+
 export function magnitude(v: Point): number {
   return Math.sqrt(v.x * v.x + v.y * v.y);
 }
