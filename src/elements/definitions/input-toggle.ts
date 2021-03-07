@@ -7,16 +7,22 @@ const defaultToggleState: ToggleElementState = {
   toggleState: false,
 };
 
-const toggleElementDefinition: ElementDefinition = {
+const buttonToggleElementDefinition: ElementDefinition = {
   inputPins: [],
   outputPins: ["OUT"],
   interact(state: ToggleElementState = defaultToggleState) {
+    const nextState = !state.toggleState;
     return {
-      ...state,
-      toggleState: !state.toggleState,
+      state: Object.assign({}, state, {
+        toggleState: nextState,
+      }),
+      transitions: {
+        tickOffset: 1,
+        valuesByPin: { OUT: nextState },
+      },
     };
   },
-  evolve(state = defaultToggleState) {
+  evolve: (state: ToggleElementState = defaultToggleState) => {
     return {
       state,
       transitions: {
@@ -26,4 +32,4 @@ const toggleElementDefinition: ElementDefinition = {
     };
   },
 };
-export default toggleElementDefinition;
+export default buttonToggleElementDefinition;

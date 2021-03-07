@@ -23,7 +23,7 @@ function* onImportLink(action: ImportProjectLinkAction) {
     const saveText = inflate(deflated, { to: "string" });
     const save = JSON.parse(saveText);
 
-    yield put(receiveProject(save));
+    yield put(receiveProject("Linked Project", save));
 
     history.push("/");
   } catch (e) {

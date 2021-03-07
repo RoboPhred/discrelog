@@ -1,17 +1,21 @@
 import { ElementDefinition } from "../types";
 
-export * from "./element-led";
-export * from "./element-toggle";
+function asElementDef(module: any): ElementDefinition {
+  return module.default as ElementDefinition;
+}
 
 export const ElementDefinitionsByType = {
-  and: require("./element-and").default as ElementDefinition,
-  or: require("./element-or").default as ElementDefinition,
-  nor: require("./element-nor").default as ElementDefinition,
-  not: require("./element-not").default as ElementDefinition,
-  buffer: require("./element-buffer").default as ElementDefinition,
-  led: require("./element-led").default as ElementDefinition,
-  toggle: require("./element-toggle").default as ElementDefinition,
-  seg7: require("./element-seg7").default as ElementDefinition,
-  xor: require("./element-xor").default as ElementDefinition,
+  "input-momentary": asElementDef(require("./input-momentary")),
+  "input-toggle": asElementDef(require("./input-toggle")),
+
+  "logic-and": asElementDef(require("./logic-and")),
+  "logic-buffer": asElementDef(require("./logic-buffer")),
+  "logic-nor": asElementDef(require("./logic-nor")),
+  "logic-not": asElementDef(require("./logic-not")),
+  "logic-or": asElementDef(require("./logic-or")),
+  "logic-xor": asElementDef(require("./logic-xor")),
+
+  "output-led": asElementDef(require("./output-led")),
+  "output-seg7": asElementDef(require("./output-seg7")),
 };
 export type ElementType = keyof typeof ElementDefinitionsByType;

@@ -3,16 +3,15 @@ import { useDispatch } from "react-redux";
 
 import useSelector from "@/hooks/useSelector";
 
-import { selectionAlignToGrid } from "@/actions/selection-align-to-grid";
-import { deleteSelection } from "@/actions/selection-delete";
 import { renameNode } from "@/actions/node-rename";
 
 import { nodeNameOrDefaultFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 
 import Menu from "@/components/Menus/Menu";
-import MenuItem from "@/components/Menus/MenuItem";
 import DividerMenuItem from "@/components/Menus/DividerMenuItem";
 import EditableTextMenuItem from "@/components/Menus/EditableTextMenuItem";
+
+import ContextMenuItems from "./ContextMenuItems";
 
 export interface NodeContextMenuProps {
   nodeId: string;
@@ -39,13 +38,6 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({ nodeId }) => {
     [dispatch, nodeId]
   );
 
-  const onAlignToGrid = React.useCallback(() => {
-    dispatch(selectionAlignToGrid());
-  }, [dispatch]);
-  const onDelete = React.useCallback(() => {
-    dispatch(deleteSelection());
-  }, [dispatch]);
-
   return (
     <Menu>
       <EditableTextMenuItem
@@ -57,9 +49,7 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({ nodeId }) => {
         onCancel={onRenameCancel}
       />
       <DividerMenuItem />
-      <MenuItem onClick={onAlignToGrid}>Align Selection To Grid</MenuItem>
-      <DividerMenuItem />
-      <MenuItem onClick={onDelete}>Delete Selected</MenuItem>
+      <ContextMenuItems />
     </Menu>
   );
 };

@@ -1,6 +1,7 @@
-import { LedElementState } from "@/elements";
+import { LedElementState } from "@/elements/definitions/output-led";
 
 import { createShapePathVisual } from "../../components/ShapePathNode";
+
 import { NodeDefinition } from "../../types";
 
 function genCirclePath(cx: number, cy: number, r: number): string {
@@ -13,8 +14,9 @@ const path = genCirclePath(25, 25, 20);
 
 const ledNodeDefinition: NodeDefinition = {
   type: "output-led",
+  category: "i/o",
   displayName: "Indicator Light",
-  elementProduction: "led",
+  elementProduction: "output-led",
   visual: createShapePathVisual(path, {
     path,
     stroke: "black",

@@ -1,4 +1,7 @@
 import * as React from "react";
+import getBounds from "svg-path-bounds";
+
+import { boundsToRect } from "@/geometry";
 
 import { NodeDefinition } from "../../types";
 
@@ -8,10 +11,11 @@ const hitPath = `M 28.96875,2.59375 L 28.96875,5 L 28.96875,45 L 28.96875,47.406
 
 const bufferNodeDefinition: NodeDefinition = {
   type: "logic-buffer",
+  category: "logic",
   displayName: "Buffer",
-  elementProduction: "buffer",
+  elementProduction: "logic-buffer",
   visual: {
-    hitPath,
+    hitRect: boundsToRect(getBounds(hitPath)),
     component: () => (
       <g>
         <path d={hitPath} fill="transparent" stroke="none" />

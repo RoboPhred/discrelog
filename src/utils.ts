@@ -29,23 +29,40 @@ export function fpSet<
   T extends Target[P1][P2][P3]
 >(target: Target, p1: P1, p2: P2, p3: P3, value: ValueSetter<T>): Target;
 export function fpSet(...args: any[]): any {
-  let target = args[0];
-  const firstPaths = args.slice(1, args.length - 2).map(String);
-  const lastPath = args[args.length - 2];
+  const target = args[0];
+  const path = args.slice(1, args.length - 1).map(String);
   const value = args[args.length - 1];
+  return fpSetByArray(target, path, value);
+}
+
+export function fpSetByArray<T extends Record<string, any>>(
+  target: T,
+  path: (string | number)[],
+  value: ValueSetter<any>
+): T {
+  if (path.length === 0) {
+    if (typeof value === "function") {
+      return value(target);
+    }
+    return value;
+  }
+
+  const firstPaths = path.slice(0, path.length - 1).map(String);
+  const lastPath = path[path.length - 1];
 
   const newData = clone(target);
-  target = newData;
+
+  let rollingTarget: any = newData;
 
   for (const seg of firstPaths) {
-    target[seg] = clone(target[seg]);
-    target = target[seg];
+    rollingTarget[seg] = clone(rollingTarget[seg]);
+    rollingTarget = rollingTarget[seg];
   }
 
   if (typeof value === "function") {
-    target[lastPath] = value(target[lastPath]);
+    rollingTarget[lastPath] = value(rollingTarget[lastPath]);
   } else {
-    target[lastPath] = value;
+    rollingTarget[lastPath] = value;
   }
 
   return newData;
@@ -53,9 +70,9 @@ export function fpSet(...args: any[]): any {
 
 function clone<T extends Record<string, unknown> | any[]>(obj: T): T {
   if (Array.isArray(obj)) {
-    return [...obj] as T;
+    return obj.slice() as T;
   }
-  return { ...obj };
+  return Object.assign({}, obj);
 }
 
 export function isTruthy<T>(value: T | null | undefined | false): value is T {

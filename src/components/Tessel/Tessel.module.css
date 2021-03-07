@@ -1,7 +1,65 @@
 .tessel {
   background: var(--color-ui-bg-dark);
+  box-sizing: border-box;
+}
+
+.tessel-content {
+  width: 100%;
+  height: 100%;
   padding: 5px;
   box-sizing: border-box;
+}
+
+.tessel-drop-capture {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.tessel-drop-capture--dragging {
+  opacity: 0.7;
+}
+
+.tessel-drop-marker {
+  position: absolute;
+  background: var(--color-ui-drop-bg);
+  border: 2px solid var(--color-ui-drop-bg-border);
+  border-radius: 3px;
+  display: none;
+  pointer-events: none;
+}
+
+.tessel-drop-marker.drop-left {
+  display: block;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 33%;
+}
+
+.tessel-drop-marker.drop-right {
+  display: block;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 33%;
+}
+
+.tessel-drop-marker.drop-top {
+  display: block;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 33%;
+}
+
+.tessel-drop-marker.drop-bottom {
+  display: block;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 33%;
 }
 
 .tessel-split:hover {
@@ -20,4 +78,37 @@
   min-height: 5px;
   width: 100%;
   cursor: row-resize;
+}
+
+.tessel-window {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-ui-bg-light);
+  border-radius: 3px;
+}
+
+.tessel-window-titlebar {
+  background: var(--color-ui-bg-surface);
+  flex-grow: 0;
+  flex-shrink: 0;
+  font-size: 0.8em;
+  font-weight: bold;
+  padding: 3px 5px;
+  box-sizing: border-box;
+  cursor: default;
+  user-select: none;
+  border-radius: 3px;
+  border-bottom: 2px solid var(--color-ui-bg-surface-border);
+}
+
+.tessel-window-content {
+  width: 100%;
+  height: 100%;
+  padding: 2px;
+  flex-shrink: 1;
+  min-height: 0;
+  box-sizing: border-box;
 }

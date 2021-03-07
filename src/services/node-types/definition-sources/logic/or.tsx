@@ -1,4 +1,7 @@
 import * as React from "react";
+import getBounds from "svg-path-bounds";
+
+import { boundsToRect } from "@/geometry";
 
 import { NodeDefinition } from "../../types";
 
@@ -8,10 +11,11 @@ const hitPath = `M24.09375 5l2 2.4375S31.75 14.437549 31.75 25s-5.65625 17.5625-
 
 const orNodeDefinition: NodeDefinition = {
   type: "logic-or",
+  category: "logic",
   displayName: "OR",
-  elementProduction: "or",
+  elementProduction: "logic-or",
   visual: {
-    hitPath,
+    hitRect: boundsToRect(getBounds(hitPath)),
     component: () => (
       <g>
         <path d={hitPath} fill="transparent" stroke="none" />

@@ -1,9 +1,9 @@
 import { fork } from "redux-saga/effects";
 
-import saveDataSaga from "./savedata/saga";
+import projectSaga from "./project/saga";
 import simulatorControlSaga from "./simulator-control/saga";
 
 export default function* appSaga() {
-  yield fork(saveDataSaga);
+  yield fork(projectSaga);
   yield fork(simulatorControlSaga);
 }

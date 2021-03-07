@@ -1,0 +1,4 @@
+:global(.simulator-active) .node-interaction-toggle,
+:global(.simulator-active) .node-interaction-momentary {
+  cursor: pointer;
+}

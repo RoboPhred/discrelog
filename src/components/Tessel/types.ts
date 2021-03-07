@@ -31,6 +31,8 @@ export interface TesselSplitItem {
 export type TesselItem = TesselWindowItem | TesselSplitItem;
 export type TesselValue = string | TesselItem;
 
+export type TesselDropPosition = "left" | "right" | "top" | "bottom";
+
 export function normalizeTesselItem(value: TesselValue): TesselItem {
   if (typeof value === "string") {
     return {

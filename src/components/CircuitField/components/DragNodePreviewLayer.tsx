@@ -43,7 +43,6 @@ const DragNodePreviewLayer: React.FC = React.memo(
           <NodeVisual
             key={nodeId}
             nodeType={selectedNodeTypesById[nodeId]}
-            nodeState={{}}
             x={p.x + dragMoveOffset.x}
             y={p.y + dragMoveOffset.y}
           />

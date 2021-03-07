@@ -33,7 +33,7 @@ export default function dragEndReducer(
   const {
     dragMode,
     dragStart,
-    dragEnd,
+    dragEnd: previousDragEnd,
     dragNewNodeType,
     dragNewJointAfterJointId,
     dragNewJointConnectionId,
@@ -68,29 +68,39 @@ export default function dragEndReducer(
       break;
     }
     case "new-node": {
-      if (dragEnd) {
-        const position = applyGridNodeSnapSelector(state, dragEnd);
+      // We have to use previousDragEnd here, as drag info comes from dragContinue of
+      // CircuitEditor, and dragEnd is raised by the node tray which does not know where
+      // on the circuit editor the drag ended.
+      if (previousDragEnd) {
+        const position = applyGridNodeSnapSelector(state, previousDragEnd);
         state = rootReducer(state, addNode(dragNewNodeType!, { position }));
       }
       break;
     }
     case "new-joint": {
-      if (dragEnd) {
-        const position = applyGridJointSnapSelector(state, dragEnd);
-        state = rootReducer(
-          state,
-          addWireJoint(
-            dragNewJointConnectionId!,
-            dragNewJointAfterJointId,
-            position
-          )
-        );
-      }
+      const position = applyGridJointSnapSelector(state, { x, y });
+      state = rootReducer(
+        state,
+        addWireJoint(
+          dragNewJointConnectionId!,
+          dragNewJointAfterJointId,
+          position
+        )
+      );
       break;
     }
     case "wire": {
-      const endPin = dragWireTargetPinSelector(state);
-      if (dragWireSource && dragEnd && endPin) {
+      // We need to apply the actual drag end into the state for dragWireTargetPinSelector to process it.
+      // TODO: Split off a new (uncached) selector that takes the position to check for pins at.
+      const stateWithDragEnd = fpSet(
+        state,
+        "services",
+        "circuitEditorUiDrag",
+        "dragEnd",
+        { x, y }
+      );
+      const endPin = dragWireTargetPinSelector(stateWithDragEnd);
+      if (dragWireSource && endPin) {
         state = rootReducer(state, attachWire(dragWireSource, endPin));
       }
       break;

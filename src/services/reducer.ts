@@ -8,7 +8,7 @@ import clipboardReducer from "./clipboard/reducer";
 import dialogReducer from "./dialog/reducer";
 import nodeGraphReducer from "./node-graph/reducer";
 import nodeLayoutReducer from "./node-layout/reducer";
-import savedataReducer from "./savedata/reducer";
+import projectReducer from "./project/reducer";
 import selectionReducer from "./selection/reducer";
 import simulatorReducer from "./simulator/reducer";
 import simulatorControlReducer from "./simulator-control/reducers";
@@ -23,7 +23,7 @@ const reducer = concatReducers(
   dialogReducer,
   nodeGraphReducer,
   nodeLayoutReducer,
-  savedataReducer,
+  projectReducer,
   selectionReducer,
   simulatorReducer,
   simulatorControlReducer,
