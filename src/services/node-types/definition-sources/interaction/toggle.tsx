@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 
+import interaction from "@/styles/interaction.module.css";
+
 import useSelector from "@/hooks/useSelector";
 
 import { interactNode } from "@/actions/node-interact";
@@ -71,6 +73,7 @@ const ToggleElementComponent = ({
         fill={onColor}
       />
       <text
+        className={interaction["text-unselectable"]}
         x={25}
         y={19}
         fontSize=".8em"
@@ -89,6 +92,7 @@ const ToggleElementComponent = ({
         fill={offColor}
       />
       <text
+        className={interaction["text-unselectable"]}
         x={25}
         y={34}
         fontSize=".8em"

@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 
+import interaction from "@/styles/interaction.module.css";
+
 import useSelector from "@/hooks/useSelector";
 
 import { interactNode } from "@/actions/node-interact";
@@ -8,11 +10,11 @@ import { interactNode } from "@/actions/node-interact";
 import { ToggleElementState } from "@/elements/definitions/input-toggle";
 
 import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
+import { nodeOutputsFromCircuitNodeIdSelector } from "@/services/simulator/selectors/nodes";
 
 import { NodeComponentProps, NodeDefinition } from "../../types";
 
 import styles from "./Interaction.module.css";
-import { nodeOutputsFromCircuitNodeIdSelector } from "@/services/simulator/selectors/nodes";
 
 const ToggleElementComponent = ({
   circuitNodeId,
@@ -69,9 +71,10 @@ const ToggleElementComponent = ({
         strokeWidth={1}
       />
 
-      <circle cx={25} cy={25} r={16} fill={onColor} />
+      <circle cx={25} cy={25} r={17} fill={onColor} />
 
       <text
+        className={interaction["text-unselectable"]}
         x={25}
         y={25}
         fontSize=".8em"
@@ -79,7 +82,7 @@ const ToggleElementComponent = ({
         textAnchor="middle"
         alignmentBaseline="middle"
       >
-        On
+        Push
       </text>
     </g>
   );

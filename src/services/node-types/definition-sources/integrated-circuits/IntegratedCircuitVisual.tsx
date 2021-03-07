@@ -91,7 +91,7 @@ const IntegratedCircuitVisual: React.FC<
   return (
     <g>
       <path
-        className="node-select-highlight--stroke"
+        className="node-select-highlight--stroke node-select-highlight--fill"
         stroke="black"
         fill="transparent"
         d={borderPath}
