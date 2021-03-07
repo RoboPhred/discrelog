@@ -13,7 +13,7 @@ const xorNodeDefinition: NodeDefinition = {
   type: "logic-xor",
   category: "logic",
   displayName: "XOR",
-  elementProduction: "xor",
+  elementProduction: "logic-xor",
   visual: {
     hitRect: boundsToRect(getBounds(hitPath)),
     component: () => (

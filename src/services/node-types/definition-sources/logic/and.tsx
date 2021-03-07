@@ -13,7 +13,7 @@ const andNodeDefinition: NodeDefinition = {
   type: "logic-and",
   category: "logic",
   displayName: "AND",
-  elementProduction: "and",
+  elementProduction: "logic-and",
   visual: {
     hitRect: boundsToRect(getBounds(hitPath)),
     component: () => (

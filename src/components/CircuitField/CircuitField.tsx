@@ -10,6 +10,7 @@ import { useNativeEvent } from "@/hooks/useNativeEvent";
 
 import { fieldRectSelector } from "@/services/node-layout/selectors/field";
 import { viewScaleSelector } from "@/services/circuit-editor-ui-viewport/selectors/view";
+import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 
 import { fieldMouseLeave } from "@/actions/field-mouse-leave";
 import { viewZoom } from "@/actions/view-zoom";
@@ -41,6 +42,8 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
   const sizeRef = React.useRef<HTMLDivElement | null>(null);
   const svgRef = React.useRef<SVGSVGElement>(null);
   const scalerRef = React.useRef<SVGGElement>(null);
+
+  const isSimActive = useSelector(isSimActiveSelector);
 
   const { openContextMenu, renderContextMenu } = useContextMenu();
 
@@ -111,6 +114,7 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
             onMouseDown={onMouseDown}
             onMouseLeave={onMouseLeave}
             onContextMenu={onContextMenu}
+            className={cls(isSimActive && "simulator-active")}
           >
             <GridBackground />
             <g

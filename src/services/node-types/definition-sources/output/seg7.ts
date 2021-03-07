@@ -37,7 +37,7 @@ const seg7ElementDefinition: NodeDefinition = {
   type: "output-seg7",
   category: "i/o",
   displayName: "7-Segment Display",
-  elementProduction: "seg7",
+  elementProduction: "output-seg7",
   visual: createShapePathVisual(`M15,0 V63 H45 V0 z`, [
     createSeg("A", [
       [1, 1],

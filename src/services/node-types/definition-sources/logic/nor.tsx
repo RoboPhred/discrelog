@@ -12,7 +12,7 @@ const norNodeDefinition: NodeDefinition = {
   type: "logic-nor",
   category: "logic",
   displayName: "NOR",
-  elementProduction: "nor",
+  elementProduction: "logic-nor",
   visual: {
     hitRect: boundsToRect(getBounds(hitPath)),
     component: () => (

@@ -13,7 +13,7 @@ const notNodeDefinition: NodeDefinition = {
   type: "logic-not",
   category: "logic",
   displayName: "NOT",
-  elementProduction: "not",
+  elementProduction: "logic-not",
   visual: {
     hitRect: boundsToRect(getBounds(hitPath)),
     component: () => (

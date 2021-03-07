@@ -13,7 +13,7 @@ const orNodeDefinition: NodeDefinition = {
   type: "logic-or",
   category: "logic",
   displayName: "OR",
-  elementProduction: "or",
+  elementProduction: "logic-or",
   visual: {
     hitRect: boundsToRect(getBounds(hitPath)),
     component: () => (

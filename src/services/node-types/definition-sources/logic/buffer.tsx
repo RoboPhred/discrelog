@@ -13,7 +13,7 @@ const bufferNodeDefinition: NodeDefinition = {
   type: "logic-buffer",
   category: "logic",
   displayName: "Buffer",
-  elementProduction: "buffer",
+  elementProduction: "logic-buffer",
   visual: {
     hitRect: boundsToRect(getBounds(hitPath)),
     component: () => (

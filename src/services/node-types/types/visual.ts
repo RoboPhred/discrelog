@@ -13,7 +13,7 @@ export interface NodeVisualDefinition {
 
 // TODO: Many of these are optional because these are also used as tray components.
 //  Should remove components as tray components and rely on the trayComponent def.
-export interface NodeComponentProps {
+export interface NodeComponentProps<TState = any> {
   /**
    * The circuit node id, if this node is in a circuit.
    */
@@ -25,7 +25,7 @@ export interface NodeComponentProps {
   /**
    * The current state of the element for this node.
    */
-  elementState: any;
+  elementState?: TState;
 }
 
 export type NodeComponentType = React.ComponentType<NodeComponentProps>;
