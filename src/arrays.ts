@@ -3,6 +3,18 @@ export function asArray<T>(value: MaybeArray<T>): T[] {
   return Array.isArray(value) ? value : [value];
 }
 
+export function arrayEquals<T extends any[]>(a: T, b: T) {
+  if (a === b) {
+    return true;
+  }
+
+  if (a.length !== b.length) {
+    return false;
+  }
+
+  return a.every((v, i) => b[i] === v);
+}
+
 const EmptyArray: ReadonlyArray<unknown> = Object.freeze([]);
 // Would be simpler to just use EmptyArray, but we cannot type that to what the usage wants.
 // Shame the type `[]` is invalid.

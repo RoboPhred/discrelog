@@ -1,3 +1,4 @@
+import { SagaIterator } from "redux-saga";
 import { takeLeading, select, put, delay } from "redux-saga/effects";
 
 import { ACTION_SIM_START } from "@/actions/sim-start";
@@ -11,7 +12,7 @@ export default function* runModeSaga() {
   yield takeLeading([ACTION_SIM_START, ACTION_SIM_PAUSE], handleRunSim);
 }
 
-function* handleRunSim() {
+function* handleRunSim(): SagaIterator {
   while (true) {
     const isRunning = yield select(isSimRunningSelector);
     if (!isRunning) {

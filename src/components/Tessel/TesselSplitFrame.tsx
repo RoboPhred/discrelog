@@ -18,6 +18,7 @@ import {
 
 import TesselSplit from "./TesselSplit";
 import TesselFrame from "./TesselFrame";
+import TesselPathProvider from "./TesselContext";
 
 export interface TesselSplitFrameProps {
   item: TesselSplitItem;
@@ -100,11 +101,13 @@ const TesselSplitFrame: React.FC<TesselSplitFrameProps> = ({
         )}
         style={{ [sizeDirection]: firstSize }}
       >
-        <TesselFrame
-          value={first}
-          renderWindow={renderWindow}
-          onLayoutChange={onFirstLayoutChange}
-        />
+        <TesselPathProvider pathKey="first">
+          <TesselFrame
+            value={first}
+            renderWindow={renderWindow}
+            onLayoutChange={onFirstLayoutChange}
+          />
+        </TesselPathProvider>
       </div>
       <TesselSplit
         direction={direction}
@@ -116,11 +119,13 @@ const TesselSplitFrame: React.FC<TesselSplitFrameProps> = ({
         )}
         style={{ [sizeDirection]: secondSize }}
       >
-        <TesselFrame
-          value={second}
-          renderWindow={renderWindow}
-          onLayoutChange={onSecondLayoutChange}
-        />
+        <TesselPathProvider pathKey="second">
+          <TesselFrame
+            value={second}
+            renderWindow={renderWindow}
+            onLayoutChange={onSecondLayoutChange}
+          />
+        </TesselPathProvider>
       </div>
     </div>
   );

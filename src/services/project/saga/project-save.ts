@@ -1,13 +1,15 @@
+import { SagaIterator } from "redux-saga";
 import { call, put, select, takeEvery } from "redux-saga/effects";
 import { saveAs } from "file-saver";
 
 import { AppState } from "@/store";
 
 import { ACTION_PROJECT_SAVE } from "@/actions/project-save";
+import { renameProject } from "@/actions/project-rename";
 
 import { createSave } from "@/services/savedata/api";
+
 import { projectNameSelector } from "../selectors/project";
-import { renameProject } from "@/actions/project-rename";
 
 export default function* projectSaveSaga() {
   yield takeEvery(ACTION_PROJECT_SAVE, saveProject);
@@ -28,7 +30,7 @@ function* saveProject() {
   }
 }
 
-function* saveNativeFileApi(state: AppState) {
+function* saveNativeFileApi(state: AppState): SagaIterator {
   const projectName = yield select(projectNameSelector);
 
   const fileHandle: FileHandle | null = yield call(window.showSaveFilePicker!, {
@@ -72,7 +74,7 @@ function* saveNativeFileApi(state: AppState) {
   yield call(writable.close.bind(writable));
 }
 
-function* saveLegacy(state: AppState) {
+function* saveLegacy(state: AppState): SagaIterator {
   const projectName = yield select(projectNameSelector);
 
   const save = createSave(state);

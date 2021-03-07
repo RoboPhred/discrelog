@@ -1,3 +1,4 @@
+import { SagaIterator } from "redux-saga";
 import { call, put, takeEvery } from "redux-saga/effects";
 import fileDialog from "file-dialog";
 
@@ -10,7 +11,7 @@ export default function* projectLoadSaga() {
   yield takeEvery(ACTION_PROJECT_LOAD, loadProject);
 }
 
-function* loadProject() {
+function* loadProject(): SagaIterator {
   try {
     const [file]: File[] = yield call(fileDialog, {
       accept: "application/json",
