@@ -21,13 +21,13 @@ const TesselWindow: React.FC<TesselWindowProps> = ({
   children,
 }) => {
   const path = useTesselPath();
-  const [, dragSourceRef, dragPreviewRef] = useDrag({
+  const [, dragSourceRef] = useDrag({
     item: tesselWindowDragObject(path),
   });
 
   return (
-    <TesselDropCapture ref={dragSourceRef} className={styles["tessel-window"]}>
-      <div ref={dragPreviewRef} className={styles["tessel-window-titlebar"]}>
+    <TesselDropCapture className={styles["tessel-window"]}>
+      <div ref={dragSourceRef} className={styles["tessel-window-titlebar"]}>
         {title}
       </div>
       <div className={cls(styles["tessel-window-content"], className)}>

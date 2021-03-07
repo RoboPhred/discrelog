@@ -1,58 +1,85 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
+import { useDrop } from "react-dnd";
 
-import { getModifiers } from "@/modifier-keys";
+import { Point } from "@/geometry";
 
 import useSelector from "@/hooks/useSelector";
 
+import { addNode } from "@/actions/node-add";
+
+import { editingCircuitIdSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
+
+import { useMouseCoords } from "../hooks/useMouseCoords";
+
 import {
-  isDraggingNewNodeSelector,
-  dragNewNodeTypeSelector,
-  dragEndSelector,
-} from "@/services/circuit-editor-ui-drag/selectors/drag";
-
-import { fieldDragContinue } from "@/actions/field-drag-continue";
-
-import { useEventMouseCoords } from "../hooks/useMouseCoords";
+  isNewNodeDragObject,
+  NEW_NODE_DRAG_OBJECT,
+} from "../drag-items/new-node";
 
 import NodeVisual from "./NodeVisual";
 
 const DragNewNodeLayer: React.FC = React.memo(function DragNewNodeLayer() {
   const dispatch = useDispatch();
-  const getMouseCoords = useEventMouseCoords();
-  const isDraggingNewNode = useSelector(isDraggingNewNodeSelector);
-  // FIXME: Apply snap if ctrl-meta not held
-  const dragEnd = useSelector(dragEndSelector);
-  const draggingNodeType = useSelector(dragNewNodeTypeSelector);
+  const editingCircuitId = useSelector(editingCircuitIdSelector);
+  const getMouseCoords = useMouseCoords();
+  const [dragType, setDragType] = React.useState<string | null>(null);
+  const [dragPos, setDragPos] = React.useState<Point | null>(null);
 
-  // New node drags start on the tray, so we need to be responsible for
-  // continuing the drag.
-  const onMouseMove = React.useCallback(
-    (e) => {
-      const p = getMouseCoords(e);
-      const modifierKeys = getModifiers(e);
-      dispatch(fieldDragContinue(p, modifierKeys));
+  const [, dropRef] = useDrop(
+    {
+      accept: NEW_NODE_DRAG_OBJECT,
+      collect: (monitor) => {
+        // We need to clear this out on mouse out
+        if (!monitor.isOver()) {
+          setDragPos(null);
+          setDragType(null);
+        }
+      },
+      hover: (item, monitor) => {
+        if (!isNewNodeDragObject(item)) {
+          setDragPos(null);
+          setDragType(null);
+          return;
+        }
+
+        const pos = monitor.getClientOffset();
+        if (!pos) {
+          return;
+        }
+        const coords = getMouseCoords({ x: pos.x, y: pos.y });
+        setDragType(item.payload.nodeType);
+        setDragPos(coords);
+      },
+      drop: (item, monitor) => {
+        if (!isNewNodeDragObject(item)) {
+          return;
+        }
+
+        const pos = monitor.getClientOffset();
+        if (!pos) {
+          return;
+        }
+        const coords = getMouseCoords({ x: pos.x, y: pos.y });
+        dispatch(
+          addNode(item.payload.nodeType, {
+            circuitId: editingCircuitId,
+            position: coords,
+          })
+        );
+      },
     },
-    [getMouseCoords, dispatch]
+    [editingCircuitId, getMouseCoords]
   );
-
-  if (!isDraggingNewNode || !draggingNodeType) {
-    return null;
-  }
 
   return (
     <>
-      {dragEnd && (
+      {dragPos && dragType && (
         <g opacity={0.5}>
-          <NodeVisual x={dragEnd.x} y={dragEnd.y} nodeType={draggingNodeType} />
+          <NodeVisual x={dragPos.x} y={dragPos.y} nodeType={dragType} />
         </g>
       )}
-      <rect
-        width="100%"
-        height="100%"
-        fill="transparent"
-        onMouseMove={onMouseMove}
-      />
+      <rect ref={dropRef} width="100%" height="100%" fill="transparent" />
     </>
   );
 });

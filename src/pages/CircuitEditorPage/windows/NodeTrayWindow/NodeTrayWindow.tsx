@@ -1,12 +1,8 @@
 import * as React from "react";
-import { useDispatch } from "react-redux";
 import uniq from "lodash/uniq";
 
 import interaction from "@/styles/interaction.module.css";
 
-import { MODIFIER_KEYS_NONE } from "@/modifier-keys";
-
-import useMouseTracking from "@/hooks/useMouseTracking";
 import useSelector from "@/hooks/useSelector";
 
 import {
@@ -17,13 +13,11 @@ import { editingCircuitIdSelector } from "@/services/circuit-editor-ui-viewport/
 import { circuitIdToNodeType } from "@/services/node-types/definition-sources/integrated-circuits/utils";
 import { NodeComponentProps } from "@/services/node-types/types";
 
-import { addNode } from "@/actions/node-add";
-import { fieldDragStartNewNode } from "@/actions/field-drag-start-newnode";
-import { fieldDragEnd } from "@/actions/field-drag-end";
-
 import TesselWindow from "@/components/Tessel/TesselWindow";
 
 import styles from "./NodeTrayWindow.module.css";
+import { useDrag } from "react-dnd";
+import { newNodeDragObject } from "@/components/CircuitField/drag-items/new-node";
 
 const NodeTrayWindow: React.FC = () => {
   const nodeDefinitions = useSelector(nodeDefinitionsSelector);
@@ -75,48 +69,13 @@ interface TrayNodeProps {
   nodeType: string;
 }
 const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
-  const dispatch = useDispatch();
-  const onClick = React.useCallback(
-    (e: MouseEvent) => {
-      if (e.defaultPrevented) {
-        return;
-      }
-      e.preventDefault();
-      dispatch(addNode(nodeType));
-    },
-    [dispatch, nodeType]
-  );
-
-  const onDragStart = React.useCallback(() => {
-    dispatch(fieldDragStartNewNode(nodeType));
-  }, [dispatch, nodeType]);
-
-  const onDragEnd = React.useCallback(() => {
-    // We do not know the point from here, and selection mode is irrelevant.
-    dispatch(fieldDragEnd({ x: -1, y: -1 }, MODIFIER_KEYS_NONE));
-  }, [dispatch]);
-
-  const { startTracking } = useMouseTracking({
-    onClick,
-    onDragStart,
-    onDragEnd,
-  });
-
-  const onMouseDown = React.useCallback(
-    (e: React.MouseEvent) => {
-      if (e.defaultPrevented) {
-        return;
-      }
-
-      e.preventDefault();
-      startTracking(e);
-    },
-    [startTracking]
-  );
-
   const def = useSelector((state) =>
     nodeDefinitionFromTypeSelector(state, nodeType)
   );
+
+  const [, dragRef] = useDrag({
+    item: newNodeDragObject(nodeType),
+  });
 
   let nodeTrayVisual: JSX.Element;
   let displayName = nodeType;
@@ -136,7 +95,7 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
   }
 
   return (
-    <li className={styles["node-tray-item"]} onMouseDown={onMouseDown}>
+    <li ref={dragRef} className={styles["node-tray-item"]}>
       <span className={styles["node-tray-item-preview"]}>
         <svg width={30} height={30} viewBox={viewBox}>
           {nodeTrayVisual}

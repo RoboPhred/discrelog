@@ -123,6 +123,7 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
               transform={`scale(${viewScale})`}
             >
               <FieldSvgElementProvider svgRef={svgRef} scalerRef={scalerRef}>
+                <DragNewNodeLayer />
                 <DragSelectLayer />
                 <NodesLayer />
                 <WiresLayer />
@@ -130,7 +131,6 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
                 <DragAttachWirePreviewLayer />
                 <DragNodePreviewLayer />
                 <DragJointPreviewLayer />
-                <DragNewNodeLayer />
               </FieldSvgElementProvider>
             </g>
           </svg>
