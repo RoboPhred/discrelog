@@ -10,7 +10,6 @@ import rootReducer from "@/store/reducer";
 import { isFieldDragEndAction } from "@/actions/field-drag-end";
 import { selectRegion } from "@/actions/select-region";
 import { moveSelection } from "@/actions/selection-move";
-import { addNode } from "@/actions/node-add";
 import { addWireJoint } from "@/actions/wire-joint-add";
 import { attachWire } from "@/actions/wire-attach";
 
@@ -33,8 +32,6 @@ export default function dragEndReducer(
   const {
     dragMode,
     dragStart,
-    dragEnd: previousDragEnd,
-    dragNewNodeType,
     dragNewJointAfterJointId,
     dragNewJointConnectionId,
     dragWireSource,
@@ -64,16 +61,6 @@ export default function dragEndReducer(
           }
         }
         state = rootReducer(state, moveSelection(moveBy.x, moveBy.y));
-      }
-      break;
-    }
-    case "new-node": {
-      // We have to use previousDragEnd here, as drag info comes from dragContinue of
-      // CircuitEditor, and dragEnd is raised by the node tray which does not know where
-      // on the circuit editor the drag ended.
-      if (previousDragEnd) {
-        const position = applyGridNodeSnapSelector(state, previousDragEnd);
-        state = rootReducer(state, addNode(dragNewNodeType!, { position }));
       }
       break;
     }

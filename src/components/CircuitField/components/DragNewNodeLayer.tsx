@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { useDragDropManager, useDrop } from "react-dnd";
+import { useDrop } from "react-dnd";
 
 import { Point, snapPoint } from "@/geometry";
 

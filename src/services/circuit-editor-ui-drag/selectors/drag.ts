@@ -98,14 +98,6 @@ export const dragNewJointPositionSelector = createCircuitEditorUiDragSelector(
   }
 );
 
-export const isDraggingNewNodeSelector = createCircuitEditorUiDragSelector(
-  (s) => s.dragMode === "new-node"
-);
-
-export const dragNewNodeTypeSelector = createCircuitEditorUiDragSelector((s) =>
-  s.dragMode === "new-node" ? s.dragNewNodeType : null
-);
-
 export const dragWireTargetPinSelector = createSelector(
   dragModeSelector,
   dragEndSelector,

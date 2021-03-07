@@ -7,7 +7,7 @@ export interface CircuitEditorUiDragServiceState {
   /**
    * The current drag operation being performed by the ui.
    */
-  dragMode: "move" | "select" | "new-node" | "new-joint" | "wire" | null;
+  dragMode: "move" | "select" | "new-joint" | "wire" | null;
 
   /**
    * The modifier keys in play for the drag operation.
@@ -24,11 +24,6 @@ export interface CircuitEditorUiDragServiceState {
    * drag position, but the cumulative position.
    */
   dragEnd: Point | null;
-
-  /**
-   * If dragMode is "new-node", this holds the node type being created.
-   */
-  dragNewNodeType: string | null;
 
   /**
    * if dragMode is "new-joint", the connection id to create the joint on.
@@ -51,7 +46,6 @@ const _defaultState: CircuitEditorUiDragServiceState = {
   dragModifierKeys: null,
   dragStart: null,
   dragEnd: null,
-  dragNewNodeType: null,
   dragNewJointConnectionId: null,
   dragNewJointAfterJointId: null,
   dragWireSource: null,

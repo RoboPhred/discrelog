@@ -5,7 +5,6 @@ import { cls, fpSetByArray } from "@/utils";
 
 import {
   isTesselSplit,
-  normalizeTesselItem,
   TesselDropPosition,
   TesselItem,
   TesselValue,

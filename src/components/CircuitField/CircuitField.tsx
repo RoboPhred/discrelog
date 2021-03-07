@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import useComponentSize from "@rehooks/component-size";
+import { useDrop } from "react-dnd";
 
 import { cls } from "@/utils";
 import { calcSize } from "@/geometry";
@@ -31,7 +32,6 @@ import DragAttachWirePreviewLayer from "./components/DragAttachWirePreviewLayer"
 import FieldContextMenu from "./components/FieldContextMenu";
 
 import styles from "./CircuitField.module.css";
-import { useDrag, useDrop } from "react-dnd";
 import { NEW_NODE_DRAG_OBJECT } from "./drag-items/new-node";
 
 export interface CircuitFieldProps {
