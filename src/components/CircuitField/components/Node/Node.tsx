@@ -15,7 +15,6 @@ import { nodeStateFromCircuitNodeIdSelector } from "@/services/simulator/selecto
 import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
 import { nodePositionFromNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
-import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
 import { nodeDefFromNodeIdSelector } from "@/services/node-graph/selectors/node-def";
 import { viewScaleSelector } from "@/services/circuit-editor-ui-viewport/selectors/view";
 import { nodeFieldDisplayNameFromNodeId } from "@/services/circuit-editor-ui-settings/selectors/node-name";
@@ -28,6 +27,7 @@ import { selectNodes } from "@/actions/select-nodes";
 import { useContextMenu } from "@/components/ContextMenu";
 
 import { useEventMouseCoords } from "../../hooks/useMouseCoords";
+import { useCircuitField } from "../../circuit-field-context";
 
 import NodeContextMenu from "../NodeContextMenu";
 
@@ -39,9 +39,8 @@ export interface NodeProps {
 
 const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
   const dispatch = useDispatch();
-
+  const { circuitNodePath } = useCircuitField();
   const isSimActive = useSelector(isSimActiveSelector);
-  const editCircuitIdPath = useSelector(editingCircuitNodeIdPathSelector);
 
   const { openContextMenu, renderContextMenu } = useContextMenu();
 
@@ -50,7 +49,7 @@ const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
     nodePositionFromNodeIdSelector(s, nodeId)
   );
   const nodeState = useSelector((s) =>
-    nodeStateFromCircuitNodeIdSelector(s, [...editCircuitIdPath, nodeId])
+    nodeStateFromCircuitNodeIdSelector(s, [...circuitNodePath, nodeId])
   );
   const isSelected = useSelector((s) =>
     isNodeSelectedFromNodeIdSelector(s, nodeId)
@@ -164,7 +163,13 @@ const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
     rect = { p1: ZeroPoint, p2: { x: 50, y: 50 } };
   } else {
     const { component: ElementComponent, hitRect } = def.visual;
-    body = <ElementComponent circuitNodeId={nodeId} elementState={nodeState} />;
+    body = (
+      <ElementComponent
+        circuitNodeId={nodeId}
+        circuitNodePath={circuitNodePath}
+        elementState={nodeState}
+      />
+    );
     rect = hitRect;
   }
 

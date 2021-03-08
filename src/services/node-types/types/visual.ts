@@ -19,6 +19,11 @@ export interface NodeComponentProps<TState = any> {
    */
   circuitNodeId?: string;
 
+  /**
+   * The IC node path to the specific instance of this circuit node.
+   */
+  circuitNodePath?: string[];
+
   // TODO: Nodes can be made of multiple elements.
   // Allow specifying tag names for element productions, and receive
   //  a record of tag names to element states.

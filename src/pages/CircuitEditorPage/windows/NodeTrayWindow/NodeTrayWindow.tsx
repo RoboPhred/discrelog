@@ -1,5 +1,6 @@
 import * as React from "react";
 import uniq from "lodash/uniq";
+import { useDrag } from "react-dnd";
 
 import interaction from "@/styles/interaction.module.css";
 
@@ -9,15 +10,12 @@ import {
   nodeDefinitionFromTypeSelector,
   nodeDefinitionsSelector,
 } from "@/services/node-types/selectors/node-types";
-import { editingCircuitIdSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
-import { circuitIdToNodeType } from "@/services/node-types/definition-sources/integrated-circuits/utils";
 import { NodeComponentProps } from "@/services/node-types/types";
 
+import { newNodeDragObject } from "@/components/CircuitField/drag-items/new-node";
 import TesselWindow from "@/components/Tessel/TesselWindow";
 
 import styles from "./NodeTrayWindow.module.css";
-import { useDrag } from "react-dnd";
-import { newNodeDragObject } from "@/components/CircuitField/drag-items/new-node";
 
 const NodeTrayWindow: React.FC = () => {
   const nodeDefinitions = useSelector(nodeDefinitionsSelector);
@@ -41,17 +39,11 @@ interface TrayCategoryProps {
 
 const TrayCategory: React.FC<TrayCategoryProps> = ({ category }) => {
   const nodeDefinitions = useSelector(nodeDefinitionsSelector);
-  const editingCircuitId = useSelector(editingCircuitIdSelector);
+  const defInCategory = nodeDefinitions.filter(
+    (def) => def.category === category
+  );
 
-  let defs = nodeDefinitions.filter((def) => def.category === category);
-  if (category === "ic") {
-    // FIXME: This only filters out immediate parents.
-    // We need to filter out all ics that also contain our editing ic.
-    const editingType = circuitIdToNodeType(editingCircuitId);
-    defs = defs.filter((def) => def.type !== editingType);
-  }
-
-  const nodes = defs
+  const nodes = defInCategory
     .filter((def) => def.category === category)
     .map((def) => {
       return <TrayNode key={def.type} nodeType={def.type} />;

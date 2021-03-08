@@ -8,23 +8,25 @@ import useSelector from "@/hooks/useSelector";
 import { viewCircuit } from "@/actions/circuit-view";
 
 import {
-  editingCircuitNameSelector,
-  editingCircuitNodeIdPathSelector,
-} from "@/services/circuit-editor-ui-viewport/selectors/circuit";
-import {
   nodeNameOrDefaultFromNodeIdSelector,
   nodeTypeFromNodeIdSelector,
 } from "@/services/node-graph/selectors/nodes";
 import { nodeTypeToCircuitId } from "@/services/node-types/definition-sources/integrated-circuits/utils";
+import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
+import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
+
+import Button from "../Button";
 
 import styles from "./CircuitNodeBreadcrumb.module.css";
-import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
-import Button from "../Button";
-import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
 
-const CircuitNodeBreadcrumb: React.FC = () => {
-  const circuitNodeIdPath = useSelector(editingCircuitNodeIdPathSelector);
-
+export interface CircuitNodeBreadcrumbProps {
+  circuitId: string;
+  circuitNodeIdPath: string[];
+}
+const CircuitNodeBreadcrumb: React.FC<CircuitNodeBreadcrumbProps> = ({
+  circuitId,
+  circuitNodeIdPath,
+}) => {
   const elements: JSX.Element[] = circuitNodeIdPath.map(
     (circuitNodeId, index) => {
       const elementPath = circuitNodeIdPath.slice(0, index + 1);
@@ -44,7 +46,10 @@ const CircuitNodeBreadcrumb: React.FC = () => {
         styles["circuit-node-breadcrumb"]
       )}
     >
-      <CircuitNodeBreadcrumbRootItem />
+      <CircuitNodeBreadcrumbRootItem
+        circuitId={circuitId}
+        circuitNodeIdPath={circuitNodeIdPath}
+      />
       {elements}
     </div>
   );
@@ -52,13 +57,21 @@ const CircuitNodeBreadcrumb: React.FC = () => {
 
 export default CircuitNodeBreadcrumb;
 
-const CircuitNodeBreadcrumbRootItem: React.FC = () => {
+interface CircuitNodeBreadcrumbRootItemProps {
+  circuitId: string;
+  circuitNodeIdPath: string[];
+}
+const CircuitNodeBreadcrumbRootItem: React.FC<CircuitNodeBreadcrumbRootItemProps> = ({
+  circuitId,
+  circuitNodeIdPath,
+}) => {
   const dispatch = useDispatch();
-  const circuitNodeIdPath = useSelector(editingCircuitNodeIdPathSelector);
   const rootCircuitName = useSelector((state) =>
     circuitNameFromIdSelector(state, ROOT_CIRCUIT_ID)
   );
-  const editingCircuitName = useSelector(editingCircuitNameSelector);
+  const circuitName = useSelector((state) =>
+    circuitNameFromIdSelector(state, circuitId)
+  );
 
   const onClick = React.useCallback(
     (e: React.MouseEvent) => {
@@ -70,7 +83,7 @@ const CircuitNodeBreadcrumbRootItem: React.FC = () => {
 
   return (
     <Button onClick={onClick}>
-      {circuitNodeIdPath.length === 0 ? editingCircuitName : rootCircuitName}
+      {circuitNodeIdPath.length === 0 ? circuitName : rootCircuitName}
     </Button>
   );
 };

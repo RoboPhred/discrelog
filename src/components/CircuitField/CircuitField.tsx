@@ -31,14 +31,22 @@ import NodePinsLayer from "./components/NodePinsLayer";
 import DragAttachWirePreviewLayer from "./components/DragAttachWirePreviewLayer";
 import FieldContextMenu from "./components/FieldContextMenu";
 
-import styles from "./CircuitField.module.css";
 import { NEW_NODE_DRAG_OBJECT } from "./drag-items/new-node";
+import { CircuitFieldProvider } from "./circuit-field-context";
+
+import styles from "./CircuitField.module.css";
 
 export interface CircuitFieldProps {
   className?: string;
+  circuitId: string;
+  circuitNodePath: string[];
 }
 
-const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
+const CircuitField: React.FC<CircuitFieldProps> = ({
+  className,
+  circuitId,
+  circuitNodePath,
+}) => {
   const dispatch = useDispatch();
 
   const sizeRef = React.useRef<HTMLDivElement | null>(null);
@@ -118,47 +126,52 @@ const CircuitField: React.FC<CircuitFieldProps> = ({ className }) => {
     },
   });
 
+  // svg seems to have an implicit bottom margin against its parent div
+  // Wrapping it in a div of the same size fixes it.
   return (
-    // svg seems to have an implicit bottom margin against its parent div.
-    //  Wrapping it in a div of the same size fixes it.
-    <div className={cls("circuit-field", styles["circuit-field"], className)}>
-      <div className={styles["circuit-field-scrollarea"]}>
-        <div ref={sizeRef} style={{ width: "100%", height: "100%" }}>
-          <svg
-            tabIndex={-1}
-            ref={(ref) => {
-              svgRef.current = ref;
-              dragRef(ref);
-            }}
-            width={width}
-            height={height}
-            onMouseDown={onMouseDown}
-            onMouseLeave={onMouseLeave}
-            onContextMenu={onContextMenu}
-            className={cls(isSimActive && "simulator-active")}
-          >
-            <GridBackground />
-            <g
-              ref={scalerRef}
-              transform-origin="0 0"
-              transform={`scale(${viewScale})`}
+    <CircuitFieldProvider
+      circuitId={circuitId}
+      circuitNodePath={circuitNodePath}
+    >
+      <div className={cls("circuit-field", styles["circuit-field"], className)}>
+        <div className={styles["circuit-field-scrollarea"]}>
+          <div ref={sizeRef} style={{ width: "100%", height: "100%" }}>
+            <svg
+              tabIndex={-1}
+              ref={(ref) => {
+                svgRef.current = ref;
+                dragRef(ref);
+              }}
+              width={width}
+              height={height}
+              onMouseDown={onMouseDown}
+              onMouseLeave={onMouseLeave}
+              onContextMenu={onContextMenu}
+              className={cls(isSimActive && "simulator-active")}
             >
-              <FieldSvgElementProvider svgRef={svgRef} scalerRef={scalerRef}>
-                <DragSelectLayer />
-                <NodesLayer />
-                <WiresLayer />
-                <NodePinsLayer />
-                <DragAttachWirePreviewLayer />
-                <DragNodePreviewLayer />
-                <DragJointPreviewLayer />
-                {isDragging && <DragNewNodeLayer />}
-              </FieldSvgElementProvider>
-            </g>
-          </svg>
+              <GridBackground />
+              <g
+                ref={scalerRef}
+                transform-origin="0 0"
+                transform={`scale(${viewScale})`}
+              >
+                <FieldSvgElementProvider svgRef={svgRef} scalerRef={scalerRef}>
+                  <DragSelectLayer />
+                  <NodesLayer />
+                  <WiresLayer />
+                  <NodePinsLayer />
+                  <DragAttachWirePreviewLayer />
+                  <DragNodePreviewLayer />
+                  <DragJointPreviewLayer />
+                  {isDragging && <DragNewNodeLayer />}
+                </FieldSvgElementProvider>
+              </g>
+            </svg>
+          </div>
         </div>
+        {renderContextMenu(<FieldContextMenu />)}
       </div>
-      {renderContextMenu(<FieldContextMenu />)}
-    </div>
+    </CircuitFieldProvider>
   );
 };
 

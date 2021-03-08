@@ -2,12 +2,12 @@ import flatten from "lodash/flatten";
 
 import { isSelectAllAction } from "@/actions/select-all";
 
-import { nodeIdsForEditingCircuitSelector } from "@/services/circuit-editor-ui-viewport/selectors/nodes";
 import {
   connectionIdsSelector,
   connectionsByIdSelector,
 } from "@/services/node-graph/selectors/connections";
 import { wireJointIdsByConnectionIdSelector } from "@/services/node-layout/selectors/wires";
+import { nodeIdsFromCircuitIdSelector } from "@/services/circuits/selectors/nodes";
 
 import { createSelectionReducer } from "../utils";
 
@@ -16,7 +16,8 @@ export default createSelectionReducer((state, action, appState) => {
     return state;
   }
 
-  const nodeIds = nodeIdsForEditingCircuitSelector(appState);
+  const { circuitId } = action.payload;
+  const nodeIds = nodeIdsFromCircuitIdSelector(appState, circuitId);
 
   let connectionIds = connectionIdsSelector(appState);
   const connectionsById = connectionsByIdSelector(appState);

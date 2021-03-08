@@ -7,11 +7,12 @@ export default createCircuitEditorUiDragReducer((state, action) => {
     return state;
   }
 
-  const { x, y } = action.payload;
+  const { x, y, circuitId } = action.payload;
 
   return {
     ...state,
     dragMode: "select",
+    dragCircuitId: circuitId,
     dragStart: {
       x,
       y,

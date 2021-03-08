@@ -9,7 +9,6 @@ import { interactNode } from "@/actions/node-interact";
 
 import { ToggleElementState } from "@/elements/definitions/input-toggle";
 
-import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
 import { nodeOutputsFromCircuitNodeIdSelector } from "@/services/simulator/selectors/nodes";
 
 import { NodeComponentProps, NodeDefinition } from "../../types";
@@ -18,16 +17,15 @@ import styles from "./Interaction.module.css";
 
 const ToggleElementComponent = ({
   circuitNodeId,
+  circuitNodePath,
 }: NodeComponentProps<ToggleElementState>) => {
   const dispatch = useDispatch();
-  const editCircuitIdPath = useSelector(editingCircuitNodeIdPathSelector);
 
   const circuitIdPath = React.useMemo(
-    () => [...editCircuitIdPath, circuitNodeId ?? "~~none"],
-    [editCircuitIdPath, circuitNodeId]
+    () => [...(circuitNodePath || []), circuitNodeId ?? "~~none"],
+    [circuitNodePath, circuitNodeId]
   );
 
-  // FIXME: Should get the circuit path from props, to prepare for multiple field windows.
   const outputs = useSelector((state) =>
     nodeOutputsFromCircuitNodeIdSelector(state, circuitIdPath)
   );

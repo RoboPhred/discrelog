@@ -6,13 +6,13 @@ import { Point, pointAdd, ZeroPoint } from "@/geometry";
 
 import { NodeDefinition } from "@/services/node-types/types";
 import { nodeDefFromNodeIdSelector } from "@/services/node-graph/selectors/node-def";
-import { nodeIdsForEditingCircuitSelector } from "@/services/circuit-editor-ui-viewport/selectors/nodes";
 import { nodeConnectionIdsFromNodeIdSelector } from "@/services/node-graph/selectors/connections";
 
 import { createNodeLayoutSelector } from "../utils";
 import { NodeLayoutServiceState } from "../state";
 
 import { nodePositionFromNodeIdSelector } from "./node-positions";
+import { nodeIdsFromCircuitIdSelector } from "@/services/circuits/selectors/nodes";
 
 interface PositionCache {
   inputNodeDef: NodeDefinition;
@@ -119,8 +119,11 @@ export const jointIdsSelector = createNodeLayoutSelector(
  * Gets all joint ids in the editing circuit.
  * WARN: Not react safe, for reducer use only.
  */
-export const jointIdsForEditingCircuitSelector = (state: AppState) => {
-  const nodeIds = nodeIdsForEditingCircuitSelector(state);
+export const jointIdsFromCircuitIdSelector = (
+  state: AppState,
+  circuitId: string
+) => {
+  const nodeIds = nodeIdsFromCircuitIdSelector(state, circuitId);
   const connectionIds = flatMap(nodeIds, (nodeId) =>
     nodeConnectionIdsFromNodeIdSelector(state, nodeId)
   );

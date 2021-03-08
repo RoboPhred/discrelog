@@ -8,7 +8,6 @@ import useSelector from "@/hooks/useSelector";
 
 import { addNode } from "@/actions/node-add";
 
-import { editingCircuitIdSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
 import { gridNodeSnapSelector } from "@/services/circuit-editor-ui-drag/selectors/snap";
 
 import { useMouseCoords } from "../hooks/useMouseCoords";
@@ -18,11 +17,13 @@ import {
   NEW_NODE_DRAG_OBJECT,
 } from "../drag-items/new-node";
 
+import { useCircuitField } from "../circuit-field-context";
+
 import NodeVisual from "./NodeVisual";
 
 const DragNewNodeLayer: React.FC = React.memo(function DragNewNodeLayer() {
   const dispatch = useDispatch();
-  const editingCircuitId = useSelector(editingCircuitIdSelector);
+  const { circuitId } = useCircuitField();
   const snap = useSelector(gridNodeSnapSelector);
   const getMouseCoords = useMouseCoords();
 
@@ -65,14 +66,11 @@ const DragNewNodeLayer: React.FC = React.memo(function DragNewNodeLayer() {
         }
         const coords = getMouseCoords({ x: pos.x, y: pos.y });
         dispatch(
-          addNode(item.payload.nodeType, {
-            circuitId: editingCircuitId,
-            position: snapPoint(coords, snap),
-          })
+          addNode(item.payload.nodeType, circuitId, snapPoint(coords, snap))
         );
       },
     },
-    [editingCircuitId, getMouseCoords, snap]
+    [circuitId, getMouseCoords, snap]
   );
 
   const snapDragPos = dragPos && snapPoint(dragPos, snap);

@@ -16,8 +16,11 @@ import { fieldDragEnd } from "@/actions/field-drag-end";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
 
+import { useCircuitField } from "../circuit-field-context";
+
 const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
   const dispatch = useDispatch();
+  const { circuitId } = useCircuitField();
   const selectionRect = useSelector(selectionRectSelector);
 
   const scale = useSelector(viewScaleSelector);
@@ -43,9 +46,9 @@ const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
   const onDragStart = React.useCallback(
     (e: MouseEvent) => {
       const p = getCoords(e);
-      dispatch(fieldDragStartSelect(p));
+      dispatch(fieldDragStartSelect(p, circuitId));
     },
-    [dispatch, getCoords]
+    [circuitId, dispatch, getCoords]
   );
 
   const onDragMove = React.useCallback(

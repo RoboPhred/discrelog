@@ -6,7 +6,8 @@ import useSelector from "@/hooks/useSelector";
 import { wireJointIdsFromConnectionIdSelector } from "@/services/node-layout/selectors/wires";
 import { isWireSelectedFromConnectionIdSelector } from "@/services/selection/selectors/selection";
 import { wireValueFromConnectionIdSelector } from "@/services/simulator/selectors/wires";
-import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
+
+import { useCircuitField } from "../../circuit-field-context";
 
 import WireSegment from "../WireSegment";
 import WireJoint from "../WireJoint";
@@ -18,13 +19,13 @@ export interface WireProps {
 }
 
 const Wire: React.FC<WireProps> = React.memo(function Wire({ connectionId }) {
-  const editCircuitIdPath = useSelector(editingCircuitNodeIdPathSelector);
+  const { circuitNodePath } = useCircuitField();
 
   const jointIds = useSelector((state) =>
     wireJointIdsFromConnectionIdSelector(state, connectionId)
   );
   const isPowered = useSelector((state) =>
-    wireValueFromConnectionIdSelector(state, editCircuitIdPath, connectionId)
+    wireValueFromConnectionIdSelector(state, circuitNodePath, connectionId)
   );
   const isSelected = useSelector((state) =>
     isWireSelectedFromConnectionIdSelector(state, connectionId)

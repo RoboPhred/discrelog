@@ -13,7 +13,6 @@ import useSelector from "@/hooks/useSelector";
 import { viewCircuit } from "@/actions/circuit-view";
 
 import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
-import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
 import { nodeNamesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 
 import { NodeComponentProps, NodeVisualDefinition } from "../../types";
@@ -31,12 +30,18 @@ export interface IntegratedCircuitVisualProps {
 
 const IntegratedCircuitVisual: React.FC<
   IntegratedCircuitVisualProps & NodeComponentProps
-> = ({ circuitNodeId, circuitId, inputPinIds, outputPinIds }) => {
+> = ({
+  circuitNodeId,
+  circuitNodePath,
+  circuitId,
+  inputPinIds,
+  outputPinIds,
+}) => {
   const dispatch = useDispatch();
   const circuitName = useSelector((state) =>
     circuitNameFromIdSelector(state, circuitId)
   );
-  const editCircuitIdPath = useSelector(editingCircuitNodeIdPathSelector);
+
   const nodeNamesById = useSelector(nodeNamesByNodeIdSelector);
 
   const borderPath = getBorderPath(inputPinIds.length, outputPinIds.length);
@@ -52,9 +57,11 @@ const IntegratedCircuitVisual: React.FC<
       }
       e.preventDefault();
 
-      dispatch(viewCircuit(circuitId, [...editCircuitIdPath, circuitNodeId]));
+      dispatch(
+        viewCircuit(circuitId, [...(circuitNodePath || []), circuitNodeId])
+      );
     },
-    [circuitId, circuitNodeId, dispatch, editCircuitIdPath]
+    [circuitId, circuitNodeId, dispatch, circuitNodePath]
   );
 
   const inputPins = inputPinIds.map((pinId, i) => {

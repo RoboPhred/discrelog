@@ -98,12 +98,15 @@ export function loadSave(state: AppState, save: SaveData): AppState {
       (state, node) =>
         rootReducer(
           state,
-          addNode(node.nodeType, {
-            nodeId: node.nodeId,
-            circuitId: node.circuitId,
-            position: { x: node.x, y: node.y },
-            nodeName: node.nodeName ?? undefined,
-          })
+          addNode(
+            node.nodeType,
+            node.circuitId,
+            { x: node.x, y: node.y },
+            {
+              nodeId: node.nodeId,
+              nodeName: node.nodeName ?? undefined,
+            }
+          )
         ),
       state
     );

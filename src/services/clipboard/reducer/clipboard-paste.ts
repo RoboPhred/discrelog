@@ -25,6 +25,8 @@ export default function clipboardPasteReducer(
     return state;
   }
 
+  const { targetCircuitId } = action.payload;
+
   const { clipboardNodes, clipboardPasteOrigin } = state.services.clipboard;
   const gridSnap = gridNodeSnapSelector(state);
   const pastePosition = pointAdd(clipboardPasteOrigin, {
@@ -45,7 +47,7 @@ export default function clipboardPasteReducer(
     const p = pointAdd(pastePosition, offset);
     state = rootReducer(
       state,
-      addNode(nodeType, { position: p, nodeId: pasteIds[id] })
+      addNode(nodeType, targetCircuitId, p, { nodeId: pasteIds[id] })
     );
   }
 

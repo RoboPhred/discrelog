@@ -2,12 +2,17 @@ import * as React from "react";
 
 import useSelector from "@/hooks/useSelector";
 
-import { connectionIdsForEditingCircuitSelector } from "@/services/circuit-editor-ui-viewport/selectors/nodes";
+import { connectionIdsByCircuitIdSelector } from "@/services/circuits/selectors/connections";
+
+import { useCircuitField } from "../circuit-field-context";
 
 import Wire from "./Wire";
 
 const WiresLayer: React.FC = React.memo(function WiresLayer() {
-  const connectionIds = useSelector(connectionIdsForEditingCircuitSelector);
+  const { circuitId } = useCircuitField();
+  const connectionIds = useSelector((state) =>
+    connectionIdsByCircuitIdSelector(state, circuitId)
+  );
   const connectorElements = connectionIds.map((connectionId) => (
     <Wire key={connectionId} connectionId={connectionId} />
   ));

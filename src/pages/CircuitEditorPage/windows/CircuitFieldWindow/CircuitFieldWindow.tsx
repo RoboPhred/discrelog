@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { HotKeys } from "react-hotkeys";
 import { AnyAction } from "redux";
 
@@ -32,9 +32,25 @@ import keymap, {
   KEYMAP_UNDO,
   KEYMAP_REDO,
 } from "./keymap";
+import {
+  editingCircuitIdSelector,
+  editingCircuitNodeIdPathSelector,
+} from "@/services/circuit-editor-ui-viewport/selectors/circuit";
 
-const CircuitFieldWindow: React.FC = () => {
+export interface CircuitFieldWindowProps {
+  // circuitId: string;
+  // circuitNodeIdPath: string[];
+}
+const CircuitFieldWindow: React.FC<CircuitFieldWindowProps> = (
+  {
+    // circuitId,
+    // circuitNodeIdPath,
+  }
+) => {
   const dispatch = useDispatch();
+
+  const circuitId = useSelector(editingCircuitIdSelector);
+  const circuitNodeIdPath = useSelector(editingCircuitNodeIdPathSelector);
 
   const keyHandlers = React.useMemo(() => {
     function createEventDispatcher(action: AnyAction): HotkeyHandler {
@@ -51,15 +67,15 @@ const CircuitFieldWindow: React.FC = () => {
     const keyHandlers: KeymapHandler = {
       [KEYMAP_SIM_STEP]: createEventDispatcher(tickSim(1)),
       [KEYMAP_SIM_FASTFORWARD]: createEventDispatcher(fastForwardSim()),
-      [KEYMAP_SELECT_ALL]: createEventDispatcher(selectAll()),
+      [KEYMAP_SELECT_ALL]: createEventDispatcher(selectAll(circuitId)),
       [KEYMAP_COPY]: createEventDispatcher(copySelection()),
-      [KEYMAP_PASTE]: createEventDispatcher(paste()),
+      [KEYMAP_PASTE]: createEventDispatcher(paste(circuitId)),
       [KEYMAP_DELETE]: createEventDispatcher(deleteSelection()),
       [KEYMAP_UNDO]: createEventDispatcher(undo()),
       [KEYMAP_REDO]: createEventDispatcher(redo()),
     };
     return keyHandlers;
-  }, [dispatch]);
+  }, [dispatch, circuitId]);
 
   return (
     <TesselWindow title="Circuit Field">
@@ -71,9 +87,14 @@ const CircuitFieldWindow: React.FC = () => {
             flex["flex-column"]
           )}
         >
-          <CircuitNodeBreadcrumb />
+          <CircuitNodeBreadcrumb
+            circuitId={circuitId}
+            circuitNodeIdPath={circuitNodeIdPath}
+          />
           <CircuitField
             className={cls(sizing["fill-parent"], flex["flexitem-shrink"])}
+            circuitId={circuitId}
+            circuitNodePath={circuitNodeIdPath}
           />
         </div>
       </HotKeys>

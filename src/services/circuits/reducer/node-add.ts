@@ -1,17 +1,15 @@
 import { isAddNodeAction } from "@/actions/node-add";
 
-import { editingCircuitIdSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
-
 import { createCircuitsReducer } from "../utils";
 
-export default createCircuitsReducer((state, action, rootState) => {
+export default createCircuitsReducer((state, action) => {
   if (!isAddNodeAction(action)) {
     return state;
   }
 
   const { nodeId, circuitId } = action.payload;
 
-  const targetCircuitId = circuitId ?? editingCircuitIdSelector(rootState);
+  const targetCircuitId = circuitId;
 
   return {
     ...state,

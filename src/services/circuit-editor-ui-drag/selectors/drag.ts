@@ -10,14 +10,17 @@ import { MODIFIER_KEYS_NONE } from "@/modifier-keys";
 
 import { nodePinPositionsByPinIdByNodeIdSelector } from "@/services/node-layout/selectors/node-pin-positions";
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
-import { nodeIdsForEditingCircuitSelector } from "@/services/circuit-editor-ui-viewport/selectors/nodes";
 
 import { createCircuitEditorUiDragSelector } from "../utils";
 
 import { gridJointSnapSelector, gridNodeSnapSelector } from "./snap";
+import { nodeIdsByCircuitIdSelector } from "@/services/circuits/selectors/nodes";
 
 export const dragModeSelector = createCircuitEditorUiDragSelector(
   (s) => s.dragMode
+);
+export const dragCircuitIdSelector = createCircuitEditorUiDragSelector(
+  (s) => s.dragCircuitId
 );
 export const dragStartSelector = createCircuitEditorUiDragSelector(
   (s) => s.dragStart
@@ -101,19 +104,26 @@ export const dragNewJointPositionSelector = createCircuitEditorUiDragSelector(
 export const dragWireTargetPinSelector = createSelector(
   dragModeSelector,
   dragEndSelector,
-  nodeIdsForEditingCircuitSelector,
+  nodeIdsByCircuitIdSelector,
+  dragCircuitIdSelector,
   nodePinPositionsByPinIdByNodeIdSelector,
   (
     dragMode,
     dragEnd,
-    nodeIdsForEditingCircuit,
+    nodeIdsByCircuitId,
+    circuitId,
     pinPositionsByPinIdByNodeId
   ) => {
-    if (dragMode !== "wire" || !dragEnd) {
+    if (dragMode !== "wire" || !dragEnd || !circuitId) {
       return null;
     }
 
-    for (const nodeId of nodeIdsForEditingCircuit) {
+    const nodeIds = nodeIdsByCircuitId[circuitId];
+    if (!nodeIds) {
+      return null;
+    }
+
+    for (const nodeId of nodeIds) {
       const pinPositionsByPinId =
         pinPositionsByPinIdByNodeId[nodeId] ?? ZeroPoint;
       const pinIds = Object.keys(pinPositionsByPinId);

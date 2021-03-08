@@ -3,11 +3,8 @@ import { useDispatch } from "react-redux";
 import getBounds from "svg-path-bounds";
 
 import { boundsToRect } from "@/geometry";
-import useSelector from "@/hooks/useSelector";
 
 import { interactNode } from "@/actions/node-interact";
-
-import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
 
 import { NodeComponentProps, NodeVisualDefinition } from "../types";
 
@@ -36,12 +33,12 @@ export interface ShapePathNodeProps extends NodeComponentProps {
 
 const ShapePathNode: React.FC<ShapePathNodeProps> = ({
   circuitNodeId,
+  circuitNodePath,
   shapePath,
   hitPath,
   elementState,
 }) => {
   const dispatch = useDispatch();
-  const editCircuitIdPath = useSelector(editingCircuitNodeIdPathSelector);
 
   const onClick = React.useCallback(
     (e: React.MouseEvent) => {
@@ -55,9 +52,9 @@ const ShapePathNode: React.FC<ShapePathNodeProps> = ({
 
       e.preventDefault();
 
-      dispatch(interactNode([...editCircuitIdPath, circuitNodeId]));
+      dispatch(interactNode([...(circuitNodePath || []), circuitNodeId]));
     },
-    [circuitNodeId, dispatch, editCircuitIdPath]
+    [circuitNodeId, dispatch, circuitNodePath]
   );
 
   const visuals = normalizeVisuals(shapePath, elementState);

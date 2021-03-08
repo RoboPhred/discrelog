@@ -32,6 +32,7 @@ export default function dragEndReducer(
   const {
     dragMode,
     dragStart,
+    dragCircuitId,
     dragNewJointAfterJointId,
     dragNewJointConnectionId,
     dragWireSource,
@@ -39,10 +40,13 @@ export default function dragEndReducer(
 
   switch (dragMode) {
     case "select": {
-      if (dragStart) {
+      if (dragStart && dragCircuitId) {
         const selectionMode = getSelectMode(modifierKeys);
         const rect = normalizeRectangle(dragStart, { x, y });
-        state = rootReducer(state, selectRegion(rect, selectionMode));
+        state = rootReducer(
+          state,
+          selectRegion(rect, dragCircuitId, selectionMode)
+        );
       }
       break;
     }
@@ -97,6 +101,7 @@ export default function dragEndReducer(
   state = fpSet(state, "services", "circuitEditorUiDrag", (value) => ({
     ...value,
     dragMode: null,
+    dragCircuitId: null,
     dragModifierKeys: null,
     dragStart: null,
     dragEnd: null,

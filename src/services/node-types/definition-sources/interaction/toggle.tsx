@@ -3,13 +3,9 @@ import { useDispatch } from "react-redux";
 
 import interaction from "@/styles/interaction.module.css";
 
-import useSelector from "@/hooks/useSelector";
-
 import { interactNode } from "@/actions/node-interact";
 
 import { ToggleElementState } from "@/elements/definitions/input-toggle";
-
-import { editingCircuitNodeIdPathSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
 
 import { NodeComponentProps, NodeDefinition } from "../../types";
 
@@ -17,10 +13,10 @@ import styles from "./Interaction.module.css";
 
 const ToggleElementComponent = ({
   circuitNodeId,
+  circuitNodePath,
   elementState,
 }: NodeComponentProps<ToggleElementState>) => {
   const dispatch = useDispatch();
-  const editCircuitIdPath = useSelector(editingCircuitNodeIdPathSelector);
 
   const onClick = React.useCallback(
     (e: React.MouseEvent) => {
@@ -34,9 +30,9 @@ const ToggleElementComponent = ({
 
       e.preventDefault();
 
-      dispatch(interactNode([...editCircuitIdPath, circuitNodeId]));
+      dispatch(interactNode([...(circuitNodePath || []), circuitNodeId]));
     },
-    [circuitNodeId, dispatch, editCircuitIdPath]
+    [circuitNodeId, dispatch, circuitNodePath]
   );
 
   let onColor = "darkgreen";

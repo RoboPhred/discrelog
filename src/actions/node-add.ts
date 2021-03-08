@@ -6,13 +6,16 @@ import { Point } from "@/geometry";
 export interface AddNodeOptions {
   nodeId?: string;
   nodeName?: string;
-  circuitId?: string;
-  position?: Point;
 }
 export const ACTION_NODE_ADD = "@node/add" as const;
-export const addNode = (nodeType: string, opts?: AddNodeOptions) => ({
+export const addNode = (
+  nodeType: string,
+  circuitId: string,
+  position: Point,
+  opts?: AddNodeOptions
+) => ({
   type: ACTION_NODE_ADD,
-  payload: { nodeId: uuidV4(), nodeType, ...(opts || {}) },
+  payload: { nodeId: uuidV4(), nodeType, circuitId, position, ...(opts || {}) },
 });
 export type AddNodeAction = ReturnType<typeof addNode>;
 export function isAddNodeAction(action: AnyAction): action is AddNodeAction {

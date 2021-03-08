@@ -10,6 +10,12 @@ export interface CircuitEditorUiDragServiceState {
   dragMode: "move" | "select" | "new-joint" | "wire" | null;
 
   /**
+   * The circuit id in which the drag operation is occuring.
+   * Used for select and wire modes.
+   */
+  dragCircuitId: string | null;
+
+  /**
    * The modifier keys in play for the drag operation.
    */
   dragModifierKeys: ModifierKeys | null;
@@ -43,6 +49,7 @@ export interface CircuitEditorUiDragServiceState {
 
 const _defaultState: CircuitEditorUiDragServiceState = {
   dragMode: null,
+  dragCircuitId: null,
   dragModifierKeys: null,
   dragStart: null,
   dragEnd: null,
