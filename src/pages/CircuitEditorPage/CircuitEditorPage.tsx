@@ -17,7 +17,7 @@ import CircuitFieldWindow from "./windows/CircuitFieldWindow";
 import CircuitsTreeWindow from "./windows/CircuitsTreeWindow";
 import NodeTrayWindow from "./windows/NodeTrayWindow";
 
-const WindowsById: Record<string, React.ComponentType> = {
+const WindowsById: Record<string, React.ComponentType<any>> = {
   "node-tray": NodeTrayWindow,
   "circuit-field": CircuitFieldWindow,
   "circuits-list": CircuitsTreeWindow,

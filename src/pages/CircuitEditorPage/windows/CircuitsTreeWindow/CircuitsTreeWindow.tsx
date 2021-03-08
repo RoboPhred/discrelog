@@ -12,7 +12,6 @@ import { viewCircuit } from "@/actions/circuit-view";
 import { addCircuit } from "@/actions/circuit-add";
 import { renameCircuit } from "@/actions/circuit-rename";
 
-import { editingCircuitIdSelector } from "@/services/circuit-editor-ui-viewport/selectors/circuit";
 import {
   circuitNameFromIdSelector,
   circuitNamesByIdSelector,
@@ -32,7 +31,6 @@ import styles from "./CircuitsTreeWindow.module.css";
 const CircuitsTreeWindow: React.FC = () => {
   const dispatch = useDispatch();
 
-  const editingCircuitId = useSelector(editingCircuitIdSelector);
   const circuitNamesById = useSelector(circuitNamesByIdSelector);
 
   const { openContextMenu, renderContextMenu } = useContextMenu();
@@ -58,10 +56,9 @@ const CircuitsTreeWindow: React.FC = () => {
         return {
           value: circuitId,
           label: <CircuitTreeNodeCircuitLabel circuitId={circuitId} />,
-          isSelected: circuitId === editingCircuitId,
         };
       }),
-    [circuitNamesById, editingCircuitId]
+    [circuitNamesById]
   );
 
   return (
@@ -114,6 +111,14 @@ const CircuitTreeNodeCircuitLabel: React.FC<CircuitTreeNodeLabelProps> = ({
     [circuitId, dispatch]
   );
 
+  const onOpenNewWindow = React.useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      dispatch(viewCircuit(circuitId, null, true));
+    },
+    [circuitId, dispatch]
+  );
+
   const onDelete = React.useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
@@ -151,6 +156,8 @@ const CircuitTreeNodeCircuitLabel: React.FC<CircuitTreeNodeLabelProps> = ({
       {renderContextMenu(
         <Menu>
           <MenuItem onClick={onRequestRename}>Rename Circuit</MenuItem>
+          <DividerMenuItem />
+          <MenuItem onClick={onOpenNewWindow}>Open in New Window</MenuItem>
           <DividerMenuItem />
           <MenuItem onClick={onDelete}>Delete Circuit</MenuItem>
         </Menu>

@@ -4,7 +4,6 @@ import get from "lodash/get";
 import { cls, fpSetByArray } from "@/utils";
 
 import {
-  isTesselSplit,
   TesselDropPosition,
   TesselItem,
   TesselValue,
@@ -15,7 +14,9 @@ import TesselFrame from "./TesselFrame";
 import TesselDropCapture from "./TesselDropCapture";
 
 import styles from "./Tessel.module.css";
+
 import { TesselInteractionProvider } from "./TesselContext";
+import { pruneEmptyTesselValues } from "./utils";
 
 export interface TesselProps {
   className?: string;
@@ -82,7 +83,7 @@ const Tessel: React.FC<TesselProps> = ({
       });
 
       // Remove the empty entry from the removal of the from element.
-      newRoot = pruneTesselValue(newRoot);
+      newRoot = pruneEmptyTesselValues(newRoot);
 
       onLayoutChange(newRoot);
     },
@@ -109,25 +110,3 @@ const Tessel: React.FC<TesselProps> = ({
 };
 
 export default Tessel;
-
-function pruneTesselValue(value: TesselValue): TesselValue {
-  if (typeof value === "string") {
-    return value;
-  }
-
-  if (isTesselSplit(value)) {
-    if (value.first == null) {
-      return pruneTesselValue(value.second);
-    }
-    if (value.second == null) {
-      return pruneTesselValue(value.first);
-    }
-    return {
-      ...value,
-      first: pruneTesselValue(value.first),
-      second: pruneTesselValue(value.second),
-    };
-  }
-
-  return value;
-}

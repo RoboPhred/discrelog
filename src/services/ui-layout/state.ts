@@ -1,10 +1,14 @@
 import { TesselValue } from "@/components/Tessel";
 
+import { circuitFieldTesselWindow } from "@/pages/CircuitEditorPage/windows/CircuitFieldWindow/tessel-window";
+
+import { ROOT_CIRCUIT_ID } from "../circuits/constants";
+
 export interface UiLayoutServiceState {
   /**
    * The tessel layout.
    */
-  layout: TesselValue;
+  layout: TesselValue | null;
 }
 
 const _defaultState: UiLayoutServiceState = {
@@ -19,7 +23,7 @@ const _defaultState: UiLayoutServiceState = {
       first: "circuits-list",
       second: "node-tray",
     },
-    second: "circuit-field",
+    second: circuitFieldTesselWindow(ROOT_CIRCUIT_ID, []),
   },
 };
 

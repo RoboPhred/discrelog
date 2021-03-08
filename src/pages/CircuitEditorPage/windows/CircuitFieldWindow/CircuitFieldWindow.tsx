@@ -1,9 +1,10 @@
 import * as React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { HotKeys } from "react-hotkeys";
 import { AnyAction } from "redux";
 
 import { cls } from "@/utils";
+import useSelector from "@/hooks/useSelector";
 
 import sizing from "@/styles/sizing.module.css";
 import flex from "@/styles/flex.module.css";
@@ -32,25 +33,21 @@ import keymap, {
   KEYMAP_UNDO,
   KEYMAP_REDO,
 } from "./keymap";
-import {
-  editingCircuitIdSelector,
-  editingCircuitNodeIdPathSelector,
-} from "@/services/circuit-editor-ui-viewport/selectors/circuit";
+import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
 
 export interface CircuitFieldWindowProps {
-  // circuitId: string;
-  // circuitNodeIdPath: string[];
+  circuitId: string;
+  circuitNodeIdPath: string[];
 }
-const CircuitFieldWindow: React.FC<CircuitFieldWindowProps> = (
-  {
-    // circuitId,
-    // circuitNodeIdPath,
-  }
-) => {
+const CircuitFieldWindow: React.FC<CircuitFieldWindowProps> = ({
+  circuitId,
+  circuitNodeIdPath,
+}) => {
   const dispatch = useDispatch();
 
-  const circuitId = useSelector(editingCircuitIdSelector);
-  const circuitNodeIdPath = useSelector(editingCircuitNodeIdPathSelector);
+  const circuitName =
+    useSelector((state) => circuitNameFromIdSelector(state, circuitId)) ??
+    "<Circuit Missing>";
 
   const keyHandlers = React.useMemo(() => {
     function createEventDispatcher(action: AnyAction): HotkeyHandler {
@@ -77,8 +74,17 @@ const CircuitFieldWindow: React.FC<CircuitFieldWindowProps> = (
     return keyHandlers;
   }, [dispatch, circuitId]);
 
+  if (!circuitId || !circuitNodeIdPath) {
+    return (
+      <div>
+        Misconfigured circuit field window. Window must have a circuit id and
+        circuit node id path.
+      </div>
+    );
+  }
+
   return (
-    <TesselWindow title="Circuit Field">
+    <TesselWindow title={`${circuitName} [Circuit]`}>
       <HotKeys keyMap={keymap} handlers={keyHandlers} component={FillParent}>
         <div
           className={cls(

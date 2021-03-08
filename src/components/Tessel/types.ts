@@ -4,9 +4,9 @@ export type TesselWindowRenderer = (
   window: TesselWindowItem
 ) => React.ReactElement | null;
 
-export interface TesselWindowItem {
+export interface TesselWindowItem<P = Record<string, any>> {
   windowId: string;
-  windowProps?: Record<string, any>;
+  windowProps?: P;
 }
 
 export type TesselDirection = "row" | "column";
