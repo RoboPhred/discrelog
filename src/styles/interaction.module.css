@@ -1,4 +1,4 @@
 .text-unselectable {
-  cursor: default;
+  cursor: inherit;
   user-select: none;
 }
