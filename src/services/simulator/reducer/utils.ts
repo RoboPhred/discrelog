@@ -350,6 +350,7 @@ export function removeTransitionById(
   );
   if (transitionWindowIndex >= 0) {
     const transitionWindow = transitionWindows[transitionWindowIndex];
+    const { transitionIds } = transitionWindow;
 
     const tickWindowTransitionIndex = transitionWindow.transitionIds.indexOf(
       transitionId
@@ -364,7 +365,6 @@ export function removeTransitionById(
       } else {
         // Remove the transition from the tick window.
         transitionWindows = transitionWindows.slice();
-        const { transitionIds } = transitionWindows[transitionWindowIndex];
         transitionWindows[transitionWindowIndex] = Object.assign(
           {},
           transitionWindows[transitionWindowIndex],

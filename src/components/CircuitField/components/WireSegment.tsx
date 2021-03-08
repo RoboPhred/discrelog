@@ -78,7 +78,7 @@ const WireSegment: React.FC<WireSegmentProps> = React.memo(
     );
 
     const onDragMove = React.useCallback(
-      (offset: Point, e: MouseEvent) => {
+      (_, e: MouseEvent) => {
         const p = getMouseCoords(e);
         const modifiers = getModifiers(e);
         dispatch(fieldDragContinue(p, modifiers));
@@ -87,7 +87,7 @@ const WireSegment: React.FC<WireSegmentProps> = React.memo(
     );
 
     const onDragEnd = React.useCallback(
-      (e: MouseEvent) => {
+      (_, e: MouseEvent) => {
         const p = getMouseCoords(e);
         const modifiers = getModifiers(e);
         dispatch(fieldDragEnd(p, modifiers));

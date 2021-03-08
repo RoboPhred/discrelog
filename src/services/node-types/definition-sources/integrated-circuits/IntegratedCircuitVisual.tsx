@@ -70,7 +70,13 @@ const IntegratedCircuitVisual: React.FC<
           x2={10}
           y2={y}
         />
-        <text x={15} y={y} alignmentBaseline="middle" fontSize=".7em">
+        <text
+          className={interaction["text-unselectable"]}
+          x={15}
+          y={y}
+          alignmentBaseline="middle"
+          fontSize=".7em"
+        >
           {nodeNamesById[pinId]}
         </text>
       </g>
@@ -92,6 +98,7 @@ const IntegratedCircuitVisual: React.FC<
           y2={y}
         />
         <text
+          className={interaction["text-unselectable"]}
           x={85}
           y={y}
           textAnchor="end"

@@ -25,7 +25,7 @@ export function immutableEmptyArray<T>(): T[] {
 export function dropIndexFp<T>(array: T[], index: number) {
   const newArray = array.slice(0, index);
   for (let i = index + 1; i < array.length; i++) {
-    newArray.push(array[index]);
+    newArray.push(array[i]);
   }
   return newArray;
 }

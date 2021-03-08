@@ -1,3 +1,4 @@
+import { ELEMENT_TRANSISTER_RESPONSE_TIME } from "../constants";
 import { ElementDefinition } from "../types";
 
 const inputMomentaryElementDefinition: ElementDefinition = {
@@ -11,7 +12,7 @@ const inputMomentaryElementDefinition: ElementDefinition = {
           valuesByPin: { OUT: true },
         },
         {
-          tickOffset: 5,
+          tickOffset: 1 + Math.round(ELEMENT_TRANSISTER_RESPONSE_TIME * 1.5),
           valuesByPin: { OUT: false },
           transitionMerger: "append",
         },
