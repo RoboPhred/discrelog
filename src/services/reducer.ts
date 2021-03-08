@@ -1,7 +1,6 @@
 import { concatReducers } from "@/store/utils";
 
 import circuitEditorUiDragReducer from "./circuit-editor-ui-drag/reducer";
-import circuitEditorUiSettingsReducer from "./circuit-editor-ui-settings/reducer";
 import circuitEditorUiViewportReducer from "./circuit-editor-ui-viewport/reducer";
 import circuitsReducer from "./circuits/reducer";
 import clipboardReducer from "./clipboard/reducer";
@@ -13,10 +12,11 @@ import selectionReducer from "./selection/reducer";
 import simulatorReducer from "./simulator/reducer";
 import simulatorControlReducer from "./simulator-control/reducers";
 import simulatorGraphReducer from "./simulator-graph/reducer";
+import uiLayoutReducer from "./ui-layout/reducer";
+import uiSettingsReducer from "./ui-settings/reducer";
 
 const reducer = concatReducers(
   circuitEditorUiDragReducer,
-  circuitEditorUiSettingsReducer,
   circuitEditorUiViewportReducer,
   circuitsReducer,
   clipboardReducer,
@@ -27,7 +27,9 @@ const reducer = concatReducers(
   selectionReducer,
   simulatorReducer,
   simulatorControlReducer,
-  simulatorGraphReducer
+  simulatorGraphReducer,
+  uiLayoutReducer,
+  uiSettingsReducer
 );
 
 export default reducer;

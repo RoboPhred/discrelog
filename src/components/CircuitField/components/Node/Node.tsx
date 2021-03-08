@@ -17,7 +17,7 @@ import { nodePositionFromNodeIdSelector } from "@/services/node-layout/selectors
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 import { nodeDefFromNodeIdSelector } from "@/services/node-graph/selectors/node-def";
 import { viewScaleSelector } from "@/services/circuit-editor-ui-viewport/selectors/view";
-import { nodeFieldDisplayNameFromNodeId } from "@/services/circuit-editor-ui-settings/selectors/node-name";
+import { nodeFieldDisplayNameFromNodeId } from "@/services/ui-settings/selectors/node-name";
 
 import { fieldDragStartNode } from "@/actions/field-drag-start-node";
 import { fieldDragContinue } from "@/actions/field-drag-continue";

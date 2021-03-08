@@ -1,7 +1,7 @@
 import { isViewNodeNamesAction } from "@/actions/view-node-names";
-import { createCircuitEditorUiSettingsReducer } from "../utils";
+import { createUiSettingsReducer } from "../utils";
 
-export default createCircuitEditorUiSettingsReducer((state, action) => {
+export default createUiSettingsReducer((state, action) => {
   if (!isViewNodeNamesAction(action)) {
     return state;
   }

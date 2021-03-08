@@ -5,7 +5,7 @@ import useSelector from "@/hooks/useSelector";
 
 import { viewNodeNames } from "@/actions/view-node-names";
 
-import { nodeNameModeSelector } from "@/services/circuit-editor-ui-settings/selectors/node-name";
+import { nodeNameModeSelector } from "@/services/ui-settings/selectors/node-name";
 
 import Menu from "./Menus/Menu";
 import CheckboxMenuItemItem from "./Menus/CheckboxMenuItem";

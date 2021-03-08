@@ -4,9 +4,9 @@ import {
   nodeNameFromNodeIdSelector,
   nodeNameOrDefaultFromNodeIdSelector,
 } from "@/services/node-graph/selectors/nodes";
-import { createCircuitEditorUiSettingsSelector } from "../utils";
+import { createUiSettingsSelector } from "../utils";
 
-export const nodeNameModeSelector = createCircuitEditorUiSettingsSelector(
+export const nodeNameModeSelector = createUiSettingsSelector(
   (s) => s.nodeNameMode
 );
 
@@ -14,7 +14,7 @@ export const nodeFieldDisplayNameFromNodeId = (
   state: AppState,
   nodeId: string
 ) => {
-  const mode = state.services.circuitEditorUiSettings.nodeNameMode;
+  const mode = state.services.uiSettings.nodeNameMode;
   switch (mode) {
     case "all":
     default:

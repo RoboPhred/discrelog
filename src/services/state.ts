@@ -3,10 +3,6 @@ import {
   defaultCircuitEditorUiDragServiceState,
 } from "./circuit-editor-ui-drag/state";
 import {
-  CircuitEditorUiSettingsState,
-  defaultCircuitEditorUiSettingsState,
-} from "./circuit-editor-ui-settings/state";
-import {
   CircuitEditorUiViewportServiceState,
   defaultCircuitEditorUiViewportServiceState,
 } from "./circuit-editor-ui-viewport/state";
@@ -47,10 +43,14 @@ import {
   SimulatorGraphServiceState,
   defaultSimulatorGraphServiceState,
 } from "./simulator-graph/state";
+import {
+  UiLayoutServiceState,
+  defaultUiLayoutServiceState,
+} from "./ui-layout/state";
+import { UiSettingsState, defaultUiSettingsState } from "./ui-settings/state";
 
 export interface AppServicesState {
   circuitEditorUiDrag: CircuitEditorUiDragServiceState;
-  circuitEditorUiSettings: CircuitEditorUiSettingsState;
   circuitEditorUiViewport: CircuitEditorUiViewportServiceState;
   circuits: CircuitsServiceState;
   clipboard: ClipboardServiceState;
@@ -62,11 +62,12 @@ export interface AppServicesState {
   simulator: SimulatorServiceState;
   simulatorControl: SimulatorControlServiceState;
   simulatorGraph: SimulatorGraphServiceState;
+  uiLayout: UiLayoutServiceState;
+  uiSettings: UiSettingsState;
 }
 
 const _defaultServiceState: AppServicesState = {
   circuitEditorUiDrag: defaultCircuitEditorUiDragServiceState,
-  circuitEditorUiSettings: defaultCircuitEditorUiSettingsState,
   circuitEditorUiViewport: defaultCircuitEditorUiViewportServiceState,
   nodeGraph: defaultNodeGraphServiceState,
   nodeLayout: defaultNodeLayoutServiceState,
@@ -78,6 +79,8 @@ const _defaultServiceState: AppServicesState = {
   simulator: defaultSimulatorServiceState,
   simulatorControl: defaultSimulatorControlServiceState,
   simulatorGraph: defaultSimulatorGraphServiceState,
+  uiLayout: defaultUiLayoutServiceState,
+  uiSettings: defaultUiSettingsState,
 };
 
 export const defaultServicesState = Object.freeze(_defaultServiceState);
