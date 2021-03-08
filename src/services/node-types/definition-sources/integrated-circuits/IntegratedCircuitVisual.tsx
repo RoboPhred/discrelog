@@ -10,10 +10,12 @@ import interaction from "@/styles/interaction.module.css";
 
 import useSelector from "@/hooks/useSelector";
 
-import { viewCircuit } from "@/actions/circuit-view";
+import { viewCircuit } from "@/actions/view-circuit";
 
 import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
 import { nodeNamesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
+
+import { useTesselPath } from "@/components/Tessel/TesselContext";
 
 import { NodeComponentProps, NodeVisualDefinition } from "../../types";
 
@@ -38,6 +40,10 @@ const IntegratedCircuitVisual: React.FC<
   outputPinIds,
 }) => {
   const dispatch = useDispatch();
+  // TODO: Now that we are relying on components being in a tessel path, we
+  // definitely should move node components into children of CircuitEditor
+  // and connect to them from node-types using ids.
+  const tesselPath = useTesselPath();
   const circuitName = useSelector((state) =>
     circuitNameFromIdSelector(state, circuitId)
   );
@@ -58,10 +64,12 @@ const IntegratedCircuitVisual: React.FC<
       e.preventDefault();
 
       dispatch(
-        viewCircuit(circuitId, [...(circuitNodePath || []), circuitNodeId])
+        viewCircuit(circuitId, [...(circuitNodePath || []), circuitNodeId], {
+          tesselPath,
+        })
       );
     },
-    [circuitId, circuitNodeId, dispatch, circuitNodePath]
+    [circuitNodeId, dispatch, circuitId, circuitNodePath, tesselPath]
   );
 
   const inputPins = inputPinIds.map((pinId, i) => {

@@ -8,7 +8,7 @@ import sizing from "@/styles/sizing.module.css";
 import useSelector from "@/hooks/useSelector";
 
 import { deleteCircuit } from "@/actions/circuit-delete";
-import { viewCircuit } from "@/actions/circuit-view";
+import { viewCircuit } from "@/actions/view-circuit";
 import { addCircuit } from "@/actions/circuit-add";
 import { renameCircuit } from "@/actions/circuit-rename";
 
@@ -114,7 +114,7 @@ const CircuitTreeNodeCircuitLabel: React.FC<CircuitTreeNodeLabelProps> = ({
   const onOpenNewWindow = React.useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
-      dispatch(viewCircuit(circuitId, null, true));
+      dispatch(viewCircuit(circuitId, null, { newWindow: true }));
     },
     [circuitId, dispatch]
   );
@@ -129,15 +129,11 @@ const CircuitTreeNodeCircuitLabel: React.FC<CircuitTreeNodeLabelProps> = ({
 
   const onContextMenu = React.useCallback(
     (e: React.MouseEvent<HTMLElement>) => {
-      if (circuitId === ROOT_CIRCUIT_ID) {
-        return;
-      }
-
       e.preventDefault();
       e.stopPropagation();
       openContextMenu(e);
     },
-    [circuitId, openContextMenu]
+    [openContextMenu]
   );
 
   return (
@@ -155,11 +151,19 @@ const CircuitTreeNodeCircuitLabel: React.FC<CircuitTreeNodeLabelProps> = ({
       />
       {renderContextMenu(
         <Menu>
-          <MenuItem onClick={onRequestRename}>Rename Circuit</MenuItem>
-          <DividerMenuItem />
+          {circuitId !== ROOT_CIRCUIT_ID && (
+            <>
+              <MenuItem onClick={onRequestRename}>Rename Circuit</MenuItem>
+              <DividerMenuItem />
+            </>
+          )}
           <MenuItem onClick={onOpenNewWindow}>Open in New Window</MenuItem>
-          <DividerMenuItem />
-          <MenuItem onClick={onDelete}>Delete Circuit</MenuItem>
+          {circuitId !== ROOT_CIRCUIT_ID && (
+            <>
+              <DividerMenuItem />
+              <MenuItem onClick={onDelete}>Delete Circuit</MenuItem>
+            </>
+          )}
         </Menu>
       )}
     </div>
