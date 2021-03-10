@@ -381,17 +381,11 @@ body,
   --color-ui-drop-border: rgb(0, 153, 255);
 }
 
-.text-unselectable--2tvXe {
-  cursor: default;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-}
+/** FIXME: ide ts is not generating typings when this is referenced with an @-path */
 
-.simulator-active .node-interaction-toggle--2Uy2Q,
-.simulator-active .node-interaction-momentary--3yAEQ {
-  cursor: pointer;
+.fill-parent--3pw6U {
+  width: 100%;
+  height: 100%;
 }
 
 .flex-row--sHjOY {
@@ -426,13 +420,6 @@ body,
 }
 .flex-column--2LT64 > .flexitem-shrink--2U9EV {
   min-height: 0;
-}
-
-/** FIXME: ide ts is not generating typings when this is referenced with an @-path */
-
-.fill-parent--3pw6U {
-  width: 100%;
-  height: 100%;
 }
 
 .tessel--2Q3Xd {
@@ -534,20 +521,35 @@ body,
 .tessel-window-titlebar--uHBdn {
   background: rgb(231, 231, 231);
   background: var(--color-ui-bg-surface);
+  display: flex;
+  flex-direction: row;
   flex-grow: 0;
   flex-shrink: 0;
-  font-size: 0.8em;
-  font-weight: bold;
   padding: 3px 5px;
   box-sizing: border-box;
+  border-radius: 3px;
+  border-bottom: 2px solid rgb(209, 209, 209);
+  border-bottom: 2px solid var(--color-ui-bg-surface-border);
+}
+
+.tessel-window-title--2v0hT {
+  font-size: 0.8em;
+  font-weight: bold;
   cursor: default;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  border-radius: 3px;
-  border-bottom: 2px solid rgb(209, 209, 209);
-  border-bottom: 2px solid var(--color-ui-bg-surface-border);
+}
+
+.tessel-window-controls--3i3ou {
+  margin-left: auto;
+  line-height: 0;
+}
+
+.tessel-window-controls-close--2O8Zs {
+  cursor: pointer;
+  stroke: black;
 }
 
 .tessel-window-content--sOnG- {
@@ -559,10 +561,17 @@ body,
   box-sizing: border-box;
 }
 
-.circuit-node-breadcrumb--3Rx3N {
-  height: 30px;
-  background: white;
-  background: var(--color-ui-bg-light);
+.text-unselectable--2tvXe {
+  cursor: inherit;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.simulator-active .node-interaction-toggle--2Uy2Q,
+.simulator-active .node-interaction-momentary--3yAEQ {
+  cursor: pointer;
 }
 
 .button--Ui3Hp {
@@ -584,6 +593,12 @@ body,
   border: none;
   background-color: rgb(218, 218, 218);
   background-color: var(--color-ui-bg-light-hover);
+}
+
+.circuit-node-breadcrumb--3Rx3N {
+  height: 30px;
+  background: white;
+  background: var(--color-ui-bg-light);
 }
 
 .wire-joint--DrAWT {
@@ -722,6 +737,14 @@ body,
   overflow: scroll;
   box-sizing: border-box;
   position: relative;
+}
+
+.circuit-field-svg--3SyX4 {
+  display: block;
+}
+
+.icon--3Vly6 {
+  display: inline-block;
 }
 
 .selection-list--3yujH {
