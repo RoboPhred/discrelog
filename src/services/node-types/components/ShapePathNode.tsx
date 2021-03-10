@@ -2,7 +2,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import getBounds from "svg-path-bounds";
 
-import { boundsToRect } from "@/geometry";
+import { boundsToRect, Rectangle } from "@/geometry";
 
 import { interactNode } from "@/actions/node-interact";
 
@@ -23,7 +23,7 @@ export interface NodeVisualPathDefinition {
 
 export type NodeVisualPath = string | NodeVisualPathDefinition;
 
-export interface ShapePathNodeProps extends NodeComponentProps {
+interface ShapePathNodeProps extends NodeComponentProps {
   /**
    * The path or paths that make up the visual component of this node.
    */
@@ -77,15 +77,55 @@ const ShapePathNode: React.FC<ShapePathNodeProps> = ({
   );
 };
 
+interface TrayShapePathNodeProps {
+  shapePath: NodeVisualPath | NodeVisualPath[];
+  hitRect: Rectangle;
+}
+const TrayShapePadding = 5;
+const TrayShapePathNode: React.FC<TrayShapePathNodeProps> = ({
+  shapePath,
+  hitRect,
+}) => {
+  const visuals = normalizeVisuals(shapePath, {});
+  const body = visuals.map((v, i) => (
+    <path
+      key={i}
+      d={v.path}
+      className="node-select-highlight--stroke node-select-highlight--fill"
+      fill={v.fill}
+      stroke={v.stroke}
+      strokeWidth={v.strokeWidth}
+    />
+  ));
+
+  return (
+    <svg
+      width={50}
+      height={50}
+      viewBox={`${hitRect.p1.x - TrayShapePadding} ${
+        hitRect.p1.y - TrayShapePadding
+      } ${hitRect.p2.x - hitRect.p1.x + TrayShapePadding * 2} ${
+        hitRect.p2.y - hitRect.p1.y + TrayShapePadding * 2
+      }`}
+    >
+      {body}
+    </svg>
+  );
+};
+
 export function createShapePathVisual(
   hitPath: string,
   shapePath: NodeVisualPath | NodeVisualPath[]
 ): NodeVisualDefinition {
+  const hitRect = boundsToRect(getBounds(hitPath));
   return {
+    trayComponent: () => (
+      <TrayShapePathNode shapePath={shapePath} hitRect={hitRect} />
+    ),
     component: (props: NodeComponentProps) => (
       <ShapePathNode shapePath={shapePath} hitPath={hitPath} {...props} />
     ),
-    hitRect: boundsToRect(getBounds(hitPath)),
+    hitRect,
   };
 }
 
