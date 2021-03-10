@@ -41,8 +41,10 @@ export default createUiLayoutReducer((state, action, appState) => {
   if (tesselPath) {
     layout = fpSetByArray(normalizeTesselItem(layout), tesselPath, window);
   } else {
+    let inserted = false;
     layout = findAndReplaceTesselValue(layout, (value) => {
       if (isCircuitFieldTesselWindow(value)) {
+        inserted = true;
         if (newWindow) {
           return {
             direction: "row",
@@ -56,6 +58,17 @@ export default createUiLayoutReducer((state, action, appState) => {
       }
       return null;
     });
+
+    if (!inserted) {
+      layout = {
+        direction: "row",
+        division: {
+          firstSize: 200,
+        },
+        first: layout,
+        second: window,
+      };
+    }
   }
 
   return {

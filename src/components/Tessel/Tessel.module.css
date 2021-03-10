@@ -92,16 +92,31 @@
 
 .tessel-window-titlebar {
   background: var(--color-ui-bg-surface);
+  display: flex;
+  flex-direction: row;
   flex-grow: 0;
   flex-shrink: 0;
-  font-size: 0.8em;
-  font-weight: bold;
   padding: 3px 5px;
   box-sizing: border-box;
-  cursor: default;
-  user-select: none;
   border-radius: 3px;
   border-bottom: 2px solid var(--color-ui-bg-surface-border);
+}
+
+.tessel-window-title {
+  font-size: 0.8em;
+  font-weight: bold;
+  cursor: default;
+  user-select: none;
+}
+
+.tessel-window-controls {
+  margin-left: auto;
+  line-height: 0;
+}
+
+.tessel-window-controls-close {
+  cursor: pointer;
+  stroke: black;
 }
 
 .tessel-window-content {

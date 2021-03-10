@@ -6,10 +6,11 @@ import { cls } from "@/utils";
 
 import { tesselWindowDragObject } from "./drag-items/tessel-window";
 
-import { useTesselPath } from "./TesselContext";
+import { useTesselInteraction, useTesselPath } from "./TesselContext";
 import TesselDropCapture from "./TesselDropCapture";
 
 import styles from "./Tessel.module.css";
+import CloseIcon from "../Icons/Close";
 
 export interface TesselWindowProps {
   className?: string;
@@ -21,6 +22,12 @@ const TesselWindow: React.FC<TesselWindowProps> = ({
   children,
 }) => {
   const path = useTesselPath();
+
+  const { closeWindow } = useTesselInteraction();
+  const onCloseWindow = React.useCallback(() => {
+    closeWindow(path);
+  }, [closeWindow, path]);
+
   const [, dragSourceRef] = useDrag({
     item: tesselWindowDragObject(path),
   });
@@ -28,7 +35,13 @@ const TesselWindow: React.FC<TesselWindowProps> = ({
   return (
     <TesselDropCapture className={styles["tessel-window"]}>
       <div ref={dragSourceRef} className={styles["tessel-window-titlebar"]}>
-        {title}
+        <div className={styles["tessel-window-title"]}>{title}</div>
+        <div className={styles["tessel-window-controls"]}>
+          <CloseIcon
+            className={styles["tessel-window-controls-close"]}
+            onClick={onCloseWindow}
+          />
+        </div>
       </div>
       <div className={cls(styles["tessel-window-content"], className)}>
         {children}

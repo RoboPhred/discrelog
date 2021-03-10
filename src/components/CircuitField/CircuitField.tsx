@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import useComponentSize from "@rehooks/component-size";
 import { useDrop } from "react-dnd";
 
 import { cls } from "@/utils";
@@ -8,6 +7,7 @@ import { calcSize } from "@/geometry";
 
 import useSelector from "@/hooks/useSelector";
 import { useNativeEvent } from "@/hooks/useNativeEvent";
+import { useComponentBounds } from "@/hooks/useComponentBounds";
 
 import { fieldRectSelector } from "@/services/node-layout/selectors/field";
 import { viewScaleSelector } from "@/services/circuit-editor-ui-viewport/selectors/view";
@@ -57,7 +57,7 @@ const CircuitField: React.FC<CircuitFieldProps> = ({
 
   const { openContextMenu, renderContextMenu } = useContextMenu();
 
-  const { width: componentWidth, height: componentHeight } = useComponentSize(
+  const { width: componentWidth, height: componentHeight } = useComponentBounds(
     sizeRef
   );
 
@@ -147,7 +147,10 @@ const CircuitField: React.FC<CircuitFieldProps> = ({
               onMouseDown={onMouseDown}
               onMouseLeave={onMouseLeave}
               onContextMenu={onContextMenu}
-              className={cls(isSimActive && "simulator-active")}
+              className={
+                (styles["circuit-field-svg"],
+                cls(isSimActive && "simulator-active"))
+              }
             >
               <GridBackground />
               <g

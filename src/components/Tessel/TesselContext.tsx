@@ -28,12 +28,14 @@ export const TesselPathProvider: React.FC<TesselContextProviderProps> = ({
 
 export interface TesselInteractionContext {
   moveWindow(from: string[], to: string[], position: TesselDropPosition): void;
+  closeWindow(path: string[]): void;
 }
 function noop() {
   /* no op */
 }
 const tesselInteractionContext = React.createContext<TesselInteractionContext>({
   moveWindow: noop,
+  closeWindow: noop,
 });
 export function useTesselInteraction() {
   return React.useContext(tesselInteractionContext);
@@ -42,13 +44,15 @@ export function useTesselInteraction() {
 export type TesselInteractionProviderProps = TesselInteractionContext;
 export const TesselInteractionProvider: React.FC<TesselInteractionProviderProps> = ({
   moveWindow,
+  closeWindow,
   children,
 }) => {
   const context = React.useMemo<TesselInteractionContext>(
     () => ({
       moveWindow,
+      closeWindow,
     }),
-    [moveWindow]
+    [moveWindow, closeWindow]
   );
 
   return (

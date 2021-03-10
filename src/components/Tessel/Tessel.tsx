@@ -22,7 +22,7 @@ export interface TesselProps {
   className?: string;
   rootItem: TesselValue | null;
   renderWindow: TesselWindowRenderer;
-  onLayoutChange(rootItem: TesselValue): void;
+  onLayoutChange(rootItem: TesselValue | null): void;
 }
 
 const Tessel: React.FC<TesselProps> = ({
@@ -90,9 +90,37 @@ const Tessel: React.FC<TesselProps> = ({
     [rootItem, onLayoutChange]
   );
 
+  const closeWindow = React.useCallback(
+    (path: string[]) => {
+      let newRoot = rootItem;
+      if (!newRoot) {
+        return;
+      }
+      if (typeof newRoot === "string") {
+        if (path.length === 0) {
+          onLayoutChange(null);
+        }
+        return;
+      }
+
+      // First, null out the from path.
+      // We cannot clean up the stack at this point as that might remove path
+      // elements that we are moving to.  Cleanup will be done later.
+      newRoot = fpSetByArray(newRoot, path, null);
+      // Remove the empty entry from the removal of the from element.
+      newRoot = pruneEmptyTesselValues(newRoot);
+
+      onLayoutChange(newRoot);
+    },
+    [onLayoutChange, rootItem]
+  );
+
   return (
     <div className={cls("tessel", styles["tessel"], className)}>
-      <TesselInteractionProvider moveWindow={moveWindow}>
+      <TesselInteractionProvider
+        moveWindow={moveWindow}
+        closeWindow={closeWindow}
+      >
         <TesselDropCapture>
           <div className={styles["tessel-content"]}>
             {rootItem && (

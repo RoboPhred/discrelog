@@ -4,7 +4,7 @@ import { cls } from "@/utils";
 
 import styles from "./Icons.module.css";
 
-const PauseIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
+const CloseIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
   return (
     <svg
       width={16}
@@ -12,9 +12,9 @@ const PauseIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
       {...props}
       className={cls(styles.icon, props.className)}
     >
-      <path d="M2.5,1 L6.5,1 L6.5,15 L2.5,15 z M9.5,1 L13.5,1 L13.5,15 L9.5,15 z" />
+      <path d="M4,4 L12,12 M4,12 L12,4" />
     </svg>
   );
 };
 
-export default PauseIcon;
+export default CloseIcon;

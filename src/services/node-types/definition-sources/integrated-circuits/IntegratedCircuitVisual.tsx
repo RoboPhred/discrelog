@@ -43,6 +43,8 @@ const IntegratedCircuitVisual: React.FC<
   // TODO: Now that we are relying on components being in a tessel path, we
   // definitely should move node components into children of CircuitEditor
   // and connect to them from node-types using ids.
+  // More practically: this should ignore tessel path and instead rely on ui-layout
+  // to open us up in the last interacted with view.
   const tesselPath = useTesselPath();
   const circuitName = useSelector((state) =>
     circuitNameFromIdSelector(state, circuitId)
