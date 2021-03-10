@@ -1,7 +1,6 @@
 import * as React from "react";
-import getBounds from "svg-path-bounds";
 
-import { boundsToRect, Rectangle } from "@/geometry";
+import { Rectangle } from "@/geometry";
 
 import { NodeDefinition } from "../../types";
 import { createStaticNodeVisual } from "../../components/static-node";
