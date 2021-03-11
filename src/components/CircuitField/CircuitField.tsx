@@ -135,7 +135,10 @@ const CircuitField: React.FC<CircuitFieldProps> = ({
     >
       <div className={cls("circuit-field", styles["circuit-field"], className)}>
         <div className={styles["circuit-field-scrollarea"]}>
-          <div ref={sizeRef} style={{ width: "100%", height: "100%" }}>
+          <div
+            ref={sizeRef}
+            style={{ width: "100%", height: "100%", lineHeight: 0 }}
+          >
             <svg
               tabIndex={-1}
               ref={(ref) => {
