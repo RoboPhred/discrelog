@@ -2,17 +2,17 @@ import * as React from "react";
 import getBounds from "svg-path-bounds";
 
 import { boundsToRect } from "@/geometry";
-import { describeArc } from "@/svg";
 
 import { NodeDefinition } from "../../types";
 import { createStaticNodeVisual } from "../../components/static-node";
 
 const hitPath = `M15,25 a 10,10 0 1,0 20 0 a 10,10 0 1,0 -20,0`;
 
-const pinInputElementDefinition: NodeDefinition = {
-  type: "pin-input",
+const pinHighElementDefinition: NodeDefinition = {
+  type: "pin-high",
   category: "i/o",
-  displayName: "Input Pin",
+  elementProduction: "pin-high",
+  displayName: "High Pin",
   visual: createStaticNodeVisual(
     boundsToRect(getBounds(hitPath)),
     <g>
@@ -26,7 +26,7 @@ const pinInputElementDefinition: NodeDefinition = {
       />
       <path
         className="node-select-highlight--stroke"
-        d={describeArc(25, 25, 3, -45, 225)}
+        d="M25,20 v10 M20,25 h10"
         fill="none"
         stroke="black"
         strokeWidth={2}
@@ -41,4 +41,4 @@ const pinInputElementDefinition: NodeDefinition = {
     },
   },
 };
-export default pinInputElementDefinition;
+export default pinHighElementDefinition;

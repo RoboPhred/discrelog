@@ -1,6 +1,5 @@
 # TODO
 
-- Tooltip over element tray elements on timer / click telling user to drag/drop
 - If an IC is dragged over a circuit that itself is contained in the IC, grey out circuit and inform user they cannot place an IC inside itself
 - Tooltip on hover over sim controls showing the hotkeys.
 - Sim control for step once while paused.

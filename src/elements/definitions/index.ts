@@ -18,5 +18,7 @@ export const ElementDefinitionsByType = {
 
   "output-led": asElementDef(require("./output-led")),
   "output-seg7": asElementDef(require("./output-seg7")),
+
+  "pin-high": asElementDef(require("./pin-high")),
 };
 export type ElementType = keyof typeof ElementDefinitionsByType;

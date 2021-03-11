@@ -23,7 +23,14 @@ const pinOutputElementDefinition: NodeDefinition = {
         strokeWidth={2}
         fill="none"
       />
-      <circle cx={25} cy={25} r={3} fill="black" stroke="none" />
+      <circle
+        className="node-select-highlight--fill"
+        cx={25}
+        cy={25}
+        r={3}
+        fill="black"
+        stroke="none"
+      />
     </g>
   ),
   pins: {
