@@ -3,7 +3,7 @@ import * as React from "react";
 import { asArray, MaybeArray } from "@/arrays";
 import { isTruthy } from "@/utils";
 
-export function useOutsideEvent(
+export function useOutsideMouseEvent(
   element: MaybeArray<HTMLElement | null>,
   onOutsideEvent: () => void,
   when = true

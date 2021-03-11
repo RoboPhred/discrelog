@@ -3,12 +3,14 @@ import { createPortal } from "react-dom";
 
 import { Options, VirtualElement } from "@popperjs/core";
 import { usePopper } from "react-popper";
-import { useOutsideEvent } from "@/hooks/useOutsideEvent";
+
+import { useOutsideMouseEvent } from "@/hooks/useOutsideMouseEvent";
+import { useArrayState } from "@/hooks/useArrayState";
+
 import {
   PopoverChildContextProvider,
   usePopoverChild,
 } from "./PopoverChildContext";
-import { useArrayState } from "@/hooks/useArrayState";
 
 export interface PopoverProps {
   anchorEl: Element | VirtualElement | null;
@@ -47,11 +49,11 @@ const Popover: React.FC<PopoverProps> = ({
   // Close when a click happens on the outside.
   // We still want to handle this even if we are a child, as the user
   // may have clicked on a parent popover which should close us.
-  const outsideRefs = React.useMemo(() => [popoverRef, ...popoverChildren], [
+  const insideRefs = React.useMemo(() => [popoverRef, ...popoverChildren], [
     popoverChildren,
     popoverRef,
   ]);
-  useOutsideEvent(outsideRefs, onRequestClose);
+  useOutsideMouseEvent(insideRefs, onRequestClose);
 
   if (!isOpen) {
     return null;

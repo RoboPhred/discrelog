@@ -2,6 +2,7 @@ import * as React from "react";
 import getBounds from "svg-path-bounds";
 
 import { boundsToRect } from "@/geometry";
+import { describeArc } from "@/svg";
 
 import { NodeDefinition } from "../../types";
 import { createStaticNodeVisual } from "../../components/static-node";
@@ -22,6 +23,12 @@ const pinInputElementDefinition: NodeDefinition = {
         stroke="black"
         strokeWidth={2}
         fill="none"
+      />
+      <path
+        d={describeArc(25, 25, 3, -45, 225)}
+        fill="none"
+        stroke="black"
+        strokeWidth={1}
       />
     </g>
   ),
