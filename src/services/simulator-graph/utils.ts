@@ -2,13 +2,14 @@ import flatMap from "lodash/flatMap";
 import get from "lodash/get";
 
 import {
+  SimulatorNodeIdMappingTreeItem,
+  SimulatorNodeIdToCircuitNodeIdMap,
+} from "./types";
+
+import {
   createServiceReducerCreator,
   createServiceSelectorCreator,
 } from "../service-state-utils";
-import {
-  SimulatorNodeIdMappingTreeItem,
-  SimulatorNodeIdToCircuitNodeIdMap,
-} from "./state";
 
 export const createSimulatorGraphReducer = createServiceReducerCreator(
   "simulatorGraph"

@@ -19,3 +19,16 @@ export type NodeElementProductionObject =
   | CircuitNodeElementProduction;
 
 export type NodeElementProduction = ElementType | NodeElementProductionObject;
+
+export function normalizeElementProduction(
+  elementProduction: NodeElementProduction
+): NodeElementProductionObject {
+  if (typeof elementProduction === "string") {
+    return {
+      type: "element",
+      elementType: elementProduction,
+    };
+  }
+
+  return elementProduction;
+}

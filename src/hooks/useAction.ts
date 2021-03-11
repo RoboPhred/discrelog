@@ -26,3 +26,24 @@ export function useAction(
     [dispatch, actionCreator, ...preBind]
   ) as any;
 }
+
+export function useClickAction(
+  actionCreator: (...args: any[]) => AnyAction,
+  ...preBind: any[]
+): (e: React.MouseEvent) => AnyAction {
+  const dispatch = useDispatch();
+  return React.useCallback(
+    (e: React.MouseEvent) => {
+      if (e.defaultPrevented) {
+        return;
+      }
+      e.preventDefault();
+      const action = actionCreator(...preBind);
+      if (action) {
+        dispatch(action);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [dispatch, actionCreator, ...preBind]
+  ) as any;
+}

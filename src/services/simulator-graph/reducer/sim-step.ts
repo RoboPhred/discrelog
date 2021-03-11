@@ -1,6 +1,6 @@
 import { PRIORITY_PRE, reducerPriority } from "@/store/priorities";
 
-import { isStartSimAction } from "@/actions/sim-start";
+import { isStepSimAction } from "@/actions/sim-step";
 
 import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
 
@@ -12,7 +12,12 @@ import { produceCircuitGraph } from "../graph-production";
 export default reducerPriority(
   PRIORITY_PRE,
   createSimulatorGraphReducer((state, action, rootState) => {
-    if (!isStartSimAction(action)) {
+    if (!isStepSimAction(action)) {
+      return state;
+    }
+
+    if (state.initialized) {
+      // Might have initialized previously.
       return state;
     }
 

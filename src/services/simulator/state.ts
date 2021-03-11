@@ -2,6 +2,11 @@ import { SimNodePinTransition, SimTransitionWindow } from "./types";
 
 export interface SimulatorServiceState {
   /**
+   * Whether the simulator has been initialized.
+   */
+  initialized: boolean;
+
+  /**
    * The current tick the simulator is on.
    */
   tick: number;
@@ -33,6 +38,7 @@ export interface SimulatorServiceState {
 }
 
 const _defaultState: SimulatorServiceState = {
+  initialized: false,
   tick: 0,
   lastTickProcessingTimeMs: 0,
   nodeStatesByNodeId: {},

@@ -3,13 +3,17 @@ import { takeLeading, select, put, delay } from "redux-saga/effects";
 
 import { ACTION_SIM_START } from "@/actions/sim-start";
 import { ACTION_SIM_PAUSE, pauseSim } from "@/actions/sim-pause";
+import { ACTION_SIM_STEP } from "@/actions/sim-step";
 
 import { tickSim } from "@/actions/sim-tick";
 
 import { isSimRunningSelector, ticksPerSecondSelector } from "../selectors/run";
 
 export default function* runModeSaga() {
-  yield takeLeading([ACTION_SIM_START, ACTION_SIM_PAUSE], handleRunSim);
+  yield takeLeading(
+    [ACTION_SIM_START, ACTION_SIM_PAUSE, ACTION_SIM_STEP],
+    handleRunSim
+  );
 }
 
 function* handleRunSim(): SagaIterator {

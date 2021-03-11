@@ -1,28 +1,15 @@
-import { SimulatorNode } from "./types";
+import { SimulatorGraph } from "./types";
 
-export interface SimulatorNodeIdMappingTreeItem {
-  simulatorNodeId: string | null;
-  subCircuitIds: SimulatorNodeIdToCircuitNodeIdMap;
-}
-
-export type SimulatorNodeIdToCircuitNodeIdMap = Record<
-  string,
-  SimulatorNodeIdMappingTreeItem
->;
-
-export interface SimulatorGraphServiceState {
-  /**
-   * A map of all simulator nodes by simulator node id.
-   */
-  simulatorNodesById: Record<string, SimulatorNode>;
-
-  /**
-   * A map of simulator node ids by the circuit node id that generated them.
-   */
-  simulatorNodeIdsByCircuitNodeId: SimulatorNodeIdToCircuitNodeIdMap;
+// FIXME: This whole service should just be a selector, but right now we need the entire root state
+// to produce the sim graph.
+export interface SimulatorGraphServiceState extends SimulatorGraph {
+  // FIXME: This is a hack to let simStep selectively build the graph if its the first action.
+  // It should be removed when this is a selector.
+  initialized: boolean;
 }
 
 const _defaultState: SimulatorGraphServiceState = {
+  initialized: false,
   simulatorNodesById: {},
   simulatorNodeIdsByCircuitNodeId: {},
 };

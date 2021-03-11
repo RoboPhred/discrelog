@@ -3,7 +3,7 @@ import createCachedSelector from "re-reselect";
 import { AppState } from "@/store";
 
 import { Connection } from "@/services/node-graph/types";
-import { SimulatorNodeIdMappingTreeItem } from "@/services/simulator-graph/state";
+import { SimulatorNodeIdMappingTreeItem } from "@/services/simulator-graph/types";
 import { getSimulatorNodeIdFromCircuitNodeIdPath } from "@/services/simulator-graph/utils";
 
 export const wireValueFromConnectionIdSelector = createCachedSelector(
