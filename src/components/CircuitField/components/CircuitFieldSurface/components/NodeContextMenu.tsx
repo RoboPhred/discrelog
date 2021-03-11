@@ -5,13 +5,20 @@ import useSelector from "@/hooks/useSelector";
 
 import { renameNode } from "@/actions/node-rename";
 
-import { nodeNameOrDefaultFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
+import {
+  nodeNameOrDefaultFromNodeIdSelector,
+  nodeTypeFromNodeIdSelector,
+} from "@/services/node-graph/selectors/nodes";
 
 import Menu from "@/components/Menus/Menu";
 import DividerMenuItem from "@/components/Menus/DividerMenuItem";
 import EditableTextMenuItem from "@/components/Menus/EditableTextMenuItem";
 
 import ContextMenuItems from "../../ContextMenuItems";
+import { nodeTypeToCircuitId } from "@/nodes/definitions/integrated-circuits/utils";
+import { viewCircuit } from "@/actions/view-circuit";
+import { useCircuitField } from "@/components/CircuitField/circuit-field-context";
+import MenuItem from "@/components/Menus/MenuItem";
 
 export interface NodeContextMenuProps {
   nodeId: string;
@@ -20,9 +27,16 @@ export interface NodeContextMenuProps {
 const NodeContextMenu: React.FC<NodeContextMenuProps> = ({ nodeId }) => {
   const dispatch = useDispatch();
 
+  const { circuitNodePath } = useCircuitField();
+
   const nodeName = useSelector((state) =>
     nodeNameOrDefaultFromNodeIdSelector(state, nodeId)
   );
+  const nodeType = useSelector((state) =>
+    nodeTypeFromNodeIdSelector(state, nodeId)
+  );
+  const nodeCircuitId = nodeType ? nodeTypeToCircuitId(nodeType) : null;
+
   const [isRenaming, setIsRenaming] = React.useState(false);
   const onRename = React.useCallback(() => {
     setIsRenaming(true);
@@ -38,6 +52,17 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({ nodeId }) => {
     [dispatch, nodeId]
   );
 
+  const onOpenCircuitInNewWindow = React.useCallback(() => {
+    if (!nodeCircuitId) {
+      return;
+    }
+    dispatch(
+      viewCircuit(nodeCircuitId, [...circuitNodePath, nodeId], {
+        newWindow: true,
+      })
+    );
+  }, [circuitNodePath, dispatch, nodeCircuitId, nodeId]);
+
   return (
     <Menu>
       <EditableTextMenuItem
@@ -49,6 +74,14 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({ nodeId }) => {
         onCancel={onRenameCancel}
       />
       <DividerMenuItem />
+      {nodeCircuitId && (
+        <>
+          <MenuItem onClick={onOpenCircuitInNewWindow}>
+            Open in New Window
+          </MenuItem>
+          <DividerMenuItem />
+        </>
+      )}
       <ContextMenuItems />
     </Menu>
   );
