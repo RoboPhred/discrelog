@@ -1,8 +1,8 @@
+import { NodeDefinition } from "../../types";
 import {
   createShapePathVisual,
   NodeVisualPathDefinition,
-} from "../../components/ShapePathNode";
-import { NodeDefinition } from "../../types";
+} from "../../visuals/ShapePathNode";
 
 // Shape path from https://commons.wikimedia.org/wiki/File:7-segment_abcdefg.svg
 

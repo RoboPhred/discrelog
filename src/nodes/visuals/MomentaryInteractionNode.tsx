@@ -7,7 +7,7 @@ import useSelector from "@/hooks/useSelector";
 
 import { interactNode } from "@/actions/node-interact";
 
-import { NodeComponentProps } from "@/services/node-types/types";
+import { NodeComponentProps } from "@/nodes/types";
 import { nodeOutputsFromCircuitNodeIdSelector } from "@/services/simulator/selectors/nodes";
 
 import styles from "./node-visuals.module.css";

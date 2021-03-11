@@ -1,6 +1,6 @@
 import { ElementType } from "@/elements";
 import { Connection } from "../node-graph/types";
-import { NodeDefinition } from "../node-types/types";
+import { NodeDefinition } from "../../nodes/types";
 
 export interface SimulatorNodePin {
   simulatorNodeId: string;

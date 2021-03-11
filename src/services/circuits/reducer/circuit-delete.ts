@@ -4,7 +4,7 @@ import difference from "lodash/difference";
 
 import { isDeleteCircuitAction } from "@/actions/circuit-delete";
 import { nodeIdsFromTypeSelector } from "@/services/node-graph/selectors/nodes";
-import { circuitIdToNodeType } from "@/services/node-types/definition-sources/integrated-circuits/utils";
+import { circuitIdToNodeType } from "@/nodes/definitions/integrated-circuits/utils";
 
 import { createCircuitsReducer } from "../utils";
 

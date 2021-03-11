@@ -5,7 +5,7 @@ import interaction from "@/styles/interaction.module.css";
 
 import { interactNode } from "@/actions/node-interact";
 
-import { NodeComponentProps } from "@/services/node-types/types";
+import { NodeComponentProps } from "@/nodes/types";
 
 import { ToggleElementState } from "@/elements/definitions/input-toggle";
 

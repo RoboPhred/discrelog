@@ -6,7 +6,7 @@ import {
   CircuitNodeElementProduction,
   ElementNodeElementProduction,
   normalizeElementProduction,
-} from "../node-types/types/element-production";
+} from "../../nodes/types/element-production";
 
 import {
   SimulatorGraph,

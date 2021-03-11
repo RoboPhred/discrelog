@@ -4,7 +4,7 @@ import uniq from "lodash/uniq";
 import { AppState } from "@/store";
 import { Point, pointAdd, ZeroPoint } from "@/geometry";
 
-import { NodeDefinition } from "@/services/node-types/types";
+import { NodeDefinition } from "@/nodes/types";
 import { nodeDefFromNodeIdSelector } from "@/services/node-graph/selectors/node-def";
 import { nodeConnectionIdsFromNodeIdSelector } from "@/services/node-graph/selectors/connections";
 

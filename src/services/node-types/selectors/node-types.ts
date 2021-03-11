@@ -4,8 +4,9 @@ import find from "lodash/find";
 import { asArray, MaybeArray } from "@/arrays";
 import { AppState } from "@/store";
 
-import nodeDefinitionSources from "../definition-sources";
-import { NodeDefinition, NodeDefinitionSource } from "../types";
+import nodeDefinitionSources from "@/nodes/definitions";
+
+import { NodeDefinition, NodeDefinitionSource } from "../../../nodes/types";
 import { createSelector } from "reselect";
 
 /**

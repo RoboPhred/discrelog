@@ -11,7 +11,7 @@ import {
   nodeNameOrDefaultFromNodeIdSelector,
   nodeTypeFromNodeIdSelector,
 } from "@/services/node-graph/selectors/nodes";
-import { nodeTypeToCircuitId } from "@/services/node-types/definition-sources/integrated-circuits/utils";
+import { nodeTypeToCircuitId } from "@/nodes/definitions/integrated-circuits/utils";
 import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
 import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
 

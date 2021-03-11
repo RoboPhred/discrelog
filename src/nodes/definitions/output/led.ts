@@ -1,8 +1,7 @@
 import { LedElementState } from "@/elements/definitions/output-led";
 
-import { createShapePathVisual } from "../../components/ShapePathNode";
-
 import { NodeDefinition } from "../../types";
+import { createShapePathVisual } from "../../visuals/ShapePathNode";
 
 function genCirclePath(cx: number, cy: number, r: number): string {
   return `M ${cx - r}, ${cy}

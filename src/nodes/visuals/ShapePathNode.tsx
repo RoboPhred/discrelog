@@ -23,7 +23,7 @@ export interface NodeVisualPathDefinition {
 
 export type NodeVisualPath = string | NodeVisualPathDefinition;
 
-interface ShapePathNodeProps extends NodeComponentProps {
+interface ShapePathNodeProps {
   /**
    * The path or paths that make up the visual component of this node.
    */
@@ -31,7 +31,7 @@ interface ShapePathNodeProps extends NodeComponentProps {
   hitPath: string;
 }
 
-const ShapePathNode: React.FC<ShapePathNodeProps> = ({
+const ShapePathNode: React.FC<ShapePathNodeProps & NodeComponentProps> = ({
   circuitNodeId,
   circuitNodePath,
   shapePath,
@@ -129,7 +129,7 @@ export function createShapePathVisual(
   };
 }
 
-export function normalizeVisuals(
+function normalizeVisuals(
   v: NodeVisualPath | NodeVisualPath[],
   state: any
 ): { path: string; fill?: string; stroke?: string; strokeWidth?: number }[] {

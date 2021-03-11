@@ -3,7 +3,7 @@ import * as React from "react";
 import { Rectangle } from "@/geometry";
 
 import { NodeDefinition } from "../../types";
-import { createStaticNodeVisual } from "../../components/static-node";
+import { createStaticNodeVisual } from "../../visuals/static-node-visual";
 
 // Shape path from https://commons.wikimedia.org/wiki/File:NOT_ANSI.svg
 

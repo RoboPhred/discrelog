@@ -11,10 +11,10 @@ import interaction from "@/styles/interaction.module.css";
 
 import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
 import { nodeNamesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
-import { NodeComponentProps } from "@/services/node-types/types";
+import { NodeComponentProps } from "@/nodes/types";
 
 import { useTesselPath } from "@/components/Tessel/TesselContext";
-import { getICBorderPath } from "@/services/node-types/definition-sources/integrated-circuits/utils";
+import { getICBorderPath } from "@/nodes/definitions/integrated-circuits/utils";
 
 export interface IntegratedCircuitVisualProps {
   circuitId: string;

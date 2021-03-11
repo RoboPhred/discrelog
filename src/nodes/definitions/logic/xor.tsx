@@ -4,7 +4,7 @@ import getBounds from "svg-path-bounds";
 import { boundsToRect } from "@/geometry";
 
 import { NodeDefinition } from "../../types";
-import { createStaticNodeVisual } from "../../components/static-node";
+import { createStaticNodeVisual } from "../../visuals/static-node-visual";
 
 // Shape path from https://commons.wikimedia.org/wiki/File:XOR_ANSI.svg
 

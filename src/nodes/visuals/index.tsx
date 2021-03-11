@@ -1,16 +1,27 @@
 import * as React from "react";
 
-import {
-  NodeComponentProps,
-  NodeVisualDefinition,
-} from "@/services/node-types/types";
+import { NodeComponentType, NodeVisualDefinition } from "@/nodes/types";
 
-import {
-  IntegratedCircuitVisual,
-  IntegratedCircuitVisualProps,
-} from "./IntegratedCircuitNode";
+import { IntegratedCircuitVisual } from "./IntegratedCircuitNode";
 import { MomentaryInteractionNode } from "./MomentaryInteractionNode";
 import { ToggleInteractionNode } from "./ToggleInteractionNode";
+
+const NamedNodeComponents: Record<string, NodeComponentType> = {
+  "integrated-circuit": IntegratedCircuitVisual,
+  "interaction-momentary": MomentaryInteractionNode,
+  "interaction-toggle": ToggleInteractionNode,
+};
+
+const ErrorComponent: React.FC<{ componentName: string }> = ({
+  componentName,
+}) => {
+  return (
+    <g>
+      <rect width={50} height={50} fill="red" />
+      <text>{componentName}</text>
+    </g>
+  );
+};
 
 export function getNodeVisualElement(
   circuitNodeId: string | undefined,
@@ -18,29 +29,24 @@ export function getNodeVisualElement(
   elementState: any,
   visual: NodeVisualDefinition
 ): JSX.Element {
-  const nodeProps: NodeComponentProps = {
+  const { component, componentProps } = visual;
+
+  const nodeProps = {
     circuitNodeId,
     circuitNodePath,
     elementState,
+    ...componentProps,
   };
 
-  const { component, componentProps } = visual;
+  let Component: NodeComponentType;
   if (typeof component === "string") {
-    switch (component) {
-      case "integrated-circuit": {
-        const inputProps = componentProps as IntegratedCircuitVisualProps;
-        return <IntegratedCircuitVisual {...nodeProps} {...inputProps} />;
-      }
-      case "interaction-momentary": {
-        return <MomentaryInteractionNode {...nodeProps} />;
-      }
-      case "interaction-toggle":
-        return <ToggleInteractionNode {...nodeProps} />;
-      default:
-        throw new Error("Unknown named component.");
+    Component = NamedNodeComponents[component];
+    if (!Component) {
+      Component = () => <ErrorComponent componentName={component} />;
     }
+  } else {
+    Component = component;
   }
 
-  const Component = component;
   return <Component {...nodeProps} />;
 }

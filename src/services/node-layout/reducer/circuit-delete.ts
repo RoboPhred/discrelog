@@ -5,7 +5,7 @@ import { isDeleteCircuitAction } from "@/actions/circuit-delete";
 import nodeGraphCircuitDeleteReducer from "@/services/node-graph/reducer/circuit-delete";
 import { nodeIdsFromCircuitIdSelector } from "@/services/circuits/selectors/nodes";
 import { nodeIdsFromTypeSelector } from "@/services/node-graph/selectors/nodes";
-import { circuitIdToNodeType } from "@/services/node-types/definition-sources/integrated-circuits/utils";
+import { circuitIdToNodeType } from "@/nodes/definitions/integrated-circuits/utils";
 
 import { createNodeLayoutReducer } from "../utils";
 

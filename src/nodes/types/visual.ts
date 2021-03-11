@@ -7,8 +7,28 @@ export interface NodeVisualDefinition {
    */
   hitRect: Rectangle;
 
+  /**
+   * The react component to render when previewing the node on the node tray.
+   */
   trayComponent?: React.ComponentType;
+
+  /**
+   * The react component or component identifier to use when rendering
+   * the node in the field.
+   *
+   * This can either be a react component type, or a string identifying a preconfigured
+   * react component type.
+   *
+   * Note that if a component requires state data that is derived from node definitions,
+   * then importing and using its component directly can cause circular dependencies to form.
+   * To fix this, make the component a named entry in ../visuals/index.ts and set
+   * this property to the component name.
+   */
   component: string | NodeComponentType;
+
+  /**
+   * Extra properties to pass to the component when rendered on a circuit field.
+   */
   componentProps?: Record<string, any>;
 }
 
@@ -34,4 +54,6 @@ export interface NodeComponentProps<TState = any> {
   elementState?: TState;
 }
 
-export type NodeComponentType = React.ComponentType<NodeComponentProps>;
+export type NodeComponentType<P = any> = React.ComponentType<
+  NodeComponentProps & P
+>;
