@@ -18,4 +18,7 @@
 
   --color-ui-drop-bg: rgba(0, 153, 255, 0.445);
   --color-ui-drop-border: rgb(0, 153, 255);
+
+  --color-ui-tooltip-bg: rgb(49, 49, 49);
+  --color-ui-tooltip-text: rgb(212, 212, 212);
 }

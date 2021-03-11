@@ -16,6 +16,8 @@ import { newNodeDragObject } from "@/components/CircuitField/drag-items/new-node
 import TesselWindow from "@/components/Tessel/TesselWindow";
 
 import styles from "./NodeTrayWindow.module.css";
+import Tooltip from "@/components/Tooltip";
+import Popover from "@/components/Popover";
 
 const NodeTrayWindow: React.FC = () => {
   const nodeDefinitions = useSelector(nodeDefinitionsSelector);
@@ -61,8 +63,24 @@ interface TrayNodeProps {
   nodeType: string;
 }
 const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
+  const [liRef, setLiRef] = React.useState<HTMLElement | null>(null);
   const def = useSelector((state) =>
     nodeDefinitionFromTypeSelector(state, nodeType)
+  );
+
+  const [showTooltip, setShowTooltip] = React.useState(false);
+  const onShowTooltip = React.useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setShowTooltip(true);
+  }, []);
+  const onHideTooltip = React.useCallback(
+    (e: React.MouseEvent) => {
+      if (e.target !== liRef) {
+        return;
+      }
+      setShowTooltip(false);
+    },
+    [liRef]
   );
 
   const [, dragRef] = useDrag({
@@ -87,7 +105,18 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
   }
 
   return (
-    <li ref={dragRef} className={styles["node-tray-item"]}>
+    <li
+      ref={(ref) => {
+        setLiRef(ref);
+        dragRef(ref);
+      }}
+      className={styles["node-tray-item"]}
+      onClick={onShowTooltip}
+      onMouseOut={onHideTooltip}
+    >
+      <Tooltip placement="top" isOpen={showTooltip} anchorEl={liRef}>
+        Click and drag to create a new circuit element.
+      </Tooltip>
       <span className={styles["node-tray-item-preview"]}>
         <svg width={30} height={30} viewBox={viewBox}>
           {nodeTrayVisual}
