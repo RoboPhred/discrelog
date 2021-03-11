@@ -1,4 +1,6 @@
 import { ElementType } from "@/elements";
+import { Connection } from "../node-graph/types";
+import { NodeDefinition } from "../node-types/types";
 
 export interface SimulatorNodePin {
   simulatorNodeId: string;
@@ -37,6 +39,13 @@ export type SimulatorNodeIdToCircuitNodeIdMap = Record<
   string,
   SimulatorNodeIdMappingTreeItem
 >;
+
+export interface SimulatorGraphDependencies {
+  nodeIdsByCircuitId: Record<string, string[]>;
+  nodeTypesByNodeId: Record<string, string>;
+  connectionsById: Record<string, Connection>;
+  nodeDefsByType: Record<string, NodeDefinition>;
+}
 
 export interface SimulatorGraph {
   /**

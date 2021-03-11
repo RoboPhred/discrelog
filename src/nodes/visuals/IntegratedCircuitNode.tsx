@@ -1,28 +1,20 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import getBounds from "svg-path-bounds";
 
-import { boundsToRect, Point } from "@/geometry";
-import { PinDirection } from "@/logic";
 import { cls } from "@/utils";
-
-import interaction from "@/styles/interaction.module.css";
-
-import useSelector from "@/hooks/useSelector";
 
 import { viewCircuit } from "@/actions/view-circuit";
 
+import useSelector from "@/hooks/useSelector";
+
+import interaction from "@/styles/interaction.module.css";
+
 import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
 import { nodeNamesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
+import { NodeComponentProps } from "@/services/node-types/types";
 
 import { useTesselPath } from "@/components/Tessel/TesselContext";
-
-import { NodeComponentProps, NodeVisualDefinition } from "../../types";
-
-function getBorderPath(inputPinCount: number, outputPinCount: number) {
-  const height = Math.max(inputPinCount, outputPinCount, 1) * 50 - 20;
-  return `M10,10 h80 v${height} h-80 z`;
-}
+import { getICBorderPath } from "@/services/node-types/definition-sources/integrated-circuits/utils";
 
 export interface IntegratedCircuitVisualProps {
   circuitId: string;
@@ -30,7 +22,7 @@ export interface IntegratedCircuitVisualProps {
   outputPinIds: string[];
 }
 
-const IntegratedCircuitVisual: React.FC<
+export const IntegratedCircuitVisual: React.FC<
   IntegratedCircuitVisualProps & NodeComponentProps
 > = ({
   circuitNodeId,
@@ -52,7 +44,7 @@ const IntegratedCircuitVisual: React.FC<
 
   const nodeNamesById = useSelector(nodeNamesByNodeIdSelector);
 
-  const borderPath = getBorderPath(inputPinIds.length, outputPinIds.length);
+  const borderPath = getICBorderPath(inputPinIds.length, outputPinIds.length);
 
   const onViewCircuit = React.useCallback(
     (e: React.MouseEvent) => {
@@ -153,49 +145,3 @@ const IntegratedCircuitVisual: React.FC<
     </g>
   );
 };
-
-const IntegratedCircuitTrayVisual: React.FC<IntegratedCircuitVisualProps> = () => {
-  return (
-    <g stroke="black" strokeWidth={1}>
-      <rect x={10} y={10} width={30} height={30} fill="none" />
-
-      <line x1={10} y1={15} x2={5} y2={15} />
-      <line x1={40} y1={15} x2={45} y2={15} />
-
-      <line x1={10} y1={35} x2={5} y2={35} />
-      <line x1={40} y1={35} x2={45} y2={35} />
-    </g>
-  );
-};
-
-export function circuitToNodeVisual(
-  circuitId: string,
-  inputPinIds: string[],
-  outputPinIds: string[]
-): NodeVisualDefinition {
-  const icProps: IntegratedCircuitVisualProps = {
-    circuitId,
-    inputPinIds,
-    outputPinIds,
-  };
-
-  return {
-    hitRect: boundsToRect(
-      getBounds(getBorderPath(inputPinIds.length, outputPinIds.length))
-    ),
-    trayComponent: (props) => (
-      <IntegratedCircuitTrayVisual {...icProps} {...props} />
-    ),
-    component: (props) => <IntegratedCircuitVisual {...icProps} {...props} />,
-  };
-}
-
-export function circuitPinPosition(
-  pinIndex: number,
-  direction: PinDirection
-): Point {
-  return {
-    x: direction === "input" ? 0 : 100,
-    y: pinIndex * 50 + 25,
-  };
-}

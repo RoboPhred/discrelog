@@ -2,15 +2,6 @@ import get from "lodash/get";
 import merge from "lodash/merge";
 import { v4 as uuidV4 } from "uuid";
 
-import { AppState } from "@/store";
-
-import { nodeIdsFromCircuitIdSelector } from "../circuits/selectors/nodes";
-
-import { connectionsByIdSelector } from "../node-graph/selectors/connections";
-import { nodeDefFromNodeIdSelector } from "../node-graph/selectors/node-def";
-import { nodeTypeFromNodeIdSelector } from "../node-graph/selectors/nodes";
-
-import { nodeDefinitionFromTypeSelector } from "../node-types/selectors/node-types";
 import {
   CircuitNodeElementProduction,
   ElementNodeElementProduction,
@@ -19,6 +10,7 @@ import {
 
 import {
   SimulatorGraph,
+  SimulatorGraphDependencies,
   SimulatorNode,
   SimulatorNodeIdMappingTreeItem,
   SimulatorNodePin,
@@ -38,7 +30,7 @@ const EMPTY_PRODUCTION = Object.freeze<CircuitProductionResult>({
 
 export function produceCircuitGraph(
   circuitId: string,
-  rootState: AppState
+  dependencies: SimulatorGraphDependencies
 ): CircuitProductionResult {
   const simulatorNodesById: Record<string, SimulatorNode> = {};
   const simulatorNodeIdsByCircuitNodeId: Record<
@@ -64,9 +56,9 @@ export function produceCircuitGraph(
     Record<string, SimulatorNodePin>
   > = {};
 
-  const circuitNodeIds = nodeIdsFromCircuitIdSelector(rootState, circuitId);
+  const circuitNodeIds = dependencies.nodeIdsByCircuitId[circuitId] ?? [];
   for (const circuitNodeId of circuitNodeIds) {
-    const nodeType = nodeTypeFromNodeIdSelector(rootState, circuitNodeId);
+    const nodeType = dependencies.nodeTypesByNodeId[circuitNodeId];
     if (!nodeType) {
       continue;
     }
@@ -81,7 +73,7 @@ export function produceCircuitGraph(
       continue;
     }
 
-    const productionResult = produceNode(circuitNodeId, rootState);
+    const productionResult = produceNode(circuitNodeId, dependencies);
 
     // Merge the produced simulator nodes.
     merge(simulatorNodesById, productionResult.simulatorNodesById);
@@ -99,7 +91,7 @@ export function produceCircuitGraph(
       productionResult.outputElementPinsByCircuitPinId;
   }
 
-  const circuitConnectionsById = connectionsByIdSelector(rootState);
+  const circuitConnectionsById = dependencies.connectionsById;
   for (const connectionId of Object.keys(circuitConnectionsById)) {
     const { inputPin, outputPin } = circuitConnectionsById[connectionId];
     // We are only interested in connections within this circuit.
@@ -173,14 +165,14 @@ export function produceCircuitGraph(
 
 function produceNode(
   circuitNodeId: string,
-  rootState: AppState
+  dependencies: SimulatorGraphDependencies
 ): CircuitProductionResult {
-  const nodeType = nodeTypeFromNodeIdSelector(rootState, circuitNodeId);
+  const nodeType = dependencies.nodeTypesByNodeId[circuitNodeId];
   if (!nodeType) {
     return EMPTY_PRODUCTION;
   }
 
-  const nodeDef = nodeDefinitionFromTypeSelector(rootState, nodeType);
+  const nodeDef = dependencies.nodeDefsByType[nodeType];
   if (!nodeDef || !nodeDef.elementProduction) {
     return EMPTY_PRODUCTION;
   }
@@ -188,9 +180,9 @@ function produceNode(
   const production = normalizeElementProduction(nodeDef.elementProduction);
   switch (production.type) {
     case "element":
-      return produceElementNode(circuitNodeId, production, rootState);
+      return produceElementNode(circuitNodeId, production, dependencies);
     case "circuit":
-      return produceCircuitNode(circuitNodeId, production, rootState);
+      return produceCircuitNode(circuitNodeId, production, dependencies);
     default:
       throw new Error(
         "Unsupported production type " + (production as any).type
@@ -201,9 +193,10 @@ function produceNode(
 function produceElementNode(
   circuitNodeId: string,
   production: ElementNodeElementProduction,
-  rootState: AppState
+  { nodeTypesByNodeId, nodeDefsByType }: SimulatorGraphDependencies
 ): CircuitProductionResult {
-  const nodeDef = nodeDefFromNodeIdSelector(rootState, circuitNodeId);
+  const nodeType = nodeTypesByNodeId[circuitNodeId];
+  const nodeDef = nodeDefsByType[nodeType];
   if (!nodeDef) {
     return EMPTY_PRODUCTION;
   }
@@ -261,9 +254,12 @@ function produceElementNode(
 function produceCircuitNode(
   circuitNodeId: string,
   production: CircuitNodeElementProduction,
-  rootState: AppState
+  dependencies: SimulatorGraphDependencies
 ): CircuitProductionResult {
-  const circuitProuction = produceCircuitGraph(production.circuitId, rootState);
+  const circuitProuction = produceCircuitGraph(
+    production.circuitId,
+    dependencies
+  );
 
   return {
     ...circuitProuction,

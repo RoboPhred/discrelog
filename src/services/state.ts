@@ -40,10 +40,6 @@ import {
   defaultSimulatorControlServiceState,
 } from "./simulator-control/state";
 import {
-  SimulatorGraphServiceState,
-  defaultSimulatorGraphServiceState,
-} from "./simulator-graph/state";
-import {
   UiLayoutServiceState,
   defaultUiLayoutServiceState,
 } from "./ui-layout/state";
@@ -61,7 +57,6 @@ export interface AppServicesState {
   selection: SelectionServiceState;
   simulator: SimulatorServiceState;
   simulatorControl: SimulatorControlServiceState;
-  simulatorGraph: SimulatorGraphServiceState;
   uiLayout: UiLayoutServiceState;
   uiSettings: UiSettingsState;
 }
@@ -78,7 +73,6 @@ const _defaultServiceState: AppServicesState = {
   selection: defaultSelectionServiceState,
   simulator: defaultSimulatorServiceState,
   simulatorControl: defaultSimulatorControlServiceState,
-  simulatorGraph: defaultSimulatorGraphServiceState,
   uiLayout: defaultUiLayoutServiceState,
   uiSettings: defaultUiSettingsState,
 };

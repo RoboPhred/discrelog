@@ -1,13 +1,13 @@
 import { AppState } from "@/store";
 
 import { getSimulatorNodeIdFromCircuitNodeIdPath } from "@/services/simulator-graph/utils";
+import { rootNodeGraphSelector } from "@/services/simulator-graph/selectors/graph";
 
 export const nodeStateFromCircuitNodeIdSelector = (
   state: AppState,
   circuitNodeIdPath: string[]
 ) => {
-  const simulatorNodeIdsByCircuitNodeId =
-    state.services.simulatorGraph.simulatorNodeIdsByCircuitNodeId;
+  const { simulatorNodeIdsByCircuitNodeId } = rootNodeGraphSelector(state);
   const nodeStatesBySimulatorNodeId =
     state.services.simulator.nodeStatesByNodeId;
 
@@ -26,8 +26,7 @@ export const nodeOutputsFromCircuitNodeIdSelector = (
   state: AppState,
   circuitNodeIdPath: string[]
 ) => {
-  const simulatorNodeIdsByCircuitNodeId =
-    state.services.simulatorGraph.simulatorNodeIdsByCircuitNodeId;
+  const { simulatorNodeIdsByCircuitNodeId } = rootNodeGraphSelector(state);
   const nodeOutputsBySimulatorNodeId =
     state.services.simulator.nodeOutputValuesByNodeId;
 

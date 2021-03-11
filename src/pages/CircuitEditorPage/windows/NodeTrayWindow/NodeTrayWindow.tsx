@@ -20,6 +20,7 @@ import TesselWindow from "@/components/Tessel/TesselWindow";
 import Tooltip from "@/components/Tooltip";
 
 import styles from "./NodeTrayWindow.module.css";
+import { getNodeVisualElement } from "@/nodes/visuals";
 
 const CategoryNames: Record<NodeDefinition["category"], string> = {
   "input-output": "I/O",
@@ -101,12 +102,17 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
   let displayName = nodeType;
   let viewBox = "0 0 50 50";
   if (def) {
-    const { trayComponent, component, hitRect } = def.visual;
+    const { trayComponent, hitRect } = def.visual;
     if (trayComponent) {
       const TrayComponent = trayComponent;
       nodeTrayVisual = <TrayComponent />;
     } else {
-      nodeTrayVisual = <NodeTrayNodeComponent component={component} />;
+      nodeTrayVisual = getNodeVisualElement(
+        undefined,
+        [],
+        undefined,
+        def.visual
+      );
       viewBox = `${hitRect.p1.x} ${hitRect.p1.y} ${hitRect.p2.x} ${hitRect.p2.y}`;
     }
     displayName = def.displayName;
@@ -135,13 +141,6 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
       <span className={interaction["text-unselectable"]}>{displayName}</span>
     </li>
   );
-};
-
-const NodeTrayNodeComponent: React.FC<{
-  component: React.ComponentType<NodeComponentProps>;
-}> = ({ component }) => {
-  const Component = component;
-  return <Component elementState={{}} />;
 };
 
 const NodeTrayErrorComponent = () => (

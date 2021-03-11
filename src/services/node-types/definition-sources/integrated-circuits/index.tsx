@@ -1,10 +1,19 @@
+import * as React from "react";
+
 import { createSelector } from "reselect";
 import sortBy from "lodash/sortBy";
+import getBounds from "svg-path-bounds";
+
+import { PinDirection } from "@/logic";
+import { boundsToRect, Point } from "@/geometry";
+
+import { IntegratedCircuitVisualProps } from "@/nodes/visuals/IntegratedCircuitNode";
 
 import { nodeIdsByCircuitIdSelector } from "@/services/circuits/selectors/nodes";
 import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
 import { nodeTypesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 import { nodePositionsByNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
+import { circuitNamesByIdSelector } from "@/services/circuits/selectors/circuits";
 
 import {
   NodeDefinition,
@@ -12,13 +21,7 @@ import {
   NodePinDefinition,
 } from "../../types";
 
-import {
-  circuitPinPosition,
-  circuitToNodeVisual,
-} from "./IntegratedCircuitVisual";
-
-import { circuitIdToNodeType } from "./utils";
-import { circuitNamesByIdSelector } from "@/services/circuits/selectors/circuits";
+import { circuitIdToNodeType, getICBorderPath } from "./utils";
 
 const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
   nodeIdsByCircuitIdSelector,
@@ -68,6 +71,12 @@ const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
           }
         }
 
+        const componentProps: IntegratedCircuitVisualProps = {
+          circuitId,
+          inputPinIds,
+          outputPinIds,
+        };
+
         const def: NodeDefinition = {
           type: circuitIdToNodeType(circuitId),
           category: "integrated-circuit",
@@ -76,7 +85,26 @@ const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
             type: "circuit",
             circuitId,
           },
-          visual: circuitToNodeVisual(circuitId, inputPinIds, outputPinIds),
+          visual: {
+            hitRect: boundsToRect(
+              getBounds(
+                getICBorderPath(inputPinIds.length, outputPinIds.length)
+              )
+            ),
+            trayComponent: () => (
+              <g stroke="black" strokeWidth={1}>
+                <rect x={10} y={10} width={30} height={30} fill="none" />
+
+                <line x1={10} y1={15} x2={5} y2={15} />
+                <line x1={40} y1={15} x2={45} y2={15} />
+
+                <line x1={10} y1={35} x2={5} y2={35} />
+                <line x1={40} y1={35} x2={45} y2={35} />
+              </g>
+            ),
+            component: "integrated-circuit",
+            componentProps,
+          },
           pins,
         };
         return def;
@@ -85,3 +113,10 @@ const IntegratedCircuitDefinitionSource: NodeDefinitionSource = createSelector(
 );
 
 export default [IntegratedCircuitDefinitionSource];
+
+function circuitPinPosition(pinIndex: number, direction: PinDirection): Point {
+  return {
+    x: direction === "input" ? 0 : 100,
+    y: pinIndex * 50 + 25,
+  };
+}

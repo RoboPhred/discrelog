@@ -32,6 +32,7 @@ import { useCircuitField } from "../../../../circuit-field-context";
 import NodeContextMenu from "../NodeContextMenu";
 
 import "./Node.module.css";
+import { getNodeVisualElement } from "@/nodes/visuals";
 
 export interface NodeProps {
   nodeId: string;
@@ -162,14 +163,8 @@ const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
     );
     rect = { p1: ZeroPoint, p2: { x: 50, y: 50 } };
   } else {
-    const { component: ElementComponent, hitRect } = def.visual;
-    body = (
-      <ElementComponent
-        circuitNodeId={nodeId}
-        circuitNodePath={circuitNodePath}
-        elementState={nodeState}
-      />
-    );
+    const { hitRect } = def.visual;
+    body = getNodeVisualElement(nodeId, circuitNodePath, nodeState, def.visual);
     rect = hitRect;
   }
 

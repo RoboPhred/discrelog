@@ -8,7 +8,8 @@ export interface NodeVisualDefinition {
   hitRect: Rectangle;
 
   trayComponent?: React.ComponentType;
-  component: NodeComponentType;
+  component: string | NodeComponentType;
+  componentProps?: Record<string, any>;
 }
 
 // TODO: Many of these are optional because these are also used as tray components.
