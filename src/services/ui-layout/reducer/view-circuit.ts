@@ -1,18 +1,16 @@
+import get from "lodash/get";
+
 import { fpSetByArray } from "@/utils";
 
 import { isViewCircuitAction } from "@/actions/view-circuit";
 
 import { normalizeTesselItem, TesselValue } from "@/components/Tessel";
-import { findAndReplaceTesselValue } from "@/components/Tessel/utils";
 
-import {
-  circuitFieldTesselWindow,
-  isCircuitFieldTesselWindow,
-} from "@/pages/CircuitEditorPage/windows/CircuitFieldWindow/tessel-window";
+import { circuitFieldTesselWindow } from "@/pages/CircuitEditorPage/windows/CircuitFieldWindow/tessel-window";
 
 import { circuitIdsSelector } from "@/services/circuits/selectors/circuits";
 
-import { createUiLayoutReducer } from "../utils";
+import { createUiLayoutReducer, findDefaultActiveWindow } from "../utils";
 
 export default createUiLayoutReducer((state, action, appState) => {
   if (!isViewCircuitAction(action)) {
@@ -38,28 +36,39 @@ export default createUiLayoutReducer((state, action, appState) => {
 
   let layout: TesselValue | null = state.layout;
 
+  let activeCircuitEditorPath = state.activeCircuitEditorPath;
+  if (!get(layout, activeCircuitEditorPath)) {
+    activeCircuitEditorPath = findDefaultActiveWindow(layout);
+  }
+
   if (tesselPath) {
+    // We want to open at an explicit path
+    if (!get(layout, tesselPath)) {
+      // Path does not exist, do nothing.
+      return state;
+    }
     layout = fpSetByArray(normalizeTesselItem(layout), tesselPath, window);
-  } else {
-    let inserted = false;
-    layout = findAndReplaceTesselValue(layout, (value) => {
-      if (isCircuitFieldTesselWindow(value)) {
-        inserted = true;
-        if (newWindow) {
+    activeCircuitEditorPath = tesselPath;
+  } else if (newWindow || activeCircuitEditorPath.length === 0) {
+    // We want to open in a new window, or
+    // we want to open in the existing window but there is none.
+
+    if (activeCircuitEditorPath.length > 0) {
+      // We have an active window, insert to the side of it.
+      layout = fpSetByArray(
+        normalizeTesselItem(layout),
+        activeCircuitEditorPath,
+        (value: TesselValue) => {
           return {
             direction: "row",
             division: 50,
             first: value,
             second: window,
           };
-        } else {
-          return window;
         }
-      }
-      return null;
-    });
-
-    if (!inserted) {
+      );
+    } else {
+      // No active window, create a new one directly
       layout = {
         direction: "row",
         division: {
@@ -68,11 +77,20 @@ export default createUiLayoutReducer((state, action, appState) => {
         first: layout,
         second: window,
       };
+      activeCircuitEditorPath = ["second"];
     }
+  } else {
+    // Target the existing window.
+    layout = fpSetByArray(
+      normalizeTesselItem(layout),
+      activeCircuitEditorPath,
+      window
+    );
   }
 
   return {
     ...state,
     layout,
+    activeCircuitEditorPath,
   };
 });

@@ -4,7 +4,7 @@ import { filterTesselValues } from "@/components/Tessel/utils";
 
 import { isCircuitFieldTesselWindow } from "@/pages/CircuitEditorPage/windows/CircuitFieldWindow/tessel-window";
 
-import { createUiLayoutReducer } from "../utils";
+import { createUiLayoutReducer, findDefaultActiveWindow } from "../utils";
 
 export default createUiLayoutReducer((state, action) => {
   if (!isDeleteCircuitAction(action)) {
@@ -32,5 +32,6 @@ export default createUiLayoutReducer((state, action) => {
   return {
     ...state,
     layout,
+    activeCircuitEditorPath: findDefaultActiveWindow(layout),
   };
 });

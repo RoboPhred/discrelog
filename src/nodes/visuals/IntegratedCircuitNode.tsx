@@ -13,7 +13,6 @@ import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuit
 import { nodeNamesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 import { NodeComponentProps } from "@/nodes/types";
 
-import { useTesselPath } from "@/components/Tessel/TesselContext";
 import { getICBorderPath } from "@/nodes/definitions/integrated-circuits/utils";
 
 export interface IntegratedCircuitVisualProps {
@@ -37,7 +36,6 @@ export const IntegratedCircuitVisual: React.FC<
   // and connect to them from node-types using ids.
   // More practically: this should ignore tessel path and instead rely on ui-layout
   // to open us up in the last interacted with view.
-  const tesselPath = useTesselPath();
   const circuitName = useSelector((state) =>
     circuitNameFromIdSelector(state, circuitId)
   );
@@ -58,12 +56,10 @@ export const IntegratedCircuitVisual: React.FC<
       e.preventDefault();
 
       dispatch(
-        viewCircuit(circuitId, [...(circuitNodePath || []), circuitNodeId], {
-          tesselPath,
-        })
+        viewCircuit(circuitId, [...(circuitNodePath || []), circuitNodeId])
       );
     },
-    [circuitNodeId, dispatch, circuitId, circuitNodePath, tesselPath]
+    [circuitNodeId, dispatch, circuitId, circuitNodePath]
   );
 
   const inputPins = inputPinIds.map((pinId, i) => {

@@ -18,7 +18,9 @@ const ErrorComponent: React.FC<{ componentName: string }> = ({
   return (
     <g>
       <rect width={50} height={50} fill="red" />
-      <text>{componentName}</text>
+      <text x={25} y={25} alignmentBaseline="middle">
+        {componentName}
+      </text>
     </g>
   );
 };
@@ -42,6 +44,8 @@ export function getNodeVisualElement(
   if (typeof component === "string") {
     Component = NamedNodeComponents[component];
     if (!Component) {
+      // Making a new component here each pass will invalidate the dom on every render,
+      //  but this only is for exceptional error cases anyway.
       Component = () => <ErrorComponent componentName={component} />;
     }
   } else {
