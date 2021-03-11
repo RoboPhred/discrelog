@@ -54,6 +54,7 @@ const Tooltip: React.FC<PopoverProps> = ({
       ref={setPopoverRef}
       className={styles["tooltip"]}
       style={popperStyles.popper}
+      role="tooltip"
       {...attributes.popper}
     >
       {children}

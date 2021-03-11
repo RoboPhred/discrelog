@@ -1,5 +1,5 @@
 .node-tray {
-  background: var(--color-ui-bg-light);
+  background: var(--color-ui-light-bg);
   overflow-y: scroll;
   width: 100%;
   height: 100%;
@@ -34,7 +34,7 @@
 }
 
 .node-tray-item:hover {
-  background: var(--color-ui-bg-light-hover);
+  background: var(--color-ui-light-hover);
 }
 
 .node-tray-item-preview {

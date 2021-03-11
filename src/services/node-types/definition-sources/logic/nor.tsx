@@ -47,7 +47,7 @@ const norNodeDefinition: NodeDefinition = {
         className="node-select-highlight--stroke"
         fill="none"
         stroke="#000"
-        strokeWidth="3"
+        strokeWidth="2"
         d="M79 25a4 4 0 1 1-8 0 4 4 0 1 1 8 0z"
       />
     </g>

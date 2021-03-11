@@ -10,6 +10,7 @@ export const ElementDefinitionsByType = {
 
   "logic-and": asElementDef(require("./logic-and")),
   "logic-buffer": asElementDef(require("./logic-buffer")),
+  "logic-nand": asElementDef(require("./logic-nand")),
   "logic-nor": asElementDef(require("./logic-nor")),
   "logic-not": asElementDef(require("./logic-not")),
   "logic-or": asElementDef(require("./logic-or")),

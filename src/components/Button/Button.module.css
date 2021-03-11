@@ -1,17 +1,17 @@
 .button {
   border-radius: 3px;
   border: none;
-  background: var(--color-ui-bg-light);
+  background: var(--color-ui-light-bg);
   padding: 3px 6px;
   cursor: pointer;
   margin: 2px;
 }
 
 .button:hover {
-  background-color: var(--color-ui-bg-light-hover);
+  background-color: var(--color-ui-light-hover);
 }
 
 .button:focus {
   border: none;
-  background-color: var(--color-ui-bg-light-hover);
+  background-color: var(--color-ui-light-hover);
 }
