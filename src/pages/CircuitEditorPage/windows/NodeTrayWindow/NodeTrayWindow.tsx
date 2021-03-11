@@ -10,14 +10,22 @@ import {
   nodeDefinitionFromTypeSelector,
   nodeDefinitionsSelector,
 } from "@/services/node-types/selectors/node-types";
-import { NodeComponentProps } from "@/services/node-types/types";
+import {
+  NodeComponentProps,
+  NodeDefinition,
+} from "@/services/node-types/types";
 
 import { newNodeDragObject } from "@/components/CircuitField/drag-items/new-node";
 import TesselWindow from "@/components/Tessel/TesselWindow";
+import Tooltip from "@/components/Tooltip";
 
 import styles from "./NodeTrayWindow.module.css";
-import Tooltip from "@/components/Tooltip";
-import Popover from "@/components/Popover";
+
+const CategoryNames: Record<NodeDefinition["category"], string> = {
+  "input-output": "I/O",
+  "integrated-circuit": "Integrated Circuits",
+  logic: "Logic",
+};
 
 const NodeTrayWindow: React.FC = () => {
   const nodeDefinitions = useSelector(nodeDefinitionsSelector);
@@ -36,7 +44,7 @@ const NodeTrayWindow: React.FC = () => {
 export default NodeTrayWindow;
 
 interface TrayCategoryProps {
-  category: string;
+  category: NodeDefinition["category"];
 }
 
 const TrayCategory: React.FC<TrayCategoryProps> = ({ category }) => {
@@ -53,7 +61,9 @@ const TrayCategory: React.FC<TrayCategoryProps> = ({ category }) => {
 
   return (
     <>
-      <li className={styles["node-tray-category"]}>{category}</li>
+      <li className={styles["node-tray-category"]}>
+        {CategoryNames[category]}
+      </li>
       {nodes}
     </>
   );

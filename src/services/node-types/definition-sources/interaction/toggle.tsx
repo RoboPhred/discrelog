@@ -103,7 +103,7 @@ const ToggleElementComponent = ({
 };
 const toggleElementDefinition: NodeDefinition = {
   type: "interaction-toggle",
-  category: "i/o",
+  category: "input-output",
   displayName: "Toggle Switch",
   elementProduction: "input-toggle",
   visual: {

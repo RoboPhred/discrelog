@@ -12,7 +12,7 @@ export type NodeDefinitionSource =
 
 export interface NodeDefinition {
   type: string;
-  category: "logic" | "i/o" | "ic";
+  category: "logic" | "input-output" | "integrated-circuit";
   displayName: string;
   elementProduction?: NodeElementProduction;
   visual: NodeVisualDefinition;

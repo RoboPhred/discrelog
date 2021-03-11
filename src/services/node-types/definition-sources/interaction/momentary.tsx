@@ -87,7 +87,7 @@ const ToggleElementComponent = ({
 };
 const toggleElementDefinition: NodeDefinition = {
   type: "interaction-momentary",
-  category: "i/o",
+  category: "input-output",
   displayName: "Momentary Switch",
   elementProduction: "input-momentary",
   visual: {

@@ -11,7 +11,7 @@ const hitPath = `M15,25 a 10,10 0 1,0 20 0 a 10,10 0 1,0 -20,0`;
 
 const pinInputElementDefinition: NodeDefinition = {
   type: "pin-input",
-  category: "i/o",
+  category: "input-output",
   displayName: "Input Pin",
   visual: createStaticNodeVisual(
     boundsToRect(getBounds(hitPath)),

@@ -10,7 +10,7 @@ const hitPath = `M15,25 a 10,10 0 1,0 20 0 a 10,10 0 1,0 -20,0`;
 
 const pinHighElementDefinition: NodeDefinition = {
   type: "pin-high",
-  category: "i/o",
+  category: "input-output",
   elementProduction: "pin-high",
   displayName: "High Pin",
   visual: createStaticNodeVisual(
