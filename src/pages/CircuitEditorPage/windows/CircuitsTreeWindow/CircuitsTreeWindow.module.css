@@ -4,7 +4,3 @@
   box-sizing: border-box;
   overflow-y: scroll;
 }
-
-.circuitstree :global(.bp3-editable-text.bp3-editable-text-editing) {
-  color: black;
-}
