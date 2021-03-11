@@ -27,7 +27,7 @@ import { selectNodes } from "@/actions/select-nodes";
 import { useContextMenu } from "@/components/ContextMenu";
 
 import { useEventMouseCoords } from "../../hooks/useMouseCoords";
-import { useCircuitField } from "../../circuit-field-context";
+import { useCircuitField } from "../../../../circuit-field-context";
 
 import NodeContextMenu from "../NodeContextMenu";
 

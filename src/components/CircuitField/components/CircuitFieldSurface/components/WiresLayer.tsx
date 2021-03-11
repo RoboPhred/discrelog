@@ -4,7 +4,7 @@ import useSelector from "@/hooks/useSelector";
 
 import { connectionIdsByCircuitIdSelector } from "@/services/circuits/selectors/connections";
 
-import { useCircuitField } from "../circuit-field-context";
+import { useCircuitField } from "../../../circuit-field-context";
 
 import Wire from "./Wire";
 

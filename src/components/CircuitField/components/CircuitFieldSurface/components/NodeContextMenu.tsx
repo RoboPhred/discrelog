@@ -11,7 +11,7 @@ import Menu from "@/components/Menus/Menu";
 import DividerMenuItem from "@/components/Menus/DividerMenuItem";
 import EditableTextMenuItem from "@/components/Menus/EditableTextMenuItem";
 
-import ContextMenuItems from "./ContextMenuItems";
+import ContextMenuItems from "../../ContextMenuItems";
 
 export interface NodeContextMenuProps {
   nodeId: string;

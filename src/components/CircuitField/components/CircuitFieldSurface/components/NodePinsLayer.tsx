@@ -4,7 +4,7 @@ import useSelector from "@/hooks/useSelector";
 
 import { nodeIdsFromCircuitIdSelector } from "@/services/circuits/selectors/nodes";
 
-import { useCircuitField } from "../circuit-field-context";
+import { useCircuitField } from "../../../circuit-field-context";
 
 import NodePins from "./NodePins";
 

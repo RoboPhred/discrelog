@@ -7,7 +7,7 @@ import { wireJointIdsFromConnectionIdSelector } from "@/services/node-layout/sel
 import { isWireSelectedFromConnectionIdSelector } from "@/services/selection/selectors/selection";
 import { wireValueFromConnectionIdSelector } from "@/services/simulator/selectors/wires";
 
-import { useCircuitField } from "../../circuit-field-context";
+import { useCircuitField } from "../../../../circuit-field-context";
 
 import WireSegment from "../WireSegment";
 import WireJoint from "../WireJoint";

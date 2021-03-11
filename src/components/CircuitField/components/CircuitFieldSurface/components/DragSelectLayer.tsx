@@ -14,9 +14,9 @@ import { fieldDragStartSelect } from "@/actions/field-drag-start-select";
 import { fieldDragContinue } from "@/actions/field-drag-continue";
 import { fieldDragEnd } from "@/actions/field-drag-end";
 
-import { useEventMouseCoords } from "../hooks/useMouseCoords";
+import { useCircuitField } from "../../../circuit-field-context";
 
-import { useCircuitField } from "../circuit-field-context";
+import { useEventMouseCoords } from "../hooks/useMouseCoords";
 
 const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
   const dispatch = useDispatch();

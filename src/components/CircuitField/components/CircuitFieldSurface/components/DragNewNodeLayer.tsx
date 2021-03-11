@@ -15,9 +15,9 @@ import { useMouseCoords } from "../hooks/useMouseCoords";
 import {
   isNewNodeDragObject,
   NEW_NODE_DRAG_OBJECT,
-} from "../drag-items/new-node";
+} from "../../../drag-items/new-node";
 
-import { useCircuitField } from "../circuit-field-context";
+import { useCircuitField } from "../../../circuit-field-context";
 
 import NodeVisual from "./NodeVisual";
 

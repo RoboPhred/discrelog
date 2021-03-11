@@ -3,7 +3,7 @@ import * as React from "react";
 import { Point, ZeroPoint } from "@/geometry";
 
 import { fieldSvgElementContext } from "../contexts/fieldSvgElement";
-import { getFieldCoord } from "../utils";
+import { getFieldCoord } from "../../../utils";
 
 export function useMouseCoords(): (p: Point) => Point {
   const { svgRef, scalerRef } = React.useContext(fieldSvgElementContext);
