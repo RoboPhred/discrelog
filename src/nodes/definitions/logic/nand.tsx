@@ -27,6 +27,11 @@ const nandNodeDefinition: NodeDefinition = {
     hitRect,
     <g transform="translate(-10,0)">
       <path
+        d="M 40,5 L 40,6.4285714 L 40,43.571429 L 40,45 L 41.428571,45 L 60.47619,45 C 71.744098,45 80.47619,35.999955 80.47619,25 C 80.47619,14.000045 71.744099,5.0000002 60.47619,5 C 60.47619,5 60.47619,5 41.428571,5 L 40,5 z"
+        stroke="none"
+        fill="transparent"
+      />
+      <path
         className="node-select-highlight--stroke"
         strokeWidth="2"
         stroke="black"

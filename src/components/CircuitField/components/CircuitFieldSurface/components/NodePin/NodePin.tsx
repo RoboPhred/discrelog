@@ -108,7 +108,8 @@ const NodePin: React.FC<NodePinProps> = React.memo(function NodePin({
   if (direction === "input") {
     pinVisual = (
       <path
-        d={describeArc(x, y, 3, -45, 225)}
+        d={describeArc(x, y, 4, -45, 225)}
+        strokeWidth={2}
         className={cls(
           styles["node-pin-input"],
           isDragTarget && styles["is-drag-target"]
