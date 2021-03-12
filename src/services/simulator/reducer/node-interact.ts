@@ -15,7 +15,7 @@ export default createSimulatorReducer((state, action, appState) => {
     return state;
   }
 
-  const { circuitNodeIdPath } = action.payload;
+  const { circuitNodeIdPath, data } = action.payload;
   const simulatorNodeId = simulatorNodeIdFromCircuitNodeIdSelector(
     appState,
     circuitNodeIdPath
@@ -36,7 +36,7 @@ export default createSimulatorReducer((state, action, appState) => {
   }
 
   const nodeState = state.nodeStatesByNodeId[simulatorNodeId];
-  const evolutionResult = def.interact(nodeState);
+  const evolutionResult = def.interact(nodeState, data);
 
   return applyEvolutionResult(state, simulatorNodeId, evolutionResult);
 });

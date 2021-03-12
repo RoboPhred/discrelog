@@ -11,12 +11,14 @@ import { NodeComponentProps } from "@/nodes/types";
 import { nodeOutputsFromCircuitNodeIdSelector } from "@/services/simulator/selectors/nodes";
 
 import styles from "./node-visuals.module.css";
+import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 
 export const MomentaryInteractionNode: React.FC<NodeComponentProps> = ({
   circuitNodeId,
   circuitNodePath,
 }) => {
   const dispatch = useDispatch();
+  const isSimActive = useSelector(isSimActiveSelector);
 
   const circuitIdPath = React.useMemo(
     () => [...(circuitNodePath || []), circuitNodeId ?? "~~none"],
@@ -27,22 +29,29 @@ export const MomentaryInteractionNode: React.FC<NodeComponentProps> = ({
     nodeOutputsFromCircuitNodeIdSelector(state, circuitIdPath)
   );
 
-  const onClick = React.useCallback(
+  const onPress = React.useCallback(
     (e: React.MouseEvent) => {
-      if (!circuitNodeId) {
+      if (!isSimActive) {
         return;
       }
 
       if (e.defaultPrevented) {
         return;
       }
-
       e.preventDefault();
 
-      dispatch(interactNode(circuitIdPath));
+      dispatch(interactNode(circuitIdPath, true));
     },
-    [circuitIdPath, circuitNodeId, dispatch]
+    [circuitIdPath, dispatch, isSimActive]
   );
+
+  const onRelease = React.useCallback(() => {
+    if (!isSimActive) {
+      return;
+    }
+
+    dispatch(interactNode(circuitIdPath, false));
+  }, [circuitIdPath, dispatch, isSimActive]);
 
   let onColor = "darkgreen";
   let onTextColor = "lightgrey";
@@ -54,7 +63,12 @@ export const MomentaryInteractionNode: React.FC<NodeComponentProps> = ({
   }
 
   return (
-    <g onClick={onClick} className={styles["node-interaction-toggle"]}>
+    <g
+      onMouseDown={onPress}
+      onMouseUp={onRelease}
+      onMouseLeave={onRelease}
+      className={styles["node-interaction-toggle"]}
+    >
       <rect
         className="node-select-highlight--stroke node-select-highlight--fill"
         x={5}

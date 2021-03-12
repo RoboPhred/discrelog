@@ -210,7 +210,13 @@ export function applyEvolutionResult(
   if (transitions) {
     const transitionsArray = asArray(transitions);
     state = transitionsArray.reduce(
-      (state, transition) => applyOutputTransition(state, nodeId, transition),
+      (state, transition, i) =>
+        applyOutputTransition(
+          state,
+          nodeId,
+          transition,
+          i === 0 ? "replace" : "append"
+        ),
       state
     );
   }
@@ -248,9 +254,14 @@ function collectNodeInputs(
 function applyOutputTransition(
   state: Readonly<SimulatorServiceState>,
   nodeId: string,
-  transition: OutputTransition
+  transition: OutputTransition,
+  defaultMerger: "replace" | "append" = "replace"
 ): SimulatorServiceState {
-  const { tickOffset, valuesByPin, transitionMerger = "replace" } = transition;
+  const {
+    tickOffset,
+    valuesByPin,
+    transitionMerger = defaultMerger,
+  } = transition;
 
   // Sanity check that we are not producing transitions for the past or current tick.
   const transitionTick = state.tick + (tickOffset > 0 ? tickOffset : 1);
