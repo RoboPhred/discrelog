@@ -1,8 +1,10 @@
 import * as React from "react";
+import { v4 as uuidV4 } from "uuid";
 
 import { useViewportContext } from "../../../viewport-context";
 
 const GridBackground: React.FC = React.memo(function GridBackground() {
+  const [gridId] = React.useState(`grid-${uuidV4()}`);
   const { zoomFactor } = useViewportContext();
 
   const gridSize = 50 * zoomFactor;
@@ -11,7 +13,7 @@ const GridBackground: React.FC = React.memo(function GridBackground() {
     <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <pattern
-          id="grid"
+          id={gridId}
           width={gridSize}
           height={gridSize}
           patternUnits="userSpaceOnUse"
@@ -25,7 +27,7 @@ const GridBackground: React.FC = React.memo(function GridBackground() {
         </pattern>
       </defs>
 
-      <rect width="100%" height="100%" fill="url(#grid)" />
+      <rect width="100%" height="100%" fill={`url(#${gridId})`} />
     </svg>
   );
 });

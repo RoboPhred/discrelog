@@ -138,6 +138,7 @@ const WireSegment: React.FC<WireSegmentProps> = React.memo(
     return (
       <g onMouseMove={onMouseMove} onMouseLeave={onMouseLeave}>
         <line x1={start.x} y1={start.y} x2={end.x} y2={end.y} strokeWidth={2} />
+        {endJointId == null && <circle cx={end.x} cy={end.y} r={1.5} />}
         {insertJointPos && (
           <circle
             cx={insertJointPos.x}
