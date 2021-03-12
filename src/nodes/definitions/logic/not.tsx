@@ -36,7 +36,7 @@ const notNodeDefinition: NodeDefinition = {
         fill="none"
         stroke="#000"
         strokeWidth="2"
-        d="M79.15691 25H95M29.043478 25h-24"
+        d="M79,25 H100 M29,25 h-24"
       />
       <path
         className="node-select-highlight--fill"
@@ -46,7 +46,7 @@ const notNodeDefinition: NodeDefinition = {
         className="node-select-highlight--stroke"
         fill="none"
         stroke="#000"
-        strokeWidth="3"
+        strokeWidth="2"
         d="M79 25a4 4 0 1 1-8 0 4 4 0 1 1 8 0z"
       />
     </g>

@@ -36,7 +36,7 @@ const norNodeDefinition: NodeDefinition = {
         fill="none"
         stroke="#000"
         strokeWidth="2"
-        d="M79 25h16M31 15H5M32 35H5"
+        d="M79,25 h21 M31,15 H5 M32,35 H5"
       />
       <path
         className="node-select-highlight--fill"

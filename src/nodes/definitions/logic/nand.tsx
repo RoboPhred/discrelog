@@ -36,7 +36,7 @@ const nandNodeDefinition: NodeDefinition = {
         strokeWidth="2"
         stroke="black"
         fill="none"
-        d="M 88.11111,25 C 101.62222,25 105,25 105,25"
+        d="M 88,25 H110"
       />
       <path
         className="node-select-highlight--stroke"

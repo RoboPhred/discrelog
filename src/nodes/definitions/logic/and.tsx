@@ -24,7 +24,7 @@ const andNodeDefinition: NodeDefinition = {
         fill="none"
         stroke="#000"
         strokeWidth="2"
-        d="M70 25h25M31 15H5M32 35H5"
+        d="M70,25 h30 M31,15 H5 M32,35 H5"
       />
       <path
         className="node-select-highlight--fill"

@@ -24,7 +24,7 @@ const xorNodeDefinition: NodeDefinition = {
         fill="none"
         stroke="#000"
         strokeWidth="2"
-        d="M70 25h25M30.38572 15H5M31.3621 35H5"
+        d="M70,25 h30 M30,15 H5 M31,35 H5"
       />
       <g fillRule="evenodd" className="node-select-highlight--fill">
         <path d="M24.25 42C22.65263 44.6444 22 45 22 45h-3.65625l2-2.4375S26 35.56245 26 25 20.34375 7.4375 20.34375 7.4375l-2-2.4375H22c.78125.9375 1.42188 1.65625 2.21875 3C26.09147 11.09981 29 17.02665 29 25c0 7.95065-2.8967 13.87942-4.75 17z" />

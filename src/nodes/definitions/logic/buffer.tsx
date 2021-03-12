@@ -24,7 +24,7 @@ const bufferNodeDefinition: NodeDefinition = {
         fill="none"
         stroke="black"
         strokeWidth="2"
-        d="M 72,25 L 95.085706,25"
+        d="M72,25 L 100,25"
       />
       <path
         className="node-select-highlight--stroke"
