@@ -4,6 +4,7 @@ import { createSelector } from "reselect";
 
 import { NodeGraphServiceState } from "../state";
 import { createNodeGraphSelector } from "../utils";
+import { NodePin, nodePinEquals } from "../types";
 
 export const connectionsByIdSelector = createNodeGraphSelector(
   (s) => s.connectionsById
@@ -26,6 +27,21 @@ export const connectionsSelector = createNodeGraphSelector(
     (state: NodeGraphServiceState) => state.connectionsById,
     (connectionsById) => values(connectionsById)
   )
+);
+
+export const connectionIdFromInputPinSelector = createNodeGraphSelector(
+  (state: NodeGraphServiceState, pin: NodePin) => {
+    const { connectionsById } = state;
+    const connectionIds = Object.keys(connectionsById);
+    for (const connectionId of connectionIds) {
+      const connection = connectionsById[connectionId];
+      if (nodePinEquals(connection.inputPin, pin)) {
+        return connectionId;
+      }
+    }
+
+    return null;
+  }
 );
 
 /**

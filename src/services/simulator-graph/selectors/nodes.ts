@@ -5,7 +5,7 @@ import { getSimulatorNodeIdFromCircuitNodeIdPath } from "../utils";
 
 import { rootNodeGraphSelector } from "./graph";
 
-export const simulatorNodeIdsByCircuitNodeId = (state: AppState) =>
+export const simulatorNodeIdsByCircuitNodeIdSelector = (state: AppState) =>
   rootNodeGraphSelector(state).simulatorNodeIdsByCircuitNodeId;
 
 /**
