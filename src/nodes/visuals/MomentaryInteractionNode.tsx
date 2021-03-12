@@ -80,6 +80,8 @@ export const MomentaryInteractionNode: React.FC<NodeComponentProps> = ({
         strokeWidth={1}
       />
 
+      <line x1={45} y1={25} x2={50} y2={25} stroke="black" strokeWidth={2} />
+
       <circle cx={25} cy={25} r={17} fill={onColor} />
 
       <text

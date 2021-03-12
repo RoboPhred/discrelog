@@ -2,6 +2,8 @@
   fill: var(--color-element-neutral);
   stroke: var(--color-element-neutral);
 }
+
+.node-pin-output.highlight,
 .node-pin-output.is-drag-target {
   fill: var(--color-element-selected);
   stroke: var(--color-element-selected);
@@ -12,6 +14,8 @@
   fill: transparent;
   stroke: var(--color-element-neutral);
 }
+
+.node-pin-input.highlight,
 .node-pin-input.is-drag-target {
   stroke: var(--color-element-selected);
   stroke-width: 3px;

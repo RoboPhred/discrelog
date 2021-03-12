@@ -58,6 +58,7 @@ export const ToggleInteractionNode: React.FC<NodeComponentProps<
         fill="#AFAFAF"
         strokeWidth={1}
       />
+      <line x1={45} y1={25} x2={50} y2={25} stroke="black" strokeWidth={2} />
       <rect
         x={10}
         y={10}

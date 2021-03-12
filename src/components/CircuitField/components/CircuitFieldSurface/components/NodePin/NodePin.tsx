@@ -31,6 +31,7 @@ const NodePin: React.FC<NodePinProps> = React.memo(function NodePin({
   pinId,
 }) {
   const getMouseCoords = useEventMouseCoords();
+  const [highlight, setHighlight] = React.useState(false);
   const dispatch = useDispatch();
 
   const position = useSelector((s) =>
@@ -92,6 +93,13 @@ const NodePin: React.FC<NodePinProps> = React.memo(function NodePin({
     [startTracking]
   );
 
+  const onMouseEnter = React.useCallback(() => {
+    setHighlight(true);
+  }, []);
+  const onMouseLeave = React.useCallback(() => {
+    setHighlight(false);
+  }, []);
+
   if (!position) {
     return null;
   }
@@ -112,7 +120,8 @@ const NodePin: React.FC<NodePinProps> = React.memo(function NodePin({
         strokeWidth={2}
         className={cls(
           styles["node-pin-input"],
-          isDragTarget && styles["is-drag-target"]
+          isDragTarget && styles["is-drag-target"],
+          highlight && styles.highlight
         )}
       />
     );
@@ -121,7 +130,8 @@ const NodePin: React.FC<NodePinProps> = React.memo(function NodePin({
       <circle
         className={cls(
           styles["node-pin-output"],
-          isDragTarget && styles["is-drag-target"]
+          isDragTarget && styles["is-drag-target"],
+          highlight && styles.highlight
         )}
         cx={x}
         cy={y}
@@ -131,14 +141,14 @@ const NodePin: React.FC<NodePinProps> = React.memo(function NodePin({
   }
 
   return (
-    <g>
+    <g onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       {pinVisual}
       <circle
         stroke="none"
         fill="transparent"
         cx={x}
         cy={y}
-        r={3}
+        r={5}
         onMouseDown={onMouseDown}
       />
     </g>

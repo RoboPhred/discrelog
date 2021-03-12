@@ -26,6 +26,7 @@ import {
   wireEndPositionFromConnectionIdSelector,
 } from "@/services/node-layout/selectors/wires";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
+import { isDraggingSelector } from "@/services/circuit-editor-ui-drag/selectors/drag";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
 
@@ -39,6 +40,7 @@ const WireSegment: React.FC<WireSegmentProps> = React.memo(
     const dispatch = useDispatch();
     const getMouseCoords = useEventMouseCoords();
     const isSimActive = useSelector(isSimActiveSelector);
+    const isDragging = useSelector(isDraggingSelector);
 
     const start = useSelector((state) => {
       if (startJointId == null) {
@@ -126,7 +128,7 @@ const WireSegment: React.FC<WireSegmentProps> = React.memo(
     );
 
     let insertJointPos: Point | undefined;
-    if (!isSimActive && mousePos) {
+    if (!isDragging && !isSimActive && mousePos) {
       const lineDir = normalize(pointSubtract(end, start));
       const v = pointSubtract(mousePos, start);
       const d = dotProduct(v, lineDir);

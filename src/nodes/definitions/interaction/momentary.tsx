@@ -15,7 +15,7 @@ const toggleElementDefinition: NodeDefinition = {
   pins: {
     OUT: {
       direction: "output",
-      x: 45,
+      x: 50,
       y: 25,
     },
   },

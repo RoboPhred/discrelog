@@ -19,6 +19,9 @@ import { nodeIdsByCircuitIdSelector } from "@/services/circuits/selectors/nodes"
 export const dragModeSelector = createCircuitEditorUiDragSelector(
   (s) => s.dragMode
 );
+export const isDraggingSelector = createCircuitEditorUiDragSelector(
+  (s) => s.dragMode != null
+);
 export const dragCircuitIdSelector = createCircuitEditorUiDragSelector(
   (s) => s.dragCircuitId
 );

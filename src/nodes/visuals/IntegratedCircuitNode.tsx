@@ -70,7 +70,7 @@ export const IntegratedCircuitVisual: React.FC<
           className="node-select-highlight--stroke"
           stroke="black"
           strokeWidth={2}
-          x1={0}
+          x1={4}
           y1={y}
           x2={10}
           y2={y}
