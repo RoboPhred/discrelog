@@ -1,8 +1,14 @@
+# FIXME
+
+- Nodes from multiple windows can be simultaniously selected, allowing a drag operation to drag nodes across multiple windows.
+  - Selection should be per-CircuitEditor
+    - Could be local to the CircuitEditor component, but then again it would be nice to control the selection using actions, such as selecting the affected nodes on undo/redo, or selecting a node when double clicking on the node in a list
+    - To keep it affected by actions, each circuit editor should have its own state stored in redux somewhere. I played around with giving each circuit editor its own id, but didn't really like the result. Needs more experimentation.
+  - Drag logic might be per-CircuitEditor, depending on how selection is implemented.
+
 # TODO
 
-- If an IC is dragged over a circuit that itself is contained in the IC, grey out circuit and inform user they cannot place an IC inside itself
 - Tooltip on hover over sim controls showing the hotkeys.
-- Sim control for step once while paused.
 - Breakpoints on pin value changes
 
 - Multi window causes confusion with undo

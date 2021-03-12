@@ -13,7 +13,7 @@ import { circuitIdFromConnectionIdSelector } from "./connections";
  * This should be removed when the circuit-editor-ui-drag state is
  * refactored to be local to the CircuitEditor component
  */
-export const circuitFromJointIdSelector = (
+export const circuitIdFromJointIdSelector = (
   state: AppState,
   jointId: string
 ) => {
