@@ -17,7 +17,6 @@ const inputMomentaryElementDefinition: ElementDefinition = {
           {
             tickOffset: 1 + Math.round(ELEMENT_TRANSISTER_RESPONSE_TIME * 1.5),
             valuesByPin: { OUT: false },
-            transitionMerger: "append",
           },
         ],
       };
