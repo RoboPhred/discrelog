@@ -648,6 +648,19 @@ body,
   margin: 5px;
 }
 
+.text-unselectable--2tvXe {
+  cursor: inherit;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.simulator-active .node-interaction-toggle--1eXWD,
+.simulator-active .node-interaction-momentary--16GBy {
+  cursor: pointer;
+}
+
 .wire-joint--16G5Q {
   fill: black;
   fill: var(--color-element-neutral);
@@ -662,14 +675,6 @@ body,
   stroke: var(--color-element-selected);
 }
 
-.text-unselectable--2tvXe {
-  cursor: inherit;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-}
-
 .circuit-field-node.node-selected .node-select-highlight--stroke {
   stroke: goldenrod;
   stroke: var(--color-element-selected);
@@ -678,11 +683,6 @@ body,
 .circuit-field-node.node-selected .node-select-highlight--fill {
   fill: goldenrod;
   fill: var(--color-element-selected);
-}
-
-.simulator-active .node-interaction-toggle--1eXWD,
-.simulator-active .node-interaction-momentary--16GBy {
-  cursor: pointer;
 }
 
 .wire--2ESXn {
@@ -712,6 +712,8 @@ body,
   stroke: black;
   stroke: var(--color-element-neutral);
 }
+
+.node-pin-output--2MDEG.highlight--1PHIy,
 .node-pin-output--2MDEG.is-drag-target--2mBxU {
   fill: goldenrod;
   fill: var(--color-element-selected);
@@ -725,6 +727,8 @@ body,
   stroke: black;
   stroke: var(--color-element-neutral);
 }
+
+.node-pin-input--2AbG5.highlight--1PHIy,
 .node-pin-input--2AbG5.is-drag-target--2mBxU {
   stroke: goldenrod;
   stroke: var(--color-element-selected);
