@@ -7,12 +7,13 @@ import { getModifiers } from "@/modifier-keys";
 import useMouseTracking from "@/hooks/useMouseTracking";
 
 import { selectionRectSelector } from "@/services/circuit-editor-ui-drag/selectors/drag";
-import { viewScaleSelector } from "@/services/circuit-editor-ui-viewport/selectors/view";
 
 import { clearSelection } from "@/actions/select-clear";
 import { fieldDragStartSelect } from "@/actions/field-drag-start-select";
 import { fieldDragContinue } from "@/actions/field-drag-continue";
 import { fieldDragEnd } from "@/actions/field-drag-end";
+
+import { useViewportContext } from "../../../viewport-context";
 
 import { useCircuitField } from "../../../circuit-field-context";
 
@@ -21,11 +22,12 @@ import { useEventMouseCoords } from "../hooks/useMouseCoords";
 const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
   const dispatch = useDispatch();
   const { circuitId } = useCircuitField();
+  const { zoomFactor } = useViewportContext();
+
   const selectionRect = useSelector(selectionRectSelector);
 
-  const scale = useSelector(viewScaleSelector);
   function counterScale(value: number) {
-    return value * (1 / scale);
+    return value * (1 / zoomFactor);
   }
 
   const getCoords = useEventMouseCoords();

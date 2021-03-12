@@ -2,8 +2,10 @@ import { AnyAction } from "redux";
 import last from "lodash/last";
 
 import { AppState, defaultAppState } from "@/store";
+import rootReducer from "@/store/reducer";
 
 import { isRedoAction } from "@/actions/redo";
+import { viewCircuit } from "@/actions/view-circuit";
 
 import { captureUndoState } from "../utils";
 
@@ -17,16 +19,18 @@ export default function redoReducer(
 
   const { undoStack, redoStack } = state.undo;
 
-  const snapshot = last(redoStack);
-  if (!snapshot) {
+  const stackItem = last(redoStack);
+  if (!stackItem) {
     return state;
   }
 
-  return {
+  const { serviceStates, viewCircuitId } = stackItem;
+
+  state = {
     ...state,
     services: {
       ...state.services,
-      ...snapshot,
+      ...serviceStates,
     },
     undo: {
       ...state.undo,
@@ -34,4 +38,10 @@ export default function redoReducer(
       redoStack: redoStack.slice(0, redoStack.length - 1),
     },
   };
+
+  if (viewCircuitId) {
+    state = rootReducer(state, viewCircuit(viewCircuitId));
+  }
+
+  return state;
 }

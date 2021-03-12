@@ -5,7 +5,6 @@ import { AppState } from "@/store";
 import { ACTION_FIELD_DRAG_CONTINUE } from "@/actions/field-drag-continue";
 import { ACTION_FIELD_MOUSE_LEAVE } from "@/actions/field-mouse-leave";
 import { ACTION_SIM_TICK } from "@/actions/sim-tick";
-import { ACTION_VIEW_ZOOM } from "@/actions/view-zoom";
 import { ACTION_WIRE_JOINT_MOVE } from "@/actions/wire-joint-move";
 
 export const actionsBlacklist: string[] = [
@@ -13,7 +12,6 @@ export const actionsBlacklist: string[] = [
   ACTION_FIELD_MOUSE_LEAVE,
   ACTION_WIRE_JOINT_MOVE,
   ACTION_SIM_TICK,
-  ACTION_VIEW_ZOOM,
 ];
 
 export function actionSanitizer(action: AnyAction): AnyAction {

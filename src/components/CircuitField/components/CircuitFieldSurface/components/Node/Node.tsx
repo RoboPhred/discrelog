@@ -6,6 +6,8 @@ import { Point, Rectangle, ZeroPoint } from "@/geometry";
 import { getModifiers } from "@/modifier-keys";
 import { getSelectMode } from "@/selection-mode";
 
+import { getNodeVisualElement } from "@/nodes/visuals";
+
 import interaction from "@/styles/interaction.module.css";
 
 import useSelector from "@/hooks/useSelector";
@@ -16,7 +18,6 @@ import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors
 import { nodePositionFromNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 import { nodeDefFromNodeIdSelector } from "@/services/node-graph/selectors/node-def";
-import { viewScaleSelector } from "@/services/circuit-editor-ui-viewport/selectors/view";
 import { nodeFieldDisplayNameFromNodeId } from "@/services/ui-settings/selectors/node-name";
 
 import { fieldDragStartNode } from "@/actions/field-drag-start-node";
@@ -26,13 +27,14 @@ import { selectNodes } from "@/actions/select-nodes";
 
 import { useContextMenu } from "@/components/ContextMenu";
 
-import { useEventMouseCoords } from "../../hooks/useMouseCoords";
 import { useCircuitField } from "../../../../circuit-field-context";
+import { useViewportContext } from "../../../../viewport-context";
+
+import { useEventMouseCoords } from "../../hooks/useMouseCoords";
 
 import NodeContextMenu from "../NodeContextMenu";
 
 import "./Node.module.css";
-import { getNodeVisualElement } from "@/nodes/visuals";
 
 export interface NodeProps {
   nodeId: string;
@@ -197,14 +199,14 @@ const NodeName: React.FC<NodeNameProps> = React.memo(function NodeName({
   nodeId,
   hitRect,
 }) {
-  const scale = useSelector(viewScaleSelector);
+  const { zoomFactor } = useViewportContext();
   const nodeName = useSelector((s) =>
     nodeFieldDisplayNameFromNodeId(s, nodeId)
   );
 
   // FIXME: This is really rough, especially the y offset.
   // There is a noticable jump in position between >1 and >1 scale.
-  const textScale = Math.max(0.7, scale);
+  const textScale = Math.max(0.7, zoomFactor);
   let textYOffset = 15;
   if (textScale > 1) {
     textYOffset -= textScale * 2;

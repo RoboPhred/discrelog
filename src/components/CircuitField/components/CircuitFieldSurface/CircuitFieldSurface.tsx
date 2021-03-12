@@ -4,8 +4,6 @@ import { useDrop } from "react-dnd";
 
 import { fieldMouseLeave } from "@/actions/field-mouse-leave";
 
-import { viewScaleSelector } from "@/services/circuit-editor-ui-viewport/selectors/view";
-
 import { NEW_NODE_DRAG_OBJECT } from "../../drag-items/new-node";
 
 import { FieldSvgElementProvider } from "./contexts/fieldSvgElement";
@@ -21,6 +19,7 @@ import NodePinsLayer from "./components/NodePinsLayer";
 import DragAttachWirePreviewLayer from "./components/DragAttachWirePreviewLayer";
 
 import styles from "./CircuitFieldSurface.module.css";
+import { useViewportContext } from "../../viewport-context";
 
 export interface CircuitFieldSurfaceProps {
   width: number;
@@ -33,8 +32,7 @@ const CircuitFieldSurface: React.FC<CircuitFieldSurfaceProps> = ({
   onContextMenu: openContextMenu,
 }) => {
   const dispatch = useDispatch();
-
-  const viewScale = useSelector(viewScaleSelector);
+  const { zoomFactor } = useViewportContext();
 
   const svgRef = React.useRef<SVGSVGElement | null>(null);
   const scalerRef = React.useRef<SVGGElement | null>(null);
@@ -92,7 +90,7 @@ const CircuitFieldSurface: React.FC<CircuitFieldSurfaceProps> = ({
       <g
         ref={scalerRef}
         transform-origin="0 0"
-        transform={`scale(${viewScale})`}
+        transform={`scale(${zoomFactor})`}
       >
         <FieldSvgElementProvider svgRef={svgRef} scalerRef={scalerRef}>
           <DragSelectLayer />

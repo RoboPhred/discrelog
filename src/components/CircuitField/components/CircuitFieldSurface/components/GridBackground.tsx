@@ -1,13 +1,11 @@
 import * as React from "react";
 
-import useSelector from "@/hooks/useSelector";
-
-import { viewScaleSelector } from "@/services/circuit-editor-ui-viewport/selectors/view";
+import { useViewportContext } from "../../../viewport-context";
 
 const GridBackground: React.FC = React.memo(function GridBackground() {
-  const scale = useSelector(viewScaleSelector);
+  const { zoomFactor } = useViewportContext();
 
-  const gridSize = 50 * scale;
+  const gridSize = 50 * zoomFactor;
 
   return (
     <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">

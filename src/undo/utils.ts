@@ -1,9 +1,23 @@
 import pick from "lodash/pick";
+import get from "lodash/get";
 
 import { AppState } from "@/store";
 
-import { UndoServicesStateKeys, UndoServicesStates } from "./state";
+import { isCircuitFieldTesselWindow } from "@/pages/CircuitEditorPage/windows/CircuitFieldWindow/tessel-window";
 
-export function captureUndoState(state: AppState): UndoServicesStates {
-  return pick(state.services, UndoServicesStateKeys);
+import { UndoStackState, UndoServicesStateKeys } from "./state";
+
+export function captureUndoState(state: AppState): UndoStackState {
+  let viewCircuitId: string | null = null;
+
+  const { layout, activeCircuitEditorPath } = state.services.uiLayout;
+  const circuitEditorWindow = get(layout, activeCircuitEditorPath);
+  if (isCircuitFieldTesselWindow(circuitEditorWindow)) {
+    viewCircuitId = circuitEditorWindow.windowProps.circuitId;
+  }
+
+  return {
+    serviceStates: pick(state.services, UndoServicesStateKeys),
+    viewCircuitId,
+  };
 }
