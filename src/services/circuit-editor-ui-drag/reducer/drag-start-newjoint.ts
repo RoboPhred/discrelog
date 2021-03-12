@@ -1,8 +1,9 @@
 import { isFieldDragStartNewJointAction } from "@/actions/field-drag-start-newjoint";
+import { circuitIdFromConnectionIdSelector } from "@/services/circuits/selectors/connections";
 
 import { createCircuitEditorUiDragReducer } from "../utils";
 
-export default createCircuitEditorUiDragReducer((state, action) => {
+export default createCircuitEditorUiDragReducer((state, action, appState) => {
   if (!isFieldDragStartNewJointAction(action)) {
     return state;
   }
@@ -12,6 +13,7 @@ export default createCircuitEditorUiDragReducer((state, action) => {
   return {
     ...state,
     dragMode: "new-joint" as const,
+    dragCircuitId: circuitIdFromConnectionIdSelector(appState, connectionId),
     dragStart: {
       x,
       y,

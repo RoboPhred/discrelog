@@ -10,11 +10,19 @@ import { MODIFIER_KEYS_NONE } from "@/modifier-keys";
 
 import { nodePinPositionsByPinIdByNodeIdSelector } from "@/services/node-layout/selectors/node-pin-positions";
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
+import { nodeIdsByCircuitIdSelector } from "@/services/circuits/selectors/nodes";
 
 import { createCircuitEditorUiDragSelector } from "../utils";
+import { CircuitEditorUiDragServiceState } from "../state";
 
 import { gridJointSnapSelector, gridNodeSnapSelector } from "./snap";
-import { nodeIdsByCircuitIdSelector } from "@/services/circuits/selectors/nodes";
+
+// FIXME: Hack to stop drag appearing on the wrong windows.
+// Drag state should be local to CircuitEditor, not global in redux.
+export const isDragForCircuitSelector = createCircuitEditorUiDragSelector(
+  (s: CircuitEditorUiDragServiceState, circuitId: string) =>
+    s.dragCircuitId === circuitId
+);
 
 export const dragModeSelector = createCircuitEditorUiDragSelector(
   (s) => s.dragMode

@@ -9,9 +9,14 @@ import { createSelector } from "reselect";
 import { nodeTypesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 import { nodePositionsByNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
-import { dragMoveOffsetSelector } from "@/services/circuit-editor-ui-drag/selectors/drag";
+import {
+  dragMoveOffsetSelector,
+  isDragForCircuitSelector,
+} from "@/services/circuit-editor-ui-drag/selectors/drag";
 
 import useSelector from "@/hooks/useSelector";
+
+import { useCircuitField } from "../../../circuit-field-context";
 
 import NodeVisual from "./NodeVisual";
 
@@ -30,11 +35,20 @@ const selectedNodeTypesByIdSelector = createSelector(
 
 const DragNodePreviewLayer: React.FC = React.memo(
   function DragNodePreviewLayer() {
+    const { circuitId } = useCircuitField();
+    const isDragForSelf = useSelector((state) =>
+      isDragForCircuitSelector(state, circuitId)
+    );
+
     const selectedNodePositionsById = useSelector(
       selectedNodePositionsByIdSelector
     );
     const selectedNodeTypesById = useSelector(selectedNodeTypesByIdSelector);
     const dragMoveOffset = useSelector(dragMoveOffsetSelector);
+
+    if (!isDragForSelf || !dragMoveOffset) {
+      return null;
+    }
 
     let elements: React.ReactNode | null = null;
     if (dragMoveOffset) {

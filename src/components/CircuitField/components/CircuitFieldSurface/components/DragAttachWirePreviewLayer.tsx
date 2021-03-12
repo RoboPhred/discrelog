@@ -6,15 +6,22 @@ import {
   dragEndSelector,
   dragModeSelector,
   dragStartSelector,
+  isDragForCircuitSelector,
 } from "@/services/circuit-editor-ui-drag/selectors/drag";
+
+import { useCircuitField } from "../../../circuit-field-context";
 
 const DragAttachWirePreviewLayer: React.FC = React.memo(
   function DragAttachWirePreviewLayer() {
+    const { circuitId } = useCircuitField();
+    const isDragForSelf = useSelector((state) =>
+      isDragForCircuitSelector(state, circuitId)
+    );
     const dragMode = useSelector(dragModeSelector);
     const dragStart = useSelector(dragStartSelector);
     const dragEnd = useSelector(dragEndSelector);
 
-    if (dragMode != "wire" || !dragStart || !dragEnd) {
+    if (!isDragForSelf || dragMode != "wire" || !dragStart || !dragEnd) {
       return null;
     }
 

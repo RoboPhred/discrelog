@@ -5,7 +5,10 @@ import { AppState } from "@/store";
 
 import { Connection } from "@/services/node-graph/types";
 
-import { nodeIdsFromCircuitIdSelector } from "./nodes";
+import {
+  circuitIdFromNodeIdSelector,
+  nodeIdsFromCircuitIdSelector,
+} from "./nodes";
 
 /**
  * Get all connection ids for the given circuit id.
@@ -34,3 +37,19 @@ export const connectionIdsByCircuitIdSelector = createSelector(
     });
   }
 );
+
+export const circuitIdFromConnectionIdSelector = (
+  state: AppState,
+  connectionId: string
+) => {
+  const { connectionsById } = state.services.nodeGraph;
+  const conn = connectionsById[connectionId];
+  if (!conn) {
+    return null;
+  }
+
+  // Input or output doesn't matter,
+  // the ui prevents connections from crossing circuit boundaries.
+  const { nodeId } = conn.inputPin || conn.outputPin;
+  return circuitIdFromNodeIdSelector(state, nodeId);
+};

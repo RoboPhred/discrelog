@@ -10,6 +10,7 @@ import { isFieldDragStartNodeAction } from "@/actions/field-drag-start-node";
 import { selectNodes } from "@/actions/select-nodes";
 
 import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
+import { circuitIdFromNodeIdSelector } from "@/services/circuits/selectors/nodes";
 
 export default function dragStartNodeReducer(
   state: AppState = defaultAppState,
@@ -24,6 +25,7 @@ export default function dragStartNodeReducer(
   state = fpSet(state, "services", "circuitEditorUiDrag", (value) => ({
     ...value,
     dragMode: "move" as const,
+    dragCircuitId: circuitIdFromNodeIdSelector(state, nodeId),
     dragStart: {
       x,
       y,

@@ -10,6 +10,7 @@ import { isFieldDragStartJointAction } from "@/actions/field-drag-start-joint";
 import { selectWireJoints } from "@/actions/select-wire-joints";
 
 import { isJointSelectedFromJointIdSelector } from "@/services/selection/selectors/selection";
+import { circuitFromJointIdSelector } from "@/services/circuits/selectors/joints";
 
 export default function dragStartJointReducer(
   state: AppState = defaultAppState,
@@ -24,6 +25,7 @@ export default function dragStartJointReducer(
   state = fpSet(state, "services", "circuitEditorUiDrag", (value) => ({
     ...value,
     dragMode: "move" as const,
+    dragCircuitId: circuitFromJointIdSelector(state, jointId),
     dragStart: {
       x,
       y,

@@ -1,12 +1,16 @@
 import * as React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
+import useSelector from "@/hooks/useSelector";
 import { Point } from "@/geometry";
 import { getModifiers } from "@/modifier-keys";
 
 import useMouseTracking from "@/hooks/useMouseTracking";
 
-import { selectionRectSelector } from "@/services/circuit-editor-ui-drag/selectors/drag";
+import {
+  isDragForCircuitSelector,
+  selectionRectSelector,
+} from "@/services/circuit-editor-ui-drag/selectors/drag";
 
 import { clearSelection } from "@/actions/select-clear";
 import { fieldDragStartSelect } from "@/actions/field-drag-start-select";
@@ -23,6 +27,9 @@ const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
   const dispatch = useDispatch();
   const { circuitId } = useCircuitField();
   const { zoomFactor } = useViewportContext();
+  const isDragForSelf = useSelector((state) =>
+    isDragForCircuitSelector(state, circuitId)
+  );
 
   const selectionRect = useSelector(selectionRectSelector);
 
@@ -101,7 +108,7 @@ const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
         fill="transparent"
         onMouseDown={onMouseDown}
       />
-      {selectionRect && (
+      {isDragForSelf && selectionRect && (
         <g
           transform={`translate(${selectionRect.p1.x}, ${selectionRect.p1.y})`}
         >

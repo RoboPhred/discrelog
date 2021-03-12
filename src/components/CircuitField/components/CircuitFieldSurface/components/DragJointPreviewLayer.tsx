@@ -8,9 +8,12 @@ import useSelector from "@/hooks/useSelector";
 import {
   dragMoveOffsetSelector,
   dragNewJointPositionSelector,
+  isDragForCircuitSelector,
 } from "@/services/circuit-editor-ui-drag/selectors/drag";
 import { selectedJointIdsSelector } from "@/services/selection/selectors/selection";
 import { wireJointPositionsByJointIdSelector } from "@/services/node-layout/selectors/wires";
+
+import { useCircuitField } from "../../../circuit-field-context";
 
 import WireJointVisual from "./WireJointVisual";
 
@@ -23,12 +26,21 @@ const selectedJointPositionsByIdSelector = createSelector(
 
 const DragJointPreviewLayer: React.FC = React.memo(
   function DragJointPreviewLayer() {
+    const { circuitId } = useCircuitField();
+    const isDragForSelf = useSelector((state) =>
+      isDragForCircuitSelector(state, circuitId)
+    );
+
     const dragMoveOffset = useSelector(dragMoveOffsetSelector);
     const selectedNodePositionsById = useSelector(
       selectedJointPositionsByIdSelector
     );
 
     const newJointPosition = useSelector(dragNewJointPositionSelector);
+
+    if (!isDragForSelf || (!dragMoveOffset && !newJointPosition)) {
+      return null;
+    }
 
     let elements: React.ReactNode | null = null;
     if (dragMoveOffset) {
