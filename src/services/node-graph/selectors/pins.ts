@@ -1,5 +1,5 @@
 import { circuitIdFromNodeIdSelector } from "@/services/circuits/selectors/nodes";
-import { circuitIdToNodeType } from "@/services/node-types/definition-sources/integrated-circuits/utils";
+import { circuitIdToNodeType } from "@/nodes/definitions/integrated-circuits/utils";
 import { AppState } from "@/store";
 
 import { NodePin } from "../types";

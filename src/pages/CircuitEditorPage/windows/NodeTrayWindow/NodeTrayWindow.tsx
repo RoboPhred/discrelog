@@ -10,12 +10,20 @@ import {
   nodeDefinitionFromTypeSelector,
   nodeDefinitionsSelector,
 } from "@/services/node-types/selectors/node-types";
-import { NodeComponentProps } from "@/services/node-types/types";
+import { NodeComponentProps, NodeDefinition } from "@/nodes/types";
 
 import { newNodeDragObject } from "@/components/CircuitField/drag-items/new-node";
 import TesselWindow from "@/components/Tessel/TesselWindow";
+import Tooltip from "@/components/Tooltip";
 
 import styles from "./NodeTrayWindow.module.css";
+import { getNodeVisualElement } from "@/nodes/visuals";
+
+const CategoryNames: Record<NodeDefinition["category"], string> = {
+  "input-output": "I/O",
+  "integrated-circuit": "Integrated Circuits",
+  logic: "Logic",
+};
 
 const NodeTrayWindow: React.FC = () => {
   const nodeDefinitions = useSelector(nodeDefinitionsSelector);
@@ -34,7 +42,7 @@ const NodeTrayWindow: React.FC = () => {
 export default NodeTrayWindow;
 
 interface TrayCategoryProps {
-  category: string;
+  category: NodeDefinition["category"];
 }
 
 const TrayCategory: React.FC<TrayCategoryProps> = ({ category }) => {
@@ -51,7 +59,9 @@ const TrayCategory: React.FC<TrayCategoryProps> = ({ category }) => {
 
   return (
     <>
-      <li className={styles["node-tray-category"]}>{category}</li>
+      <li className={styles["node-tray-category"]}>
+        {CategoryNames[category]}
+      </li>
       {nodes}
     </>
   );
@@ -61,8 +71,24 @@ interface TrayNodeProps {
   nodeType: string;
 }
 const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
+  const [liRef, setLiRef] = React.useState<HTMLElement | null>(null);
   const def = useSelector((state) =>
     nodeDefinitionFromTypeSelector(state, nodeType)
+  );
+
+  const [showTooltip, setShowTooltip] = React.useState(false);
+  const onShowTooltip = React.useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setShowTooltip(true);
+  }, []);
+  const onHideTooltip = React.useCallback(
+    (e: React.MouseEvent) => {
+      if (e.target !== liRef) {
+        return;
+      }
+      setShowTooltip(false);
+    },
+    [liRef]
   );
 
   const [, dragRef] = useDrag({
@@ -73,12 +99,17 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
   let displayName = nodeType;
   let viewBox = "0 0 50 50";
   if (def) {
-    const { trayComponent, component, hitRect } = def.visual;
+    const { trayComponent, hitRect } = def.visual;
     if (trayComponent) {
       const TrayComponent = trayComponent;
       nodeTrayVisual = <TrayComponent />;
     } else {
-      nodeTrayVisual = <NodeTrayNodeComponent component={component} />;
+      nodeTrayVisual = getNodeVisualElement(
+        undefined,
+        [],
+        undefined,
+        def.visual
+      );
       viewBox = `${hitRect.p1.x} ${hitRect.p1.y} ${hitRect.p2.x} ${hitRect.p2.y}`;
     }
     displayName = def.displayName;
@@ -87,7 +118,18 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
   }
 
   return (
-    <li ref={dragRef} className={styles["node-tray-item"]}>
+    <li
+      ref={(ref) => {
+        setLiRef(ref);
+        dragRef(ref);
+      }}
+      className={styles["node-tray-item"]}
+      onClick={onShowTooltip}
+      onMouseOut={onHideTooltip}
+    >
+      <Tooltip placement="top" isOpen={showTooltip} anchorEl={liRef}>
+        Click and drag to create a new circuit element.
+      </Tooltip>
       <span className={styles["node-tray-item-preview"]}>
         <svg width={30} height={30} viewBox={viewBox}>
           {nodeTrayVisual}
@@ -96,13 +138,6 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
       <span className={interaction["text-unselectable"]}>{displayName}</span>
     </li>
   );
-};
-
-const NodeTrayNodeComponent: React.FC<{
-  component: React.ComponentType<NodeComponentProps>;
-}> = ({ component }) => {
-  const Component = component;
-  return <Component elementState={{}} />;
 };
 
 const NodeTrayErrorComponent = () => (

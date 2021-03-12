@@ -6,13 +6,13 @@ import {
 
 import { CircuitFieldWindowProps } from "./CircuitFieldWindow";
 
-const CIRCUIT_FIELD_ID = "circuit-field" as const;
+export const CIRCUIT_FIELD_WINDOW_ID = "circuit-field" as const;
 
 export const circuitFieldTesselWindow = (
   circuitId: string,
   circuitNodeIdPath: string[]
 ): TesselWindowItem<CircuitFieldWindowProps> => ({
-  windowId: CIRCUIT_FIELD_ID,
+  windowId: CIRCUIT_FIELD_WINDOW_ID,
   windowProps: {
     circuitId,
     circuitNodeIdPath,
@@ -29,5 +29,5 @@ export function isCircuitFieldTesselWindow(
   if (!isTesselWindow(x)) {
     return false;
   }
-  return x.windowId === CIRCUIT_FIELD_ID;
+  return x.windowId === CIRCUIT_FIELD_WINDOW_ID;
 }

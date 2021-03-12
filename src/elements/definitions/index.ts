@@ -10,6 +10,7 @@ export const ElementDefinitionsByType = {
 
   "logic-and": asElementDef(require("./logic-and")),
   "logic-buffer": asElementDef(require("./logic-buffer")),
+  "logic-nand": asElementDef(require("./logic-nand")),
   "logic-nor": asElementDef(require("./logic-nor")),
   "logic-not": asElementDef(require("./logic-not")),
   "logic-or": asElementDef(require("./logic-or")),
@@ -17,5 +18,7 @@ export const ElementDefinitionsByType = {
 
   "output-led": asElementDef(require("./output-led")),
   "output-seg7": asElementDef(require("./output-seg7")),
+
+  "pin-high": asElementDef(require("./pin-high")),
 };
 export type ElementType = keyof typeof ElementDefinitionsByType;

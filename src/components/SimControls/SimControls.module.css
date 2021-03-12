@@ -34,6 +34,19 @@
   fill: blue;
 }
 
+.button-step {
+  fill: darkorange;
+  cursor: pointer;
+}
+
+.button-step:hover {
+  fill: orange;
+}
+
+.button-step.selected {
+  fill: blue;
+}
+
 .button--disabled {
   fill: grey;
   cursor: unset;

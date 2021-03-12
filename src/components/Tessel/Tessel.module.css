@@ -1,5 +1,5 @@
 .tessel {
-  background: var(--color-ui-bg-dark);
+  background: var(--color-ui-dark-bg);
   box-sizing: border-box;
 }
 
@@ -63,7 +63,7 @@
 }
 
 .tessel-split:hover {
-  background: var(--color-ui-bg-light-selected-hover);
+  background: var(--color-ui-light-selected-hover);
 }
 
 .tessel-split--row {
@@ -86,12 +86,12 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  background: var(--color-ui-bg-light);
+  background: var(--color-ui-light-bg);
   border-radius: 3px;
 }
 
 .tessel-window-titlebar {
-  background: var(--color-ui-bg-surface);
+  background: var(--color-ui-surface-bg);
   display: flex;
   flex-direction: row;
   flex-grow: 0;
@@ -99,7 +99,7 @@
   padding: 3px 5px;
   box-sizing: border-box;
   border-radius: 3px;
-  border-bottom: 2px solid var(--color-ui-bg-surface-border);
+  border-bottom: 2px solid var(--color-ui-surface-border);
 }
 
 .tessel-window-title {

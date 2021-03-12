@@ -1,5 +1,5 @@
 .circuit-field {
-  background: var(--color-ui-bg-light);
+  background: var(--color-ui-light-bg);
 }
 
 .circuit-field-scrollarea {
@@ -8,8 +8,4 @@
   overflow: scroll;
   box-sizing: border-box;
   position: relative;
-}
-
-.circuit-field-svg {
-  display: block;
 }

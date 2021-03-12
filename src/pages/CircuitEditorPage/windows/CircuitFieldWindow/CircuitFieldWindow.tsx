@@ -17,10 +17,12 @@ import { deleteSelection } from "@/actions/selection-delete";
 import { selectAll } from "@/actions/select-all";
 import { undo } from "@/actions/undo";
 import { redo } from "@/actions/redo";
+import { activateView } from "@/actions/view-activate";
 
 import CircuitNodeBreadcrumb from "@/components/CircuitNodeBreadcrumb";
 import CircuitField from "@/components/CircuitField";
 import TesselWindow from "@/components/Tessel/TesselWindow";
+import { useTesselPath } from "@/components/Tessel/TesselContext";
 
 import keymap, {
   KeymapHandler,
@@ -44,6 +46,7 @@ const CircuitFieldWindow: React.FC<CircuitFieldWindowProps> = ({
   circuitNodeIdPath,
 }) => {
   const dispatch = useDispatch();
+  const tesselPath = useTesselPath();
 
   const circuitName =
     useSelector((state) => circuitNameFromIdSelector(state, circuitId)) ??
@@ -74,6 +77,10 @@ const CircuitFieldWindow: React.FC<CircuitFieldWindowProps> = ({
     return keyHandlers;
   }, [dispatch, circuitId]);
 
+  const onViewActivated = React.useCallback(() => {
+    dispatch(activateView(tesselPath));
+  }, [dispatch, tesselPath]);
+
   if (!circuitId || !circuitNodeIdPath) {
     return (
       <div>
@@ -87,6 +94,7 @@ const CircuitFieldWindow: React.FC<CircuitFieldWindowProps> = ({
     <TesselWindow title={`${circuitName} [Circuit]`}>
       <HotKeys keyMap={keymap} handlers={keyHandlers} component={FillParent}>
         <div
+          onFocus={onViewActivated}
           className={cls(
             "circuit-field-view",
             sizing["fill-parent"],

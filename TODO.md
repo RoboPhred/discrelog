@@ -1,5 +1,16 @@
 # TODO
 
+- If an IC is dragged over a circuit that itself is contained in the IC, grey out circuit and inform user they cannot place an IC inside itself
+- Tooltip on hover over sim controls showing the hotkeys.
+- Sim control for step once while paused.
+- Breakpoints on pin value changes
+
+- Multi window causes confusion with undo
+
+  - Undo is global, but most uis have undo per window
+  - We cannot do undo per-window in case an undo in one window breaks the situation for undo in another
+  - Might be possible if instead of snapshotting, we keep note of exactly what actions are done and have code to check the possibility of and and reverse the action.
+
 - IC test mode
 
   - Open a dialog that shows an IC with buttons on inputs and LEDs on outputs. Allow for testing ICs in isolation on the fly
@@ -17,6 +28,3 @@
   - Need to limit entries in histogram due to vibrators. Keep 100 transitions, and show dashed middle-height line for unknown previous values.
 
 - re-reselect caches items forever, nothing ever clears out the cache. Might want to put a LRU on it.
-
-- Joints do not behave as selectables for the purpose of dragging. Shift-dragging a joint when multiple other items are selected
-  only drags the click target, not all joints as expected.

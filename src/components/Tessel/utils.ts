@@ -1,5 +1,30 @@
 import { isTesselSplit, normalizeTesselItem, TesselValue } from "./types";
 
+export function walkTesselValues(
+  value: TesselValue,
+  walk: (value: TesselValue, path: string[]) => boolean | undefined
+) {
+  function doWork(value: TesselValue, path: string[]): boolean {
+    if (walk(value, []) === false) {
+      return false;
+    }
+
+    const normalized = normalizeTesselItem(value);
+    if (isTesselSplit(normalized)) {
+      if (!doWork(normalized.first, [...path, "first"])) {
+        return false;
+      }
+      if (!doWork(normalized.second, [...path, "second"])) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  doWork(value, []);
+}
+
 export function filterTesselValues(
   value: TesselValue,
   filter: (value: TesselValue) => boolean

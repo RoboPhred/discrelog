@@ -1,6 +1,6 @@
 .dialog {
   width: 588px;
-  background: var(--color-ui-bg-light);
+  background: var(--color-ui-light-bg);
   border-radius: 5px;
   min-height: 100px;
   padding: 5px 10px;

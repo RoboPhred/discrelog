@@ -38,7 +38,7 @@ export function simInit(
     state
   );
 
-  return state;
+  return Object.assign({}, state, { initialized: true });
 }
 
 function initNode(

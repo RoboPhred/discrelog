@@ -9,6 +9,11 @@ export interface UiLayoutServiceState {
    * The tessel layout.
    */
   layout: TesselValue | null;
+
+  /**
+   * The tessel path to the current active circuit editor.
+   */
+  activeCircuitEditorPath: string[];
 }
 
 const _defaultState: UiLayoutServiceState = {
@@ -25,6 +30,7 @@ const _defaultState: UiLayoutServiceState = {
     },
     second: circuitFieldTesselWindow(ROOT_CIRCUIT_ID, []),
   },
+  activeCircuitEditorPath: ["second"],
 };
 
 export const defaultUiLayoutServiceState = Object.freeze(_defaultState);

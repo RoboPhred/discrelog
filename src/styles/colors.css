@@ -3,19 +3,22 @@
   --color-element-selected: goldenrod;
   --color-element-powered: green;
 
-  --color-ui-bg-light: white;
-  --color-ui-bg-light-hover: rgb(218, 218, 218);
-  --color-ui-bg-light-selected: rgb(209, 224, 255);
-  --color-ui-bg-light-selected-hover: rgb(179, 194, 225);
+  --color-ui-light-bg: white;
+  --color-ui-light-border: rgb(117, 117, 117);
+  --color-ui-light-hover: rgb(218, 218, 218);
+  --color-ui-light-selected: rgb(209, 224, 255);
+  --color-ui-light-selected-hover: rgb(179, 194, 225);
+  --color-ui-light-text: black;
+  --color-ui-light-text-disabled: rgb(218, 218, 218);
 
-  --color-ui-bg-surface: rgb(231, 231, 231);
-  --color-ui-bg-surface-border: rgb(209, 209, 209);
+  --color-ui-surface-bg: rgb(231, 231, 231);
+  --color-ui-surface-border: rgb(209, 209, 209);
 
-  --color-ui-bg-dark: rgb(117, 117, 117);
-  --color-ui-bg-dark-text: white;
-
-  --color-ui-text-disabled: rgb(218, 218, 218);
+  --color-ui-dark-bg: rgb(117, 117, 117);
 
   --color-ui-drop-bg: rgba(0, 153, 255, 0.445);
   --color-ui-drop-border: rgb(0, 153, 255);
+
+  --color-ui-tooltip-bg: rgb(49, 49, 49);
+  --color-ui-tooltip-text: rgb(212, 212, 212);
 }

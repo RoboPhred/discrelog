@@ -3,15 +3,15 @@ import createCachedSelector from "re-reselect";
 import { AppState } from "@/store";
 
 import { Connection } from "@/services/node-graph/types";
-import { SimulatorNodeIdMappingTreeItem } from "@/services/simulator-graph/state";
+import { SimulatorNodeIdMappingTreeItem } from "@/services/simulator-graph/types";
 import { getSimulatorNodeIdFromCircuitNodeIdPath } from "@/services/simulator-graph/utils";
+import { simulatorNodeIdsByCircuitNodeId } from "@/services/simulator-graph/selectors/nodes";
 
 export const wireValueFromConnectionIdSelector = createCachedSelector(
   (state: AppState, icNodePath: string[], connectionId: string) =>
     state.services.nodeGraph.connectionsById[connectionId],
   (state: AppState, icNodePath: string[]) => icNodePath,
-  (state: AppState) =>
-    state.services.simulatorGraph.simulatorNodeIdsByCircuitNodeId,
+  simulatorNodeIdsByCircuitNodeId,
   (state: AppState) => state.services.simulator.nodeOutputValuesByNodeId,
   (
     wire: Connection,
