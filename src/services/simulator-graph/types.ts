@@ -58,3 +58,8 @@ export interface SimulatorGraph {
    */
   simulatorNodeIdsByCircuitNodeId: SimulatorNodeIdToCircuitNodeIdMap;
 }
+
+export const EmptySimulatorGraph: SimulatorGraph = Object.freeze({
+  simulatorNodesById: {},
+  simulatorNodeIdsByCircuitNodeId: {},
+});

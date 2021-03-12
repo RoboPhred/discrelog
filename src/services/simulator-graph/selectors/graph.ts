@@ -7,6 +7,7 @@ import { nodeDefinitionsByTypeSelector } from "@/services/node-types/selectors/n
 import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
 
 import { produceCircuitGraph } from "../graph-production";
+import { EmptySimulatorGraph } from "../types";
 
 export const rootNodeGraphSelector = createSelector(
   nodeIdsByCircuitIdSelector,
@@ -14,11 +15,17 @@ export const rootNodeGraphSelector = createSelector(
   connectionsByIdSelector,
   nodeDefinitionsByTypeSelector,
   (nodeIdsByCircuitId, nodeTypesByNodeId, connectionsById, nodeDefsByType) => {
-    return produceCircuitGraph(ROOT_CIRCUIT_ID, {
-      nodeIdsByCircuitId,
-      nodeTypesByNodeId,
-      connectionsById,
-      nodeDefsByType,
-    });
+    // FIXME: Display this error to the user.
+    try {
+      return produceCircuitGraph(ROOT_CIRCUIT_ID, {
+        nodeIdsByCircuitId,
+        nodeTypesByNodeId,
+        connectionsById,
+        nodeDefsByType,
+      });
+    } catch (e) {
+      console.error(e);
+      return EmptySimulatorGraph;
+    }
   }
 );

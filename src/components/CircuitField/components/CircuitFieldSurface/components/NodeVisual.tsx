@@ -5,6 +5,7 @@ import { cls } from "@/utils";
 import useSelector from "@/hooks/useSelector";
 
 import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/node-types";
+import { getNodeVisualElement } from "@/nodes/visuals";
 
 export interface NodeVisualProps {
   className?: string;
@@ -31,13 +32,7 @@ const NodeVisual: React.FC<NodeVisualProps> = React.memo(function NodeVisual({
   if (!def) {
     body = <rect x={x} y={y} width={50} height={50} fill="red" />;
   } else {
-    const { component: ElementComponent } = def.visual;
-    body = (
-      <ElementComponent
-        circuitNodeId={circuitNodeId}
-        elementState={EmptyState}
-      />
-    );
+    body = getNodeVisualElement(circuitNodeId, [], EmptyState, def.visual);
   }
 
   const transform = x != 0 || y != 0 ? `translate(${x}, ${y})` : undefined;

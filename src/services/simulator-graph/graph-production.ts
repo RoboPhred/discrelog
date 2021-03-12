@@ -30,8 +30,19 @@ const EMPTY_PRODUCTION = Object.freeze<CircuitProductionResult>({
 
 export function produceCircuitGraph(
   circuitId: string,
-  dependencies: SimulatorGraphDependencies
+  dependencies: SimulatorGraphDependencies,
+  path: string[] = []
 ): CircuitProductionResult {
+  if (path.indexOf(circuitId) !== -1) {
+    throw new Error(
+      `Circuit graph encountered loop on ${path.join(
+        " => "
+      )} while trying to add circuit ${circuitId}`
+    );
+  }
+
+  path = [...path, circuitId];
+
   const simulatorNodesById: Record<string, SimulatorNode> = {};
   const simulatorNodeIdsByCircuitNodeId: Record<
     string,
@@ -73,7 +84,7 @@ export function produceCircuitGraph(
       continue;
     }
 
-    const productionResult = produceNode(circuitNodeId, dependencies);
+    const productionResult = produceNode(circuitNodeId, dependencies, path);
 
     // Merge the produced simulator nodes.
     merge(simulatorNodesById, productionResult.simulatorNodesById);
@@ -165,7 +176,8 @@ export function produceCircuitGraph(
 
 function produceNode(
   circuitNodeId: string,
-  dependencies: SimulatorGraphDependencies
+  dependencies: SimulatorGraphDependencies,
+  path: string[]
 ): CircuitProductionResult {
   const nodeType = dependencies.nodeTypesByNodeId[circuitNodeId];
   if (!nodeType) {
@@ -182,7 +194,7 @@ function produceNode(
     case "element":
       return produceElementNode(circuitNodeId, production, dependencies);
     case "circuit":
-      return produceCircuitNode(circuitNodeId, production, dependencies);
+      return produceCircuitNode(circuitNodeId, production, dependencies, path);
     default:
       throw new Error(
         "Unsupported production type " + (production as any).type
@@ -254,11 +266,13 @@ function produceElementNode(
 function produceCircuitNode(
   circuitNodeId: string,
   production: CircuitNodeElementProduction,
-  dependencies: SimulatorGraphDependencies
+  dependencies: SimulatorGraphDependencies,
+  path: string[]
 ): CircuitProductionResult {
   const circuitProuction = produceCircuitGraph(
     production.circuitId,
-    dependencies
+    dependencies,
+    path
   );
 
   return {
