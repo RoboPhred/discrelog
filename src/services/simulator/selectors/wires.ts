@@ -7,6 +7,7 @@ import {
 import { nodeTypeFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 
 import { nodeOutputsFromCircuitNodeIdSelector } from "./nodes";
+import { NodePin } from "@/services/node-graph/types";
 
 // Doesn't need caching for react since it returns primitives, but
 // the additional complexity of tracing IC pins might make it a bit heavy.
@@ -32,14 +33,30 @@ export const wireValueFromConnectionIdSelector = (
 
     // The node id of the ic is the ic-node we are contained in.
     const nextIcNodePath = icNodePath.slice(0, icNodePath.length - 1);
-    const inputNodeId = icNodePath[icNodePath.length - 1];
-    // pin id of the IC is the node id of the pin.
-    const inputPinId = nodeId;
+    const nextPin: NodePin = {
+      nodeId: icNodePath[icNodePath.length - 1], // target node is our parent.
+      pinId: nodeId, // target pin is the same as the node id for the input node.
+    };
 
-    const nextConnectionId = connectionIdFromInputPinSelector(state, {
-      nodeId: inputNodeId,
-      pinId: inputPinId,
-    });
+    const nextConnectionId = connectionIdFromInputPinSelector(state, nextPin);
+    if (!nextConnectionId) {
+      return false;
+    }
+
+    return wireValueFromConnectionIdSelector(
+      state,
+      nextIcNodePath,
+      nextConnectionId
+    );
+  } else if (nodeType?.startsWith("ic-")) {
+    // Target the ic our output comes from
+    const nextIcNodePath = [...icNodePath, nodeId];
+    const nextPin: NodePin = {
+      nodeId: pinId, // output node id is the same as the target pin id
+      pinId: "IN",
+    };
+
+    const nextConnectionId = connectionIdFromInputPinSelector(state, nextPin);
     if (!nextConnectionId) {
       return false;
     }

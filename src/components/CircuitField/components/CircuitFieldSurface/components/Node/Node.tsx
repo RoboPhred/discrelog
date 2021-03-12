@@ -131,18 +131,24 @@ const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
   });
   const onMouseDown = React.useCallback(
     (e: React.MouseEvent) => {
+      if (e.defaultPrevented) {
+        return;
+      }
+      // Handle this regardless, to stop mosue clicks
+      // selecting nearby text.
+      e.preventDefault();
+
+      if (isSimActive) {
+        return;
+      }
+
       if (e.button !== 0) {
         return;
       }
 
-      if (e.defaultPrevented) {
-        return;
-      }
-      e.preventDefault();
-
       startTracking(e);
     },
-    [startTracking]
+    [isSimActive, startTracking]
   );
 
   if (!def) {

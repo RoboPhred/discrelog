@@ -10,6 +10,7 @@ import useMouseTracking from "@/hooks/useMouseTracking";
 
 import { wireJointPositionFromJointIdSelector } from "@/services/node-layout/selectors/wires";
 import { isJointSelectedFromJointIdSelector } from "@/services/selection/selectors/selection";
+import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 
 import { selectWireJoints } from "@/actions/select-wire-joints";
 import { fieldDragStartJoint } from "@/actions/field-drag-start-joint";
@@ -29,6 +30,7 @@ const WireJoint: React.FC<WireJointProps> = React.memo(function WireJoint({
 }) {
   const getMouseCoords = useEventMouseCoords();
   const dispatch = useDispatch();
+  const isSimActive = useSelector(isSimActiveSelector);
 
   const isSelected = useSelector((state) =>
     isJointSelectedFromJointIdSelector(state, jointId)
@@ -82,14 +84,23 @@ const WireJoint: React.FC<WireJointProps> = React.memo(function WireJoint({
 
   const mouseDown = React.useCallback(
     (e: React.MouseEvent) => {
+      if (isSimActive) {
+        return;
+      }
+
+      if (e.defaultPrevented) {
+        return;
+      }
       e.preventDefault();
+
       startMoveJointTracking(e);
     },
-    [startMoveJointTracking]
+    [isSimActive, startMoveJointTracking]
   );
 
   return (
     <WireJointVisual
+      interactable={!isSimActive}
       selected={isSelected}
       x={position.x}
       y={position.y}
