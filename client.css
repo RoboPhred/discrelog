@@ -364,21 +364,24 @@ body,
   --color-element-selected: goldenrod;
   --color-element-powered: green;
 
-  --color-ui-bg-light: white;
-  --color-ui-bg-light-hover: rgb(218, 218, 218);
-  --color-ui-bg-light-selected: rgb(209, 224, 255);
-  --color-ui-bg-light-selected-hover: rgb(179, 194, 225);
+  --color-ui-light-bg: white;
+  --color-ui-light-border: rgb(117, 117, 117);
+  --color-ui-light-hover: rgb(218, 218, 218);
+  --color-ui-light-selected: rgb(209, 224, 255);
+  --color-ui-light-selected-hover: rgb(179, 194, 225);
+  --color-ui-light-text: black;
+  --color-ui-light-text-disabled: rgb(218, 218, 218);
 
-  --color-ui-bg-surface: rgb(231, 231, 231);
-  --color-ui-bg-surface-border: rgb(209, 209, 209);
+  --color-ui-surface-bg: rgb(231, 231, 231);
+  --color-ui-surface-border: rgb(209, 209, 209);
 
-  --color-ui-bg-dark: rgb(117, 117, 117);
-  --color-ui-bg-dark-text: white;
-
-  --color-ui-text-disabled: rgb(218, 218, 218);
+  --color-ui-dark-bg: rgb(117, 117, 117);
 
   --color-ui-drop-bg: rgba(0, 153, 255, 0.445);
   --color-ui-drop-border: rgb(0, 153, 255);
+
+  --color-ui-tooltip-bg: rgb(49, 49, 49);
+  --color-ui-tooltip-text: rgb(212, 212, 212);
 }
 
 /** FIXME: ide ts is not generating typings when this is referenced with an @-path */
@@ -424,7 +427,7 @@ body,
 
 .tessel--2Q3Xd {
   background: rgb(117, 117, 117);
-  background: var(--color-ui-bg-dark);
+  background: var(--color-ui-dark-bg);
   box-sizing: border-box;
 }
 
@@ -490,7 +493,7 @@ body,
 
 .tessel-split--2gDs5:hover {
   background: rgb(179, 194, 225);
-  background: var(--color-ui-bg-light-selected-hover);
+  background: var(--color-ui-light-selected-hover);
 }
 
 .tessel-split--row--2fC6o {
@@ -514,13 +517,13 @@ body,
   display: flex;
   flex-direction: column;
   background: white;
-  background: var(--color-ui-bg-light);
+  background: var(--color-ui-light-bg);
   border-radius: 3px;
 }
 
 .tessel-window-titlebar--uHBdn {
   background: rgb(231, 231, 231);
-  background: var(--color-ui-bg-surface);
+  background: var(--color-ui-surface-bg);
   display: flex;
   flex-direction: row;
   flex-grow: 0;
@@ -529,7 +532,7 @@ body,
   box-sizing: border-box;
   border-radius: 3px;
   border-bottom: 2px solid rgb(209, 209, 209);
-  border-bottom: 2px solid var(--color-ui-bg-surface-border);
+  border-bottom: 2px solid var(--color-ui-surface-border);
 }
 
 .tessel-window-title--2v0hT {
@@ -561,24 +564,11 @@ body,
   box-sizing: border-box;
 }
 
-.text-unselectable--2tvXe {
-  cursor: inherit;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-}
-
-.simulator-active .node-interaction-toggle--2Uy2Q,
-.simulator-active .node-interaction-momentary--3yAEQ {
-  cursor: pointer;
-}
-
 .button--Ui3Hp {
   border-radius: 3px;
   border: none;
   background: white;
-  background: var(--color-ui-bg-light);
+  background: var(--color-ui-light-bg);
   padding: 3px 6px;
   cursor: pointer;
   margin: 2px;
@@ -586,41 +576,28 @@ body,
 
 .button--Ui3Hp:hover {
   background-color: rgb(218, 218, 218);
-  background-color: var(--color-ui-bg-light-hover);
+  background-color: var(--color-ui-light-hover);
 }
 
 .button--Ui3Hp:focus {
   border: none;
   background-color: rgb(218, 218, 218);
-  background-color: var(--color-ui-bg-light-hover);
+  background-color: var(--color-ui-light-hover);
 }
 
 .circuit-node-breadcrumb--3Rx3N {
   height: 30px;
   background: white;
-  background: var(--color-ui-bg-light);
-}
-
-.wire-joint--DrAWT {
-  fill: black;
-  fill: var(--color-element-neutral);
-  stroke: black;
-  stroke: var(--color-element-neutral);
-}
-
-.wire-joint--DrAWT.selected--1I6Un {
-  fill: goldenrod;
-  fill: var(--color-element-selected);
-  stroke: goldenrod;
-  stroke: var(--color-element-selected);
+  background: var(--color-ui-light-bg);
 }
 
 .menu--3E86w {
   background: white;
-  background: var(--color-ui-bg-light);
-  border: 1px solid black;
+  background: var(--color-ui-light-bg);
+  border: 1px solid rgb(117, 117, 117);
+  border: 1px solid var(--color-ui-light-border);
   list-style: none;
-  padding: 5px;
+  padding: 5px 2px;
   border-radius: 3px;
   min-width: 150px;
   margin: 0;
@@ -631,18 +608,19 @@ body,
   margin: 0 2px;
   border-radius: 3px;
   color: black;
+  color: var(--color-ui-light-text);
   cursor: pointer;
 }
 
 .menu-item--disabled--RJJTK {
   color: rgb(218, 218, 218);
-  color: var(--color-ui-text-disabled);
+  color: var(--color-ui-light-text-disabled);
   cursor: not-allowed;
 }
 
 .menu-item--2dcyN:hover {
   background-color: rgb(218, 218, 218);
-  background-color: var(--color-ui-bg-light-hover);
+  background-color: var(--color-ui-light-hover);
   text-decoration: none;
 }
 
@@ -670,6 +648,28 @@ body,
   margin: 5px;
 }
 
+.wire-joint--16G5Q {
+  fill: black;
+  fill: var(--color-element-neutral);
+  stroke: black;
+  stroke: var(--color-element-neutral);
+}
+
+.wire-joint--16G5Q.selected--1wUHn {
+  fill: goldenrod;
+  fill: var(--color-element-selected);
+  stroke: goldenrod;
+  stroke: var(--color-element-selected);
+}
+
+.text-unselectable--2tvXe {
+  cursor: inherit;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
 .circuit-field-node.node-selected .node-select-highlight--stroke {
   stroke: goldenrod;
   stroke: var(--color-element-selected);
@@ -680,34 +680,39 @@ body,
   fill: var(--color-element-selected);
 }
 
-.wire--3TtqK {
+.simulator-active .node-interaction-toggle--1eXWD,
+.simulator-active .node-interaction-momentary--16GBy {
+  cursor: pointer;
+}
+
+.wire--2ESXn {
   fill: black;
   fill: var(--color-element-neutral);
   stroke: black;
   stroke: var(--color-element-neutral);
 }
 
-.wire--3TtqK.powered--3lHhu {
+.wire--2ESXn.powered--317-6 {
   fill: green;
   fill: var(--color-element-powered);
   stroke: green;
   stroke: var(--color-element-powered);
 }
 
-.wire--3TtqK.selected--3qbV0 {
+.wire--2ESXn.selected--2WM72 {
   fill: goldenrod;
   fill: var(--color-element-selected);
   stroke: goldenrod;
   stroke: var(--color-element-selected);
 }
 
-.node-pin-output--Okd03 {
+.node-pin-output--2MDEG {
   fill: black;
   fill: var(--color-element-neutral);
   stroke: black;
   stroke: var(--color-element-neutral);
 }
-.node-pin-output--Okd03.is-drag-target--1_8nq {
+.node-pin-output--2MDEG.is-drag-target--2mBxU {
   fill: goldenrod;
   fill: var(--color-element-selected);
   stroke: goldenrod;
@@ -715,20 +720,24 @@ body,
   stroke-width: 3px;
 }
 
-.node-pin-input--2bnnb {
+.node-pin-input--2AbG5 {
   fill: transparent;
   stroke: black;
   stroke: var(--color-element-neutral);
 }
-.node-pin-input--2bnnb.is-drag-target--1_8nq {
+.node-pin-input--2AbG5.is-drag-target--2mBxU {
   stroke: goldenrod;
   stroke: var(--color-element-selected);
   stroke-width: 3px;
 }
 
+.circuit-field-svg--1lQh_ {
+  display: block;
+}
+
 .circuit-field--3PQBN {
   background: white;
-  background: var(--color-ui-bg-light);
+  background: var(--color-ui-light-bg);
 }
 
 .circuit-field-scrollarea--vyu82 {
@@ -737,10 +746,6 @@ body,
   overflow: scroll;
   box-sizing: border-box;
   position: relative;
-}
-
-.circuit-field-svg--3SyX4 {
-  display: block;
 }
 
 .icon--3Vly6 {
@@ -752,7 +757,7 @@ body,
   padding: 0;
   list-style: none;
   background: white;
-  background: var(--color-ui-bg-light);
+  background: var(--color-ui-light-bg);
 }
 
 .selection-list-item--errDr {
@@ -761,24 +766,24 @@ body,
   the parent div by the top margin amount, messing up the layout
   */
   background: white;
-  background: var(--color-ui-bg-light);
+  background: var(--color-ui-light-bg);
   box-sizing: border-box;
   cursor: default;
 }
 
 .selection-list-item--errDr:hover {
   background-color: rgb(218, 218, 218);
-  background-color: var(--color-ui-bg-light-hover);
+  background-color: var(--color-ui-light-hover);
 }
 
 .selection-list-item--selected--3MkqB {
   background-color: rgb(209, 224, 255);
-  background-color: var(--color-ui-bg-light-selected);
+  background-color: var(--color-ui-light-selected);
 }
 
 .selection-list-item--selected--3MkqB:hover {
   background-color: rgb(179, 194, 225);
-  background-color: var(--color-ui-bg-light-selected-hover);
+  background-color: var(--color-ui-light-selected-hover);
 }
 
 .selection-list-item-content--321YU {
@@ -789,15 +794,58 @@ body,
   width: 100%;
   height: 100%;
   box-sizing: border-box;
+  overflow-y: scroll;
 }
 
-.circuitstree--1eZ0Q .bp3-editable-text.bp3-editable-text-editing {
-  color: black;
+.tooltip--2yxRI {
+  background: rgb(49, 49, 49);
+  background: var(--color-ui-tooltip-bg);
+  color: rgb(212, 212, 212);
+  color: var(--color-ui-tooltip-text);
+  padding: 5px;
+  border-radius: 3px;
+  box-sizing: border-box;
+  max-width: 150px;
+  text-align: center;
+}
+
+.tooltip-arrow--2mJMo {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: inherit;
+  visibility: hidden;
+}
+
+.tooltip-arrow--2mJMo:before {
+  visibility: visible;
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: inherit;
+  content: "";
+  transform: rotate(45deg);
+}
+
+.tooltip--2yxRI[data-popper-placement^="top"] > .tooltip-arrow--2mJMo {
+  bottom: -4px;
+}
+
+.tooltip--2yxRI[data-popper-placement^="bottom"] > .tooltip-arrow--2mJMo {
+  top: -4px;
+}
+
+.tooltip--2yxRI[data-popper-placement^="left"] > .tooltip-arrow--2mJMo {
+  right: -4px;
+}
+
+.tooltip--2yxRI[data-popper-placement^="right"] > .tooltip-arrow--2mJMo {
+  left: -4px;
 }
 
 .node-tray--1uIvj {
   background: white;
-  background: var(--color-ui-bg-light);
+  background: var(--color-ui-light-bg);
   overflow-y: scroll;
   width: 100%;
   height: 100%;
@@ -815,7 +863,6 @@ body,
   box-sizing: border-box;
   font-weight: bold;
   width: 100%;
-  text-transform: uppercase;
   border-bottom: 1px solid black;
   padding-bottom: 2px;
   margin-bottom: 3px;
@@ -833,7 +880,7 @@ body,
 
 .node-tray-item--2_AyH:hover {
   background: rgb(218, 218, 218);
-  background: var(--color-ui-bg-light-hover);
+  background: var(--color-ui-light-hover);
 }
 
 .node-tray-item-preview--2QFhF {
@@ -879,6 +926,19 @@ body,
 }
 
 .button-pause--YWEL8.selected--QetqX {
+  fill: blue;
+}
+
+.button-step--WUfNJ {
+  fill: darkorange;
+  cursor: pointer;
+}
+
+.button-step--WUfNJ:hover {
+  fill: orange;
+}
+
+.button-step--WUfNJ.selected--QetqX {
   fill: blue;
 }
 
@@ -945,7 +1005,7 @@ body,
 .dialog--1eQi6 {
   width: 588px;
   background: white;
-  background: var(--color-ui-bg-light);
+  background: var(--color-ui-light-bg);
   border-radius: 5px;
   min-height: 100px;
   padding: 5px 10px;
