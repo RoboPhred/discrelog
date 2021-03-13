@@ -1,6 +1,6 @@
 {
   "name": "discrelog",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Logic simulator in React",
   "scripts": {
     "clean": "rimraf dist",

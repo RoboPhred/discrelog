@@ -10,7 +10,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const isProd = process.env["NODE_ENV"] === "production";
-const publicPath = process.env["PUBLIC_PATH"] ?? (isProd ? "/discrelog/" : "/");
+const publicPath = process.env["PUBLIC_PATH"] ?? "/";
 const isDev = !isProd;
 
 console.log("Production:", isProd);
