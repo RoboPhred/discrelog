@@ -2,11 +2,9 @@
 
 A discrete logic / circuit editor and simulator written in React and Redux.
 
-_This is a work in progress, and will be for some time._
+## Visit the Live Site
 
-## Live work-in-progress
-
-http://robophred.github.io/discrelog
+http://discrelog.io
 
 ### Usage
 
@@ -44,7 +42,7 @@ On Mac, `command` replaces `ctrl`.
 - Copy Selected: `ctrl + c`
 - Paste: `ctrl + v`
 - Undo: `ctrl + z`
-- Redo: `ctrl + shift + z`
+- Redo: `ctrl + shift + z` or `ctrl + y`
 
 ### Running controls
 
@@ -69,12 +67,13 @@ As of the time of this writing, the available logic components consist of:
 
 - Combinational logic (4 tick response)
   - AND
+  - NAND
   - OR
   - NOT
   - NOR
   - XOR
 - Toggle Switch (1 tick response)
-- Buffer (2 tick response)
+- Buffer (4 tick response)
 - 7 Segment Display (immediate visual response)
 - LED (immediate visual response)
 - IC Pins (used on circuits to create ICs)
