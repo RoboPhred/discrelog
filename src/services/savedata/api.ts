@@ -138,8 +138,13 @@ export function importCircuitsFromSave(
     throw new SaveFormatError(e.message);
   }
 
+  const existingCircuits = Object.keys(
+    state.services.circuits.circuitNamesByCircuitId
+  );
   const importCircuits = save.circuits.filter(
-    (c) => circuitIds.indexOf(c.circuitId) !== -1
+    (c) =>
+      circuitIds.indexOf(c.circuitId) !== -1 &&
+      existingCircuits.indexOf(c.circuitId) === -1
   );
   if (importCircuits.length === 0) {
     return state;

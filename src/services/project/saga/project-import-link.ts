@@ -25,7 +25,7 @@ function* onImportLink(action: ImportProjectLinkAction) {
 
     yield put(receiveProject("Linked Project", save));
 
-    history.push("/");
+    history.replace("/");
   } catch (e) {
     console.error("Failed to import save from link", e);
   }

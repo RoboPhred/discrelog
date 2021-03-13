@@ -4,7 +4,6 @@ import { AppState, defaultAppState } from "@/store";
 
 import { isImportCircuitAction } from "@/actions/circuit-import";
 import { importCircuitsFromSave } from "@/services/savedata/api";
-import { asArray } from "@/arrays";
 
 export default function circuitImportReducer(
   state: AppState = defaultAppState,
