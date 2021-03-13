@@ -9,7 +9,8 @@ import useSelector from "@/hooks/useSelector";
 import sizing from "@/styles/sizing.module.css";
 import flex from "@/styles/flex.module.css";
 
-import { tickSim } from "@/actions/sim-tick";
+import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
+
 import { fastForwardSim } from "@/actions/sim-fastforward";
 import { paste } from "@/actions/clipboard-paste";
 import { copySelection } from "@/actions/selection-copy";
@@ -18,6 +19,7 @@ import { selectAll } from "@/actions/select-all";
 import { undo } from "@/actions/undo";
 import { redo } from "@/actions/redo";
 import { activateView } from "@/actions/view-activate";
+import { stepSim } from "@/actions/sim-step";
 
 import CircuitNodeBreadcrumb from "@/components/CircuitNodeBreadcrumb";
 import CircuitField from "@/components/CircuitField";
@@ -35,7 +37,6 @@ import keymap, {
   KEYMAP_UNDO,
   KEYMAP_REDO,
 } from "./keymap";
-import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
 
 export interface CircuitFieldWindowProps {
   circuitId: string;
@@ -65,7 +66,7 @@ const CircuitFieldWindow: React.FC<CircuitFieldWindowProps> = ({
       };
     }
     const keyHandlers: KeymapHandler = {
-      [KEYMAP_SIM_STEP]: createEventDispatcher(tickSim(1)),
+      [KEYMAP_SIM_STEP]: createEventDispatcher(stepSim()),
       [KEYMAP_SIM_FASTFORWARD]: createEventDispatcher(fastForwardSim()),
       [KEYMAP_SELECT_ALL]: createEventDispatcher(selectAll(circuitId)),
       [KEYMAP_COPY]: createEventDispatcher(copySelection()),
