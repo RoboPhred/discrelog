@@ -11,13 +11,13 @@ import { ExportProjectLinkDialogData } from "@/services/dialog/state";
 import Button from "@/components/Button";
 import Dialog from "@/components/Dialog";
 
-import styles from "./ExportLinkDialog.module.css";
+import styles from "./Dialogs.module.css";
 
 const ExportProjectLinkDialog: React.FC = () => {
   const onCloseDialog = useAction(acceptDialog);
   const dialogData: ExportProjectLinkDialogData | null = useSelector(
     dialogDataSelector
-  );
+  ) as any;
 
   const projectLink = dialogData?.projectLink;
 

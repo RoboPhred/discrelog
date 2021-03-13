@@ -3,7 +3,8 @@ import * as React from "react";
 import useSelector from "@/hooks/useSelector";
 import { dialogTypeSelector } from "@/services/dialog/selectors/dialog";
 
-import ExportProjectLinkDialog from "./dialogs/ExportLinkDialog";
+import ExportProjectLinkDialog from "./dialogs/ExportProjectLinkDialog";
+import ImportProjectCircuitsDialog from "./dialogs/ImportProjectCircuitsDialog";
 
 const DialogManager: React.FC = () => {
   const dialogType = useSelector(dialogTypeSelector);
@@ -13,6 +14,8 @@ const DialogManager: React.FC = () => {
       return null;
     case "export-project-link":
       return <ExportProjectLinkDialog />;
+    case "import-project-circuits":
+      return <ImportProjectCircuitsDialog />;
   }
 };
 

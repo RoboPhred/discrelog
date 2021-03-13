@@ -153,10 +153,6 @@ const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
     [isSimActive, startTracking]
   );
 
-  if (!def) {
-    return null;
-  }
-
   let body: React.ReactNode;
   let rect: Rectangle;
   if (!def) {

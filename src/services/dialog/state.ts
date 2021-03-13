@@ -1,3 +1,7 @@
+import { SaveCircuit } from "../savedata/types";
+
+// FIXME: There has got to be a better way of typing these, so api and selectors are type safe.
+
 export interface DialogServiceBaseState {
   dialogType: string | null;
   data: any;
@@ -17,9 +21,19 @@ export interface ExportProjectLinkDialogServiceState
   data: ExportProjectLinkDialogData;
 }
 
+export interface ImportProjectCircuitsDialogData {
+  circuits: SaveCircuit[];
+}
+export interface ImportProjectCircuitsDialogServiceState
+  extends DialogServiceBaseState {
+  dialogType: "import-project-circuits";
+  data: ImportProjectCircuitsDialogData;
+}
+
 export type DialogServiceState =
   | EmptyDialogServiceState
-  | ExportProjectLinkDialogServiceState;
+  | ExportProjectLinkDialogServiceState
+  | ImportProjectCircuitsDialogServiceState;
 export type DialogType = DialogServiceState["dialogType"];
 
 const _defaultState: EmptyDialogServiceState = {

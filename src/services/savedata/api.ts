@@ -127,6 +127,75 @@ export function loadSave(state: AppState, save: SaveData): AppState {
   return state;
 }
 
+export function importCircuitsFromSave(
+  state: AppState,
+  circuitIds: string[],
+  save: SaveData
+): AppState {
+  try {
+    saveDataSchema.validateSync(save);
+  } catch (e) {
+    throw new SaveFormatError(e.message);
+  }
+
+  const importCircuits = save.circuits.filter(
+    (c) => circuitIds.indexOf(c.circuitId) !== -1
+  );
+  if (importCircuits.length === 0) {
+    return state;
+  }
+
+  try {
+    state = importCircuits.reduce(
+      (state, { circuitId, circuitName }) =>
+        rootReducer(state, addCircuit({ circuitId, circuitName })),
+      state
+    );
+
+    const importNodes = (save.nodes ?? []).filter((x) =>
+      importCircuits.some(({ circuitId }) => circuitId === x.circuitId)
+    );
+    state = importNodes.reduce(
+      (state, node) =>
+        rootReducer(
+          state,
+          addNode(
+            node.nodeType,
+            node.circuitId,
+            { x: node.x, y: node.y },
+            {
+              nodeId: node.nodeId,
+              nodeName: node.nodeName ?? undefined,
+            }
+          )
+        ),
+      state
+    );
+
+    function isImportableWire(wire: SaveWire) {
+      return importNodes.some(
+        ({ nodeId }) =>
+          wire.input.nodeId === nodeId || wire.output.nodeId === nodeId
+      );
+    }
+
+    const importWires = (save.wires ?? []).filter(isImportableWire);
+    state = importWires.reduce(
+      (state, wire) =>
+        rootReducer(
+          state,
+          attachWire(wire.output, wire.input, { joints: wire.joints })
+        ),
+      state
+    );
+  } catch (e) {
+    console.error("Failed to import circuit from SaveData:", e);
+    throw new SaveFormatError("Failed to import circuit.");
+  }
+
+  return state;
+}
+
 export function storeAutosave(save: SaveData): void {
   localStorage.setItem("autosave", JSON.stringify(save));
 }

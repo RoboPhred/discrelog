@@ -6,3 +6,7 @@
 .export-link-dialog-link {
   overflow-wrap: break-word;
 }
+
+.import-project-circuits-list {
+  list-style: none;
+}
