@@ -1,9 +1,9 @@
-import { isFieldDragContinueAction } from "@/actions/field-drag-continue";
+import { isCircuitEditorDragContinueAction } from "@/actions/circuit-editor-drag-continue";
 
 import { createCircuitEditorUiDragReducer } from "../utils";
 
 export default createCircuitEditorUiDragReducer((state, action) => {
-  if (!isFieldDragContinueAction(action)) {
+  if (!isCircuitEditorDragContinueAction(action)) {
     return state;
   }
 

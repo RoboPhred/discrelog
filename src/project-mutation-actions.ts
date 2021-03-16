@@ -16,7 +16,7 @@ import { ACTION_WIRE_JOINT_MOVE } from "@/actions/wire-joint-move";
 import { ACTION_WIRE_JOINT_DELETE } from "@/actions/wire-joint-delete";
 
 import { ACTION_PASTE } from "@/actions/clipboard-paste";
-import { ACTION_FIELD_DRAG_END } from "@/actions/field-drag-end";
+import { ACTION_CIRCUIT_EDITOR_DRAG_END } from "@/actions/circuit-editor-drag-end";
 
 import { ACTION_UNDO } from "@/actions/undo";
 import { ACTION_REDO } from "@/actions/redo";
@@ -49,7 +49,7 @@ export const PROJECT_MUTATION_ACTIONS = [
   // reentrant actions in order to produce a single undo stack entry for
   // the entire paste operation.
   ACTION_PASTE,
-  ACTION_FIELD_DRAG_END,
+  ACTION_CIRCUIT_EDITOR_DRAG_END,
 ];
 
 export function isProjectMutationAction(action: AnyAction) {

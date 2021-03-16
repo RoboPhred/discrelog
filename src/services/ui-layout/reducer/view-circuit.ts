@@ -4,9 +4,9 @@ import { normalizeTesselItem, TesselValue } from "@/components/Tessel";
 import { findAndReplaceTesselValue } from "@/components/Tessel/utils";
 
 import {
-  circuitFieldTesselWindow,
-  isCircuitFieldTesselWindow,
-} from "@/pages/CircuitEditorPage/windows/CircuitFieldWindow/tessel-window";
+  circuitEditorTesselWindow,
+  isCircuitEditorTesselWindow,
+} from "@/pages/ProjectEditorPage/windows/CircuitEditorWindow/tessel-window";
 import { activeCircuitEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
 
 import { createUiLayoutReducer } from "../utils";
@@ -22,7 +22,7 @@ export default createUiLayoutReducer((state, action, appState) => {
     return state;
   }
 
-  const window = circuitFieldTesselWindow(newWindowId);
+  const window = circuitEditorTesselWindow(newWindowId);
   const activeEditorId = activeCircuitEditorIdSelector(appState);
 
   let layout: TesselValue | null = state.layout;
@@ -36,7 +36,7 @@ export default createUiLayoutReducer((state, action, appState) => {
     layout = findAndReplaceTesselValue(layout, (value) => {
       const normalized = normalizeTesselItem(value);
       if (
-        isCircuitFieldTesselWindow(normalized) &&
+        isCircuitEditorTesselWindow(normalized) &&
         normalized.windowProps.editorId === activeEditorId
       ) {
         inserted = true;

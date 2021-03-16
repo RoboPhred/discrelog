@@ -1,0 +1,11 @@
+.circuit-editor {
+  background: var(--color-ui-light-bg);
+}
+
+.circuit-editor-scrollarea {
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  box-sizing: border-box;
+  position: relative;
+}

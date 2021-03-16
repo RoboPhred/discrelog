@@ -1,10 +1,8 @@
-import { v4 as uuidV4 } from "uuid";
-
 import { circuitIdsSelector } from "@/services/circuits/selectors/circuits";
 
 import { isViewCircuitAction } from "@/actions/view-circuit";
 
-import { createCircuitEditorsReducer } from "../utils";
+import { createCircuitEditorsReducer, findActiveEditorId } from "../utils";
 
 export default createCircuitEditorsReducer((state, action, appState) => {
   if (!isViewCircuitAction(action)) {
@@ -19,7 +17,11 @@ export default createCircuitEditorsReducer((state, action, appState) => {
 
   let targetWindowId = newWindowId;
   if (!targetWindowId) {
-    targetWindowId = state.activeEditorId ?? uuidV4();
+    targetWindowId = findActiveEditorId(state);
+  }
+
+  if (!targetWindowId) {
+    return state;
   }
 
   return {

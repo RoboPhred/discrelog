@@ -7,7 +7,7 @@ import { getSelectMode } from "@/selection-mode";
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
-import { isFieldDragEndAction } from "@/actions/field-drag-end";
+import { isCircuitEditorDragEndAction } from "@/actions/circuit-editor-drag-end";
 import { selectRegion } from "@/actions/select-region";
 import { moveSelection } from "@/actions/selection-move";
 import { addWireJoint } from "@/actions/wire-joint-add";
@@ -26,7 +26,7 @@ export default function dragEndReducer(
   state: AppState = defaultAppState,
   action: AnyAction
 ) {
-  if (!isFieldDragEndAction(action)) {
+  if (!isCircuitEditorDragEndAction(action)) {
     return state;
   }
 

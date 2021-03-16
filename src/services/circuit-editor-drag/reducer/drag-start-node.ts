@@ -6,7 +6,7 @@ import { getSelectMode } from "@/selection-mode";
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
-import { isFieldDragStartNodeAction } from "@/actions/field-drag-start-node";
+import { isCircuitEditorDragStartNodeAction } from "@/actions/circuit-editor-drag-start-node";
 import { selectNodes } from "@/actions/select-nodes";
 
 import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
@@ -16,7 +16,7 @@ export default function dragStartNodeReducer(
   state: AppState = defaultAppState,
   action: AnyAction
 ) {
-  if (!isFieldDragStartNodeAction(action)) {
+  if (!isCircuitEditorDragStartNodeAction(action)) {
     return state;
   }
 

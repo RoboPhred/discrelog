@@ -1,9 +1,9 @@
-import { isEditorReceiveFocusAction } from "@/actions/editor-receive-focus";
+import { isCircuitEditorReceiveFocusAction } from "@/actions/circuit-editor-receive-focus";
 
 import { createCircuitEditorsReducer } from "../utils";
 
 export default createCircuitEditorsReducer((state, action) => {
-  if (!isEditorReceiveFocusAction(action)) {
+  if (!isCircuitEditorReceiveFocusAction(action)) {
     return state;
   }
 
