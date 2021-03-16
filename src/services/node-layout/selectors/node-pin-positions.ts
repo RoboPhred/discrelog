@@ -12,10 +12,7 @@ import {
 
 import { nodeTypesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 import { nodeDefinitionsByTypeSelector } from "@/services/node-types/selectors/node-types";
-import {
-  nodeIdsByCircuitIdSelector,
-  nodeIdsFromCircuitIdSelector,
-} from "@/services/circuits/selectors/nodes";
+import { nodeIdsFromCircuitIdSelector } from "@/services/circuits/selectors/nodes";
 import { NodePin, nodePinEquals } from "@/services/node-graph/types";
 
 import { nodePositionsByNodeIdSelector } from "./node-positions";

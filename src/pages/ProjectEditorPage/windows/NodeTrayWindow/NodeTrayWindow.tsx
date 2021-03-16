@@ -10,7 +10,7 @@ import {
   nodeDefinitionFromTypeSelector,
   nodeDefinitionsSelector,
 } from "@/services/node-types/selectors/node-types";
-import { NodeComponentProps, NodeDefinition } from "@/nodes/types";
+import { NodeDefinition } from "@/nodes/types";
 
 import { newNodeDragObject } from "@/components/CircuitEditor/drag-items/new-node";
 import TesselWindow from "@/components/Tessel/TesselWindow";

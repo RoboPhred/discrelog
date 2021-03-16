@@ -2,8 +2,6 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 
 import { cls } from "@/utils";
-import { Point } from "@/geometry";
-import { getModifiers } from "@/modifier-keys";
 import { describeArc } from "@/svg";
 
 import useSelector from "@/hooks/useSelector";
@@ -14,13 +12,8 @@ import { pinDirectionFromNodePinSelector } from "@/services/node-graph/selectors
 import { dragDropTargetPinSelector } from "@/services/circuit-editor-drag/selectors/drag";
 
 import { circuitEditorDragStartWire } from "@/actions/circuit-editor-drag-start-wire";
-import { circuitEditorDragEnd } from "@/actions/circuit-editor-drag-end";
-import { circuitEditorDragContinue } from "@/actions/circuit-editor-drag-continue";
 
-import {
-  useEventMouseCoords,
-  useMouseCoords,
-} from "../../hooks/useMouseCoords";
+import { useMouseCoords } from "../../hooks/useMouseCoords";
 
 import styles from "./NodePin.module.css";
 

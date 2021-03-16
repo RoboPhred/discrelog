@@ -1,14 +1,9 @@
-import {
-  circuitIdToNodeType,
-  nodeTypeToCircuitId,
-} from "@/nodes/definitions/integrated-circuits/utils";
-import { nodeTypeFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
 import { AppState } from "@/store";
+
+import { circuitIdToNodeType } from "@/nodes/definitions/integrated-circuits/utils";
 
 import { CircuitsServiceState } from "../state";
 import { createCircuitsSelector } from "../utils";
-
-import { nodeIdsFromCircuitIdSelector } from "./nodes";
 
 export const circuitIdsSelector = createCircuitsSelector((state) =>
   Object.keys(state.circuitNamesByCircuitId)

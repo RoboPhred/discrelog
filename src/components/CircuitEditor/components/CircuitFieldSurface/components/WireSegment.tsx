@@ -13,10 +13,9 @@ import { getModifiers } from "@/modifier-keys";
 import { getSelectMode } from "@/selection-mode";
 
 import useSelector from "@/hooks/useSelector";
+import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
 
 import { circuitEditorDragStartNewJoint } from "@/actions/circuit-editor-drag-start-newjoint";
-import { circuitEditorDragContinue } from "@/actions/circuit-editor-drag-continue";
-import { circuitEditorDragEnd } from "@/actions/circuit-editor-drag-end";
 import { selectWires } from "@/actions/select-wires";
 
 import {
@@ -27,8 +26,7 @@ import {
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 import { isDraggingSelector } from "@/services/circuit-editor-drag/selectors/drag";
 
-import { useEventMouseCoords, useMouseCoords } from "../hooks/useMouseCoords";
-import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
+import { useMouseCoords } from "../hooks/useMouseCoords";
 
 export interface WireSegmentProps {
   connectionId: string;
