@@ -6,7 +6,7 @@ import { getModifiers } from "@/modifier-keys";
 import { getSelectMode } from "@/selection-mode";
 
 import useSelector from "@/hooks/useSelector";
-import useMouseTracking from "@/hooks/useMouseTracking";
+import usePointerTracking from "@/hooks/usePointerTracking";
 
 import { wireJointPositionFromJointIdSelector } from "@/services/node-layout/selectors/wires";
 import { isJointSelectedFromJointIdSelector } from "@/services/selection/selectors/selection";
@@ -75,15 +75,15 @@ const WireJoint: React.FC<WireJointProps> = React.memo(function WireJoint({
     [dispatch, jointId]
   );
 
-  const { startTracking: startMoveJointTracking } = useMouseTracking({
+  const { startTracking: startMoveJointTracking } = usePointerTracking({
     onClick,
     onDragStart: onJointDragStart,
     onDragMove: onJointDragMove,
     onDragEnd: onJointDragEnd,
   });
 
-  const mouseDown = React.useCallback(
-    (e: React.MouseEvent) => {
+  const onPointerDown = React.useCallback(
+    (e: React.PointerEvent) => {
       if (isSimActive) {
         return;
       }
@@ -104,7 +104,7 @@ const WireJoint: React.FC<WireJointProps> = React.memo(function WireJoint({
       selected={isSelected}
       x={position.x}
       y={position.y}
-      onMouseDown={mouseDown}
+      onPointerDown={onPointerDown}
     />
   );
 });

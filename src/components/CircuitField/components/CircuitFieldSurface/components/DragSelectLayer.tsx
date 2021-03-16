@@ -5,7 +5,7 @@ import useSelector from "@/hooks/useSelector";
 import { Point } from "@/geometry";
 import { getModifiers } from "@/modifier-keys";
 
-import useMouseTracking from "@/hooks/useMouseTracking";
+import usePointerTracking from "@/hooks/usePointerTracking";
 
 import {
   isDragForCircuitSelector,
@@ -78,14 +78,14 @@ const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
     [dispatch, getCoords]
   );
 
-  const { startTracking } = useMouseTracking({
+  const { startTracking } = usePointerTracking({
     onClick,
     onDragStart,
     onDragMove,
     onDragEnd,
   });
-  const onMouseDown = React.useCallback(
-    (e: React.MouseEvent) => {
+  const onPointerDown = React.useCallback(
+    (e: React.PointerEvent) => {
       if (e.defaultPrevented) {
         return;
       }
@@ -106,7 +106,7 @@ const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
         width={`${counterScale(1) * 100}%`}
         height={`${counterScale(1) * 100}%`}
         fill="transparent"
-        onMouseDown={onMouseDown}
+        onPointerDown={onPointerDown}
       />
       {isDragForSelf && selectionRect && (
         <g

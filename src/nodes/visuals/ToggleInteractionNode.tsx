@@ -10,14 +10,21 @@ import { NodeComponentProps } from "@/nodes/types";
 import { ToggleElementState } from "@/elements/definitions/input-toggle";
 
 import styles from "./node-visuals.module.css";
+import useSelector from "@/hooks/useSelector";
+import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 
 export const ToggleInteractionNode: React.FC<NodeComponentProps<
   ToggleElementState
 >> = ({ circuitNodeId, circuitNodePath, elementState }) => {
   const dispatch = useDispatch();
+  const isSimActive = useSelector(isSimActiveSelector);
 
   const onClick = React.useCallback(
     (e: React.MouseEvent) => {
+      if (!isSimActive) {
+        return;
+      }
+
       if (!circuitNodeId) {
         return;
       }
@@ -30,7 +37,7 @@ export const ToggleInteractionNode: React.FC<NodeComponentProps<
 
       dispatch(interactNode([...(circuitNodePath || []), circuitNodeId]));
     },
-    [circuitNodeId, dispatch, circuitNodePath]
+    [isSimActive, circuitNodeId, dispatch, circuitNodePath]
   );
 
   let onColor = "darkgreen";

@@ -4,6 +4,7 @@
   background: var(--color-ui-light-bg);
   padding: 3px 6px;
   cursor: pointer;
+  user-select: none;
   margin: 2px;
 }
 

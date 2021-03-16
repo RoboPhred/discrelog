@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 import { Options, VirtualElement } from "@popperjs/core";
 import { usePopper } from "react-popper";
 
-import { useOutsideMouseEvent } from "@/hooks/useOutsideMouseEvent";
+import { useOutsidePointerEvent } from "@/hooks/useOutsideMouseEvent";
 import { useArrayState } from "@/hooks/useArrayState";
 
 import {
@@ -53,7 +53,7 @@ const Popover: React.FC<PopoverProps> = ({
     popoverChildren,
     popoverRef,
   ]);
-  useOutsideMouseEvent(insideRefs, onRequestClose);
+  useOutsidePointerEvent(insideRefs, onRequestClose);
 
   if (!isOpen) {
     return null;

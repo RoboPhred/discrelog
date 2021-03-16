@@ -7,7 +7,7 @@ import { getModifiers } from "@/modifier-keys";
 import { describeArc } from "@/svg";
 
 import useSelector from "@/hooks/useSelector";
-import useMouseTracking from "@/hooks/useMouseTracking";
+import usePointerTracking from "@/hooks/usePointerTracking";
 
 import { nodePinPositionFromNodePinSelector } from "@/services/node-layout/selectors/node-pin-positions";
 import { pinDirectionFromNodePinSelector } from "@/services/node-graph/selectors/pins";
@@ -69,14 +69,14 @@ const NodePin: React.FC<NodePinProps> = React.memo(function NodePin({
     [dispatch, getMouseCoords]
   );
 
-  const { startTracking } = useMouseTracking({
+  const { startTracking } = usePointerTracking({
     onDragStart,
     onDragMove,
     onDragEnd,
   });
 
-  const onMouseDown = React.useCallback(
-    (e: React.MouseEvent) => {
+  const onPointerDown = React.useCallback(
+    (e: React.PointerEvent) => {
       if (e.button !== 0) {
         return;
       }
@@ -149,7 +149,7 @@ const NodePin: React.FC<NodePinProps> = React.memo(function NodePin({
         cx={x}
         cy={y}
         r={5}
-        onMouseDown={onMouseDown}
+        onPointerDown={onPointerDown}
       />
     </g>
   );

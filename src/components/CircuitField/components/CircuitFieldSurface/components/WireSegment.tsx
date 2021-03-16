@@ -13,7 +13,7 @@ import { getModifiers } from "@/modifier-keys";
 import { getSelectMode } from "@/selection-mode";
 
 import useSelector from "@/hooks/useSelector";
-import useMouseTracking from "@/hooks/useMouseTracking";
+import usePointerTracking from "@/hooks/usePointerTracking";
 
 import { fieldDragStartNewJoint } from "@/actions/field-drag-start-newjoint";
 import { fieldDragContinue } from "@/actions/field-drag-continue";
@@ -108,15 +108,15 @@ const WireSegment: React.FC<WireSegmentProps> = React.memo(
       [connectionId, dispatch]
     );
 
-    const { startTracking } = useMouseTracking({
+    const { startTracking } = usePointerTracking({
       onClick,
       onDragStart,
       onDragMove,
       onDragEnd,
     });
 
-    const onJointInsertMouseDown = React.useCallback(
-      (e: React.MouseEvent) => {
+    const onJointInsertPointerDown = React.useCallback(
+      (e: React.PointerEvent) => {
         e.preventDefault();
         if (isSimActive) {
           return;
@@ -146,7 +146,7 @@ const WireSegment: React.FC<WireSegmentProps> = React.memo(
             r={3}
             stroke="none"
             fill="red"
-            onMouseDown={onJointInsertMouseDown}
+            onPointerDown={onJointInsertPointerDown}
           />
         )}
       </g>

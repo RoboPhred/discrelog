@@ -3,7 +3,7 @@ import * as React from "react";
 import { asArray, MaybeArray } from "@/arrays";
 import { isTruthy } from "@/utils";
 
-export function useOutsideMouseEvent(
+export function useOutsidePointerEvent(
   element: MaybeArray<HTMLElement | null>,
   onOutsideEvent: () => void,
   when = true
@@ -27,12 +27,10 @@ export function useOutsideMouseEvent(
       return;
     }
 
-    document.addEventListener("mousedown", onEvent);
-    document.addEventListener("touchstart", onEvent);
+    document.addEventListener("pointerdown", onEvent);
 
     return () => {
-      document.removeEventListener("mousedown", onEvent);
-      document.removeEventListener("touchstart", onEvent);
+      document.removeEventListener("pointerdown", onEvent);
     };
   }, [onEvent, when]);
 }

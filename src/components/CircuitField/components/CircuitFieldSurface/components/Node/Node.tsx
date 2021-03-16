@@ -11,7 +11,7 @@ import { getNodeVisualElement } from "@/nodes/visuals";
 import interaction from "@/styles/interaction.module.css";
 
 import useSelector from "@/hooks/useSelector";
-import useMouseTracking from "@/hooks/useMouseTracking";
+import usePointerTracking from "@/hooks/usePointerTracking";
 
 import { nodeStateFromCircuitNodeIdSelector } from "@/services/simulator/selectors/nodes";
 import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
@@ -34,7 +34,7 @@ import { useEventMouseCoords } from "../../hooks/useMouseCoords";
 
 import NodeContextMenu from "../NodeContextMenu";
 
-import "./Node.module.css";
+import styles from "./Node.module.css";
 
 export interface NodeProps {
   nodeId: string;
@@ -42,6 +42,7 @@ export interface NodeProps {
 
 const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
   const dispatch = useDispatch();
+  const nodeGroupRef = React.useRef<SVGGElement | null>(null);
   const { circuitNodePath } = useCircuitField();
   const isSimActive = useSelector(isSimActiveSelector);
 
@@ -125,14 +126,14 @@ const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
     [dispatch, getCoords]
   );
 
-  const { startTracking } = useMouseTracking({
+  const { startTracking } = usePointerTracking({
     onClick,
     onDragStart,
     onDragMove,
     onDragEnd,
   });
-  const onMouseDown = React.useCallback(
-    (e: React.MouseEvent) => {
+  const onPointerDown = React.useCallback(
+    (e: React.PointerEvent) => {
       if (e.defaultPrevented) {
         return;
       }
@@ -177,7 +178,7 @@ const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
     <g transform={transform}>
       <g
         className={cls("circuit-field-node", isSelected && "node-selected")}
-        onMouseDown={onMouseDown}
+        onPointerDown={onPointerDown}
         onContextMenu={onContextMenu}
       >
         {body}

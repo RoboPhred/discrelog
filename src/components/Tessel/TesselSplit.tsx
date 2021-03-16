@@ -100,8 +100,6 @@ const TesselSplit: React.FC<TesselSplitProps> = ({
 
       e.preventDefault();
 
-      // We use pointer capture over the useMouseTracking
-      // hook because pointer capture will capture our mouse icon.
       ref.current.setPointerCapture(e.pointerId);
       pointerCaptureRef.current = e.pointerId;
     },

@@ -2,6 +2,10 @@
   background: var(--color-ui-light-bg);
 }
 
+.circuit-field * {
+  touch-action: none;
+}
+
 .circuit-field-scrollarea {
   width: 100%;
   height: 100%;
