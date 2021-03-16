@@ -11,7 +11,7 @@ import {
 
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 
-import { createCircuitEditorUiDragSelector } from "../utils";
+import { createCircuitEditorDragSelector } from "../utils";
 import { CircuitEditorDragServiceState } from "../state";
 
 import { gridJointSnapSelector, gridNodeSnapSelector } from "./snap";
@@ -19,7 +19,7 @@ import { nodePinFromPointSelector } from "@/services/node-layout/selectors/node-
 
 // FIXME: Hack to stop drag appearing on the wrong windows.
 // Drag state should be local to CircuitEditor, not global in redux.
-export const isDragForCircuitSelector = createCircuitEditorUiDragSelector(
+export const isDragForCircuitSelector = createCircuitEditorDragSelector(
   (s: CircuitEditorDragServiceState, circuitId: string) => {
     if (!s.dragMode) {
       return false;
@@ -29,27 +29,27 @@ export const isDragForCircuitSelector = createCircuitEditorUiDragSelector(
   }
 );
 
-export const dragModeSelector = createCircuitEditorUiDragSelector(
+export const dragModeSelector = createCircuitEditorDragSelector(
   (s) => s.dragMode
 );
-export const isDraggingSelector = createCircuitEditorUiDragSelector(
+export const isDraggingSelector = createCircuitEditorDragSelector(
   (s) => s.dragMode != null
 );
-export const dragCircuitIdSelector = createCircuitEditorUiDragSelector((s) => {
+export const dragCircuitIdSelector = createCircuitEditorDragSelector((s) => {
   if (!s.dragMode) {
     return null;
   }
 
   return s.dragCircuitId;
 });
-export const dragStartSelector = createCircuitEditorUiDragSelector((s) => {
+export const dragStartSelector = createCircuitEditorDragSelector((s) => {
   if (!s.dragMode) {
     return null;
   }
 
   return s.dragStart;
 });
-export const dragEndSelector = createCircuitEditorUiDragSelector((s) => {
+export const dragEndSelector = createCircuitEditorDragSelector((s) => {
   if (!s.dragMode) {
     return null;
   }
@@ -57,7 +57,7 @@ export const dragEndSelector = createCircuitEditorUiDragSelector((s) => {
   return s.dragEnd;
 });
 
-export const selectionRectSelector = createCircuitEditorUiDragSelector(
+export const selectionRectSelector = createCircuitEditorDragSelector(
   createSelector(
     dragModeSelector.local,
     dragStartSelector.local,
@@ -103,7 +103,7 @@ export const dragMoveOffsetSelector = (state: AppState) => {
   return cachedDragMoveOffset;
 };
 
-export const dragNewJointPositionSelector = createCircuitEditorUiDragSelector(
+export const dragNewJointPositionSelector = createCircuitEditorDragSelector(
   (state) => {
     const gridSnap = gridJointSnapSelector.local(state);
     if (state.dragMode !== "new-joint") {

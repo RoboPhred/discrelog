@@ -13,7 +13,6 @@ import { getModifiers } from "@/modifier-keys";
 import { getSelectMode } from "@/selection-mode";
 
 import useSelector from "@/hooks/useSelector";
-import useMouseTracking from "@/hooks/useMouseTracking";
 
 import { circuitEditorDragStartNewJoint } from "@/actions/circuit-editor-drag-start-newjoint";
 import { circuitEditorDragContinue } from "@/actions/circuit-editor-drag-continue";
@@ -28,7 +27,8 @@ import {
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 import { isDraggingSelector } from "@/services/circuit-editor-drag/selectors/drag";
 
-import { useEventMouseCoords } from "../hooks/useMouseCoords";
+import { useEventMouseCoords, useMouseCoords } from "../hooks/useMouseCoords";
+import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
 
 export interface WireSegmentProps {
   connectionId: string;
@@ -38,7 +38,7 @@ export interface WireSegmentProps {
 const WireSegment: React.FC<WireSegmentProps> = React.memo(
   function WireSegment({ connectionId, startJointId, endJointId }) {
     const dispatch = useDispatch();
-    const getMouseCoords = useEventMouseCoords();
+    const getMouseCoords = useMouseCoords();
     const isSimActive = useSelector(isSimActiveSelector);
     const isDragging = useSelector(isDraggingSelector);
 
@@ -60,7 +60,7 @@ const WireSegment: React.FC<WireSegmentProps> = React.memo(
 
     const onMouseMove = React.useCallback(
       (e: React.MouseEvent) => {
-        const p = getMouseCoords(e);
+        const p = getMouseCoords({ x: e.pageX, y: e.pageY });
         setMousePos(p);
       },
       [getMouseCoords]
@@ -71,8 +71,8 @@ const WireSegment: React.FC<WireSegmentProps> = React.memo(
     }, []);
 
     const onDragStart = React.useCallback(
-      (e: MouseEvent) => {
-        const p = getMouseCoords(e);
+      (e: MouseEvent, origionalPoint: Point) => {
+        const p = getMouseCoords(origionalPoint);
         const modifiers = getModifiers(e);
         dispatch(
           circuitEditorDragStartNewJoint(
@@ -86,24 +86,6 @@ const WireSegment: React.FC<WireSegmentProps> = React.memo(
       [getMouseCoords, dispatch, connectionId, startJointId]
     );
 
-    const onDragMove = React.useCallback(
-      (_, e: MouseEvent) => {
-        const p = getMouseCoords(e);
-        const modifiers = getModifiers(e);
-        dispatch(circuitEditorDragContinue(p, modifiers));
-      },
-      [dispatch, getMouseCoords]
-    );
-
-    const onDragEnd = React.useCallback(
-      (_, e: MouseEvent) => {
-        const p = getMouseCoords(e);
-        const modifiers = getModifiers(e);
-        dispatch(circuitEditorDragEnd(p, modifiers));
-      },
-      [dispatch, getMouseCoords]
-    );
-
     const onClick = React.useCallback(
       (e: MouseEvent) => {
         const modifiers = getModifiers(e);
@@ -113,12 +95,7 @@ const WireSegment: React.FC<WireSegmentProps> = React.memo(
       [connectionId, dispatch]
     );
 
-    const { startTracking } = useMouseTracking({
-      onClick,
-      onDragStart,
-      onDragMove,
-      onDragEnd,
-    });
+    const { startTracking } = useMouseDragDetector({ onClick, onDragStart });
 
     const onJointInsertMouseDown = React.useCallback(
       (e: React.MouseEvent) => {

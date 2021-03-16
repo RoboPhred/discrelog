@@ -3,9 +3,9 @@ import {
   createServiceSelectorCreator,
 } from "../service-state-utils";
 
-export const createCircuitEditorUiDragReducer = createServiceReducerCreator(
+export const createCircuitEditorDragReducer = createServiceReducerCreator(
   "circuitEditorDrag"
 );
-export const createCircuitEditorUiDragSelector = createServiceSelectorCreator(
+export const createCircuitEditorDragSelector = createServiceSelectorCreator(
   "circuitEditorDrag"
 );

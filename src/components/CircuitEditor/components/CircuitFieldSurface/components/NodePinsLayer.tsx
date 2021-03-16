@@ -18,7 +18,7 @@ const NodePinsLayer: React.FC = React.memo(function NodePinsLayer() {
     <NodePins key={nodeId} nodeId={nodeId} />
   ));
 
-  return <g id="node-pins-layer">{elements}</g>;
+  return <g>{elements}</g>;
 });
 
 export default NodePinsLayer;

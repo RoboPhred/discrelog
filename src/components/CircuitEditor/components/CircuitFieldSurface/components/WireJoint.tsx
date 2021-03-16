@@ -6,7 +6,7 @@ import { getModifiers } from "@/modifier-keys";
 import { getSelectMode } from "@/selection-mode";
 
 import useSelector from "@/hooks/useSelector";
-import useMouseTracking from "@/hooks/useMouseTracking";
+import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
 
 import { wireJointPositionFromJointIdSelector } from "@/services/node-layout/selectors/wires";
 import { isJointSelectedFromJointIdSelector } from "@/services/selection/selectors/selection";
@@ -14,10 +14,8 @@ import { isSimActiveSelector } from "@/services/simulator-control/selectors/run"
 
 import { selectWireJoints } from "@/actions/select-wire-joints";
 import { circuitEditorDragStartJoint } from "@/actions/circuit-editor-drag-start-joint";
-import { circuitEditorDragEnd } from "@/actions/circuit-editor-drag-end";
-import { circuitEditorDragContinue } from "@/actions/circuit-editor-drag-continue";
 
-import { useEventMouseCoords } from "../hooks/useMouseCoords";
+import { useMouseCoords } from "../hooks/useMouseCoords";
 
 import WireJointVisual from "./WireJointVisual";
 
@@ -28,7 +26,7 @@ interface WireJointProps {
 const WireJoint: React.FC<WireJointProps> = React.memo(function WireJoint({
   jointId,
 }) {
-  const getMouseCoords = useEventMouseCoords();
+  const getMouseCoords = useMouseCoords();
   const dispatch = useDispatch();
   const isSimActive = useSelector(isSimActiveSelector);
 
@@ -39,31 +37,13 @@ const WireJoint: React.FC<WireJointProps> = React.memo(function WireJoint({
   const position = useSelector((state) =>
     wireJointPositionFromJointIdSelector(state, jointId)
   );
-  const onJointDragStart = React.useCallback(
-    (e: MouseEvent) => {
-      const p = getMouseCoords(e);
+  const onDragStart = React.useCallback(
+    (e: MouseEvent, originalPoint: Point) => {
+      const p = getMouseCoords(originalPoint);
       const modifiers = getModifiers(e);
       dispatch(circuitEditorDragStartJoint(jointId, p, modifiers));
     },
     [dispatch, getMouseCoords, jointId]
-  );
-
-  const onJointDragMove = React.useCallback(
-    (offset: Point, e: MouseEvent) => {
-      const p = getMouseCoords(e);
-      const modifiers = getModifiers(e);
-      dispatch(circuitEditorDragContinue(p, modifiers));
-    },
-    [dispatch, getMouseCoords]
-  );
-
-  const onJointDragEnd = React.useCallback(
-    (offset: Point, e: MouseEvent) => {
-      const p = getMouseCoords(e);
-      const modifiers = getModifiers(e);
-      dispatch(circuitEditorDragEnd(p, modifiers));
-    },
-    [dispatch, getMouseCoords]
   );
 
   const onClick = React.useCallback(
@@ -75,14 +55,12 @@ const WireJoint: React.FC<WireJointProps> = React.memo(function WireJoint({
     [dispatch, jointId]
   );
 
-  const { startTracking: startMoveJointTracking } = useMouseTracking({
+  const { startTracking } = useMouseDragDetector({
     onClick,
-    onDragStart: onJointDragStart,
-    onDragMove: onJointDragMove,
-    onDragEnd: onJointDragEnd,
+    onDragStart,
   });
 
-  const mouseDown = React.useCallback(
+  const onJointMouseDown = React.useCallback(
     (e: React.MouseEvent) => {
       if (isSimActive) {
         return;
@@ -93,9 +71,9 @@ const WireJoint: React.FC<WireJointProps> = React.memo(function WireJoint({
       }
       e.preventDefault();
 
-      startMoveJointTracking(e);
+      startTracking(e);
     },
-    [isSimActive, startMoveJointTracking]
+    [isSimActive, startTracking]
   );
 
   return (
@@ -104,7 +82,7 @@ const WireJoint: React.FC<WireJointProps> = React.memo(function WireJoint({
       selected={isSelected}
       x={position.x}
       y={position.y}
-      onMouseDown={mouseDown}
+      onMouseDown={onJointMouseDown}
     />
   );
 });

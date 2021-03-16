@@ -1,8 +1,8 @@
 import { isCircuitEditorMouseLeaveAction } from "@/actions/circuit-editor-mouse-leave";
 
-import { createCircuitEditorUiDragReducer } from "../utils";
+import { createCircuitEditorDragReducer } from "../utils";
 
-export default createCircuitEditorUiDragReducer((state, action) => {
+export default createCircuitEditorDragReducer((state, action) => {
   if (!isCircuitEditorMouseLeaveAction(action)) {
     return state;
   }

@@ -18,6 +18,7 @@ import NodesLayer from "./components/NodesLayer";
 import WiresLayer from "./components/WiresLayer";
 import NodePinsLayer from "./components/NodePinsLayer";
 import DragAttachWirePreviewLayer from "./components/DragAttachWirePreviewLayer";
+import EditorDragReceiver from "./components/EditorDragReceiver";
 
 import styles from "./CircuitFieldSurface.module.css";
 
@@ -63,11 +64,11 @@ const CircuitFieldSurface: React.FC<CircuitFieldSurfaceProps> = ({
   // we do not know the coordinate system from our scaler.
   // Instead, just capture whether or not we are being dragged into,
   // and enable the new node drag layer only when we are dragging.
-  const [{ isDragging }, dragRef] = useDrop({
+  const [{ isDraggingNewNode }, dragRef] = useDrop({
     accept: NEW_NODE_DRAG_OBJECT,
     collect: (monitor) => {
       return {
-        isDragging: monitor.isOver(),
+        isDraggingNewNode: monitor.isOver(),
       };
     },
   });
@@ -100,7 +101,8 @@ const CircuitFieldSurface: React.FC<CircuitFieldSurfaceProps> = ({
           <DragAttachWirePreviewLayer />
           <DragNodePreviewLayer />
           <DragJointPreviewLayer />
-          {isDragging && <DragNewNodeLayer />}
+          {isDraggingNewNode && <DragNewNodeLayer />}
+          <EditorDragReceiver />
         </FieldSvgElementProvider>
       </g>
     </svg>

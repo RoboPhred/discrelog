@@ -17,6 +17,6 @@ const WiresLayer: React.FC = React.memo(function WiresLayer() {
     <Wire key={connectionId} connectionId={connectionId} />
   ));
 
-  return <g id="wires-layer">{connectorElements}</g>;
+  return <g>{connectorElements}</g>;
 });
 export default WiresLayer;

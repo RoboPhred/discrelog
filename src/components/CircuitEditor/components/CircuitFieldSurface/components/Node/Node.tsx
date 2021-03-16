@@ -11,7 +11,7 @@ import { getNodeVisualElement } from "@/nodes/visuals";
 import interaction from "@/styles/interaction.module.css";
 
 import useSelector from "@/hooks/useSelector";
-import useMouseTracking from "@/hooks/useMouseTracking";
+import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
 
 import { nodeStateFromCircuitNodeIdSelector } from "@/services/simulator/selectors/nodes";
 import { isNodeSelectedFromNodeIdSelector } from "@/services/selection/selectors/selection";
@@ -21,8 +21,6 @@ import { nodeDefFromNodeIdSelector } from "@/services/node-graph/selectors/node-
 import { nodeFieldDisplayNameFromNodeId } from "@/services/ui-settings/selectors/node-name";
 
 import { circuitEditorDragStartNode } from "@/actions/circuit-editor-drag-start-node";
-import { circuitEditorDragContinue } from "@/actions/circuit-editor-drag-continue";
-import { circuitEditorDragEnd } from "@/actions/circuit-editor-drag-end";
 import { selectNodes } from "@/actions/select-nodes";
 
 import { useContextMenu } from "@/components/ContextMenu";
@@ -30,7 +28,7 @@ import { useContextMenu } from "@/components/ContextMenu";
 import { useCircuitEditor } from "../../../../contexts/circuit-editor-context";
 import { useViewportContext } from "../../../../contexts/viewport-context";
 
-import { useEventMouseCoords } from "../../hooks/useMouseCoords";
+import { useMouseCoords } from "../../hooks/useMouseCoords";
 
 import NodeContextMenu from "../NodeContextMenu";
 
@@ -58,7 +56,7 @@ const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
     isNodeSelectedFromNodeIdSelector(s, nodeId)
   );
 
-  const getCoords = useEventMouseCoords();
+  const getCoords = useMouseCoords();
 
   const onClick = React.useCallback(
     (e: MouseEvent) => {
@@ -99,38 +97,19 @@ const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
   );
 
   const onDragStart = React.useCallback(
-    (e: MouseEvent) => {
-      const p = getCoords(e);
+    (e: MouseEvent, originalPoint: Point) => {
+      const p = getCoords(originalPoint);
       const modifiers = getModifiers(e);
       dispatch(circuitEditorDragStartNode(nodeId, p, modifiers));
     },
     [getCoords, dispatch, nodeId]
   );
 
-  const onDragMove = React.useCallback(
-    (offset: Point, e: MouseEvent) => {
-      const p = getCoords(e);
-      const modifierKeys = getModifiers(e);
-      dispatch(circuitEditorDragContinue(p, modifierKeys));
-    },
-    [dispatch, getCoords]
-  );
-
-  const onDragEnd = React.useCallback(
-    (offset: Point, e: MouseEvent) => {
-      const p = getCoords(e);
-      const modifiers = getModifiers(e);
-      dispatch(circuitEditorDragEnd(p, modifiers));
-    },
-    [dispatch, getCoords]
-  );
-
-  const { startTracking } = useMouseTracking({
+  const { startTracking } = useMouseDragDetector({
     onClick,
     onDragStart,
-    onDragMove,
-    onDragEnd,
   });
+
   const onMouseDown = React.useCallback(
     (e: React.MouseEvent) => {
       if (e.defaultPrevented) {

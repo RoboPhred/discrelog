@@ -1,8 +1,8 @@
 import { isCircuitEditorDragStartSelectAction } from "@/actions/circuit-editor-drag-start-select";
 
-import { createCircuitEditorUiDragReducer } from "../utils";
+import { createCircuitEditorDragReducer } from "../utils";
 
-export default createCircuitEditorUiDragReducer((state, action) => {
+export default createCircuitEditorDragReducer((state, action) => {
   if (!isCircuitEditorDragStartSelectAction(action)) {
     return state;
   }

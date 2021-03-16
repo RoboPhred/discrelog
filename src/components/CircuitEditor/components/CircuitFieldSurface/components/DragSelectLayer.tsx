@@ -1,11 +1,12 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 
-import useSelector from "@/hooks/useSelector";
 import { Point } from "@/geometry";
-import { getModifiers } from "@/modifier-keys";
 
-import useMouseTracking from "@/hooks/useMouseTracking";
+import useSelector from "@/hooks/useSelector";
+import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
+
+import { getModifiers } from "@/modifier-keys";
 
 import {
   isDragForCircuitSelector,
@@ -14,13 +15,11 @@ import {
 
 import { clearSelection } from "@/actions/select-clear";
 import { circuitEditorDragStartSelect } from "@/actions/circuit-editor-drag-start-select";
-import { circuitEditorDragContinue } from "@/actions/circuit-editor-drag-continue";
-import { circuitEditorDragEnd } from "@/actions/circuit-editor-drag-end";
 
 import { useViewportContext } from "../../../contexts/viewport-context";
 import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
 
-import { useEventMouseCoords } from "../hooks/useMouseCoords";
+import { useMouseCoords } from "../hooks/useMouseCoords";
 
 const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
   const dispatch = useDispatch();
@@ -36,7 +35,7 @@ const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
     return value * (1 / zoomFactor);
   }
 
-  const getCoords = useEventMouseCoords();
+  const getCoords = useMouseCoords();
 
   const onClick = React.useCallback(
     (e: MouseEvent) => {
@@ -52,51 +51,21 @@ const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
   );
 
   const onDragStart = React.useCallback(
-    (e: MouseEvent) => {
-      const p = getCoords(e);
+    (e: MouseEvent, originalPoint: Point) => {
+      const p = getCoords(originalPoint);
       const modifierKeys = getModifiers(e);
       dispatch(circuitEditorDragStartSelect(p, modifierKeys, circuitId));
     },
     [circuitId, dispatch, getCoords]
   );
 
-  const onDragMove = React.useCallback(
-    (offset: Point, e: MouseEvent) => {
-      const p = getCoords(e);
-      const modifierKeys = getModifiers(e);
-      dispatch(circuitEditorDragContinue(p, modifierKeys));
-    },
-    [dispatch, getCoords]
-  );
-
-  const onDragEnd = React.useCallback(
-    (offset: Point, e: MouseEvent) => {
-      const p = getCoords(e);
-      const modifiers = getModifiers(e);
-      dispatch(circuitEditorDragEnd(p, modifiers));
-    },
-    [dispatch, getCoords]
-  );
-
-  const { startTracking } = useMouseTracking({
+  const { startTracking: onMouseDown } = useMouseDragDetector({
     onClick,
     onDragStart,
-    onDragMove,
-    onDragEnd,
   });
-  const onMouseDown = React.useCallback(
-    (e: React.MouseEvent) => {
-      if (e.defaultPrevented) {
-        return;
-      }
-      e.preventDefault();
-      startTracking(e);
-    },
-    [startTracking]
-  );
 
   return (
-    <g id="drag-select-layer">
+    <g>
       <rect
         /*
          Our width and height get scaled by the parent scaler.

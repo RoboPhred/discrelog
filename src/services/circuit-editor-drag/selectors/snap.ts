@@ -1,11 +1,11 @@
 import { Point, snapPoint } from "@/geometry";
 import { AppState } from "@/store";
 
-import { createCircuitEditorUiDragSelector } from "../utils";
+import { createCircuitEditorDragSelector } from "../utils";
 
-export const gridNodeSnapSelector = createCircuitEditorUiDragSelector(() => 50);
+export const gridNodeSnapSelector = createCircuitEditorDragSelector(() => 50);
 
-export const gridJointSnapSelector = createCircuitEditorUiDragSelector(() => 5);
+export const gridJointSnapSelector = createCircuitEditorDragSelector(() => 5);
 
 export const applyGridNodeSnapSelector = (s: AppState, p: Point) => {
   const snap = gridNodeSnapSelector(s);

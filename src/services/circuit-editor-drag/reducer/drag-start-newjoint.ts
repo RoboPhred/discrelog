@@ -1,9 +1,9 @@
 import { isCircuitEditorDragStartNewJointAction } from "@/actions/circuit-editor-drag-start-newjoint";
 import { circuitIdFromConnectionIdSelector } from "@/services/circuits/selectors/connections";
 
-import { createCircuitEditorUiDragReducer } from "../utils";
+import { createCircuitEditorDragReducer } from "../utils";
 
-export default createCircuitEditorUiDragReducer((state, action, appState) => {
+export default createCircuitEditorDragReducer((state, action, appState) => {
   if (!isCircuitEditorDragStartNewJointAction(action)) {
     return state;
   }

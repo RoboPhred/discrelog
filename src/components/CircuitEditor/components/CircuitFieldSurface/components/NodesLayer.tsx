@@ -18,6 +18,6 @@ const NodesLayer: React.FC = React.memo(function NodesLayer() {
     return <Node key={nodeId} nodeId={nodeId} />;
   });
 
-  return <g id="nodes-layer">{nodeElements}</g>;
+  return <g>{nodeElements}</g>;
 });
 export default NodesLayer;

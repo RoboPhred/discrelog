@@ -3,9 +3,9 @@ import { AppState } from "@/store";
 import { isCircuitEditorDragStartWireAction } from "@/actions/circuit-editor-drag-start-wire";
 import { nodeIdsByCircuitIdSelector } from "@/services/circuits/selectors/nodes";
 
-import { createCircuitEditorUiDragReducer } from "../utils";
+import { createCircuitEditorDragReducer } from "../utils";
 
-export default createCircuitEditorUiDragReducer((state, action, rootState) => {
+export default createCircuitEditorDragReducer((state, action, rootState) => {
   if (!isCircuitEditorDragStartWireAction(action)) {
     return state;
   }
