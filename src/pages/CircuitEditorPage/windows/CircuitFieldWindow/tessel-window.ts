@@ -9,13 +9,11 @@ import { CircuitFieldWindowProps } from "./CircuitFieldWindow";
 export const CIRCUIT_FIELD_WINDOW_ID = "circuit-field" as const;
 
 export const circuitFieldTesselWindow = (
-  circuitId: string,
-  circuitNodeIdPath: string[]
+  circuitEditorId: string
 ): TesselWindowItem<CircuitFieldWindowProps> => ({
   windowId: CIRCUIT_FIELD_WINDOW_ID,
   windowProps: {
-    circuitId,
-    circuitNodeIdPath,
+    editorId: circuitEditorId,
   },
 });
 

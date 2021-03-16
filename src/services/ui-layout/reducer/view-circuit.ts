@@ -1,96 +1,68 @@
-import get from "lodash/get";
-
-import { fpSetByArray } from "@/utils";
-
 import { isViewCircuitAction } from "@/actions/view-circuit";
 
 import { normalizeTesselItem, TesselValue } from "@/components/Tessel";
+import { findAndReplaceTesselValue } from "@/components/Tessel/utils";
 
-import { circuitFieldTesselWindow } from "@/pages/CircuitEditorPage/windows/CircuitFieldWindow/tessel-window";
+import {
+  circuitFieldTesselWindow,
+  isCircuitFieldTesselWindow,
+} from "@/pages/CircuitEditorPage/windows/CircuitFieldWindow/tessel-window";
+import { activeCircuitEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
 
-import { circuitIdsSelector } from "@/services/circuits/selectors/circuits";
-
-import { createUiLayoutReducer, findDefaultActiveWindow } from "../utils";
+import { createUiLayoutReducer } from "../utils";
 
 export default createUiLayoutReducer((state, action, appState) => {
   if (!isViewCircuitAction(action)) {
     return state;
   }
 
-  const {
-    circuitId,
-    circuitNodeIdPath,
-    newWindow,
-    tesselPath,
-  } = action.payload;
+  const { newWindowId } = action.payload;
 
-  if (circuitIdsSelector(appState).indexOf(circuitId) === -1) {
+  if (!newWindowId) {
     return state;
   }
 
-  if (!state.layout) {
-    return state;
-  }
-
-  const window = circuitFieldTesselWindow(circuitId, circuitNodeIdPath ?? []);
+  const window = circuitFieldTesselWindow(newWindowId);
+  const activeEditorId = activeCircuitEditorIdSelector(appState);
 
   let layout: TesselValue | null = state.layout;
 
-  let activeCircuitEditorPath = state.activeCircuitEditorPath;
-  if (!get(layout, activeCircuitEditorPath)) {
-    activeCircuitEditorPath = findDefaultActiveWindow(layout);
-  }
+  if (layout == null) {
+    layout = window;
+  } else {
+    let inserted = false;
 
-  if (tesselPath) {
-    // We want to open at an explicit path
-    if (!get(layout, tesselPath)) {
-      // Path does not exist, do nothing.
-      return state;
-    }
-    layout = fpSetByArray(normalizeTesselItem(layout), tesselPath, window);
-    activeCircuitEditorPath = tesselPath;
-  } else if (newWindow || activeCircuitEditorPath.length === 0) {
-    // We want to open in a new window, or
-    // we want to open in the existing window but there is none.
+    // Try inserting the window alongside the active editor.
+    layout = findAndReplaceTesselValue(layout, (value) => {
+      const normalized = normalizeTesselItem(value);
+      if (
+        isCircuitFieldTesselWindow(normalized) &&
+        normalized.windowProps.editorId === activeEditorId
+      ) {
+        inserted = true;
+        return {
+          direction: "row",
+          division: 50,
+          first: value,
+          second: window,
+        };
+      }
 
-    if (activeCircuitEditorPath.length > 0) {
-      // We have an active window, insert to the side of it.
-      layout = fpSetByArray(
-        normalizeTesselItem(layout),
-        activeCircuitEditorPath,
-        (value: TesselValue) => {
-          return {
-            direction: "row",
-            division: 50,
-            first: value,
-            second: window,
-          };
-        }
-      );
-    } else {
-      // No active window, create a new one directly
+      return null;
+    });
+
+    if (!inserted) {
       layout = {
         direction: "row",
-        division: {
-          firstSize: 200,
-        },
+        division: 50,
         first: layout,
         second: window,
       };
-      activeCircuitEditorPath = ["second"];
     }
-  } else {
-    // Target the existing window.
-    layout = fpSetByArray(
-      normalizeTesselItem(layout),
-      activeCircuitEditorPath,
-      window
-    );
   }
 
   return {
     ...state,
     layout,
-    activeCircuitEditorPath,
   };
 });

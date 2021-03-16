@@ -2,18 +2,13 @@ import { TesselValue } from "@/components/Tessel";
 
 import { circuitFieldTesselWindow } from "@/pages/CircuitEditorPage/windows/CircuitFieldWindow/tessel-window";
 
-import { ROOT_CIRCUIT_ID } from "../circuits/constants";
+import { DEFAULT_CIRCUIT_EDITOR_ID } from "@/services/circuit-editors/constants";
 
 export interface UiLayoutServiceState {
   /**
    * The tessel layout.
    */
   layout: TesselValue | null;
-
-  /**
-   * The tessel path to the current active circuit editor.
-   */
-  activeCircuitEditorPath: string[];
 }
 
 const _defaultState: UiLayoutServiceState = {
@@ -28,9 +23,8 @@ const _defaultState: UiLayoutServiceState = {
       first: "circuits-list",
       second: "node-tray",
     },
-    second: circuitFieldTesselWindow(ROOT_CIRCUIT_ID, []),
+    second: circuitFieldTesselWindow(DEFAULT_CIRCUIT_EDITOR_ID),
   },
-  activeCircuitEditorPath: ["second"],
 };
 
 export const defaultUiLayoutServiceState = Object.freeze(_defaultState);

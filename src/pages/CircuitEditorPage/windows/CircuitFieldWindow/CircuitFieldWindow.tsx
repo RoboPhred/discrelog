@@ -9,6 +9,7 @@ import useSelector from "@/hooks/useSelector";
 import sizing from "@/styles/sizing.module.css";
 import flex from "@/styles/flex.module.css";
 
+import { circuitEditorStateFromIdSelector } from "@/services/circuit-editors/selectors/editor";
 import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
 
 import { fastForwardSim } from "@/actions/sim-fastforward";
@@ -18,13 +19,12 @@ import { deleteSelection } from "@/actions/selection-delete";
 import { selectAll } from "@/actions/select-all";
 import { undo } from "@/actions/undo";
 import { redo } from "@/actions/redo";
-import { activateView } from "@/actions/view-activate";
+import { editorReceiveFocus } from "@/actions/editor-receive-focus";
 import { stepSim } from "@/actions/sim-step";
 
 import CircuitNodeBreadcrumb from "@/components/CircuitNodeBreadcrumb";
 import CircuitField from "@/components/CircuitField";
 import TesselWindow from "@/components/Tessel/TesselWindow";
-import { useTesselPath } from "@/components/Tessel/TesselContext";
 
 import keymap, {
   KeymapHandler,
@@ -39,15 +39,15 @@ import keymap, {
 } from "./keymap";
 
 export interface CircuitFieldWindowProps {
-  circuitId: string;
-  circuitNodeIdPath: string[];
+  editorId: string;
 }
 const CircuitFieldWindow: React.FC<CircuitFieldWindowProps> = ({
-  circuitId,
-  circuitNodeIdPath,
+  editorId,
 }) => {
   const dispatch = useDispatch();
-  const tesselPath = useTesselPath();
+  const { circuitId, circuitNodeIdPath } = useSelector((state) =>
+    circuitEditorStateFromIdSelector(state, editorId)
+  ) ?? { circuitId: null, circuitNodeIdPath: [] };
 
   const circuitName =
     useSelector((state) => circuitNameFromIdSelector(state, circuitId)) ??
@@ -79,8 +79,8 @@ const CircuitFieldWindow: React.FC<CircuitFieldWindowProps> = ({
   }, [dispatch, circuitId]);
 
   const onViewActivated = React.useCallback(() => {
-    dispatch(activateView(tesselPath));
-  }, [dispatch, tesselPath]);
+    dispatch(editorReceiveFocus(editorId));
+  }, [dispatch, editorId]);
 
   if (!circuitId || !circuitNodeIdPath) {
     return (

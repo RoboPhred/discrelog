@@ -8,6 +8,8 @@
 
 # TODO
 
+- Blank placeholder window when all circuit editor windows are closed.
+  - Default to this blank window rather than assuming a default window in both circuit-editors and ui-layout services.
 - Tooltip on hover over sim controls showing the hotkeys.
 - Breakpoints on pin value changes
 

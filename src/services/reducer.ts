@@ -1,6 +1,7 @@
 import { concatReducers } from "@/store/utils";
 
 import circuitEditorUiDragReducer from "./circuit-editor-ui-drag/reducer";
+import circuitEditorsReducer from "./circuit-editors/reducer";
 import circuitsReducer from "./circuits/reducer";
 import clipboardReducer from "./clipboard/reducer";
 import dialogReducer from "./dialog/reducer";
@@ -15,6 +16,7 @@ import uiSettingsReducer from "./ui-settings/reducer";
 
 const reducer = concatReducers(
   circuitEditorUiDragReducer,
+  circuitEditorsReducer,
   circuitsReducer,
   clipboardReducer,
   dialogReducer,

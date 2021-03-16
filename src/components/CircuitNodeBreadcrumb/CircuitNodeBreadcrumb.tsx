@@ -18,7 +18,6 @@ import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
 import Button from "../Button";
 
 import styles from "./CircuitNodeBreadcrumb.module.css";
-import { useTesselPath } from "../Tessel/TesselContext";
 
 export interface CircuitNodeBreadcrumbProps {
   circuitId: string;
@@ -67,7 +66,6 @@ const CircuitNodeBreadcrumbRootItem: React.FC<CircuitNodeBreadcrumbRootItemProps
   circuitNodeIdPath,
 }) => {
   const dispatch = useDispatch();
-  const tesselPath = useTesselPath();
   const rootCircuitName = useSelector((state) =>
     circuitNameFromIdSelector(state, ROOT_CIRCUIT_ID)
   );
@@ -78,9 +76,9 @@ const CircuitNodeBreadcrumbRootItem: React.FC<CircuitNodeBreadcrumbRootItemProps
   const onClick = React.useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
-      dispatch(viewCircuit(ROOT_CIRCUIT_ID, [], { tesselPath }));
+      dispatch(viewCircuit(ROOT_CIRCUIT_ID, []));
     },
-    [dispatch, tesselPath]
+    [dispatch]
   );
 
   return (
@@ -98,7 +96,6 @@ const CircuitNodeBreadcrumbItem: React.FC<CircuitNodeBreadcrumbItemProps> = ({
   circuitNodeIdPath,
 }) => {
   const dispatch = useDispatch();
-  const tesselPath = useTesselPath();
   const circuitNodeId = last(circuitNodeIdPath)!;
 
   const nodeType = useSelector((state) =>
@@ -119,9 +116,9 @@ const CircuitNodeBreadcrumbItem: React.FC<CircuitNodeBreadcrumbItemProps> = ({
       if (!circuitId) {
         return;
       }
-      dispatch(viewCircuit(circuitId, circuitNodeIdPath, { tesselPath }));
+      dispatch(viewCircuit(circuitId, circuitNodeIdPath));
     },
-    [circuitId, circuitNodeIdPath, dispatch, tesselPath]
+    [circuitId, circuitNodeIdPath, dispatch]
   );
 
   return (

@@ -1,8 +1,8 @@
 import { AnyAction } from "redux";
+import { v4 as uuidV4 } from "uuid";
 
 interface ViewCircuitOpts {
   newWindow?: boolean;
-  tesselPath?: string[];
 }
 export const ACTION_VIEW_CIRCUIT = "@view/circuit" as const;
 export const viewCircuit = (
@@ -11,7 +11,11 @@ export const viewCircuit = (
   opts: ViewCircuitOpts = {}
 ) => ({
   type: ACTION_VIEW_CIRCUIT,
-  payload: { circuitId, circuitNodeIdPath, ...opts },
+  payload: {
+    circuitId,
+    circuitNodeIdPath,
+    newWindowId: opts.newWindow ? uuidV4() : null,
+  },
 });
 export type ViewCircuitAction = ReturnType<typeof viewCircuit>;
 export function isViewCircuitAction(
