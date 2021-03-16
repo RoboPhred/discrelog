@@ -15,7 +15,7 @@ import { attachWire } from "@/actions/wire-attach";
 import { isPasteAction } from "@/actions/clipboard-paste";
 import { selectNodes } from "@/actions/select-nodes";
 
-import { gridNodeSnapSelector } from "@/services/circuit-editor-ui-drag/selectors/snap";
+import { gridNodeSnapSelector } from "@/services/circuit-editor-drag/selectors/snap";
 
 export default function clipboardPasteReducer(
   state: AppState = defaultAppState,

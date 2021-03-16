@@ -10,7 +10,7 @@ import { addNode } from "@/actions/node-add";
 
 import { nodeTypeToCircuitId } from "@/nodes/definitions/integrated-circuits/utils";
 
-import { gridNodeSnapSelector } from "@/services/circuit-editor-ui-drag/selectors/snap";
+import { gridNodeSnapSelector } from "@/services/circuit-editor-drag/selectors/snap";
 import { circuitWouldRecurseSelector } from "@/services/circuits/selectors/circuits";
 
 import {

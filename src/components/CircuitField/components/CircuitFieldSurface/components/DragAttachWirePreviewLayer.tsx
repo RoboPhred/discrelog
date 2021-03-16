@@ -7,7 +7,7 @@ import {
   dragModeSelector,
   dragStartSelector,
   isDragForCircuitSelector,
-} from "@/services/circuit-editor-ui-drag/selectors/drag";
+} from "@/services/circuit-editor-drag/selectors/drag";
 
 import { useCircuitField } from "../../../circuit-field-context";
 

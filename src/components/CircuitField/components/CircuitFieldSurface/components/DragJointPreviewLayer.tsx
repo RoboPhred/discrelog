@@ -9,7 +9,7 @@ import {
   dragMoveOffsetSelector,
   dragNewJointPositionSelector,
   isDragForCircuitSelector,
-} from "@/services/circuit-editor-ui-drag/selectors/drag";
+} from "@/services/circuit-editor-drag/selectors/drag";
 import { selectedJointIdsSelector } from "@/services/selection/selectors/selection";
 import { wireJointPositionsByJointIdSelector } from "@/services/node-layout/selectors/wires";
 

@@ -13,11 +13,14 @@ import { moveSelection } from "@/actions/selection-move";
 import { addWireJoint } from "@/actions/wire-joint-add";
 import { attachWire } from "@/actions/wire-attach";
 
+import { nodePinFromPointSelector } from "@/services/node-layout/selectors/node-pin-positions";
+
 import {
   applyGridJointSnapSelector,
   applyGridNodeSnapSelector,
 } from "../selectors/snap";
-import { dragWireTargetPinSelector } from "../selectors/drag";
+
+import { defaultCircuitEditorDragServiceState } from "../state";
 
 export default function dragEndReducer(
   state: AppState = defaultAppState,
@@ -27,21 +30,21 @@ export default function dragEndReducer(
     return state;
   }
 
-  const { x, y, modifierKeys } = action.payload;
+  const dragState = state.services.circuitEditorDrag;
 
-  const {
-    dragMode,
-    dragStart,
-    dragCircuitId,
-    dragNewJointAfterJointId,
-    dragNewJointConnectionId,
-    dragWireSource,
-  } = state.services.circuitEditorUiDrag;
+  if (dragState.dragMode === null) {
+    return state;
+  }
 
-  switch (dragMode) {
+  const { x, y } = action.payload;
+
+  const { dragStart, dragCircuitId } = dragState;
+
+  switch (dragState.dragMode) {
     case "select": {
       if (dragStart && dragCircuitId) {
-        const selectionMode = getSelectMode(modifierKeys);
+        const { dragModifierKeys } = dragState;
+        const selectionMode = getSelectMode(dragModifierKeys);
         const rect = normalizeRectangle(dragStart, { x, y });
         state = rootReducer(
           state,
@@ -52,9 +55,10 @@ export default function dragEndReducer(
     }
     case "move": {
       if (dragStart) {
+        const { dragModifierKeys } = dragState;
         let moveBy = pointSubtract({ x, y }, dragStart);
         const hasNodes = state.services.selection.selectedNodeIds.length > 0;
-        if (!modifierKeys.ctrlMetaKey) {
+        if (!dragModifierKeys.ctrlMetaKey) {
           // We apply the snap here because we want to snap the offset, not the resulting positions.
           // Applying the snap in moveSelection can result in different objects moving different distances
           // depending on their snap.
@@ -69,6 +73,7 @@ export default function dragEndReducer(
       break;
     }
     case "new-joint": {
+      const { dragNewJointConnectionId, dragNewJointAfterJointId } = dragState;
       const position = applyGridJointSnapSelector(state, { x, y });
       state = rootReducer(
         state,
@@ -81,16 +86,8 @@ export default function dragEndReducer(
       break;
     }
     case "wire": {
-      // We need to apply the actual drag end into the state for dragWireTargetPinSelector to process it.
-      // TODO: Split off a new (uncached) selector that takes the position to check for pins at.
-      const stateWithDragEnd = fpSet(
-        state,
-        "services",
-        "circuitEditorUiDrag",
-        "dragEnd",
-        { x, y }
-      );
-      const endPin = dragWireTargetPinSelector(stateWithDragEnd);
+      const { dragWireSource } = dragState;
+      const endPin = nodePinFromPointSelector(state, { x, y }, dragCircuitId!);
       if (dragWireSource && endPin) {
         state = rootReducer(state, attachWire(dragWireSource, endPin));
       }
@@ -98,16 +95,12 @@ export default function dragEndReducer(
     }
   }
 
-  state = fpSet(state, "services", "circuitEditorUiDrag", (value) => ({
-    ...value,
-    dragMode: null,
-    dragCircuitId: null,
-    dragModifierKeys: null,
-    dragStart: null,
-    dragEnd: null,
-    dragNewNodeType: null,
-    dragWireSource: null,
-  }));
+  state = fpSet(
+    state,
+    "services",
+    "circuitEditorDrag",
+    defaultCircuitEditorDragServiceState
+  );
 
   return state;
 }

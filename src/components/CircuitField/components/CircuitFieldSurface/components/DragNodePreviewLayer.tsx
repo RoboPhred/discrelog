@@ -12,7 +12,7 @@ import { selectedNodeIdsSelector } from "@/services/selection/selectors/selectio
 import {
   dragMoveOffsetSelector,
   isDragForCircuitSelector,
-} from "@/services/circuit-editor-ui-drag/selectors/drag";
+} from "@/services/circuit-editor-drag/selectors/drag";
 
 import useSelector from "@/hooks/useSelector";
 

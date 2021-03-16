@@ -26,7 +26,7 @@ import {
   wireEndPositionFromConnectionIdSelector,
 } from "@/services/node-layout/selectors/wires";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
-import { isDraggingSelector } from "@/services/circuit-editor-ui-drag/selectors/drag";
+import { isDraggingSelector } from "@/services/circuit-editor-drag/selectors/drag";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
 

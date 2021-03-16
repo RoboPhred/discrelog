@@ -11,7 +11,7 @@ import useMouseTracking from "@/hooks/useMouseTracking";
 
 import { nodePinPositionFromNodePinSelector } from "@/services/node-layout/selectors/node-pin-positions";
 import { pinDirectionFromNodePinSelector } from "@/services/node-graph/selectors/pins";
-import { dragWireTargetPinSelector } from "@/services/circuit-editor-ui-drag/selectors/drag";
+import { dragDropTargetPinSelector } from "@/services/circuit-editor-drag/selectors/drag";
 
 import { fieldDragStartWire } from "@/actions/field-drag-start-wire";
 import { fieldDragEnd } from "@/actions/field-drag-end";
@@ -41,7 +41,7 @@ const NodePin: React.FC<NodePinProps> = React.memo(function NodePin({
     pinDirectionFromNodePinSelector(s, nodeId, pinId)
   );
 
-  const dragTargetPin = useSelector(dragWireTargetPinSelector);
+  const dragTargetPin = useSelector(dragDropTargetPinSelector);
 
   const onDragStart = React.useCallback(
     (e) => {

@@ -22,14 +22,21 @@ export default function dragStartNodeReducer(
 
   const { nodeId, x, y, modifierKeys } = action.payload;
 
-  state = fpSet(state, "services", "circuitEditorUiDrag", (value) => ({
+  const circuitId = circuitIdFromNodeIdSelector(state, nodeId);
+  if (!circuitId) {
+    return state;
+  }
+
+  state = fpSet(state, "services", "circuitEditorDrag", (value) => ({
     ...value,
     dragMode: "move" as const,
-    dragCircuitId: circuitIdFromNodeIdSelector(state, nodeId),
+    dragCircuitId: circuitId,
     dragStart: {
       x,
       y,
     },
+    dragModifierKeys: modifierKeys,
+    dragEnd: null,
   }));
 
   if (!isNodeSelectedFromNodeIdSelector(state, nodeId)) {

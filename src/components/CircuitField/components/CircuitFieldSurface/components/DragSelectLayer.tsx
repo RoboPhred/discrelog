@@ -10,7 +10,7 @@ import useMouseTracking from "@/hooks/useMouseTracking";
 import {
   isDragForCircuitSelector,
   selectionRectSelector,
-} from "@/services/circuit-editor-ui-drag/selectors/drag";
+} from "@/services/circuit-editor-drag/selectors/drag";
 
 import { clearSelection } from "@/actions/select-clear";
 import { fieldDragStartSelect } from "@/actions/field-drag-start-select";
@@ -55,7 +55,8 @@ const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
   const onDragStart = React.useCallback(
     (e: MouseEvent) => {
       const p = getCoords(e);
-      dispatch(fieldDragStartSelect(p, circuitId));
+      const modifierKeys = getModifiers(e);
+      dispatch(fieldDragStartSelect(p, modifierKeys, circuitId));
     },
     [circuitId, dispatch, getCoords]
   );

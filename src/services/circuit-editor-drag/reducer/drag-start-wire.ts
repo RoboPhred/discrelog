@@ -22,6 +22,7 @@ export default createCircuitEditorUiDragReducer((state, action, rootState) => {
     dragCircuitId: circuitId,
     dragStart,
     dragWireSource: pin,
+    dragEnd: null,
   };
 });
 
