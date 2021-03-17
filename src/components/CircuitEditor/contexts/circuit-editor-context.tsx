@@ -4,7 +4,6 @@ import useSelector from "@/hooks/useSelector";
 
 import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
 import { circuitEditorStateFromIdSelector } from "@/services/circuit-editors/selectors/editor";
-import { string } from "yup";
 
 export interface CircuitEditorContext {
   editorId: string;
