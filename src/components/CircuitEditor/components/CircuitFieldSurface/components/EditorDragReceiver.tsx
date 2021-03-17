@@ -11,14 +11,15 @@ import { circuitEditorDragContinue } from "@/actions/circuit-editor-drag-continu
 import { circuitEditorDragEnd } from "@/actions/circuit-editor-drag-end";
 import { circuitEditorDragAbort } from "@/actions/circuit-editor-drag-abort";
 
+import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
+
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
 
 const EditorDragReceiver: React.FC = () => {
   const dispatch = useDispatch();
+  const { editorId } = useCircuitEditor();
 
   const isDragging = useSelector(isDraggingSelector);
-
-  console.log("drag receiver", isDragging);
 
   const getCoords = useEventMouseCoords();
 
@@ -35,18 +36,18 @@ const EditorDragReceiver: React.FC = () => {
 
       const coords = getCoords(e);
       const modifierKeys = getModifiers(e);
-      dispatch(circuitEditorDragContinue(coords, modifierKeys));
+      dispatch(circuitEditorDragContinue(coords, modifierKeys, editorId));
     },
-    [dispatch, getCoords]
+    [dispatch, editorId, getCoords]
   );
 
   const onMouseUp = React.useCallback(
     (e: React.MouseEvent) => {
       const coords = getCoords(e);
       const modifierKeys = getModifiers(e);
-      dispatch(circuitEditorDragEnd(coords, modifierKeys));
+      dispatch(circuitEditorDragEnd(coords, modifierKeys, editorId));
     },
-    [dispatch, getCoords]
+    [dispatch, editorId, getCoords]
   );
 
   if (!isDragging) {

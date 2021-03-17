@@ -13,6 +13,8 @@ import { dragDropTargetPinSelector } from "@/services/circuit-editor-drag/select
 
 import { circuitEditorDragStartWire } from "@/actions/circuit-editor-drag-start-wire";
 
+import { useCircuitEditor } from "../../../../contexts/circuit-editor-context";
+
 import { useMouseCoords } from "../../hooks/useMouseCoords";
 
 import styles from "./NodePin.module.css";
@@ -26,6 +28,7 @@ const NodePin: React.FC<NodePinProps> = React.memo(function NodePin({
   nodeId,
   pinId,
 }) {
+  const { editorId } = useCircuitEditor();
   const getMouseCoords = useMouseCoords();
   const [highlight, setHighlight] = React.useState(false);
   const dispatch = useDispatch();
@@ -42,9 +45,9 @@ const NodePin: React.FC<NodePinProps> = React.memo(function NodePin({
   const onDragStart = React.useCallback(
     (e, originalPoint) => {
       const p = getMouseCoords(originalPoint);
-      dispatch(circuitEditorDragStartWire(p, { nodeId, pinId }));
+      dispatch(circuitEditorDragStartWire(p, { nodeId, pinId }, editorId));
     },
-    [dispatch, getMouseCoords, nodeId, pinId]
+    [dispatch, editorId, getMouseCoords, nodeId, pinId]
   );
 
   const { startTracking } = useMouseDragDetector({

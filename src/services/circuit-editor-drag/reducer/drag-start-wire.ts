@@ -10,7 +10,7 @@ export default createCircuitEditorDragReducer((state, action, rootState) => {
     return state;
   }
 
-  const { dragStart, pin } = action.payload;
+  const { x, y, pin, editorId } = action.payload;
 
   const circuitId = circuitIdForNode(pin.nodeId, rootState);
   if (!circuitId) {
@@ -20,10 +20,11 @@ export default createCircuitEditorDragReducer((state, action, rootState) => {
   return {
     ...state,
     dragMode: "wire",
-    dragCircuitId: circuitId,
-    dragStart,
+    dragStart: { x, y },
+    dragStartEditorId: editorId,
     dragWireSource: pin,
     dragEnd: null,
+    dragEndEditorId: null,
   };
 });
 

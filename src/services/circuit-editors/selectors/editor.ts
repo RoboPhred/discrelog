@@ -1,3 +1,5 @@
+import { AppState } from "@/store";
+
 import { CircuitEditorsServiceState } from "../state";
 import { createCircuitEditorsSelector } from "../utils";
 
@@ -5,6 +7,18 @@ export const circuitEditorStateFromIdSelector = createCircuitEditorsSelector(
   (s: CircuitEditorsServiceState, editorId: string) =>
     s.circucitEditorsById[editorId]
 );
+
+export const circuitIdForEditorIdSelector = (
+  state: AppState,
+  editorId: string
+) => {
+  const editorState = circuitEditorStateFromIdSelector(state, editorId);
+  if (!editorState) {
+    return null;
+  }
+
+  return editorState.circuitId;
+};
 
 export const activeCircuitEditorIdSelector = createCircuitEditorsSelector(
   (s) => s.activeEditorId

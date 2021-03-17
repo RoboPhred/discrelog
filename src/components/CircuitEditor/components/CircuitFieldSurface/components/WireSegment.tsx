@@ -26,6 +26,8 @@ import {
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 import { isDraggingSelector } from "@/services/circuit-editor-drag/selectors/drag";
 
+import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
+
 import { useMouseCoords } from "../hooks/useMouseCoords";
 
 export interface WireSegmentProps {
@@ -35,6 +37,7 @@ export interface WireSegmentProps {
 }
 const WireSegment: React.FC<WireSegmentProps> = React.memo(
   function WireSegment({ connectionId, startJointId, endJointId }) {
+    const { editorId } = useCircuitEditor();
     const dispatch = useDispatch();
     const getMouseCoords = useMouseCoords();
     const isSimActive = useSelector(isSimActiveSelector);
@@ -77,11 +80,12 @@ const WireSegment: React.FC<WireSegmentProps> = React.memo(
             connectionId,
             startJointId,
             p,
-            modifiers
+            modifiers,
+            editorId
           )
         );
       },
-      [getMouseCoords, dispatch, connectionId, startJointId]
+      [getMouseCoords, dispatch, connectionId, startJointId, editorId]
     );
 
     const onClick = React.useCallback(

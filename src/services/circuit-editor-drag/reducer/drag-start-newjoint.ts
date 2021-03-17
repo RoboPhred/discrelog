@@ -8,7 +8,14 @@ export default createCircuitEditorDragReducer((state, action, appState) => {
     return state;
   }
 
-  const { connectionId, addAfterJointId, modifierKeys, x, y } = action.payload;
+  const {
+    connectionId,
+    addAfterJointId,
+    modifierKeys,
+    x,
+    y,
+    editorId,
+  } = action.payload;
 
   const circuitId = circuitIdFromConnectionIdSelector(appState, connectionId);
   if (!circuitId) {
@@ -18,12 +25,13 @@ export default createCircuitEditorDragReducer((state, action, appState) => {
   return {
     ...state,
     dragMode: "new-joint" as const,
-    dragCircuitId: circuitId,
     dragStart: {
       x,
       y,
     },
+    dragStartEditorId: editorId,
     dragEnd: null,
+    dragEndEditorId: null,
     dragNewJointConnectionId: connectionId,
     dragNewJointAfterJointId: addAfterJointId,
     dragModifierKeys: modifierKeys,

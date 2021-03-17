@@ -10,38 +10,37 @@ import {
 } from "@/geometry";
 
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
+import { nodePinFromPointSelector } from "@/services/node-layout/selectors/node-pin-positions";
+import { circuitIdForEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
 
 import { createCircuitEditorDragSelector } from "../utils";
 import { CircuitEditorDragServiceState } from "../state";
 
 import { gridJointSnapSelector, gridNodeSnapSelector } from "./snap";
-import { nodePinFromPointSelector } from "@/services/node-layout/selectors/node-pin-positions";
-
-// FIXME: Hack to stop drag appearing on the wrong windows.
-// Drag state should be local to CircuitEditor, not global in redux.
-export const isDragForCircuitSelector = createCircuitEditorDragSelector(
-  (s: CircuitEditorDragServiceState, circuitId: string) => {
-    if (!s.dragMode) {
-      return false;
-    }
-
-    return s.dragCircuitId === circuitId;
-  }
-);
 
 export const dragModeSelector = createCircuitEditorDragSelector(
   (s) => s.dragMode
 );
+
+export const isEditorDraggingSelector = createCircuitEditorDragSelector(
+  (s: CircuitEditorDragServiceState, editorId: string) => {
+    if (s.dragMode == null) {
+      return false;
+    }
+
+    // TODO: Allow dragging in dragEndEditorId if dragMode is move.
+    if (s.dragStartEditorId !== s.dragEndEditorId) {
+      return false;
+    }
+
+    return s.dragStartEditorId === editorId;
+  }
+);
+
 export const isDraggingSelector = createCircuitEditorDragSelector(
   (s) => s.dragMode != null
 );
-export const dragCircuitIdSelector = createCircuitEditorDragSelector((s) => {
-  if (!s.dragMode) {
-    return null;
-  }
 
-  return s.dragCircuitId;
-});
 export const dragStartSelector = createCircuitEditorDragSelector((s) => {
   if (!s.dragMode) {
     return null;
@@ -49,6 +48,7 @@ export const dragStartSelector = createCircuitEditorDragSelector((s) => {
 
   return s.dragStart;
 });
+
 export const dragEndSelector = createCircuitEditorDragSelector((s) => {
   if (!s.dragMode) {
     return null;
@@ -131,10 +131,15 @@ export const dragDropTargetPinSelector = (state: AppState) => {
     return null;
   }
 
-  const { dragEnd, dragCircuitId } = dragState;
+  const { dragEnd, dragStartEditorId } = dragState;
   if (!dragEnd) {
     return null;
   }
 
-  return nodePinFromPointSelector(state, dragEnd, dragCircuitId);
+  const circuitId = circuitIdForEditorIdSelector(state, dragStartEditorId);
+  if (!circuitId) {
+    return null;
+  }
+
+  return nodePinFromPointSelector(state, dragEnd, circuitId);
 };

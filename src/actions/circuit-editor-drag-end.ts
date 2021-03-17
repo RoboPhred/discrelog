@@ -6,10 +6,11 @@ import { ModifierKeys } from "@/modifier-keys";
 export const ACTION_CIRCUIT_EDITOR_DRAG_END = "@circuit-editor/drag/end" as const;
 export const circuitEditorDragEnd = (
   point: Point,
-  modifierKeys: ModifierKeys
+  modifierKeys: ModifierKeys,
+  editorId: string
 ) => ({
   type: ACTION_CIRCUIT_EDITOR_DRAG_END,
-  payload: { ...point, modifierKeys },
+  payload: { ...point, modifierKeys, editorId },
 });
 export type CircuitEditorDragEndAction = ReturnType<
   typeof circuitEditorDragEnd

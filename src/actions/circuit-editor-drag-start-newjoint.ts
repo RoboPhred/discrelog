@@ -8,7 +8,8 @@ export const circuitEditorDragStartNewJoint = (
   connectionId: string,
   addAfterJointId: string | null,
   p: Point,
-  modifierKeys: ModifierKeys
+  modifierKeys: ModifierKeys,
+  editorId: string
 ) => ({
   type: ACTION_CIRCUIT_EDITOR_DRAG_START_NEWJOINT,
   payload: {
@@ -16,6 +17,7 @@ export const circuitEditorDragStartNewJoint = (
     connectionId,
     addAfterJointId,
     modifierKeys,
+    editorId,
   },
 });
 export type CircuitEditorDragStartNewJointAction = ReturnType<

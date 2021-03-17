@@ -6,22 +6,24 @@ import {
   dragEndSelector,
   dragModeSelector,
   dragStartSelector,
-  isDragForCircuitSelector,
+  isEditorDraggingSelector,
 } from "@/services/circuit-editor-drag/selectors/drag";
 
 import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
 
 const DragAttachWirePreviewLayer: React.FC = React.memo(
   function DragAttachWirePreviewLayer() {
-    const { circuitId } = useCircuitEditor();
-    const isDragForSelf = useSelector((state) =>
-      isDragForCircuitSelector(state, circuitId)
+    const { editorId } = useCircuitEditor();
+
+    const isEditorDragging = useSelector((state) =>
+      isEditorDraggingSelector(state, editorId)
     );
+
     const dragMode = useSelector(dragModeSelector);
     const dragStart = useSelector(dragStartSelector);
     const dragEnd = useSelector(dragEndSelector);
 
-    if (!isDragForSelf || dragMode != "wire" || !dragStart || !dragEnd) {
+    if (!isEditorDragging || dragMode != "wire" || !dragStart || !dragEnd) {
       return null;
     }
 

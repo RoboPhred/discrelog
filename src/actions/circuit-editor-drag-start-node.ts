@@ -7,13 +7,15 @@ export const ACTION_CIRCUIT_EDITOR_DRAG_START_NODE = "@field/drag/start/node" as
 export const circuitEditorDragStartNode = (
   nodeId: string,
   p: Point,
-  modifierKeys: ModifierKeys
+  modifierKeys: ModifierKeys,
+  editorId: string
 ) => ({
   type: ACTION_CIRCUIT_EDITOR_DRAG_START_NODE,
   payload: {
     ...p,
     nodeId,
     modifierKeys,
+    editorId,
   },
 });
 export type CircuitEditorDragStartNodeAction = ReturnType<

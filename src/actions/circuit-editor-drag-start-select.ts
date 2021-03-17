@@ -7,13 +7,13 @@ export const ACTION_CIRCUIT_EDITOR_DRAG_START_SELECT = "@circuit-editor/drag/sta
 export const circuitEditorDragStartSelect = (
   p: Point,
   modifierKeys: ModifierKeys,
-  circuitId: string
+  editorId: string
 ) => ({
   type: ACTION_CIRCUIT_EDITOR_DRAG_START_SELECT,
   payload: {
     ...p,
     modifierKeys,
-    circuitId,
+    editorId,
   },
 });
 export type CircuitEditorDragStartSelectAction = ReturnType<

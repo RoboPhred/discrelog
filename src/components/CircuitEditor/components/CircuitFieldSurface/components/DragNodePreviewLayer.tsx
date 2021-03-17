@@ -11,7 +11,7 @@ import { nodePositionsByNodeIdSelector } from "@/services/node-layout/selectors/
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 import {
   dragMoveOffsetSelector,
-  isDragForCircuitSelector,
+  isEditorDraggingSelector,
 } from "@/services/circuit-editor-drag/selectors/drag";
 
 import useSelector from "@/hooks/useSelector";
@@ -35,9 +35,10 @@ const selectedNodeTypesByIdSelector = createSelector(
 
 const DragNodePreviewLayer: React.FC = React.memo(
   function DragNodePreviewLayer() {
-    const { circuitId } = useCircuitEditor();
-    const isDragForSelf = useSelector((state) =>
-      isDragForCircuitSelector(state, circuitId)
+    const { editorId } = useCircuitEditor();
+
+    const isDragging = useSelector((state) =>
+      isEditorDraggingSelector(state, editorId)
     );
 
     const selectedNodePositionsById = useSelector(
@@ -46,7 +47,7 @@ const DragNodePreviewLayer: React.FC = React.memo(
     const selectedNodeTypesById = useSelector(selectedNodeTypesByIdSelector);
     const dragMoveOffset = useSelector(dragMoveOffsetSelector);
 
-    if (!isDragForSelf || !dragMoveOffset) {
+    if (!isDragging || !dragMoveOffset) {
       return null;
     }
 

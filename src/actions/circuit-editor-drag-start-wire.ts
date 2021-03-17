@@ -4,11 +4,16 @@ import { Point } from "@/geometry";
 import { NodePin } from "@/services/node-graph/types";
 
 export const ACTION_CIRCUIT_EDITOR_DRAG_START_WIRE = "@circuit-editor/drag/start/wire" as const;
-export const circuitEditorDragStartWire = (dragStart: Point, pin: NodePin) => ({
+export const circuitEditorDragStartWire = (
+  dragStart: Point,
+  pin: NodePin,
+  editorId: string
+) => ({
   type: ACTION_CIRCUIT_EDITOR_DRAG_START_WIRE,
   payload: {
-    dragStart,
+    ...dragStart,
     pin,
+    editorId,
   },
 });
 export type CircuitEditorDragStartWireAction = ReturnType<

@@ -9,7 +9,7 @@ import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
 import { getModifiers } from "@/modifier-keys";
 
 import {
-  isDragForCircuitSelector,
+  isEditorDraggingSelector,
   selectionRectSelector,
 } from "@/services/circuit-editor-drag/selectors/drag";
 
@@ -23,10 +23,11 @@ import { useMouseCoords } from "../hooks/useMouseCoords";
 
 const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
   const dispatch = useDispatch();
-  const { circuitId } = useCircuitEditor();
+  const { editorId } = useCircuitEditor();
   const { zoomFactor } = useViewportContext();
-  const isDragForSelf = useSelector((state) =>
-    isDragForCircuitSelector(state, circuitId)
+
+  const isDragging = useSelector((state) =>
+    isEditorDraggingSelector(state, editorId)
   );
 
   const selectionRect = useSelector(selectionRectSelector);
@@ -54,9 +55,9 @@ const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
     (e: MouseEvent, originalPoint: Point) => {
       const p = getCoords(originalPoint);
       const modifierKeys = getModifiers(e);
-      dispatch(circuitEditorDragStartSelect(p, modifierKeys, circuitId));
+      dispatch(circuitEditorDragStartSelect(p, modifierKeys, editorId));
     },
-    [circuitId, dispatch, getCoords]
+    [dispatch, editorId, getCoords]
   );
 
   const { startTracking: onMouseDown } = useMouseDragDetector({
@@ -77,7 +78,7 @@ const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
         fill="transparent"
         onMouseDown={onMouseDown}
       />
-      {isDragForSelf && selectionRect && (
+      {isDragging && selectionRect && (
         <g
           transform={`translate(${selectionRect.p1.x}, ${selectionRect.p1.y})`}
         >

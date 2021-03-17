@@ -9,7 +9,6 @@ import { useComponentBounds } from "@/hooks/useComponentBounds";
 
 import { fieldRectSelector } from "@/services/node-layout/selectors/field";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
-import { circuitEditorStateFromIdSelector } from "@/services/circuit-editors/selectors/editor";
 
 import { useContextMenu } from "@/components/ContextMenu";
 
@@ -33,9 +32,6 @@ const CircuitEditor: React.FC<CircuitEditorProps> = ({
   className,
   editorId,
 }) => {
-  const { circuitId, circuitNodeIdPath } = useSelector((state) =>
-    circuitEditorStateFromIdSelector(state, editorId)
-  );
   const isSimActive = useSelector(isSimActiveSelector);
 
   const { openContextMenu, renderContextMenu } = useContextMenu();
@@ -43,10 +39,7 @@ const CircuitEditor: React.FC<CircuitEditorProps> = ({
   // svg seems to have an implicit bottom margin against its parent div
   // Wrapping it in a div of the same size fixes it.
   return (
-    <CircuitEditorProvider
-      circuitId={circuitId}
-      circuitNodeIdPath={circuitNodeIdPath}
-    >
+    <CircuitEditorProvider editorId={editorId}>
       <div
         id={`circuit-editor-${editorId}`}
         className={cls(

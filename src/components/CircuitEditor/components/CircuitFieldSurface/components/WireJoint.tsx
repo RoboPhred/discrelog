@@ -15,6 +15,8 @@ import { isSimActiveSelector } from "@/services/simulator-control/selectors/run"
 import { selectWireJoints } from "@/actions/select-wire-joints";
 import { circuitEditorDragStartJoint } from "@/actions/circuit-editor-drag-start-joint";
 
+import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
+
 import { useMouseCoords } from "../hooks/useMouseCoords";
 
 import WireJointVisual from "./WireJointVisual";
@@ -26,6 +28,7 @@ interface WireJointProps {
 const WireJoint: React.FC<WireJointProps> = React.memo(function WireJoint({
   jointId,
 }) {
+  const { editorId } = useCircuitEditor();
   const getMouseCoords = useMouseCoords();
   const dispatch = useDispatch();
   const isSimActive = useSelector(isSimActiveSelector);
@@ -41,9 +44,9 @@ const WireJoint: React.FC<WireJointProps> = React.memo(function WireJoint({
     (e: MouseEvent, originalPoint: Point) => {
       const p = getMouseCoords(originalPoint);
       const modifiers = getModifiers(e);
-      dispatch(circuitEditorDragStartJoint(jointId, p, modifiers));
+      dispatch(circuitEditorDragStartJoint(jointId, p, modifiers, editorId));
     },
-    [dispatch, getMouseCoords, jointId]
+    [dispatch, editorId, getMouseCoords, jointId]
   );
 
   const onClick = React.useCallback(

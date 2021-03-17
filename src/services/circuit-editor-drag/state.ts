@@ -9,14 +9,19 @@ export interface CircuitEditorDragNullState {
 
 export interface CircuitEditorDragActiveState {
   /**
-   * The circuit this drag operation is taking place in.
+   * The editor this drag operation started in.
    */
-  dragCircuitId: string;
+  dragStartEditorId: string;
 
   /**
    * The start of the drag operation.
    */
   dragStart: Point;
+
+  /**
+   * The editor the drag operation is currently in.
+   */
+  dragEndEditorId: string | null;
 
   /**
    * The current end point for the drag operation.  This does not indicate the final

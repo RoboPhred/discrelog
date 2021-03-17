@@ -40,7 +40,7 @@ export interface NodeProps {
 
 const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
   const dispatch = useDispatch();
-  const { circuitNodeIdPath } = useCircuitEditor();
+  const { editorId, circuitNodeIdPath } = useCircuitEditor();
   const isSimActive = useSelector(isSimActiveSelector);
 
   const { openContextMenu, renderContextMenu } = useContextMenu();
@@ -100,9 +100,9 @@ const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
     (e: MouseEvent, originalPoint: Point) => {
       const p = getCoords(originalPoint);
       const modifiers = getModifiers(e);
-      dispatch(circuitEditorDragStartNode(nodeId, p, modifiers));
+      dispatch(circuitEditorDragStartNode(nodeId, p, modifiers, editorId));
     },
-    [getCoords, dispatch, nodeId]
+    [getCoords, dispatch, nodeId, editorId]
   );
 
   const { startTracking } = useMouseDragDetector({

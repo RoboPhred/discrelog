@@ -7,11 +7,12 @@ export default createCircuitEditorDragReducer((state, action) => {
     return state;
   }
 
-  const { dragPos, modifierKeys } = action.payload;
+  const { dragPos, modifierKeys, editorId } = action.payload;
 
   return {
     ...state,
     dragEnd: dragPos,
+    dragEndEditorId: editorId,
     dragModifierKeys: modifierKeys,
   };
 });
