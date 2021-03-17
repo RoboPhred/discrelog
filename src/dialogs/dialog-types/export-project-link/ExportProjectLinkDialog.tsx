@@ -6,12 +6,13 @@ import { useAction } from "@/hooks/useAction";
 import { acceptDialog } from "@/actions/dialog-response-accept";
 
 import { dialogDataSelector } from "@/services/dialog/selectors/dialog";
-import { ExportProjectLinkDialogData } from "@/services/dialog/state";
 
 import Button from "@/components/Button";
 import Dialog from "@/components/Dialog";
 
-import styles from "./Dialogs.module.css";
+import styles from "./ExportProjectLinkDialog.module.css";
+
+import { ExportProjectLinkDialogData } from "./types";
 
 const ExportProjectLinkDialog: React.FC = () => {
   const onCloseDialog = useAction(acceptDialog);
@@ -40,6 +41,7 @@ const ExportProjectLinkDialog: React.FC = () => {
   return (
     <Dialog
       isOpen={true}
+      title="Export Project Link"
       cancelText="Close"
       onCancel={onCloseDialog}
       footer={dialogFooter}

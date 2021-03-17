@@ -32,13 +32,13 @@ const ProjectEditorTitleBar: React.FC<ProjectEditorTitleBarProps> = ({
   return (
     <TitleBar className={className} title={title}>
       <AutoPopover content={<FileMenu />} placement="bottom-start">
-        <Button>File</Button>
+        <Button variant="menu">File</Button>
       </AutoPopover>
       <AutoPopover content={<EditMenu />} placement="bottom-start">
-        <Button>Edit</Button>
+        <Button variant="menu">Edit</Button>
       </AutoPopover>
       <AutoPopover content={<ViewMenu />} placement="bottom-start">
-        <Button>View</Button>
+        <Button variant="menu">View</Button>
       </AutoPopover>
       <div className={styles["project-titlebar-controls"]}>
         <SimControls />

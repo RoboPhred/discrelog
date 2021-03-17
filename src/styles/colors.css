@@ -3,6 +3,8 @@
   --color-element-selected: goldenrod;
   --color-element-powered: green;
 
+  --color-ui-primary-bg: rgb(0, 182, 0);
+
   --color-ui-light-bg: white;
   --color-ui-light-border: rgb(117, 117, 117);
   --color-ui-light-hover: rgb(218, 218, 218);
