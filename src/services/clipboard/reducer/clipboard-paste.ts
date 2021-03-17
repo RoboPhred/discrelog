@@ -72,13 +72,21 @@ export default function clipboardPasteReducer(
     const sourceId = pasteIds[id];
     for (const outputPin of Object.keys(outputs)) {
       for (const output of outputs[outputPin]) {
-        const { nodeId: targetCopyId, pinId: targetPin } = output;
+        const {
+          pin: { nodeId: targetCopyId, pinId: targetPin },
+          joints,
+        } = output;
         const targetId = pasteIds[targetCopyId];
         state = rootReducer(
           state,
           attachWire(
             { nodeId: sourceId, pinId: outputPin },
-            { nodeId: targetId, pinId: targetPin }
+            { nodeId: targetId, pinId: targetPin },
+            {
+              joints: joints.map((jointPos) =>
+                pointAdd(jointPos, pastePosition!)
+              ),
+            }
           )
         );
       }

@@ -44,6 +44,21 @@ export const connectionIdFromInputPinSelector = createNodeGraphSelector(
   }
 );
 
+export const connectionIdFromOutputPinSelector = createNodeGraphSelector(
+  (state: NodeGraphServiceState, pin: NodePin) => {
+    const { connectionsById } = state;
+    const connectionIds = Object.keys(connectionsById);
+    for (const connectionId of connectionIds) {
+      const connection = connectionsById[connectionId];
+      if (nodePinEquals(connection.outputPin, pin)) {
+        return connectionId;
+      }
+    }
+
+    return null;
+  }
+);
+
 /**
  * Gets an array of connection ids supplying input to the specified node.
  * WARN: Not react safe.  For reducer use only.
