@@ -27,6 +27,18 @@ export const activeCircuitEditorStateSelector = createCircuitEditorsSelector(
   (s) => (s.activeEditorId ? s.circucitEditorsById[s.activeEditorId] : null)
 );
 
+export const activeCircuitIdSelector = createCircuitEditorsSelector((s) => {
+  if (!s.activeEditorId) {
+    return null;
+  }
+  const editorState = s.circucitEditorsById[s.activeEditorId];
+  if (!editorState) {
+    return null;
+  }
+
+  return editorState.circuitId;
+});
+
 export const editorIdsFromCircuitIdSelector = createCircuitEditorsSelector(
   (s: CircuitEditorsServiceState, circuitId: string) => {
     return Object.keys(s.circucitEditorsById).filter(

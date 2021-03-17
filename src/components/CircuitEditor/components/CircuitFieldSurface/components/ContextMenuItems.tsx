@@ -1,51 +1,40 @@
 import * as React from "react";
 
 import { keyboardCommandModifier } from "@/runtime-env";
+import { Point } from "@/geometry";
 
 import { useAction } from "@/hooks/useAction";
 import useSelector from "@/hooks/useSelector";
 
-import { canRedoSelector, canUndoSelector } from "@/undo/selectors";
-
 import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
 import { canPasteSelector } from "@/services/clipboard/selectors/clipboard";
 
-import { undo } from "@/actions/undo";
-import { redo } from "@/actions/redo";
-import { copySelection } from "@/actions/selection-copy";
 import { paste } from "@/actions/clipboard-paste";
+import { selectionAlignToGrid } from "@/actions/selection-align-to-grid";
+import { deleteSelection } from "@/actions/selection-delete";
+import { copySelection } from "@/actions/selection-copy";
 
-import Menu from "@/components/Menus/Menu";
 import MenuItem from "@/components/Menus/MenuItem";
 import DividerMenuItem from "@/components/Menus/DividerMenuItem";
 
-const EditMenu: React.FC = () => {
-  const canUndo = useSelector(canUndoSelector);
-  const onUndo = useAction(undo);
-  const canRedo = useSelector(canRedoSelector);
-  const onRedo = useAction(redo);
+export interface ContextMenuItemsProps {
+  fieldPosition: Point;
+}
+const ContextMenuItems: React.FC<ContextMenuItemsProps> = ({
+  fieldPosition,
+}) => {
+  const onAlignToGrid = useAction(selectionAlignToGrid);
 
   const canCopy = useSelector(selectedNodeIdsSelector).length > 0;
   const onCopy = useAction(copySelection);
   const canPaste = useSelector(canPasteSelector);
-  const onPaste = useAction(paste);
+  const onPaste = useAction(paste, { pastePosition: fieldPosition });
+
+  const onDelete = useAction(deleteSelection);
 
   return (
-    <Menu>
-      <MenuItem
-        disabled={!canUndo}
-        secondary={`${keyboardCommandModifier}+z`}
-        onClick={onUndo}
-      >
-        Undo
-      </MenuItem>
-      <MenuItem
-        disabled={!canRedo}
-        secondary={`${keyboardCommandModifier}+shift+z`}
-        onClick={onRedo}
-      >
-        Redo
-      </MenuItem>
+    <>
+      <MenuItem onClick={onAlignToGrid}>Align Selection To Grid</MenuItem>
       <DividerMenuItem />
       <MenuItem
         disabled={!canCopy}
@@ -61,8 +50,10 @@ const EditMenu: React.FC = () => {
       >
         Paste
       </MenuItem>
-    </Menu>
+      <DividerMenuItem />
+      <MenuItem onClick={onDelete}>Delete Selected</MenuItem>
+    </>
   );
 };
 
-export default EditMenu;
+export default ContextMenuItems;

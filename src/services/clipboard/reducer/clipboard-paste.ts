@@ -4,7 +4,7 @@ import map from "lodash/map";
 import values from "lodash/values";
 import { v4 as uuidV4 } from "uuid";
 
-import { pointAdd } from "@/geometry";
+import { pointAdd, snapPoint } from "@/geometry";
 import { AppState, defaultAppState } from "@/store";
 import { fpSet } from "@/utils";
 
@@ -16,6 +16,7 @@ import { isPasteAction } from "@/actions/clipboard-paste";
 import { selectNodes } from "@/actions/select-nodes";
 
 import { gridNodeSnapSelector } from "@/services/circuit-editor-drag/selectors/snap";
+import { activeCircuitIdSelector } from "@/services/circuit-editors/selectors/editor";
 
 export default function clipboardPasteReducer(
   state: AppState = defaultAppState,
@@ -25,14 +26,28 @@ export default function clipboardPasteReducer(
     return state;
   }
 
-  const { targetCircuitId } = action.payload;
+  const circuitId = activeCircuitIdSelector(state);
+  if (!circuitId) {
+    return state;
+  }
 
   const { clipboardNodes, clipboardPasteOrigin } = state.services.clipboard;
+
+  if (!clipboardNodes.length) {
+    return state;
+  }
+
+  let { pastePosition } = action.payload;
+
   const gridSnap = gridNodeSnapSelector(state);
-  const pastePosition = pointAdd(clipboardPasteOrigin, {
-    x: gridSnap,
-    y: gridSnap,
-  });
+  if (!pastePosition) {
+    pastePosition = pointAdd(clipboardPasteOrigin, {
+      x: gridSnap,
+      y: gridSnap,
+    });
+  } else {
+    pastePosition = snapPoint(pastePosition, gridSnap);
+  }
 
   const pasteIds = zipObject(
     clipboardNodes.map((x) => x.id),
@@ -47,7 +62,7 @@ export default function clipboardPasteReducer(
     const p = pointAdd(pastePosition, offset);
     state = rootReducer(
       state,
-      addNode(nodeType, targetCircuitId, p, { nodeId: pasteIds[id] })
+      addNode(nodeType, circuitId, p, { nodeId: pasteIds[id] })
     );
   }
 

@@ -48,11 +48,13 @@ const NodeTrayWindow: React.FC = () => {
           placeholder="Search"
         />
       </div>
-      <ul className={styles["node-tray-elements"]}>
-        {categories.map((category) => (
-          <TrayCategory key={category} category={category} search={search} />
-        ))}
-      </ul>
+      <div className={styles["node-tray-element-container"]}>
+        <ul className={styles["node-tray-element-list"]}>
+          {categories.map((category) => (
+            <TrayCategory key={category} category={category} search={search} />
+          ))}
+        </ul>
+      </div>
     </TesselWindow>
   );
 };

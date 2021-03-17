@@ -66,15 +66,15 @@ const CircuitEditorWindow: React.FC<CircuitEditorWindowProps> = ({
     }
     const keyHandlers: KeymapHandler = {
       [KEYMAP_SIM_STEP]: createEventDispatcher(stepSim()),
-      [KEYMAP_SELECT_ALL]: createEventDispatcher(selectAll(circuitId)),
+      [KEYMAP_SELECT_ALL]: createEventDispatcher(selectAll()),
       [KEYMAP_COPY]: createEventDispatcher(copySelection()),
-      [KEYMAP_PASTE]: createEventDispatcher(paste(circuitId)),
+      [KEYMAP_PASTE]: createEventDispatcher(paste()),
       [KEYMAP_DELETE]: createEventDispatcher(deleteSelection()),
       [KEYMAP_UNDO]: createEventDispatcher(undo()),
       [KEYMAP_REDO]: createEventDispatcher(redo()),
     };
     return keyHandlers;
-  }, [dispatch, circuitId]);
+  }, [dispatch]);
 
   const onViewActivated = React.useCallback(() => {
     dispatch(circuitEditorReceiveFocus(editorId));

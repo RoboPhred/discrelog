@@ -167,7 +167,9 @@ const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
         {body}
       </g>
       <NodeName nodeId={nodeId} hitRect={rect} />
-      {renderContextMenu(<NodeContextMenu nodeId={nodeId} />)}
+      {renderContextMenu(({ point }) => (
+        <NodeContextMenu nodeId={nodeId} fieldPosition={getCoords(point)} />
+      ))}
     </g>
   );
 });

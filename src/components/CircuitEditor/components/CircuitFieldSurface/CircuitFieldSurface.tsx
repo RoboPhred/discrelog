@@ -12,7 +12,7 @@ import { FieldSvgElementProvider } from "./contexts/fieldSvgElement";
 import DragNewNodeLayer from "./components/DragNewNodeLayer";
 import DragNodePreviewLayer from "./components/DragNodePreviewLayer";
 import DragJointPreviewLayer from "./components/DragJointPreviewLayer";
-import DragSelectLayer from "./components/DragSelectLayer";
+import FieldMouseLayer from "./components/FieldMouseLayer";
 import GridBackground from "./components/GridBackground";
 import NodesLayer from "./components/NodesLayer";
 import WiresLayer from "./components/WiresLayer";
@@ -25,12 +25,10 @@ import styles from "./CircuitFieldSurface.module.css";
 export interface CircuitFieldSurfaceProps {
   width: number;
   height: number;
-  onContextMenu(e: React.MouseEvent): void;
 }
 const CircuitFieldSurface: React.FC<CircuitFieldSurfaceProps> = ({
   width,
   height,
-  onContextMenu: openContextMenu,
 }) => {
   const dispatch = useDispatch();
   const { zoomFactor } = useViewportContext();
@@ -45,17 +43,6 @@ const CircuitFieldSurface: React.FC<CircuitFieldSurfaceProps> = ({
   const onMouseLeave = React.useCallback(() => {
     dispatch(circuitEditorMouseLeave());
   }, [dispatch]);
-
-  const onContextMenu = React.useCallback(
-    (e: React.MouseEvent) => {
-      if (e.defaultPrevented) {
-        return;
-      }
-      e.preventDefault();
-      openContextMenu(e);
-    },
-    [openContextMenu]
-  );
 
   // We need to capture the drag event at a deeper parent,
   // because mouse events cannot pass through DragNewNodeLayer's
@@ -84,7 +71,6 @@ const CircuitFieldSurface: React.FC<CircuitFieldSurfaceProps> = ({
       height={height}
       onMouseDown={onMouseDown}
       onMouseLeave={onMouseLeave}
-      onContextMenu={onContextMenu}
       className={styles["circuit-field-svg"]}
     >
       <GridBackground />
@@ -94,7 +80,7 @@ const CircuitFieldSurface: React.FC<CircuitFieldSurfaceProps> = ({
         transform={`scale(${zoomFactor})`}
       >
         <FieldSvgElementProvider svgRef={svgRef} scalerRef={scalerRef}>
-          <DragSelectLayer />
+          <FieldMouseLayer />
           <NodesLayer />
           <WiresLayer />
           <NodePinsLayer />

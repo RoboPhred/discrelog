@@ -10,9 +10,6 @@ import { useComponentBounds } from "@/hooks/useComponentBounds";
 import { fieldRectSelector } from "@/services/node-layout/selectors/field";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 
-import { useContextMenu } from "@/components/ContextMenu";
-
-import FieldContextMenu from "./components/FieldContextMenu";
 import CircuitFieldSurface from "./components/CircuitFieldSurface";
 
 import { CircuitEditorProvider } from "./contexts/circuit-editor-context";
@@ -34,8 +31,6 @@ const CircuitEditor: React.FC<CircuitEditorProps> = ({
 }) => {
   const isSimActive = useSelector(isSimActiveSelector);
 
-  const { openContextMenu, renderContextMenu } = useContextMenu();
-
   // svg seems to have an implicit bottom margin against its parent div
   // Wrapping it in a div of the same size fixes it.
   return (
@@ -51,10 +46,9 @@ const CircuitEditor: React.FC<CircuitEditorProps> = ({
       >
         <div className={styles["circuit-editor-scrollarea"]}>
           <ViewportContextProvider>
-            <ZoomingCircuitFieldSurface onContextMenu={openContextMenu} />
+            <ZoomingCircuitFieldSurface />
           </ViewportContextProvider>
         </div>
-        {renderContextMenu(<FieldContextMenu />)}
       </div>
     </CircuitEditorProvider>
   );
@@ -62,12 +56,7 @@ const CircuitEditor: React.FC<CircuitEditorProps> = ({
 
 export default CircuitEditor;
 
-interface ZoomingCircuitFieldSurface {
-  onContextMenu(e: React.MouseEvent): void;
-}
-const ZoomingCircuitFieldSurface: React.FC<ZoomingCircuitFieldSurface> = ({
-  onContextMenu,
-}) => {
+const ZoomingCircuitFieldSurface: React.FC = ({}) => {
   const sizeRef = React.useRef<HTMLDivElement | null>(null);
   const { width: componentWidth, height: componentHeight } = useComponentBounds(
     sizeRef
@@ -105,11 +94,7 @@ const ZoomingCircuitFieldSurface: React.FC<ZoomingCircuitFieldSurface> = ({
 
   return (
     <div ref={sizeRef} style={{ width: "100%", height: "100%" }}>
-      <CircuitFieldSurface
-        width={width}
-        height={height}
-        onContextMenu={onContextMenu}
-      />
+      <CircuitFieldSurface width={width} height={height} />
     </div>
   );
 };
