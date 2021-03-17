@@ -3,11 +3,11 @@ import * as React from "react";
 import { cls } from "@/utils";
 
 import useSelector from "@/hooks/useSelector";
+import { useClickAction } from "@/hooks/useAction";
 
 import { startSim } from "@/actions/sim-start";
 import { stopSim } from "@/actions/sim-stop";
 import { pauseSim } from "@/actions/sim-pause";
-import { useClickAction } from "@/hooks/useAction";
 import { stepSim } from "@/actions/sim-step";
 
 import {
@@ -16,10 +16,10 @@ import {
 } from "@/services/simulator-control/selectors/run";
 import { averageMsecsPerTickSelector } from "@/services/simulator/selectors/performance";
 
-import PlayIcon from "../Icons/Play";
-import StopIcon from "../Icons/Stop";
-import PauseIcon from "../Icons/Pause";
-import StepIcon from "../Icons/Step";
+import PlayIcon from "@/components/Icons/Play";
+import StopIcon from "@/components/Icons/Stop";
+import PauseIcon from "@/components/Icons/Pause";
+import StepIcon from "@/components/Icons/Step";
 
 import styles from "./SimControls.module.css";
 

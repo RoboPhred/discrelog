@@ -10,8 +10,8 @@ import { canRedoSelector, canUndoSelector } from "@/undo/selectors";
 import { undo } from "@/actions/undo";
 import { redo } from "@/actions/redo";
 
-import Menu from "./Menus/Menu";
-import MenuItem from "./Menus/MenuItem";
+import Menu from "@/components/Menus/Menu";
+import MenuItem from "@/components/Menus/MenuItem";
 
 const EditMenu: React.FC = () => {
   const canUndo = useSelector(canUndoSelector);

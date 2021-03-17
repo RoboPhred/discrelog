@@ -8,12 +8,7 @@
 
 .titlebar-heading {
   font-size: 16px;
-  margin-right: 15px;
-}
-
-.titlebar-projectname {
-  margin-left: auto;
-  margin-right: auto;
+  margin-right: 10px;
 }
 
 .titlebar-divider {
@@ -23,7 +18,3 @@
   margin: 0 10px;
 }
 
-.titlebar-controls {
-  display: inline;
-  margin-left: auto;
-}

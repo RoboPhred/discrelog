@@ -5,11 +5,11 @@ import { newProject } from "@/actions/project-new";
 import { saveProject } from "@/actions/project-save";
 import { loadProject } from "@/actions/project-load";
 import { exportProjectLink } from "@/actions/project-export-link";
-
-import Menu from "./Menus/Menu";
-import MenuItem from "./Menus/MenuItem";
-import DividerMenuItem from "./Menus/DividerMenuItem";
 import { importCircuitFromProject } from "@/actions/project-import-circuits";
+
+import Menu from "@/components/Menus/Menu";
+import MenuItem from "@/components/Menus/MenuItem";
+import DividerMenuItem from "@/components/Menus/DividerMenuItem";
 
 const FileMenu: React.FC = () => {
   const onNewProject = useAction(newProject);

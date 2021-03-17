@@ -8,11 +8,11 @@ import { resetView } from "@/actions/view-reset";
 
 import { nodeNameModeSelector } from "@/services/ui-settings/selectors/node-name";
 
-import Menu from "./Menus/Menu";
-import CheckboxMenuItemItem from "./Menus/CheckboxMenuItem";
-import SubMenuItem from "./Menus/SubMenuItem";
-import DividerMenuItem from "./Menus/DividerMenuItem";
-import MenuItem from "./Menus/MenuItem";
+import Menu from "@/components/Menus/Menu";
+import CheckboxMenuItemItem from "@/components/Menus/CheckboxMenuItem";
+import SubMenuItem from "@/components/Menus/SubMenuItem";
+import DividerMenuItem from "@/components/Menus/DividerMenuItem";
+import MenuItem from "@/components/Menus/MenuItem";
 
 const ViewMenu: React.FC = () => {
   const onResetView = useAction(resetView);
