@@ -364,6 +364,8 @@ body,
   --color-element-selected: goldenrod;
   --color-element-powered: green;
 
+  --color-ui-primary-bg: rgb(0, 182, 0);
+
   --color-ui-light-bg: white;
   --color-ui-light-border: rgb(117, 117, 117);
   --color-ui-light-hover: rgb(218, 218, 218);
@@ -570,11 +572,12 @@ body,
   display: flex;
   align-items: center;
   border-bottom: 1px solid rgba(0, 0, 0, 40%);
+  position: relative;
 }
 
 .titlebar-heading--3RAl1 {
   font-size: 16px;
-  margin-right: 10px;
+  font-weight: bold;
 }
 
 .titlebar-divider--Wl_27 {
@@ -584,13 +587,17 @@ body,
   margin: 0 10px;
 }
 
+.titlebar-title--HXGig {
+  position: absolute;
+  left: 50%;
+  text-align: center;
+}
 
 .button--Ui3Hp {
   border-radius: 3px;
   border: none;
   background: white;
   background: var(--color-ui-light-bg);
-  padding: 3px 6px;
   cursor: pointer;
   margin: 2px;
   -webkit-user-select: none;
@@ -610,6 +617,27 @@ body,
   background-color: var(--color-ui-light-hover);
 }
 
+.button--size-small--289kb {
+  padding: 3px 6px;
+}
+
+.button--size-default--dnLXK {
+  padding: 7px 10px;
+}
+
+.button--variant-primary--2qpAa {
+  background: rgb(0, 182, 0);
+  background: var(--color-ui-primary-bg)
+}
+
+.button--variant-default---2bie {
+  background: rgb(231, 231, 231);
+  background: var(--color-ui-surface-bg)
+}
+
+.button--variant-menu--3lEZ1 {
+  background: none;
+}
 .menu--3E86w {
   background: white;
   background: var(--color-ui-light-bg);
@@ -738,16 +766,11 @@ body,
 }
 
 
-.project-titlebar-projectname--20U9D {
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .project-titlebar-controls--1c1Qn {
   display: inline;
+  margin-left: auto;
 }
 .circuit-node-breadcrumb--3Rx3N {
-  height: 30px;
   background: white;
   background: var(--color-ui-light-bg);
 }
@@ -1016,26 +1039,35 @@ body,
   background: var(--color-ui-light-bg);
   border-radius: 5px;
   min-height: 100px;
-  padding: 5px 10px;
+  padding: 15px 20px;
+}
+
+.dialog-title--1DWsL {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .dialog-footer--2hYdr {
+  margin-top: 10px;
   display: flex;
   flex-direction: row;
-  justify-items: flex-end;
+  justify-content: flex-end;
 }
 
-.export-link-dialog-link-container--3uQpv {
+
+.export-link-dialog-link-container--phwUA {
   max-height: 400px;
   overflow: auto;
 }
 
-.export-link-dialog-link--1o62F {
+.export-link-dialog-link--1dOdK {
   overflow-wrap: break-word;
 }
 
-.import-project-circuits-list--1Ykhs {
+.import-project-circuits-list--2ODCz {
   list-style: none;
+  padding: 0
 }
 
 
