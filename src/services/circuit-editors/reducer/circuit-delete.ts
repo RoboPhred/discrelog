@@ -12,7 +12,7 @@ export default createCircuitEditorsReducer((state, action) => {
   const { circuitId } = action.payload;
 
   const keepIds = Object.keys(state.circucitEditorsById).filter(
-    (id) => state.circucitEditorsById[id].circuitId === circuitId
+    (id) => state.circucitEditorsById[id].circuitId !== circuitId
   );
 
   let activeEditorId = state.activeEditorId;

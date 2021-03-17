@@ -12,7 +12,6 @@ import flex from "@/styles/flex.module.css";
 import { circuitEditorStateFromIdSelector } from "@/services/circuit-editors/selectors/editor";
 import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
 
-import { fastForwardSim } from "@/actions/sim-fastforward";
 import { paste } from "@/actions/clipboard-paste";
 import { copySelection } from "@/actions/selection-copy";
 import { deleteSelection } from "@/actions/selection-delete";
@@ -29,7 +28,6 @@ import TesselWindow from "@/components/Tessel/TesselWindow";
 import keymap, {
   KeymapHandler,
   KEYMAP_SIM_STEP,
-  KEYMAP_SIM_FASTFORWARD,
   KEYMAP_COPY,
   KEYMAP_PASTE,
   KEYMAP_DELETE,
@@ -68,7 +66,6 @@ const CircuitEditorWindow: React.FC<CircuitEditorWindowProps> = ({
     }
     const keyHandlers: KeymapHandler = {
       [KEYMAP_SIM_STEP]: createEventDispatcher(stepSim()),
-      [KEYMAP_SIM_FASTFORWARD]: createEventDispatcher(fastForwardSim()),
       [KEYMAP_SELECT_ALL]: createEventDispatcher(selectAll(circuitId)),
       [KEYMAP_COPY]: createEventDispatcher(copySelection()),
       [KEYMAP_PASTE]: createEventDispatcher(paste(circuitId)),

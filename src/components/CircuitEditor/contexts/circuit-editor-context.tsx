@@ -2,7 +2,6 @@ import * as React from "react";
 
 import useSelector from "@/hooks/useSelector";
 
-import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
 import { circuitEditorStateFromIdSelector } from "@/services/circuit-editors/selectors/editor";
 
 export interface CircuitEditorContext {
@@ -13,7 +12,7 @@ export interface CircuitEditorContext {
 
 const circuitEditorContext = React.createContext<CircuitEditorContext>({
   editorId: "~none",
-  circuitId: ROOT_CIRCUIT_ID,
+  circuitId: "~none",
   circuitNodeIdPath: [],
 });
 
@@ -28,9 +27,14 @@ export const CircuitEditorProvider: React.FC<CircuitEditorProviderProps> = ({
   editorId,
   children,
 }) => {
-  const { circuitId, circuitNodeIdPath } = useSelector((state) =>
+  const editorState = useSelector((state) =>
     circuitEditorStateFromIdSelector(state, editorId)
   );
+  const { circuitId, circuitNodeIdPath } = editorState ?? {
+    circuitId: "~none",
+    circuitNodeIdPath: [],
+  };
+
   const context = React.useMemo<CircuitEditorContext>(
     () => ({
       editorId,
@@ -39,6 +43,11 @@ export const CircuitEditorProvider: React.FC<CircuitEditorProviderProps> = ({
     }),
     [circuitId, circuitNodeIdPath, editorId]
   );
+
+  if (!editorState) {
+    return null;
+  }
+
   return (
     <circuitEditorContext.Provider value={context}>
       {children}
