@@ -7,6 +7,11 @@
   padding: 3px;
 }
 
+.node-tray-search {
+  box-sizing: border-box;
+  width: 100%;
+}
+
 .node-tray-elements {
   list-style: none;
   margin: 0;

@@ -6,18 +6,19 @@ import interaction from "@/styles/interaction.module.css";
 
 import useSelector from "@/hooks/useSelector";
 
+import { NodeDefinition } from "@/nodes/types";
+import { getNodeVisualElement } from "@/nodes/visuals";
+
 import {
   nodeDefinitionFromTypeSelector,
   nodeDefinitionsSelector,
 } from "@/services/node-types/selectors/node-types";
-import { NodeDefinition } from "@/nodes/types";
 
 import { newNodeDragObject } from "@/components/CircuitEditor/drag-items/new-node";
 import TesselWindow from "@/components/Tessel/TesselWindow";
 import Tooltip from "@/components/Tooltip";
 
 import styles from "./NodeTrayWindow.module.css";
-import { getNodeVisualElement } from "@/nodes/visuals";
 
 const CategoryNames: Record<NodeDefinition["category"], string> = {
   "input-output": "I/O",
@@ -28,12 +29,28 @@ const CategoryNames: Record<NodeDefinition["category"], string> = {
 const NodeTrayWindow: React.FC = () => {
   const nodeDefinitions = useSelector(nodeDefinitionsSelector);
   const categories = uniq(nodeDefinitions.map((x) => x.category));
+  const [search, setSearch] = React.useState("");
+  const onSearchChanged = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setSearch(e.target.value.toLowerCase());
+    },
+    []
+  );
 
   return (
     <TesselWindow title="Elements" className={styles["node-tray"]}>
+      <div>
+        <input
+          className={styles["node-tray-search"]}
+          type="text"
+          value={search}
+          onChange={onSearchChanged}
+          placeholder="Search"
+        />
+      </div>
       <ul className={styles["node-tray-elements"]}>
         {categories.map((category) => (
-          <TrayCategory key={category} category={category} />
+          <TrayCategory key={category} category={category} search={search} />
         ))}
       </ul>
     </TesselWindow>
@@ -43,19 +60,37 @@ export default NodeTrayWindow;
 
 interface TrayCategoryProps {
   category: NodeDefinition["category"];
+  search: string;
 }
 
-const TrayCategory: React.FC<TrayCategoryProps> = ({ category }) => {
+const TrayCategory: React.FC<TrayCategoryProps> = ({ category, search }) => {
   const nodeDefinitions = useSelector(nodeDefinitionsSelector);
   const defInCategory = nodeDefinitions.filter(
     (def) => def.category === category
   );
 
-  const nodes = defInCategory
-    .filter((def) => def.category === category)
-    .map((def) => {
-      return <TrayNode key={def.type} nodeType={def.type} />;
-    });
+  function shouldShowNode(def: NodeDefinition) {
+    if (def.category !== category) {
+      return false;
+    }
+
+    if (
+      search !== null &&
+      def.displayName.toLowerCase().indexOf(search) === -1
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
+  const nodes = defInCategory.filter(shouldShowNode).map((def) => {
+    return <TrayNode key={def.type} nodeType={def.type} />;
+  });
+
+  if (nodes.length === 0) {
+    return null;
+  }
 
   return (
     <>
