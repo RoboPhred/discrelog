@@ -4,11 +4,12 @@
   display: flex;
   align-items: center;
   border-bottom: 1px solid rgba(0, 0, 0, 40%);
+  position: relative;
 }
 
 .titlebar-heading {
   font-size: 16px;
-  margin-right: 10px;
+  font-weight: bold;
 }
 
 .titlebar-divider {
@@ -18,3 +19,8 @@
   margin: 0 10px;
 }
 
+.titlebar-title {
+  position: absolute;
+  left: 50%;
+  text-align: center;
+}

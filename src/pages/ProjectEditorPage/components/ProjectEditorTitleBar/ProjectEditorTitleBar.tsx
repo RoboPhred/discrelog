@@ -27,8 +27,10 @@ const ProjectEditorTitleBar: React.FC<ProjectEditorTitleBarProps> = ({
   const projectName = useSelector(projectNameSelector);
   const projectModified = useSelector(projectModifiedSelector);
 
+  const title = `${projectName}${projectModified ? "*" : ""}`;
+
   return (
-    <TitleBar className={className}>
+    <TitleBar className={className} title={title}>
       <AutoPopover content={<FileMenu />} placement="bottom-start">
         <Button>File</Button>
       </AutoPopover>
@@ -38,10 +40,6 @@ const ProjectEditorTitleBar: React.FC<ProjectEditorTitleBarProps> = ({
       <AutoPopover content={<ViewMenu />} placement="bottom-start">
         <Button>View</Button>
       </AutoPopover>
-      <div className={styles["project-titlebar-projectname"]}>
-        {projectName}
-        {projectModified && "*"}
-      </div>
       <div className={styles["project-titlebar-controls"]}>
         <SimControls />
       </div>
