@@ -2,7 +2,6 @@
   border-radius: 3px;
   border: none;
   background: var(--color-ui-light-bg);
-  padding: 3px 6px;
   cursor: pointer;
   margin: 2px;
   user-select: none;
@@ -15,4 +14,24 @@
 .button:focus {
   border: none;
   background-color: var(--color-ui-light-hover);
+}
+
+.button--size-small {
+  padding: 3px 6px;
+}
+
+.button--size-default {
+  padding: 7px 10px;
+}
+
+.button--variant-primary {
+  background: var(--color-ui-primary-bg)
+}
+
+.button--variant-default {
+  background: var(--color-ui-surface-bg)
+}
+
+.button--variant-menu {
+  background: none;
 }

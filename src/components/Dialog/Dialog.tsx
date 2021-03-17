@@ -7,6 +7,7 @@ import styles from "./Dialog.module.css";
 
 export interface DialogProps {
   isOpen: boolean;
+  title: string;
   acceptText?: string;
   cancelText?: string;
   footer?: React.ReactNode;
@@ -16,6 +17,7 @@ export interface DialogProps {
 
 const Dialog: React.FC<DialogProps> = ({
   isOpen,
+  title,
   acceptText,
   cancelText,
   onAccept,
@@ -29,6 +31,7 @@ const Dialog: React.FC<DialogProps> = ({
       isOpen={isOpen}
       onRequestClose={onCancel}
     >
+      <div className={styles["dialog-title"]}>{title}</div>
       <div>{children}</div>
       <div className={styles["dialog-footer"]}>
         {footer}
@@ -36,7 +39,9 @@ const Dialog: React.FC<DialogProps> = ({
           <Button onClick={onCancel}>{cancelText ?? "Cancel"}</Button>
         )}
         {onAccept && (
-          <Button onClick={onAccept}>{acceptText ?? "Accept"}</Button>
+          <Button variant="primary" onClick={onAccept}>
+            {acceptText ?? "Accept"}
+          </Button>
         )}
       </div>
     </Modal>

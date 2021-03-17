@@ -8,13 +8,13 @@ import useSelector from "@/hooks/useSelector";
 import { acceptDialog } from "@/actions/dialog-response-accept";
 import { cancelDialog } from "@/actions/dialog-response-cancel";
 
-import { ImportProjectCircuitsDialogData } from "@/services/dialog/state";
 import { dialogDataSelector } from "@/services/dialog/selectors/dialog";
 
 import Dialog from "@/components/Dialog";
 import Checkbox from "@/components/Checkbox";
 
-import styles from "./Dialogs.module.css";
+import styles from "./ImportProjectCircuitsDialog.module.css";
+import { ImportProjectCircuitsDialogData } from "./types";
 
 const ImportProjectCircuitsDialog: React.FC = () => {
   const dispatch = useDispatch();
@@ -38,10 +38,22 @@ const ImportProjectCircuitsDialog: React.FC = () => {
   return (
     <Dialog
       isOpen={true}
+      title="Import Circuits"
       onAccept={onAcceptDialog}
       onCancel={onCloseDialog}
       acceptText="Import Circuits"
     >
+      <div>
+        <p>Choose the circuits to import.</p>
+        <p>
+          Any chosen circuits that depend on other circuits will import their
+          dependencies automatically.
+        </p>
+        <p>
+          If any circuits already exist in your project, they will not be
+          re-imported.
+        </p>
+      </div>
       <ul className={styles["import-project-circuits-list"]}>
         {circuits.map(({ circuitId, circuitName }) => (
           <li key={circuitId}>

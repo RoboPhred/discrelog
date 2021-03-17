@@ -1,10 +1,3 @@
-# FIXME
-
-- Dragging should work across editors.
-  - Track the origin editor id and the current editor id.
-  - For node moves, allow node dragging from one editor to another. Make sure to cut the wires that cross circuit boundaries
-  - All other drag events should do nothing if crossing the boundary.
-
 # TODO
 
 - Mobile support? Change mouse tracking code to use pointer events.
@@ -12,6 +5,9 @@
   - Default to this blank window rather than assuming a default window in both circuit-editors and ui-layout services.
 - Tooltip on hover over sim controls showing the hotkeys.
 - Breakpoints on pin value changes
+- Progress bar effect on logic nodes to show how many ticks left until they update given the current input.
+- Support dragging nodes across windows.
+- Cut command
 
 - Multi window causes confusion with undo
 
