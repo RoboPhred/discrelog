@@ -13,6 +13,8 @@ import {
   selectionRectSelector,
 } from "@/services/circuit-editor-drag/selectors/drag";
 
+import { useContextMenu } from "@/components/ContextMenu";
+
 import { clearSelection } from "@/actions/select-clear";
 import { circuitEditorDragStartSelect } from "@/actions/circuit-editor-drag-start-select";
 
@@ -20,6 +22,8 @@ import { useViewportContext } from "../../../contexts/viewport-context";
 import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
 
 import { useMouseCoords } from "../hooks/useMouseCoords";
+
+import FieldContextMenu from "./FieldContextMenu";
 
 const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
   const dispatch = useDispatch();
@@ -37,6 +41,19 @@ const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
   }
 
   const getCoords = useMouseCoords();
+
+  const { openContextMenu, renderContextMenu } = useContextMenu();
+
+  const onContextMenu = React.useCallback(
+    (e: React.MouseEvent) => {
+      if (e.defaultPrevented) {
+        return;
+      }
+      e.preventDefault();
+      openContextMenu(e);
+    },
+    [openContextMenu]
+  );
 
   const onClick = React.useCallback(
     (e: MouseEvent) => {
@@ -77,6 +94,7 @@ const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
         height={`${counterScale(1) * 100}%`}
         fill="transparent"
         onMouseDown={onMouseDown}
+        onContextMenu={onContextMenu}
       />
       {isDragging && selectionRect && (
         <g
@@ -92,6 +110,9 @@ const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
           />
         </g>
       )}
+      {renderContextMenu(({ point }) => (
+        <FieldContextMenu fieldPosition={getCoords(point)} />
+      ))}
     </g>
   );
 });

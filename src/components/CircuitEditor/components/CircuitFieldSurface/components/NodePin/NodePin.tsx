@@ -14,6 +14,7 @@ import { dragDropTargetPinSelector } from "@/services/circuit-editor-drag/select
 import { circuitEditorDragStartWire } from "@/actions/circuit-editor-drag-start-wire";
 
 import { useCircuitEditor } from "../../../../contexts/circuit-editor-context";
+import { getNodePinHtmlId } from "../../../../ids";
 
 import { useMouseCoords } from "../../hooks/useMouseCoords";
 
@@ -120,7 +121,11 @@ const NodePin: React.FC<NodePinProps> = React.memo(function NodePin({
   }
 
   return (
-    <g onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+    <g
+      id={getNodePinHtmlId(editorId, nodeId, pinId)}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       {pinVisual}
       <circle
         stroke="none"

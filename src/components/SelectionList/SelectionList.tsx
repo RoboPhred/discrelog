@@ -7,6 +7,7 @@ import interaction from "@/styles/interaction.module.css";
 import styles from "./SelectionList.module.css";
 
 export interface SelectionListItem {
+  id?: string;
   value: string;
   label: React.ReactNode;
   isSelected?: boolean;
@@ -14,17 +15,22 @@ export interface SelectionListItem {
 
 export interface SelectionListProps {
   className?: string;
+  id?: string;
   items: SelectionListItem[];
   onItemSelected(value: string): void;
 }
 
 const SelectionList: React.FC<SelectionListProps> = ({
   className,
+  id,
   items,
   onItemSelected,
 }) => {
   return (
-    <ul className={cls("selection-list", styles["selection-list"], className)}>
+    <ul
+      id={id}
+      className={cls("selection-list", styles["selection-list"], className)}
+    >
       {items.map((item) => (
         <SelectionListItemNode
           key={item.value}
@@ -43,6 +49,7 @@ interface SelectionListItemNodeProps extends SelectionListItem {
 }
 
 const SelectionListItemNode: React.FC<SelectionListItemNodeProps> = ({
+  id,
   value,
   label,
   isSelected,
@@ -62,6 +69,7 @@ const SelectionListItemNode: React.FC<SelectionListItemNodeProps> = ({
 
   return (
     <li
+      id={id}
       className={cls(
         "selection-list-item",
         styles["selection-list-item"],

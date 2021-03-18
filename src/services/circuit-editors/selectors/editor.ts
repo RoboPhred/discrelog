@@ -21,11 +21,35 @@ export const circuitIdForEditorIdSelector = (
 };
 
 export const activeCircuitEditorIdSelector = createCircuitEditorsSelector(
-  (s) => s.activeEditorId
+  (s) => {
+    if (s.activeEditorId) {
+      return s.activeEditorId;
+    }
+
+    const keys = Object.keys(s.circucitEditorsById);
+    if (keys.length > 0) {
+      return keys[0];
+    }
+
+    return null;
+  }
 );
+
 export const activeCircuitEditorStateSelector = createCircuitEditorsSelector(
   (s) => (s.activeEditorId ? s.circucitEditorsById[s.activeEditorId] : null)
 );
+
+export const activeCircuitIdSelector = createCircuitEditorsSelector((s) => {
+  if (!s.activeEditorId) {
+    return null;
+  }
+  const editorState = s.circucitEditorsById[s.activeEditorId];
+  if (!editorState) {
+    return null;
+  }
+
+  return editorState.circuitId;
+});
 
 export const editorIdsFromCircuitIdSelector = createCircuitEditorsSelector(
   (s: CircuitEditorsServiceState, circuitId: string) => {

@@ -7,17 +7,28 @@ import useSelector from "@/hooks/useSelector";
 
 import { canRedoSelector, canUndoSelector } from "@/undo/selectors";
 
+import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
+import { canPasteSelector } from "@/services/clipboard/selectors/clipboard";
+
 import { undo } from "@/actions/undo";
 import { redo } from "@/actions/redo";
+import { copySelection } from "@/actions/selection-copy";
+import { paste } from "@/actions/clipboard-paste";
 
 import Menu from "@/components/Menus/Menu";
 import MenuItem from "@/components/Menus/MenuItem";
+import DividerMenuItem from "@/components/Menus/DividerMenuItem";
 
 const EditMenu: React.FC = () => {
   const canUndo = useSelector(canUndoSelector);
   const onUndo = useAction(undo);
   const canRedo = useSelector(canRedoSelector);
   const onRedo = useAction(redo);
+
+  const canCopy = useSelector(selectedNodeIdsSelector).length > 0;
+  const onCopy = useAction(copySelection);
+  const canPaste = useSelector(canPasteSelector);
+  const onPaste = useAction(paste);
 
   return (
     <Menu>
@@ -34,6 +45,21 @@ const EditMenu: React.FC = () => {
         onClick={onRedo}
       >
         Redo
+      </MenuItem>
+      <DividerMenuItem />
+      <MenuItem
+        disabled={!canCopy}
+        secondary={`${keyboardCommandModifier}+c`}
+        onClick={onCopy}
+      >
+        Copy
+      </MenuItem>
+      <MenuItem
+        disabled={!canPaste}
+        secondary={`${keyboardCommandModifier}+v`}
+        onClick={onPaste}
+      >
+        Paste
       </MenuItem>
     </Menu>
   );

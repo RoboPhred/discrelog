@@ -132,7 +132,7 @@ export const IntegratedCircuitVisual: React.FC<
       <path
         className="node-select-highlight--stroke node-select-highlight--fill"
         stroke="black"
-        fill="transparent"
+        fill="white"
         d={borderPath}
         onDoubleClick={onViewCircuit}
       />

@@ -27,6 +27,7 @@ import { useContextMenu } from "@/components/ContextMenu";
 
 import { useCircuitEditor } from "../../../../contexts/circuit-editor-context";
 import { useViewportContext } from "../../../../contexts/viewport-context";
+import { getNodeHtmlId } from "../../../../ids";
 
 import { useMouseCoords } from "../../hooks/useMouseCoords";
 
@@ -160,6 +161,7 @@ const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
   return (
     <g transform={transform}>
       <g
+        id={getNodeHtmlId(editorId, nodeId)}
         className={cls("circuit-field-node", isSelected && "node-selected")}
         onMouseDown={onMouseDown}
         onContextMenu={onContextMenu}
@@ -167,7 +169,9 @@ const Node: React.FC<NodeProps> = React.memo(function Node({ nodeId }) {
         {body}
       </g>
       <NodeName nodeId={nodeId} hitRect={rect} />
-      {renderContextMenu(<NodeContextMenu nodeId={nodeId} />)}
+      {renderContextMenu(({ point }) => (
+        <NodeContextMenu nodeId={nodeId} fieldPosition={getCoords(point)} />
+      ))}
     </g>
   );
 });

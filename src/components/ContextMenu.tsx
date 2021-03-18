@@ -53,8 +53,15 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
 
 export default ContextMenu;
 
+export interface ContextMenuRenderProps {
+  point: Point;
+}
 export interface UseContextMenu {
-  renderContextMenu(content: React.ReactNode): React.ReactNode;
+  renderContextMenu(
+    content:
+      | React.ReactNode
+      | ((renderProps: ContextMenuRenderProps) => React.ReactNode)
+  ): React.ReactNode;
   openContextMenu(e: React.MouseEvent): void;
 }
 export function useContextMenu(): UseContextMenu {
@@ -69,9 +76,17 @@ export function useContextMenu(): UseContextMenu {
   }, []);
 
   const renderContextMenu = React.useCallback(
-    (content: JSX.Element) => {
+    (
+      content:
+        | React.ReactNode
+        | ((renderProps: ContextMenuRenderProps) => React.ReactNode)
+    ) => {
       if (!ctxPos) {
         return null;
+      }
+
+      if (typeof content === "function") {
+        content = content({ point: ctxPos });
       }
 
       return (

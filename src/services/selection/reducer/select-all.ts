@@ -8,6 +8,7 @@ import {
 } from "@/services/node-graph/selectors/connections";
 import { wireJointIdsByConnectionIdSelector } from "@/services/node-layout/selectors/wires";
 import { nodeIdsFromCircuitIdSelector } from "@/services/circuits/selectors/nodes";
+import { activeCircuitIdSelector } from "@/services/circuit-editors/selectors/editor";
 
 import { createSelectionReducer } from "../utils";
 
@@ -16,7 +17,11 @@ export default createSelectionReducer((state, action, appState) => {
     return state;
   }
 
-  const { circuitId } = action.payload;
+  const circuitId = activeCircuitIdSelector(appState);
+  if (!circuitId) {
+    return state;
+  }
+
   const nodeIds = nodeIdsFromCircuitIdSelector(appState, circuitId);
 
   let connectionIds = connectionIdsSelector(appState);

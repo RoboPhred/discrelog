@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 
+import { Point } from "@/geometry";
+
 import useSelector from "@/hooks/useSelector";
 
 import { nodeTypeToCircuitId } from "@/nodes/definitions/integrated-circuits/utils";
@@ -18,15 +20,19 @@ import DividerMenuItem from "@/components/Menus/DividerMenuItem";
 import EditableTextMenuItem from "@/components/Menus/EditableTextMenuItem";
 import MenuItem from "@/components/Menus/MenuItem";
 
-import ContextMenuItems from "../../ContextMenuItems";
-
 import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
 
+import ContextMenuItems from "./ContextMenuItems";
+
 export interface NodeContextMenuProps {
+  fieldPosition: Point;
   nodeId: string;
 }
 
-const NodeContextMenu: React.FC<NodeContextMenuProps> = ({ nodeId }) => {
+const NodeContextMenu: React.FC<NodeContextMenuProps> = ({
+  nodeId,
+  fieldPosition,
+}) => {
   const dispatch = useDispatch();
 
   const { circuitNodeIdPath } = useCircuitEditor();
@@ -84,7 +90,7 @@ const NodeContextMenu: React.FC<NodeContextMenuProps> = ({ nodeId }) => {
           <DividerMenuItem />
         </>
       )}
-      <ContextMenuItems />
+      <ContextMenuItems fieldPosition={fieldPosition} />
     </Menu>
   );
 };

@@ -26,6 +26,8 @@ import SelectionList, { SelectionListItem } from "@/components/SelectionList";
 import EditableText from "@/components/EditableText";
 import TesselWindow from "@/components/Tessel/TesselWindow";
 
+import { getCircuitListItemHtmlId } from "./ids";
+
 import styles from "./CircuitsTreeWindow.module.css";
 
 const CircuitsTreeWindow: React.FC = () => {
@@ -54,6 +56,7 @@ const CircuitsTreeWindow: React.FC = () => {
     () =>
       Object.keys(circuitNamesById).map((circuitId) => {
         return {
+          id: getCircuitListItemHtmlId(circuitId),
           value: circuitId,
           label: <CircuitTreeNodeCircuitLabel circuitId={circuitId} />,
         };
@@ -62,10 +65,15 @@ const CircuitsTreeWindow: React.FC = () => {
   );
 
   return (
-    <TesselWindow title="Circuits" className={cls(styles.circuitstree)}>
+    <TesselWindow
+      id="circuit-list-window"
+      title="Circuits"
+      className={cls(styles.circuitstree)}
+    >
       <div className={sizing["fill-parent"]} onContextMenu={onContextMenu}>
         <SelectionList
           className={sizing["fill-parent"]}
+          id="circuit-list"
           items={listItems}
           onItemSelected={onCircuitSelected}
         />
@@ -138,7 +146,7 @@ const CircuitTreeNodeCircuitLabel: React.FC<CircuitTreeNodeLabelProps> = ({
 
   return (
     <div
-      style={{ width: "100%" }}
+      className={styles["circuitstree-item"]}
       onContextMenu={onContextMenu}
       onDoubleClick={onRequestRename}
     >

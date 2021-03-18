@@ -14,11 +14,13 @@ import CloseIcon from "../Icons/Close";
 
 export interface TesselWindowProps {
   className?: string;
+  id?: string;
   title: string;
 }
 const TesselWindow: React.FC<TesselWindowProps> = ({
-  title,
   className,
+  id,
+  title,
   children,
 }) => {
   const path = useTesselPath();
@@ -33,7 +35,7 @@ const TesselWindow: React.FC<TesselWindowProps> = ({
   });
 
   return (
-    <TesselDropCapture className={styles["tessel-window"]}>
+    <TesselDropCapture id={id} className={styles["tessel-window"]}>
       <div ref={dragSourceRef} className={styles["tessel-window-titlebar"]}>
         <div className={styles["tessel-window-title"]}>{title}</div>
         <div className={styles["tessel-window-controls"]}>

@@ -16,14 +16,18 @@ export interface PopoverProps {
   anchorEl: Element | VirtualElement | null;
   placement?: Options["placement"];
   isOpen: boolean;
-  onRequestClose(): void;
+  onRequestClose?(): void;
 }
+
+const noop = () => {
+  /*no op*/
+};
 
 const Popover: React.FC<PopoverProps> = ({
   isOpen,
   anchorEl,
   placement = "auto",
-  onRequestClose,
+  onRequestClose = noop,
   children,
 }) => {
   const [popoverRef, setPopoverRef] = React.useState<HTMLDivElement | null>(
@@ -64,7 +68,11 @@ const Popover: React.FC<PopoverProps> = ({
       registerPopoverChild={registerPopoverChild}
       unregisterPopoverChild={unregisterPopoverChild}
     >
-      <div ref={setPopoverRef} style={styles.popper} {...attributes.popper}>
+      <div
+        ref={setPopoverRef}
+        style={{ ...styles.popper, zIndex: 10 }}
+        {...attributes.popper}
+      >
         {children}
       </div>
     </PopoverChildContextProvider>,

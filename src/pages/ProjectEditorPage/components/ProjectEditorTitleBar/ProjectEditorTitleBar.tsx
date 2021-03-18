@@ -14,6 +14,7 @@ import Button from "@/components/Button";
 import FileMenu from "../FileMenu";
 import EditMenu from "../EditMenu";
 import ViewMenu from "../ViewMenu";
+import HelpMenu from "../HelpMenu";
 import SimControls from "../SimControls";
 
 import styles from "./ProjectEditorTitleBar.module.css";
@@ -39,6 +40,9 @@ const ProjectEditorTitleBar: React.FC<ProjectEditorTitleBarProps> = ({
       </AutoPopover>
       <AutoPopover content={<ViewMenu />} placement="bottom-start">
         <Button variant="menu">View</Button>
+      </AutoPopover>
+      <AutoPopover content={<HelpMenu />} placement="bottom-start">
+        <Button variant="menu">Help</Button>
       </AutoPopover>
       <div className={styles["project-titlebar-controls"]}>
         <SimControls />
