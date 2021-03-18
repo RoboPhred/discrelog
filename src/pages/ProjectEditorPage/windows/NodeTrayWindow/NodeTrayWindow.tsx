@@ -38,7 +38,11 @@ const NodeTrayWindow: React.FC = () => {
   );
 
   return (
-    <TesselWindow title="Elements" className={styles["node-tray"]}>
+    <TesselWindow
+      id="node-tray"
+      title="Elements"
+      className={styles["node-tray"]}
+    >
       <div>
         <input
           className={styles["node-tray-search"]}
@@ -156,6 +160,7 @@ const TrayNode: React.FC<TrayNodeProps> = ({ nodeType }) => {
 
   return (
     <li
+      id={`node-tray--node-${nodeType}`}
       ref={(ref) => {
         setLiRef(ref);
         dragRef(ref);

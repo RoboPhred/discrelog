@@ -40,6 +40,10 @@ import {
   defaultSimulatorControlServiceState,
 } from "./simulator-control/state";
 import {
+  TutorialServiceState,
+  defaultTutorialServiceState,
+} from "./tutorial/state";
+import {
   UiLayoutServiceState,
   defaultUiLayoutServiceState,
 } from "./ui-layout/state";
@@ -57,6 +61,7 @@ export interface AppServicesState {
   selection: SelectionServiceState;
   simulator: SimulatorServiceState;
   simulatorControl: SimulatorControlServiceState;
+  tutorial: TutorialServiceState;
   uiLayout: UiLayoutServiceState;
   uiSettings: UiSettingsState;
 }
@@ -73,6 +78,7 @@ const _defaultServiceState: AppServicesState = {
   selection: defaultSelectionServiceState,
   simulator: defaultSimulatorServiceState,
   simulatorControl: defaultSimulatorControlServiceState,
+  tutorial: defaultTutorialServiceState,
   uiLayout: defaultUiLayoutServiceState,
   uiSettings: defaultUiSettingsState,
 };

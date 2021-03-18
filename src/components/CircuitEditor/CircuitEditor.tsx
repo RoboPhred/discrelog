@@ -20,6 +20,8 @@ import {
 
 import styles from "./CircuitEditor.module.css";
 
+import { getCircuitEditorHtmlId } from "./ids";
+
 export interface CircuitEditorProps {
   className?: string;
   editorId: string;
@@ -36,7 +38,7 @@ const CircuitEditor: React.FC<CircuitEditorProps> = ({
   return (
     <CircuitEditorProvider editorId={editorId}>
       <div
-        id={`circuit-editor-${editorId}`}
+        id={getCircuitEditorHtmlId(editorId)}
         className={cls(
           "circuit-editor",
           styles["circuit-editor"],

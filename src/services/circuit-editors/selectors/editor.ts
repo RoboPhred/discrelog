@@ -21,8 +21,20 @@ export const circuitIdForEditorIdSelector = (
 };
 
 export const activeCircuitEditorIdSelector = createCircuitEditorsSelector(
-  (s) => s.activeEditorId
+  (s) => {
+    if (s.activeEditorId) {
+      return s.activeEditorId;
+    }
+
+    const keys = Object.keys(s.circucitEditorsById);
+    if (keys.length > 0) {
+      return keys[0];
+    }
+
+    return null;
+  }
 );
+
 export const activeCircuitEditorStateSelector = createCircuitEditorsSelector(
   (s) => (s.activeEditorId ? s.circucitEditorsById[s.activeEditorId] : null)
 );

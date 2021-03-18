@@ -15,12 +15,13 @@ import { TesselDropPosition } from "./types";
 
 export interface TesselDropCaptureProps {
   className?: string;
+  id?: string;
   children?: React.ReactNode;
 }
 const TesselDropCapture = React.forwardRef<
   HTMLDivElement,
   TesselDropCaptureProps
->(({ className, children }, forwardRef) => {
+>(({ className, id, children }, forwardRef) => {
   const tesselPath = useTesselPath();
   const { moveWindow } = useTesselInteraction();
 
@@ -148,6 +149,7 @@ const TesselDropCapture = React.forwardRef<
 
   return (
     <div
+      id={id}
       ref={(divRef) => {
         ref.current = divRef;
         dropRef(divRef);

@@ -42,6 +42,7 @@
   flex-direction: row;
   align-items: center;
   width: 100%;
+  background: var(--color-ui-light-bg);
 }
 
 .node-tray-item:hover {

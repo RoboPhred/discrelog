@@ -5,6 +5,7 @@ import { reducerPriority, PRIORITY_SAVE } from "@/store/priorities";
 import { isProjectMutationAction } from "@/project-mutation-actions";
 
 import { createSave, storeAutosave } from "@/services/savedata/api";
+import { isTutorialActiveSelector } from "@/services/tutorial/selectors/tutorial";
 
 export default reducerPriority(
   PRIORITY_SAVE,
@@ -13,6 +14,11 @@ export default reducerPriority(
       return state;
     }
 
+    if (isTutorialActiveSelector(state)) {
+      return state;
+    }
+
+    // FIXME: Side effect.  Should be a saga.
     const save = createSave(state);
     storeAutosave(save);
 
