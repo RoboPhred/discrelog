@@ -6,15 +6,25 @@ import { tutorialStart } from "@/actions/tutorial-start";
 
 import Menu from "@/components/Menus/Menu";
 import MenuItem from "@/components/Menus/MenuItem";
+import SubMenuItem from "@/components/Menus/SubMenuItem";
 
-const FileMenu: React.FC = () => {
-  const onBasicsTutorial = useAction(tutorialStart, "basics");
-
+const HelpMenu: React.FC = () => {
   return (
     <Menu>
-      <MenuItem onClick={onBasicsTutorial}>Basic Tutorial</MenuItem>
+      <SubMenuItem content={<TutorialsMenu />}>Tutorials</SubMenuItem>
     </Menu>
   );
 };
 
-export default FileMenu;
+const TutorialsMenu: React.FC = () => {
+  const onBasicsTutorial = useAction(tutorialStart, "basics");
+  const onCircuitsTutorial = useAction(tutorialStart, "circuits");
+  return (
+    <Menu>
+      <MenuItem onClick={onBasicsTutorial}>Basics</MenuItem>
+      <MenuItem onClick={onCircuitsTutorial}>Circuits</MenuItem>
+    </Menu>
+  );
+};
+
+export default HelpMenu;

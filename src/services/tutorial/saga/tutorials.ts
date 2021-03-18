@@ -6,6 +6,7 @@ import {
 } from "@/actions/tutorial-start";
 
 import runBasicsTutorial from "./tutorials/basic";
+import runCircuitsTutorial from "./tutorials/circuits";
 
 export default function* startTutorial() {
   yield takeEvery(ACTION_TUTORIAL_START, handleStartTutorial);
@@ -17,5 +18,7 @@ function* handleStartTutorial(action: TutorialStartAction) {
     case "basics":
       yield call(runBasicsTutorial);
       return;
+    case "circuits":
+      yield call(runCircuitsTutorial);
   }
 }

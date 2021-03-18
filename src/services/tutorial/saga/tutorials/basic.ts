@@ -9,7 +9,6 @@ import {
 import { ACTION_SIM_START } from "@/actions/sim-start";
 import { tutorialAnnotate } from "@/actions/tutorial-annotate";
 import { tutorialDismiss } from "@/actions/tutorial-dismiss";
-import { ACTION_TUTORIAL_NEXT, tutorialNext } from "@/actions/tutorial-next";
 
 import { activeCircuitEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
 
@@ -21,23 +20,17 @@ import {
 
 import {
   createNodeTutorialStep,
+  tutorialNextMessage,
   waitFilterAction,
   waitNodeWired,
 } from "./utils";
 
 export default function* runBasicsTutorial() {
-  yield put(
-    tutorialAnnotate({
-      selector: "#node-tray",
-      message: "This is where logic elements are stored",
-      action: {
-        name: "Next",
-        action: tutorialNext(),
-      },
-    })
+  yield call(
+    tutorialNextMessage,
+    "#node-tray",
+    "This is where logic elements are stored."
   );
-
-  yield take(ACTION_TUTORIAL_NEXT);
 
   const gateId: string | null = yield call(createNodeTutorialStep, "logic-not");
   if (!gateId) {

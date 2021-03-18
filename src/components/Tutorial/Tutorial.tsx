@@ -5,17 +5,18 @@ import { useDispatch } from "react-redux";
 import { asArray } from "@/arrays";
 
 import useSelector from "@/hooks/useSelector";
+import { useQuerySelector } from "@/hooks/useQuerySelector";
 
 import {
   isTutorialActiveSelector,
   tutorialAnnotationsSelector,
 } from "@/services/tutorial/selectors/tutorial";
+import { AnnotatedElement } from "@/services/tutorial/state";
 
 import Button from "../Button";
 import Tooltip from "../Tooltip";
 
 import styles from "./Tutorial.module.css";
-import { AnnotatedElement } from "@/services/tutorial/state";
 
 const Tutorial: React.FC = () => {
   const isTutorialActive = useSelector(isTutorialActiveSelector);
@@ -60,7 +61,7 @@ const Annotation: React.FC<AnnotatedElement> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const element = document.querySelector(selector);
+  const element = useQuerySelector(selector);
 
   React.useEffect(() => {
     if (element) {

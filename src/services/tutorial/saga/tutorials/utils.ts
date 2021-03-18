@@ -1,26 +1,32 @@
 import { AnyAction } from "redux";
 import { SagaIterator } from "redux-saga";
 import { call, put, select, take } from "redux-saga/effects";
+import { Options } from "@popperjs/core";
 
 import { NodeDefinition } from "@/nodes/types";
 
 import { activeCircuitEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
 import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/node-types";
-
-import { ACTION_NODE_ADD, AddNodeAction } from "@/actions/node-add";
-import { tutorialAnnotate } from "@/actions/tutorial-annotate";
-
-import { getCircuitEditorHtmlId } from "@/components/CircuitEditor/ids";
 import {
   Connection,
   NodePin,
   nodePinEquals,
 } from "@/services/node-graph/types";
 import { connectionsSelector } from "@/services/node-graph/selectors/connections";
-import { ACTION_CIRCUIT_EDITOR_DRAG_END } from "@/actions/circuit-editor-drag-end";
 
+import { ACTION_NODE_ADD, AddNodeAction } from "@/actions/node-add";
+import { tutorialAnnotate } from "@/actions/tutorial-annotate";
+import { ACTION_CIRCUIT_EDITOR_DRAG_END } from "@/actions/circuit-editor-drag-end";
+import { ACTION_TUTORIAL_NEXT, tutorialNext } from "@/actions/tutorial-next";
+import { getCircuitEditorHtmlId } from "@/components/CircuitEditor/ids";
+
+export interface CreateNodeTutorialStepOptions {
+  trayMessage?: string;
+  fieldMessage?: string;
+}
 export function* createNodeTutorialStep(
-  nodeType: string
+  nodeType: string,
+  opts: CreateNodeTutorialStepOptions = {}
 ): SagaIterator<string | null> {
   const def: NodeDefinition = yield select((state) =>
     nodeDefinitionFromTypeSelector(state, nodeType)
@@ -40,11 +46,13 @@ export function* createNodeTutorialStep(
     tutorialAnnotate([
       {
         selector: `#node-tray--node-${nodeType}`,
-        message: `This is a ${def.displayName} element`,
+        message: opts.trayMessage ?? `This is a ${def.displayName} element`,
       },
       {
         selector: "#" + getCircuitEditorHtmlId(activeEditorId),
-        message: `Drag the ${def.displayName} element onto the circuit field.`,
+        message:
+          opts.fieldMessage ??
+          `Drag the ${def.displayName} element onto the circuit field.`,
         placement: "top",
       },
     ])
@@ -105,4 +113,31 @@ export function* waitFilterAction(
   }
 
   return action;
+}
+
+export interface TutorialNextMessageOptions {
+  placement?: Options["placement"];
+  additionalSelectors?: string[];
+}
+export function* tutorialNextMessage(
+  selector: string,
+  message: string,
+  opts: TutorialNextMessageOptions = {}
+) {
+  yield put(
+    tutorialAnnotate([
+      {
+        selector,
+        message,
+        placement: opts.placement,
+        action: {
+          name: "Next",
+          action: tutorialNext(),
+        },
+      },
+      ...(opts.additionalSelectors ?? []).map((selector) => ({ selector })),
+    ])
+  );
+
+  yield take(ACTION_TUTORIAL_NEXT);
 }

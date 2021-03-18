@@ -4,3 +4,8 @@
   box-sizing: border-box;
   overflow-y: scroll;
 }
+
+.circuitstree-item {
+  width: "100%";
+  background: var(--color-ui-light-bg);
+}
