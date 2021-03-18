@@ -1,10 +1,11 @@
 .button {
   border-radius: 3px;
   border: none;
-  background: var(--color-ui-light-bg);
+  background: var(--color-ui-surface-bg);
   cursor: pointer;
   margin: 2px;
   user-select: none;
+  padding: 7px 10px;
 }
 
 .button:hover {
@@ -20,18 +21,11 @@
   padding: 3px 6px;
 }
 
-.button--size-default {
-  padding: 7px 10px;
-}
-
 .button--variant-primary {
-  background: var(--color-ui-primary-bg)
-}
-
-.button--variant-default {
-  background: var(--color-ui-surface-bg)
+  background: var(--color-ui-primary-bg);
 }
 
 .button--variant-menu {
   background: none;
+  padding: 7px 7px;
 }
