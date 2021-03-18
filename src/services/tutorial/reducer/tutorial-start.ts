@@ -12,7 +12,11 @@ export default (state: AppState = defaultAppState, action: AnyAction) => {
 
   const { tutorial } = action.payload;
 
-  const preTutorialState = state;
+  let { preTutorialState } = state.services.tutorial;
+  if (!preTutorialState) {
+    preTutorialState = state;
+  }
+
   state = defaultAppState;
 
   state = fpSet(state, "services", "project", "projectName", "Tutorial");
