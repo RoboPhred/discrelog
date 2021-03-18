@@ -924,6 +924,12 @@ body,
   overflow-y: scroll;
 }
 
+.circuitstree-item--22dzG {
+  width: "100%";
+  background: white;
+  background: var(--color-ui-light-bg);
+}
+
 .tooltip--2yxRI {
   background: rgb(49, 49, 49);
   background: var(--color-ui-tooltip-bg);
@@ -947,6 +953,8 @@ body,
 .tooltip-arrow--2mJMo:before {
   visibility: visible;
   position: absolute;
+  left: 0;
+  top: 0;
   width: 8px;
   height: 8px;
   background: inherit;
@@ -973,14 +981,26 @@ body,
 .node-tray--3lZIP {
   background: white;
   background: var(--color-ui-light-bg);
-  overflow-y: scroll;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
   padding: 3px;
+  display: flex;
+  flex-direction: column;
 }
 
-.node-tray-elements--1GkKn {
+.node-tray-search--1xn-W {
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.node-tray-element-container--3ZO1O {
+  overflow-y: scroll;
+  width: 100%;
+}
+
+.node-tray-element-list--1El-9 {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -1003,6 +1023,8 @@ body,
   flex-direction: row;
   align-items: center;
   width: 100%;
+  background: white;
+  background: var(--color-ui-light-bg);
 }
 
 .node-tray-item--16YJl:hover {
@@ -1068,6 +1090,31 @@ body,
 .import-project-circuits-list--2ODCz {
   list-style: none;
   padding: 0
+}
+
+.tutorial--jscuw {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.tutorial-tooltip--3gwli {
+  z-index: 10;
+}
+
+.tutorial-tooltip-actions--ENkg1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.tutorial-backdrop--3I0WR {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.192);
+  z-index: 1;
 }
 
 
