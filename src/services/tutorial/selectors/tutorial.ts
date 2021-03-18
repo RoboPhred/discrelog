@@ -1,7 +1,7 @@
 import { createTutorialSelector } from "../utils";
 
 export const isTutorialActiveSelector = createTutorialSelector(
-  (s) => s.annotatedElements.length > 0
+  (s) => s.activeTutorial != null
 );
 
 export const tutorialAnnotationsSelector = createTutorialSelector(

@@ -15,6 +15,8 @@ export default (state: AppState = defaultAppState, action: AnyAction) => {
   const preTutorialState = state;
   state = defaultAppState;
 
+  state = fpSet(state, "services", "project", "projectName", "Tutorial");
+
   state = fpSet(state, "services", "tutorial", {
     activeTutorial: tutorial,
     annotatedElements: [],

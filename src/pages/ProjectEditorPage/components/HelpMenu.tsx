@@ -12,7 +12,7 @@ const FileMenu: React.FC = () => {
 
   return (
     <Menu>
-      <MenuItem onClick={onBasicsTutorial}>Run Tutorial</MenuItem>
+      <MenuItem onClick={onBasicsTutorial}>Basic Tutorial</MenuItem>
     </Menu>
   );
 };
