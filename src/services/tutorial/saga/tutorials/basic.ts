@@ -20,7 +20,11 @@ import {
   getNodePinHtmlId,
 } from "@/components/CircuitEditor/ids";
 
-import { createNodeTutorialStep, waitFilterAction } from "./utils";
+import {
+  createNodeTutorialStep,
+  waitFilterAction,
+  waitNodeWired,
+} from "./utils";
 
 export default function* runBasicsTutorial() {
   yield put(
@@ -85,8 +89,11 @@ export default function* runBasicsTutorial() {
     ])
   );
 
-  // TODO: We can only check for drag end here.  Maybe drag-end should be a saga so it can fire off real actions.
-  yield take(ACTION_CIRCUIT_EDITOR_DRAG_END);
+  yield call(
+    waitNodeWired,
+    { nodeId: switchId, pinId: "OUT" },
+    { nodeId: gateId, pinId: "IN" }
+  );
 
   yield put(
     tutorialAnnotate([
@@ -108,8 +115,11 @@ export default function* runBasicsTutorial() {
     ])
   );
 
-  // TODO: We can only check for drag end here.  Maybe drag-end should be a saga so it can fire off real actions.
-  yield take(ACTION_CIRCUIT_EDITOR_DRAG_END);
+  yield call(
+    waitNodeWired,
+    { nodeId: gateId, pinId: "OUT" },
+    { nodeId: ledId, pinId: "IN" }
+  );
 
   yield put(
     tutorialAnnotate({
@@ -138,8 +148,8 @@ export default function* runBasicsTutorial() {
   yield call(() =>
     waitFilterAction<InteractNodeAction>(
       ACTION_NODE_INTERACT,
-      ({ payload: { circuitNodeIdPath } }) =>
-        arrayEquals(circuitNodeIdPath, [switchId])
+      ({ payload: { circuitNodeIdPath, data } }) =>
+        data === true && arrayEquals(circuitNodeIdPath, [switchId])
     )
   );
 
@@ -147,8 +157,7 @@ export default function* runBasicsTutorial() {
     tutorialAnnotate({
       selector: "#" + getCircuitEditorHtmlId(activeEditorId),
       placement: "top",
-      message:
-        "That's it!  Try experimenting with different elements and see what you can come up with.",
+      message: "That's it!",
       action: {
         name: "End Tutorial",
         action: tutorialDismiss(),

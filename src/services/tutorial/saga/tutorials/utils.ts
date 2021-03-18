@@ -11,6 +11,13 @@ import { ACTION_NODE_ADD, AddNodeAction } from "@/actions/node-add";
 import { tutorialAnnotate } from "@/actions/tutorial-annotate";
 
 import { getCircuitEditorHtmlId } from "@/components/CircuitEditor/ids";
+import {
+  Connection,
+  NodePin,
+  nodePinEquals,
+} from "@/services/node-graph/types";
+import { connectionsSelector } from "@/services/node-graph/selectors/connections";
+import { ACTION_CIRCUIT_EDITOR_DRAG_END } from "@/actions/circuit-editor-drag-end";
 
 export function* createNodeTutorialStep(
   nodeType: string
@@ -51,6 +58,30 @@ export function* createNodeTutorialStep(
   );
 
   return nodeAddAction.payload.nodeId;
+}
+
+export function* waitNodeWired(outputPin: NodePin, inputPin: NodePin) {
+  while (true) {
+    const wired: boolean = yield call(isWired, outputPin, inputPin);
+    if (wired) {
+      return;
+    }
+    // TODO: We can only detect wiring through drag end.  Might want to make drag use real actions
+    //  and wait on node-wire instead.
+    yield take(ACTION_CIRCUIT_EDITOR_DRAG_END);
+  }
+}
+
+function* isWired(
+  outputPin: NodePin,
+  inputPin: NodePin
+): SagaIterator<boolean> {
+  const connections: Connection[] = yield select(connectionsSelector);
+  return connections.some(
+    ({ inputPin: connInputPin, outputPin: connOutputPin }) =>
+      nodePinEquals(connInputPin, inputPin) &&
+      nodePinEquals(connOutputPin, outputPin)
+  );
 }
 
 export function waitFilterAction(
