@@ -2,7 +2,6 @@ import * as React from "react";
 import { createPortal } from "react-dom";
 import { useDispatch } from "react-redux";
 
-import { isTruthy } from "@/utils";
 import { asArray } from "@/arrays";
 
 import useSelector from "@/hooks/useSelector";

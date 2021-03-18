@@ -2,7 +2,6 @@ import { call, put, select, take } from "redux-saga/effects";
 
 import { arrayEquals } from "@/arrays";
 
-import { ACTION_CIRCUIT_EDITOR_DRAG_END } from "@/actions/circuit-editor-drag-end";
 import {
   ACTION_NODE_INTERACT,
   InteractNodeAction,
