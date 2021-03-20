@@ -2,7 +2,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 
-import { Point, snapPoint } from "@/geometry";
+import { Point, scale, snapPoint } from "@/geometry";
 
 import useSelector from "@/hooks/useSelector";
 
@@ -19,6 +19,7 @@ import {
 } from "../../../drag-items/new-node";
 
 import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
+import { useViewportContext } from "../../../contexts/viewport-context";
 
 import { useMouseCoords } from "../hooks/useMouseCoords";
 
@@ -29,6 +30,11 @@ const DragNewNodeLayer: React.FC = React.memo(function DragNewNodeLayer() {
   const { circuitId } = useCircuitEditor();
   const snap = useSelector(gridNodeSnapSelector);
   const getMouseCoords = useMouseCoords();
+  const { zoomFactor } = useViewportContext();
+
+  function counterScale(value: number) {
+    return value * (1 / zoomFactor);
+  }
 
   const [dragType, setDragType] = React.useState<string | null>(null);
   const [dragPos, setDragPos] = React.useState<Point | null>(null);
@@ -86,6 +92,8 @@ const DragNewNodeLayer: React.FC = React.memo(function DragNewNodeLayer() {
 
   const snapDragPos = dragPos && snapPoint(dragPos, snap);
 
+  const counterScaledSize = `${counterScale(1) * 100}%`;
+
   return (
     <g id="drag-new-node-layer">
       {!dropTargetWouldRecurse && snapDragPos && dragType && (
@@ -94,7 +102,7 @@ const DragNewNodeLayer: React.FC = React.memo(function DragNewNodeLayer() {
         </g>
       )}
       {dropTargetWouldRecurse && (
-        <g>
+        <g transform={`scale(${counterScale(1)})`}>
           <rect width="100%" height="100%" opacity={0.7} fill="black" />
           {/* FIXME: Should center this text in the screen viewport. */}
           <text x="100" y="25%" fill="white">
@@ -102,7 +110,12 @@ const DragNewNodeLayer: React.FC = React.memo(function DragNewNodeLayer() {
           </text>
         </g>
       )}
-      <rect ref={dropRef} width="100%" height="100%" fill="transparent" />
+      <rect
+        ref={dropRef}
+        width={counterScaledSize}
+        height={counterScaledSize}
+        fill="transparent"
+      />
     </g>
   );
 });
