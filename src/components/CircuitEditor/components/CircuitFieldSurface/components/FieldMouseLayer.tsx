@@ -83,7 +83,7 @@ const DragSelectLayer: React.FC = React.memo(function DragSelectLayer() {
   });
 
   return (
-    <g>
+    <g className="circuit-editor-mouse-layer">
       <rect
         /*
          Our width and height get scaled by the parent scaler.

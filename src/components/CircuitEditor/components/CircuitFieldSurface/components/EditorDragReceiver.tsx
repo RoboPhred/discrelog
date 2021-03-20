@@ -12,14 +12,20 @@ import { circuitEditorDragEnd } from "@/actions/circuit-editor-drag-end";
 import { circuitEditorDragAbort } from "@/actions/circuit-editor-drag-abort";
 
 import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
+import { useViewportContext } from "../../../contexts/viewport-context";
 
 import { useEventMouseCoords } from "../hooks/useMouseCoords";
 
 const EditorDragReceiver: React.FC = () => {
   const dispatch = useDispatch();
   const { editorId } = useCircuitEditor();
+  const { zoomFactor } = useViewportContext();
 
   const isDragging = useSelector(isDraggingSelector);
+
+  function counterScale(value: number) {
+    return value * (1 / zoomFactor);
+  }
 
   const getCoords = useEventMouseCoords();
 
@@ -56,8 +62,8 @@ const EditorDragReceiver: React.FC = () => {
 
   return (
     <rect
-      width="100%"
-      height="100%"
+      width={`${counterScale(1) * 100}%`}
+      height={`${counterScale(1) * 100}%`}
       fill="transparent"
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
