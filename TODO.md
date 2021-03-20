@@ -7,6 +7,7 @@
 - Breakpoints on pin value changes
 - Progress bar effect on logic nodes to show how many ticks left until they update given the current input.
 - Support dragging nodes across windows.
+- If all circuit editors are closed, open a new editor on clicking a circuit.
 - Cut command
 
 - Multi window causes confusion with undo
