@@ -2,7 +2,7 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 
-import { Point, scale, snapPoint } from "@/geometry";
+import { Point, snapPoint } from "@/geometry";
 
 import useSelector from "@/hooks/useSelector";
 

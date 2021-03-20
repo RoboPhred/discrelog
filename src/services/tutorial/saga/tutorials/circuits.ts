@@ -7,16 +7,14 @@ import { circuitIdToNodeType } from "@/nodes/definitions/integrated-circuits/uti
 import { tutorialAnnotate } from "@/actions/tutorial-annotate";
 import { tutorialDismiss } from "@/actions/tutorial-dismiss";
 import { ACTION_CIRCUIT_ADD, AddCircuitAction } from "@/actions/circuit-add";
-import {
-  ACTION_CIRCUIT_RENAME,
-  RenameCircuitAction,
-} from "@/actions/circuit-rename";
+import { ACTION_CIRCUIT_RENAME } from "@/actions/circuit-rename";
 import { ACTION_VIEW_CIRCUIT, ViewCircuitAction } from "@/actions/view-circuit";
 import {
   ACTION_NODE_INTERACT,
   InteractNodeAction,
 } from "@/actions/node-interact";
 import { ACTION_SIM_START } from "@/actions/sim-start";
+import { ACTION_NODE_RENAME, RenameNodeAction } from "@/actions/node-rename";
 
 import { activeCircuitEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
 import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
@@ -35,7 +33,6 @@ import {
   waitFilterAction,
   waitNodeWired,
 } from "./utils";
-import { ACTION_NODE_RENAME, RenameNodeAction } from "@/actions/node-rename";
 
 export default function* runCircuitsTutorial() {
   yield call(
