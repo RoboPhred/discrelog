@@ -596,14 +596,15 @@ body,
 .button--Ui3Hp {
   border-radius: 3px;
   border: none;
-  background: white;
-  background: var(--color-ui-light-bg);
+  background: rgb(231, 231, 231);
+  background: var(--color-ui-surface-bg);
   cursor: pointer;
   margin: 2px;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+  padding: 7px 10px;
 }
 
 .button--Ui3Hp:hover {
@@ -621,23 +622,16 @@ body,
   padding: 3px 6px;
 }
 
-.button--size-default--dnLXK {
-  padding: 7px 10px;
-}
-
 .button--variant-primary--2qpAa {
   background: rgb(0, 182, 0);
-  background: var(--color-ui-primary-bg)
-}
-
-.button--variant-default---2bie {
-  background: rgb(231, 231, 231);
-  background: var(--color-ui-surface-bg)
+  background: var(--color-ui-primary-bg);
 }
 
 .button--variant-menu--3lEZ1 {
   background: none;
+  padding: 7px 7px;
 }
+
 .menu--3E86w {
   background: white;
   background: var(--color-ui-light-bg);
