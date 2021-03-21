@@ -10,12 +10,12 @@ import { fpSet } from "@/utils";
 
 import rootReducer from "@/store/reducer";
 
-import { addNode } from "@/actions/node-add";
+import { addElement } from "@/actions/element-add";
 import { attachWire } from "@/actions/wire-attach";
 import { isPasteAction } from "@/actions/clipboard-paste";
-import { selectNodes } from "@/actions/select-nodes";
+import { selectElements } from "@/actions/select-elements";
 
-import { gridNodeSnapSelector } from "@/services/circuit-editor-drag/selectors/snap";
+import { gridElementSnapSelector } from "@/services/circuit-editor-drag/selectors/snap";
 import { activeCircuitIdSelector } from "@/services/circuit-editors/selectors/editor";
 
 export default function clipboardPasteReducer(
@@ -31,15 +31,15 @@ export default function clipboardPasteReducer(
     return state;
   }
 
-  const { clipboardNodes, clipboardPasteOrigin } = state.services.clipboard;
+  const { clipboardElements, clipboardPasteOrigin } = state.services.clipboard;
 
-  if (!clipboardNodes.length) {
+  if (!clipboardElements.length) {
     return state;
   }
 
   let { pastePosition } = action.payload;
 
-  const gridSnap = gridNodeSnapSelector(state);
+  const gridSnap = gridElementSnapSelector(state);
   if (!pastePosition) {
     pastePosition = pointAdd(clipboardPasteOrigin, {
       x: gridSnap,
@@ -50,38 +50,38 @@ export default function clipboardPasteReducer(
   }
 
   const pasteIds = zipObject(
-    clipboardNodes.map((x) => x.id),
-    map(clipboardNodes, () => uuidV4())
+    clipboardElements.map((x) => x.id),
+    map(clipboardElements, () => uuidV4())
   );
 
   // Two passes: Create and Wire.
 
-  // Create the nodes.
-  for (const node of clipboardNodes) {
-    const { id, nodeType, offset } = node;
+  // Create the elements.
+  for (const element of clipboardElements) {
+    const { id, elementType: elementType, offset } = element;
     const p = pointAdd(pastePosition, offset);
     state = rootReducer(
       state,
-      addNode(nodeType, circuitId, p, { nodeId: pasteIds[id] })
+      addElement(elementType, circuitId, p, { elementId: pasteIds[id] })
     );
   }
 
-  // Wire the nodes
-  for (const node of clipboardNodes) {
-    const { id, outputs } = node;
+  // Wire the elements
+  for (const element of clipboardElements) {
+    const { id, outputs } = element;
     const sourceId = pasteIds[id];
     for (const outputPin of Object.keys(outputs)) {
       for (const output of outputs[outputPin]) {
         const {
-          pin: { nodeId: targetCopyId, pinId: targetPin },
+          pin: { elementId: targetCopyId, pinId: targetPin },
           joints,
         } = output;
         const targetId = pasteIds[targetCopyId];
         state = rootReducer(
           state,
           attachWire(
-            { nodeId: sourceId, pinId: outputPin },
-            { nodeId: targetId, pinId: targetPin },
+            { elementId: sourceId, pinId: outputPin },
+            { elementId: targetId, pinId: targetPin },
             {
               joints: joints.map((jointPos) =>
                 pointAdd(jointPos, pastePosition!)
@@ -100,7 +100,7 @@ export default function clipboardPasteReducer(
     "clipboardPasteOrigin",
     pastePosition
   );
-  state = rootReducer(state, selectNodes(values(pasteIds)));
+  state = rootReducer(state, selectElements(values(pasteIds)));
 
   return state;
 }

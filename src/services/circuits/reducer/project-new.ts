@@ -13,7 +13,7 @@ export default createCircuitsReducer((state, action) => {
     circuitNamesByCircuitId: {
       [ROOT_CIRCUIT_ID]: "Root",
     },
-    nodeIdsByCircuitId: {
+    elementIdsByCircuitId: {
       [ROOT_CIRCUIT_ID]: [],
     },
   };

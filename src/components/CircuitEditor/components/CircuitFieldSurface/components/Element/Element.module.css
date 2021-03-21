@@ -1,0 +1,7 @@
+:global(.circuit-field-element.element-selected .element-select-highlight--stroke) {
+  stroke: var(--color-element-selected);
+}
+
+:global(.circuit-field-element.element-selected .element-select-highlight--fill) {
+  fill: var(--color-element-selected);
+}

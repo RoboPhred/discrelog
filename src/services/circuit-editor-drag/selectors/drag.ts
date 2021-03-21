@@ -9,14 +9,14 @@ import {
   pointSubtract,
 } from "@/geometry";
 
-import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
-import { nodePinFromPointSelector } from "@/services/node-layout/selectors/node-pin-positions";
+import { selectedElementIdsSelector } from "@/services/selection/selectors/selection";
+import { elementPinFromPointSelector } from "@/services/element-layout/selectors/element-pin-positions";
 import { circuitIdForEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
 
 import { createCircuitEditorDragSelector } from "../utils";
 import { CircuitEditorDragServiceState } from "../state";
 
-import { gridJointSnapSelector, gridNodeSnapSelector } from "./snap";
+import { gridJointSnapSelector, gridElementSnapSelector } from "./snap";
 
 export const dragModeSelector = createCircuitEditorDragSelector(
   (s) => s.dragMode
@@ -76,11 +76,11 @@ export const dragMoveOffsetSelector = (state: AppState) => {
     return null;
   }
 
-  const selectedNodeIds = selectedNodeIdsSelector(state);
+  const selectedElementIds = selectedElementIdsSelector(state);
 
   let gridSnap: number;
-  if (selectedNodeIds.length > 0) {
-    gridSnap = gridNodeSnapSelector(state);
+  if (selectedElementIds.length > 0) {
+    gridSnap = gridElementSnapSelector(state);
   } else {
     gridSnap = gridJointSnapSelector(state);
   }
@@ -141,5 +141,5 @@ export const dragDropTargetPinSelector = (state: AppState) => {
     return null;
   }
 
-  return nodePinFromPointSelector(state, dragEnd, circuitId);
+  return elementPinFromPointSelector(state, dragEnd, circuitId);
 };

@@ -21,8 +21,8 @@ export default createCircuitsReducer((state, action) => {
       ...state.circuitNamesByCircuitId,
       [circuitId]: circuitName,
     },
-    nodeIdsByCircuitId: {
-      ...state.nodeIdsByCircuitId,
+    elementIdsByCircuitId: {
+      ...state.elementIdsByCircuitId,
       [circuitId]: [],
     },
   };

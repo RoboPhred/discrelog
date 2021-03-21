@@ -1,4 +1,4 @@
-import { SimNodePinTransition, SimTransitionWindow } from "./types";
+import { EvolverPinTransition, SimTransitionWindow } from "./types";
 
 export interface SimulatorServiceState {
   /**
@@ -17,19 +17,19 @@ export interface SimulatorServiceState {
   lastTickProcessingTimeMs: number;
 
   /**
-   * A map of node states by node id.
+   * A map of evolver states by evolver id.
    */
-  nodeStatesByNodeId: Record<string, any>;
+  evolverStatesByEvolverId: Record<string, any>;
 
   /**
    * A map of output-to-value maps by node id.
    */
-  nodeOutputValuesByNodeId: Record<string, Record<string, boolean>>;
+  evolverOutputValuesByEvolverId: Record<string, Record<string, boolean>>;
 
   /**
    * A map of pending transitions by id.
    */
-  transitionsById: Record<string, SimNodePinTransition>;
+  transitionsById: Record<string, EvolverPinTransition>;
 
   /**
    * Transition windows in ascending order of tick.
@@ -41,8 +41,8 @@ const _defaultState: SimulatorServiceState = {
   initialized: false,
   tick: 0,
   lastTickProcessingTimeMs: 0,
-  nodeStatesByNodeId: {},
-  nodeOutputValuesByNodeId: {},
+  evolverStatesByEvolverId: {},
+  evolverOutputValuesByEvolverId: {},
   transitionsById: {},
   transitionWindows: [],
 };

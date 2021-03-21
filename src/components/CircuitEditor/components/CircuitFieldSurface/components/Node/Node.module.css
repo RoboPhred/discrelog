@@ -1,7 +1,0 @@
-:global(.circuit-field-node.node-selected .node-select-highlight--stroke) {
-  stroke: var(--color-element-selected);
-}
-
-:global(.circuit-field-node.node-selected .node-select-highlight--fill) {
-  fill: var(--color-element-selected);
-}

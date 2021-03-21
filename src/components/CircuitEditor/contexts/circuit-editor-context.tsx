@@ -7,13 +7,13 @@ import { circuitEditorStateFromIdSelector } from "@/services/circuit-editors/sel
 export interface CircuitEditorContext {
   editorId: string;
   circuitId: string;
-  circuitNodeIdPath: string[];
+  elementIdPath: string[];
 }
 
 const circuitEditorContext = React.createContext<CircuitEditorContext>({
   editorId: "~none",
   circuitId: "~none",
-  circuitNodeIdPath: [],
+  elementIdPath: [],
 });
 
 export function useCircuitEditor(): CircuitEditorContext {
@@ -30,18 +30,18 @@ export const CircuitEditorProvider: React.FC<CircuitEditorProviderProps> = ({
   const editorState = useSelector((state) =>
     circuitEditorStateFromIdSelector(state, editorId)
   );
-  const { circuitId, circuitNodeIdPath } = editorState ?? {
+  const { circuitId, elementIdPath } = editorState ?? {
     circuitId: "~none",
-    circuitNodeIdPath: [],
+    elementIdPath: [],
   };
 
   const context = React.useMemo<CircuitEditorContext>(
     () => ({
       editorId,
       circuitId,
-      circuitNodeIdPath,
+      elementIdPath: elementIdPath,
     }),
-    [circuitId, circuitNodeIdPath, editorId]
+    [circuitId, elementIdPath, editorId]
   );
 
   if (!editorState) {

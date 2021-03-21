@@ -5,7 +5,7 @@ import { asArray, MaybeArray } from "@/arrays";
 
 export interface MoveWireJointOpts {
   relative?: boolean;
-  snapMode?: "none" | "node" | "joint";
+  snapMode?: "none" | "element" | "joint";
 }
 export const ACTION_WIRE_JOINT_MOVE = "@wire/joint/move" as const;
 export const moveWireJoint = (

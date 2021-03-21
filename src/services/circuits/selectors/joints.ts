@@ -17,7 +17,7 @@ export const circuitIdFromJointIdSelector = (
   state: AppState,
   jointId: string
 ) => {
-  const { wireJointIdsByConnectionId } = state.services.nodeLayout;
+  const { wireJointIdsByConnectionId } = state.services.elementLayout;
   const connectionId = Object.keys(wireJointIdsByConnectionId).find(
     (connId) => wireJointIdsByConnectionId[connId].indexOf(jointId) !== -1
   );

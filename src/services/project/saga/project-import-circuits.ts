@@ -2,7 +2,7 @@ import fileDialog from "file-dialog";
 import { SagaIterator } from "redux-saga";
 import { call, put, takeEvery } from "redux-saga/effects";
 
-import { nodeTypeToCircuitId } from "@/nodes/definitions/integrated-circuits/utils";
+import { elementTypeToCircuitId } from "@/elements/definitions/integrated-circuits/utils";
 
 import { ACTION_PROJECT_IMPORT_CIRCUITS } from "@/actions/project-import-circuits";
 import { importCircuits } from "@/actions/circuit-import";
@@ -42,16 +42,16 @@ function* handleProjectImportCircuits(): SagaIterator {
   let circuitId: string | undefined;
   while ((circuitId = scanCircuitIds.pop())) {
     targetCircuitIds.push(circuitId);
-    for (const node of saveData.nodes) {
-      const { circuitId: nodeCircuitId, nodeType } = node;
-      if (circuitId !== nodeCircuitId) {
+    for (const element of saveData.elements) {
+      const { circuitId: elementCircuitId, elementType: elementType } = element;
+      if (circuitId !== elementCircuitId) {
         continue;
       }
-      const nodeIcCircuitId = nodeTypeToCircuitId(nodeType);
-      if (nodeIcCircuitId == null) {
+      const elementIcCircuitId = elementTypeToCircuitId(elementType);
+      if (elementIcCircuitId == null) {
         continue;
       }
-      scanCircuitIds.push(nodeIcCircuitId);
+      scanCircuitIds.push(elementIcCircuitId);
     }
   }
 

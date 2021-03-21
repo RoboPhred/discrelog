@@ -43,9 +43,9 @@ const CircuitEditorWindow: React.FC<CircuitEditorWindowProps> = ({
   editorId,
 }) => {
   const dispatch = useDispatch();
-  const { circuitId, circuitNodeIdPath } = useSelector((state) =>
+  const { circuitId, elementIdPath } = useSelector((state) =>
     circuitEditorStateFromIdSelector(state, editorId)
-  ) ?? { circuitId: null, circuitNodeIdPath: [] };
+  ) ?? { circuitId: null, elementIdPath: [] };
 
   const circuitName =
     useSelector((state) => circuitNameFromIdSelector(state, circuitId)) ??
@@ -93,7 +93,7 @@ const CircuitEditorWindow: React.FC<CircuitEditorWindowProps> = ({
         >
           <CircuitNodeBreadcrumb
             circuitId={circuitId}
-            circuitNodeIdPath={circuitNodeIdPath}
+            elementIdPath={elementIdPath}
           />
           <CircuitField
             className={cls(sizing["fill-parent"], flex["flexitem-shrink"])}

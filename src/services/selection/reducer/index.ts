@@ -1,11 +1,11 @@
 import { concatReducers } from "@/store/utils";
 
-import nodeDeleteReducer from "./node-delete";
+import elementDeleteReducer from "./element-delete";
 import projectNewReducer from "./project-new";
 import selectAllReducer from "./select-all";
 import selectClearReducer from "./select-clear";
+import selectElementsReducer from "./select-elements";
 import selectJointsReducer from "./select-joints";
-import selectNodesReducer from "./select-nodes";
 import selectRegionReducer from "./select-region";
 import selectWiresReducer from "./select-wires";
 import selectionAlignToGrid from "./selection-align-to-grid";
@@ -16,11 +16,11 @@ import wireDetatchReducer from "./wire-detatch";
 
 const selectionReducer = concatReducers(
   projectNewReducer,
-  nodeDeleteReducer,
+  elementDeleteReducer,
   selectAllReducer,
   selectClearReducer,
   selectJointsReducer,
-  selectNodesReducer,
+  selectElementsReducer,
   selectRegionReducer,
   selectWiresReducer,
   selectionAlignToGrid,

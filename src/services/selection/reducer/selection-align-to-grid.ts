@@ -5,15 +5,15 @@ import rootReducer from "@/store/reducer";
 import { pointEquals } from "@/geometry";
 
 import { isSelectionAlignToGridAction } from "@/actions/selection-align-to-grid";
-import { moveNode } from "@/actions/node-move";
+import { moveElement } from "@/actions/element-move";
 import { moveWireJoint } from "@/actions/wire-joint-move";
 
-import { nodePositionsByNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
+import { elementPositionsByElementIdSelector } from "@/services/element-layout/selectors/element-positions";
 import {
   applyGridJointSnapSelector,
-  applyGridNodeSnapSelector,
+  applyGridElementSnapSelector,
 } from "@/services/circuit-editor-drag/selectors/snap";
-import { wireJointPositionsByJointIdSelector } from "@/services/node-layout/selectors/wires";
+import { wireJointPositionsByJointIdSelector } from "@/services/element-layout/selectors/wires";
 
 export default function selectionAlignToGridReducer(
   state: AppState = defaultAppState,
@@ -23,19 +23,22 @@ export default function selectionAlignToGridReducer(
     return state;
   }
 
-  const { selectedNodeIds, selectedJointIds } = state.services.selection;
+  const {
+    selectedElementIds: selectedElementIds,
+    selectedJointIds,
+  } = state.services.selection;
 
-  // Align nodes.
-  const nodePositions = nodePositionsByNodeIdSelector(state);
-  for (const nodeId of selectedNodeIds) {
-    const nodePos = nodePositions[nodeId];
-    if (!nodePos) {
+  // Align elements.
+  const elementPositions = elementPositionsByElementIdSelector(state);
+  for (const elementId of selectedElementIds) {
+    const elementPos = elementPositions[elementId];
+    if (!elementPos) {
       continue;
     }
 
-    const snappedPos = applyGridNodeSnapSelector(state, nodePos);
-    if (!pointEquals(nodePos, snappedPos)) {
-      state = rootReducer(state, moveNode(nodeId, snappedPos));
+    const snappedPos = applyGridElementSnapSelector(state, elementPos);
+    if (!pointEquals(elementPos, snappedPos)) {
+      state = rootReducer(state, moveElement(elementId, snappedPos));
     }
   }
 

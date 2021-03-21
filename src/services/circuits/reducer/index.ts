@@ -4,8 +4,8 @@ import circuitAddReducer from "./circuit-add";
 import circuitDeleteReducer from "./circuit-delete";
 import circuitImportReducer from "./circuit-import";
 import circuitRenameReducer from "./circuit-rename";
-import nodeAddReducer from "./node-add";
-import nodeDeleteReducer from "./node-delete";
+import elementAddReducer from "./element-add";
+import elementDeleteReducer from "./element-delete";
 import projectNewReducer from "./project-new";
 
 export default concatReducers(
@@ -13,7 +13,7 @@ export default concatReducers(
   circuitDeleteReducer,
   circuitImportReducer,
   circuitRenameReducer,
-  nodeAddReducer,
-  nodeDeleteReducer,
+  elementAddReducer,
+  elementDeleteReducer,
   projectNewReducer
 );

@@ -1,24 +1,17 @@
-import { ElementDefinition } from "../types";
+import { ElementDefinitionSource } from "../types";
 
-function asElementDef(module: any): ElementDefinition {
-  return module.default as ElementDefinition;
-}
+import IntegratedCircuitDefinitionSources from "./integrated-circuits";
+import InteractionDefinitionSources from "./interaction";
+import LogicDefinitionSources from "./logic";
+import OutputDefinitionSources from "./output";
+import PinDefinitionSources from "./pins";
 
-export const ElementDefinitionsByType = {
-  "input-momentary": asElementDef(require("./input-momentary")),
-  "input-toggle": asElementDef(require("./input-toggle")),
+const elementDefinitionSources: ElementDefinitionSource[] = [
+  ...IntegratedCircuitDefinitionSources,
+  ...InteractionDefinitionSources,
+  ...LogicDefinitionSources,
+  ...OutputDefinitionSources,
+  ...PinDefinitionSources,
+];
 
-  "logic-and": asElementDef(require("./logic-and")),
-  "logic-buffer": asElementDef(require("./logic-buffer")),
-  "logic-nand": asElementDef(require("./logic-nand")),
-  "logic-nor": asElementDef(require("./logic-nor")),
-  "logic-not": asElementDef(require("./logic-not")),
-  "logic-or": asElementDef(require("./logic-or")),
-  "logic-xor": asElementDef(require("./logic-xor")),
-
-  "output-led": asElementDef(require("./output-led")),
-  "output-seg7": asElementDef(require("./output-seg7")),
-
-  "pin-high": asElementDef(require("./pin-high")),
-};
-export type ElementType = keyof typeof ElementDefinitionsByType;
+export default elementDefinitionSources;

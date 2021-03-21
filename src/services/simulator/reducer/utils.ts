@@ -9,32 +9,32 @@ import { AppState } from "@/store";
 import { EvolutionResult, OutputTransition } from "@/logic";
 
 import {
-  inputPinsByPinIdFromSimulatorNodeIdSelector,
-  outputSimulatorNodeIdsFromSimulatorNodeIdSelector,
+  inputPinsByPinIdFromEvolverIdSelector,
+  outputEvolverIdsFromEvolverIdSelector,
 } from "@/services/simulator-graph/selectors/connections";
 import {
-  simulatorNodeIdsSelector,
-  elementDefFromSimulatorNodeId,
-} from "@/services/simulator-graph/selectors/nodes";
+  evolverIdsSelector,
+  evolverDefFromEvolverId,
+} from "@/services/simulator-graph/selectors/elements";
 
 import { SimulatorServiceState, defaultSimulatorServiceState } from "../state";
-import { SimTransitionWindow, SimNodePinTransition } from "../types";
+import { SimTransitionWindow, EvolverPinTransition } from "../types";
 
 export function simInit(
   state: Readonly<SimulatorServiceState>,
   appState: Readonly<AppState>
 ): SimulatorServiceState {
-  const nodeIds = simulatorNodeIdsSelector(appState);
+  const elementIds = evolverIdsSelector(appState);
 
   state = defaultSimulatorServiceState;
 
-  state = nodeIds.reduce(
-    (state, nodeId) => initNode(state, nodeId, appState),
+  state = elementIds.reduce(
+    (state, elementId) => initNode(state, elementId, appState),
     state
   );
 
-  state = nodeIds.reduce(
-    (state, nodeId) => collectNodeTransitions(state, nodeId, appState),
+  state = elementIds.reduce(
+    (state, elementId) => collectNodeTransitions(state, elementId, appState),
     state
   );
 
@@ -43,10 +43,10 @@ export function simInit(
 
 function initNode(
   state: Readonly<SimulatorServiceState>,
-  nodeId: string,
+  elementId: string,
   appState: Readonly<AppState>
 ): SimulatorServiceState {
-  const def = elementDefFromSimulatorNodeId(appState, nodeId);
+  const def = evolverDefFromEvolverId(appState, elementId);
   if (!def) {
     return state;
   }
@@ -56,7 +56,12 @@ function initNode(
     outputValues[output] = false;
   });
 
-  return fpSet(state, "nodeOutputValuesByNodeId", nodeId, outputValues);
+  return fpSet(
+    state,
+    "evolverOutputValuesByEvolverId",
+    elementId,
+    outputValues
+  );
 }
 
 export function simTick(
@@ -117,21 +122,21 @@ function tickWindow(
   let state = Object.assign({}, readonlyState, {
     tick: window.tick,
     // pre-clone outputs for mutation below
-    nodeOutputValuesByNodeId: Object.assign(
+    evolverOutputValuesByEvolverId: Object.assign(
       {},
-      readonlyState.nodeOutputValuesByNodeId
+      readonlyState.evolverOutputValuesByEvolverId
     ),
   }) as SimulatorServiceState;
 
-  // Could benefit from being changed to a Set, although nodes usually arent hooked up to too many
+  // Could benefit from being changed to a Set, although elements usually arent hooked up to too many
   //  outputs at a time.
-  const updatedNodes = new Set<string>();
+  const updatedEvolverIds = new Set<string>();
   window.transitionIds.forEach((tid) => {
-    const { nodeId, valuesByOutputPin } = state.transitionsById[tid];
+    const { elementId, valuesByOutputPin } = state.transitionsById[tid];
 
     if (
       !isOutputsUpdated(
-        state.nodeOutputValuesByNodeId[nodeId],
+        state.evolverOutputValuesByEvolverId[elementId],
         valuesByOutputPin
       )
     ) {
@@ -139,19 +144,19 @@ function tickWindow(
       return;
     }
 
-    // nodeOutputValuesByNodeId is pre-cloned
-    state.nodeOutputValuesByNodeId[nodeId] = Object.assign(
+    // evolverOutputValuesByEvolverId is pre-cloned
+    state.evolverOutputValuesByEvolverId[elementId] = Object.assign(
       {},
-      state.nodeOutputValuesByNodeId[nodeId],
+      state.evolverOutputValuesByEvolverId[elementId],
       valuesByOutputPin
     );
 
     // Add each node we output to, to the output list.
-    const outputNodeIds = outputSimulatorNodeIdsFromSimulatorNodeIdSelector(
+    const outputEvolverIds = outputEvolverIdsFromEvolverIdSelector(
       appState,
-      nodeId
+      elementId
     );
-    outputNodeIds.forEach((nodeId) => updatedNodes.add(nodeId));
+    outputEvolverIds.forEach((evolverId) => updatedEvolverIds.add(evolverId));
   });
 
   // Remove all window transitions as they have been consumed.
@@ -161,8 +166,8 @@ function tickWindow(
     difference(Object.keys(state.transitionsById), window.transitionIds)
   );
 
-  for (const nodeId of updatedNodes) {
-    state = collectNodeTransitions(state, nodeId, appState);
+  for (const elementId of updatedEvolverIds) {
+    state = collectNodeTransitions(state, elementId, appState);
   }
 
   return state;
@@ -177,34 +182,34 @@ function isOutputsUpdated(
 
 export function collectNodeTransitions(
   state: Readonly<SimulatorServiceState>,
-  nodeId: string,
+  elementId: string,
   appState: Readonly<AppState>
 ): SimulatorServiceState {
-  const def = elementDefFromSimulatorNodeId(appState, nodeId);
+  const def = evolverDefFromEvolverId(appState, elementId);
   if (!def || !def.evolve) {
     return state;
   }
 
   // Build the current input state from the connected pins.
-  const inputs = collectNodeInputs(state, nodeId, appState);
+  const inputs = collectNodeInputs(state, elementId, appState);
   const result = def.evolve(
-    state.nodeStatesByNodeId[nodeId],
+    state.evolverStatesByEvolverId[elementId],
     inputs,
     state.tick
   );
 
-  return applyEvolutionResult(state, nodeId, result);
+  return applyEvolutionResult(state, elementId, result);
 }
 
 export function applyEvolutionResult(
   state: Readonly<SimulatorServiceState>,
-  nodeId: string,
+  elementId: string,
   evolutionResult: EvolutionResult
 ) {
-  const { state: nodeState, transitions } = evolutionResult;
+  const { state: evolverState, transitions } = evolutionResult;
 
-  if (nodeState) {
-    state = fpSet(state, "nodeStatesByNodeId", nodeId, nodeState);
+  if (evolverState) {
+    state = fpSet(state, "evolverStatesByEvolverId", elementId, evolverState);
   }
 
   if (transitions) {
@@ -213,7 +218,7 @@ export function applyEvolutionResult(
       (state, transition, i) =>
         applyOutputTransition(
           state,
-          nodeId,
+          elementId,
           transition,
           i === 0 ? "replace" : "append"
         ),
@@ -226,14 +231,14 @@ export function applyEvolutionResult(
 
 function collectNodeInputs(
   state: Readonly<SimulatorServiceState>,
-  nodeId: string,
+  elementId: string,
   appState: Readonly<AppState>
 ): Record<string, boolean> {
   // Build the current input state from the connected pins.
   const inputs: Record<string, boolean> = {};
-  const inputSourcesByPin = inputPinsByPinIdFromSimulatorNodeIdSelector(
+  const inputSourcesByPin = inputPinsByPinIdFromEvolverIdSelector(
     appState,
-    nodeId
+    elementId
   );
 
   Object.keys(inputSourcesByPin).forEach((inputPin) => {
@@ -243,9 +248,9 @@ function collectNodeInputs(
       return;
     }
 
-    const { simulatorNodeId: sourceNodeId, pinId: sourcePinId } = inputConn;
+    const { evolverId, pinId: sourcePinId } = inputConn;
     inputs[inputPin] =
-      state.nodeOutputValuesByNodeId[sourceNodeId]?.[sourcePinId] || false;
+      state.evolverOutputValuesByEvolverId[evolverId]?.[sourcePinId] || false;
   });
 
   return inputs;
@@ -253,7 +258,7 @@ function collectNodeInputs(
 
 function applyOutputTransition(
   state: Readonly<SimulatorServiceState>,
-  nodeId: string,
+  elementId: string,
   transition: OutputTransition,
   defaultMerger: "replace" | "append" = "replace"
 ): SimulatorServiceState {
@@ -269,22 +274,22 @@ function applyOutputTransition(
   // We originally removed old transitions when scheduling new transitions.
   //  Experimenting without this.
   if (transitionMerger === "replace") {
-    state = removeTransitionsByNodeId(state, nodeId);
+    state = removeTransitionsByEvolverId(state, elementId);
   }
 
-  return addTransition(state, nodeId, transitionTick, valuesByPin);
+  return addTransition(state, elementId, transitionTick, valuesByPin);
 }
 
 function addTransition(
   state: Readonly<SimulatorServiceState>,
-  nodeId: string,
+  elementId: string,
   tick: number,
   valuesByOutputPin: Record<string, boolean>
 ): SimulatorServiceState {
   const transitionId = uuidV4();
 
-  const newTransition: SimNodePinTransition = {
-    nodeId,
+  const newTransition: EvolverPinTransition = {
+    elementId,
     tick,
     valuesByOutputPin,
   };
@@ -321,16 +326,16 @@ function addTransition(
   });
 }
 
-function removeTransitionsByNodeId(
+function removeTransitionsByEvolverId(
   state: Readonly<SimulatorServiceState>,
-  nodeId: string
+  elementId: string
 ): SimulatorServiceState {
-  function isNodeTransition(transition: SimNodePinTransition) {
-    return transition.nodeId === nodeId;
+  function isElementTransition(transition: EvolverPinTransition) {
+    return transition.elementId === elementId;
   }
 
   const transitionIds = Object.keys(state.transitionsById).filter((id) =>
-    isNodeTransition(state.transitionsById[id])
+    isElementTransition(state.transitionsById[id])
   );
 
   return transitionIds.reduce(

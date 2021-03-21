@@ -1,9 +1,9 @@
 export interface UiSettingsState {
-  nodeNameMode: "all" | "named-only" | "none";
+  elementNameMode: "all" | "named-only" | "none";
 }
 
 const _defaultState: UiSettingsState = {
-  nodeNameMode: "named-only",
+  elementNameMode: "named-only",
 };
 
 export const defaultUiSettingsState = Object.freeze(_defaultState);

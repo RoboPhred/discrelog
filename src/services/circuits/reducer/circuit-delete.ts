@@ -7,12 +7,12 @@ import { fpSet } from "@/utils";
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
-import { circuitIdToNodeType } from "@/nodes/definitions/integrated-circuits/utils";
+import { circuitIdToElementType } from "@/elements/definitions/integrated-circuits/utils";
 
 import { isDeleteCircuitAction } from "@/actions/circuit-delete";
-import { deleteNode } from "@/actions/node-delete";
+import { deleteElement } from "@/actions/element-delete";
 
-import { nodeIdsFromTypeSelector } from "@/services/node-graph/selectors/nodes";
+import { elementIdsFromTypeSelector } from "@/services/element-graph/selectors/elements";
 
 export default (state: AppState = defaultAppState, action: AnyAction) => {
   if (!isDeleteCircuitAction(action)) {
@@ -21,40 +21,40 @@ export default (state: AppState = defaultAppState, action: AnyAction) => {
 
   const { circuitId } = action.payload;
 
-  const nodeIdsInCircuit =
-    state.services.circuits.nodeIdsByCircuitId[circuitId];
-  if (!nodeIdsInCircuit) {
+  const elementIdsInCircuit =
+    state.services.circuits.elementIdsByCircuitId[circuitId];
+  if (!elementIdsInCircuit) {
     return state;
   }
 
   // The node ids of instances of this circuit.
-  const circuitTypeNodeIds = nodeIdsFromTypeSelector(
+  const circuitTypeElementIds = elementIdsFromTypeSelector(
     state,
-    circuitIdToNodeType(circuitId)
+    circuitIdToElementType(circuitId)
   );
 
-  const nodeIdsToDelete = [...circuitTypeNodeIds, ...nodeIdsInCircuit];
+  const elementIdsToDelete = [...circuitTypeElementIds, ...elementIdsInCircuit];
 
-  // We used to handle this in a seperate reducer in node-graph, but we need to
+  // We used to handle this in a seperate reducer in element-graph, but we need to
   // know the node types before deletion to know which instances of the circuit to delete,
-  // and node-graph needs to know what nodes are in each circuit.  This means
+  // and element-graph needs to know what elements are in each circuit.  This means
   // both need the data from the other, and they cannot be ordered separately.
-  // This might be a sign that we need to move nodeIdsByCircuitId into node-graph,
+  // This might be a sign that we need to move elementIdsByCircuitId into element-graph,
   // but this way seems cleaner as it keeps the separation of concerns while
   // leveraging actions to reuse the node deletion code.
-  state = nodeIdsToDelete.reduce(
-    (state, nodeId) => rootReducer(state, deleteNode(nodeId)),
+  state = elementIdsToDelete.reduce(
+    (state, elementId) => rootReducer(state, deleteElement(elementId)),
     state
   );
 
   const remainingCircuitIds = Object.keys(
-    state.services.circuits.nodeIdsByCircuitId
+    state.services.circuits.elementIdsByCircuitId
   ).filter((x) => x !== circuitId);
 
   return fpSet(state, "services", "circuits", (serviceState) => ({
     ...serviceState,
-    nodeIdsByCircuitId: pick(
-      serviceState.nodeIdsByCircuitId,
+    elementIdsByCircuitId: pick(
+      serviceState.elementIdsByCircuitId,
       remainingCircuitIds
     ),
     circuitNamesByCircuitId: pick(

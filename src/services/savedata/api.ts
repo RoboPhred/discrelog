@@ -2,36 +2,36 @@ import {
   SaveCircuit,
   SaveData,
   saveDataSchema,
-  SaveNode,
+  SaveElement,
   SaveWire,
 } from "./types";
 
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
-import { addNode } from "@/actions/node-add";
+import { addElement } from "@/actions/element-add";
 import { attachWire } from "@/actions/wire-attach";
 
 import {
-  nodeIdsSelector,
-  nodeFromNodeIdSelector,
-} from "../node-graph/selectors/nodes";
+  elementIdsSelector,
+  elementFromElementIdSelector,
+} from "../element-graph/selectors/elements";
 import {
   connectionIdsSelector,
   connectionFromConnectionIdSelector,
-} from "../node-graph/selectors/connections";
-import { nodePositionFromNodeIdSelector } from "../node-layout/selectors/node-positions";
+} from "../element-graph/selectors/connections";
+import { elementPositionFromElementIdSelector } from "../element-layout/selectors/element-positions";
 import {
   circuitIdsSelector,
   circuitNameFromIdSelector,
 } from "../circuits/selectors/circuits";
 import { ROOT_CIRCUIT_ID } from "../circuits/constants";
 
-import { circuitIdFromNodeIdSelector } from "../circuits/selectors/nodes";
+import { circuitIdFromElementIdSelector } from "../circuits/selectors/elements";
 import {
   wireJointPositionsByJointIdSelector,
   wireJointIdsFromConnectionIdSelector,
-} from "../node-layout/selectors/wires";
+} from "../element-layout/selectors/wires";
 
 import { SaveFormatError } from "./errors";
 import { addCircuit } from "@/actions/circuit-add";
@@ -47,19 +47,19 @@ export function createSave(state: AppState): SaveData {
       };
       return saveCircuit;
     }),
-    nodes: nodeIdsSelector(state).map((nodeId) => {
-      const node = nodeFromNodeIdSelector(state, nodeId);
-      const position = nodePositionFromNodeIdSelector(state, nodeId);
-      const circuitId = circuitIdFromNodeIdSelector(state, nodeId);
-      const saveNode: SaveNode = {
-        nodeId: nodeId,
-        nodeType: node.nodeType,
-        nodeName: node.nodeName,
+    elements: elementIdsSelector(state).map((elementId) => {
+      const element = elementFromElementIdSelector(state, elementId);
+      const position = elementPositionFromElementIdSelector(state, elementId);
+      const circuitId = circuitIdFromElementIdSelector(state, elementId);
+      const saveElement: SaveElement = {
+        elementId: elementId,
+        elementType: element.elementType,
+        elementName: element.elementName,
         circuitId: circuitId ?? ROOT_CIRCUIT_ID,
         x: position.x,
         y: position.y,
       };
-      return saveNode;
+      return saveElement;
     }),
     wires: connectionIdsSelector(state).map((connectionId) => {
       const wire = connectionFromConnectionIdSelector(state, connectionId);
@@ -94,17 +94,17 @@ export function loadSave(state: AppState, save: SaveData): AppState {
       state
     );
 
-    state = (save.nodes ?? []).reduce(
-      (state, node) =>
+    state = (save.elements ?? []).reduce(
+      (state, element) =>
         rootReducer(
           state,
-          addNode(
-            node.nodeType,
-            node.circuitId,
-            { x: node.x, y: node.y },
+          addElement(
+            element.elementType,
+            element.circuitId,
+            { x: element.x, y: element.y },
             {
-              nodeId: node.nodeId,
-              nodeName: node.nodeName ?? undefined,
+              elementId: element.elementId,
+              elementName: element.elementName ?? undefined,
             }
           )
         ),
@@ -157,20 +157,20 @@ export function importCircuitsFromSave(
       state
     );
 
-    const importNodes = (save.nodes ?? []).filter((x) =>
+    const importNodes = (save.elements ?? []).filter((x) =>
       importCircuits.some(({ circuitId }) => circuitId === x.circuitId)
     );
     state = importNodes.reduce(
-      (state, node) =>
+      (state, element) =>
         rootReducer(
           state,
-          addNode(
-            node.nodeType,
-            node.circuitId,
-            { x: node.x, y: node.y },
+          addElement(
+            element.elementType,
+            element.circuitId,
+            { x: element.x, y: element.y },
             {
-              nodeId: node.nodeId,
-              nodeName: node.nodeName ?? undefined,
+              elementId: element.elementId,
+              elementName: element.elementName ?? undefined,
             }
           )
         ),
@@ -179,8 +179,9 @@ export function importCircuitsFromSave(
 
     function isImportableWire(wire: SaveWire) {
       return importNodes.some(
-        ({ nodeId }) =>
-          wire.input.nodeId === nodeId || wire.output.nodeId === nodeId
+        ({ elementId }) =>
+          wire.input.elementId === elementId ||
+          wire.output.elementId === elementId
       );
     }
 

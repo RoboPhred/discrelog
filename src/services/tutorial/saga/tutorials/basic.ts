@@ -3,9 +3,9 @@ import { call, put, select, take } from "redux-saga/effects";
 import { arrayEquals } from "@/arrays";
 
 import {
-  ACTION_NODE_INTERACT,
-  InteractNodeAction,
-} from "@/actions/node-interact";
+  ACTION_ELEMENT_INTERACT,
+  InteractElementAction,
+} from "@/actions/element-interact";
 import { ACTION_SIM_START } from "@/actions/sim-start";
 import { tutorialAnnotate } from "@/actions/tutorial-annotate";
 import { tutorialDismiss } from "@/actions/tutorial-dismiss";
@@ -14,12 +14,12 @@ import { activeCircuitEditorIdSelector } from "@/services/circuit-editors/select
 
 import {
   getCircuitEditorHtmlId,
-  getNodeHtmlId,
-  getNodePinHtmlId,
+  getElementHtmlId,
+  getElementPinHtmlId,
 } from "@/components/CircuitEditor/ids";
 
 import {
-  createNodeTutorialStep,
+  addElementTutorialStep,
   tutorialNextMessage,
   waitFilterAction,
   waitNodeWired,
@@ -28,18 +28,18 @@ import {
 export default function* runBasicsTutorial() {
   yield call(
     tutorialNextMessage,
-    "#node-tray",
+    "#element-tray",
     "This is where logic elements are stored."
   );
 
-  const gateId: string | null = yield call(createNodeTutorialStep, "logic-not");
+  const gateId: string | null = yield call(addElementTutorialStep, "logic-not");
   if (!gateId) {
     yield put(tutorialDismiss());
     return;
   }
 
   const switchId: string | null = yield call(
-    createNodeTutorialStep,
+    addElementTutorialStep,
     "interaction-momentary"
   );
   if (!switchId) {
@@ -47,7 +47,7 @@ export default function* runBasicsTutorial() {
     return;
   }
 
-  const ledId: string | null = yield call(createNodeTutorialStep, "output-led");
+  const ledId: string | null = yield call(addElementTutorialStep, "output-led");
   if (!ledId) {
     yield put(tutorialDismiss());
     return;
@@ -64,12 +64,12 @@ export default function* runBasicsTutorial() {
   yield put(
     tutorialAnnotate([
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, switchId, "OUT"),
+        selector: "#" + getElementPinHtmlId(activeEditorId, switchId, "OUT"),
         message: "This is the switch's output pin.",
         placement: "top",
       },
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, gateId, "IN"),
+        selector: "#" + getElementPinHtmlId(activeEditorId, gateId, "IN"),
         message: "This is the logic gate's input pin.",
         placement: "bottom",
       },
@@ -83,19 +83,19 @@ export default function* runBasicsTutorial() {
 
   yield call(
     waitNodeWired,
-    { nodeId: switchId, pinId: "OUT" },
-    { nodeId: gateId, pinId: "IN" }
+    { elementId: switchId, pinId: "OUT" },
+    { elementId: gateId, pinId: "IN" }
   );
 
   yield put(
     tutorialAnnotate([
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, gateId, "OUT"),
+        selector: "#" + getElementPinHtmlId(activeEditorId, gateId, "OUT"),
         message: "This is the logic gate's output pin.",
         placement: "top",
       },
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, ledId, "IN"),
+        selector: "#" + getElementPinHtmlId(activeEditorId, ledId, "IN"),
         message: "This is the LED's input pin.",
         placement: "bottom",
       },
@@ -109,8 +109,8 @@ export default function* runBasicsTutorial() {
 
   yield call(
     waitNodeWired,
-    { nodeId: gateId, pinId: "OUT" },
-    { nodeId: ledId, pinId: "IN" }
+    { elementId: gateId, pinId: "OUT" },
+    { elementId: ledId, pinId: "IN" }
   );
 
   yield put(
@@ -130,7 +130,7 @@ export default function* runBasicsTutorial() {
         selector: "#" + getCircuitEditorHtmlId(activeEditorId),
       },
       {
-        selector: "#" + getNodeHtmlId(activeEditorId, switchId),
+        selector: "#" + getElementHtmlId(activeEditorId, switchId),
         message:
           "Click the switch to activate it.  Momentary switches need to be held.",
       },
@@ -138,10 +138,10 @@ export default function* runBasicsTutorial() {
   );
 
   yield call(() =>
-    waitFilterAction<InteractNodeAction>(
-      ACTION_NODE_INTERACT,
-      ({ payload: { circuitNodeIdPath, data } }) =>
-        data === true && arrayEquals(circuitNodeIdPath, [switchId])
+    waitFilterAction<InteractElementAction>(
+      ACTION_ELEMENT_INTERACT,
+      ({ payload: { elementIdPath, data } }) =>
+        data === true && arrayEquals(elementIdPath, [switchId])
     )
   );
 

@@ -1,7 +1,7 @@
 import { AppState } from "@/store";
 
 import { isCircuitEditorDragStartWireAction } from "@/actions/circuit-editor-drag-start-wire";
-import { nodeIdsByCircuitIdSelector } from "@/services/circuits/selectors/nodes";
+import { elementIdsByCircuitIdSelector } from "@/services/circuits/selectors/elements";
 
 import { createCircuitEditorDragReducer } from "../utils";
 
@@ -12,7 +12,7 @@ export default createCircuitEditorDragReducer((state, action, rootState) => {
 
   const { x, y, pin, editorId } = action.payload;
 
-  const circuitId = circuitIdForNode(pin.nodeId, rootState);
+  const circuitId = circuitIdForElement(pin.elementId, rootState);
   if (!circuitId) {
     return state;
   }
@@ -28,10 +28,10 @@ export default createCircuitEditorDragReducer((state, action, rootState) => {
   };
 });
 
-function circuitIdForNode(nodeId: string, state: AppState) {
-  const nodeIdsByCircuit = nodeIdsByCircuitIdSelector(state);
-  for (const circuitId of Object.keys(nodeIdsByCircuit)) {
-    if (nodeIdsByCircuit[circuitId].indexOf(nodeId) !== -1) {
+function circuitIdForElement(elementId: string, state: AppState) {
+  const elementIdsByCircuit = elementIdsByCircuitIdSelector(state);
+  for (const circuitId of Object.keys(elementIdsByCircuit)) {
+    if (elementIdsByCircuit[circuitId].indexOf(elementId) !== -1) {
       return circuitId;
     }
   }

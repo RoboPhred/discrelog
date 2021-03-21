@@ -21,7 +21,7 @@ const _defaultState: UiLayoutServiceState = {
       direction: "column",
       division: 30,
       first: "circuits-list",
-      second: "node-tray",
+      second: "element-tray",
     },
     second: circuitEditorTesselWindow(DEFAULT_CIRCUIT_EDITOR_ID),
   },

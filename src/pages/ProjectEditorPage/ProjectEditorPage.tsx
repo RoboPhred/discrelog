@@ -20,10 +20,10 @@ import ProjectEditorTitleBar from "./components/ProjectEditorTitleBar";
 
 import CircuitFieldWindow from "./windows/CircuitEditorWindow";
 import CircuitsTreeWindow from "./windows/CircuitsTreeWindow";
-import NodeTrayWindow from "./windows/NodeTrayWindow";
+import ElementTrayWindow from "./windows/ElementTrayWindow";
 
 const WindowsById: Record<string, React.ComponentType<any>> = {
-  "node-tray": NodeTrayWindow,
+  "element-tray": ElementTrayWindow,
   "circuit-field": CircuitFieldWindow,
   "circuits-list": CircuitsTreeWindow,
 };

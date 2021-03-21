@@ -7,7 +7,7 @@ import useSelector from "@/hooks/useSelector";
 
 import { canRedoSelector, canUndoSelector } from "@/undo/selectors";
 
-import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
+import { selectedElementIdsSelector } from "@/services/selection/selectors/selection";
 import { canPasteSelector } from "@/services/clipboard/selectors/clipboard";
 
 import { undo } from "@/actions/undo";
@@ -25,7 +25,7 @@ const EditMenu: React.FC = () => {
   const canRedo = useSelector(canRedoSelector);
   const onRedo = useAction(redo);
 
-  const canCopy = useSelector(selectedNodeIdsSelector).length > 0;
+  const canCopy = useSelector(selectedElementIdsSelector).length > 0;
   const onCopy = useAction(copySelection);
   const canPaste = useSelector(canPasteSelector);
   const onPaste = useAction(paste);

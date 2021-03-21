@@ -3,27 +3,27 @@ import merge from "lodash/merge";
 import { v4 as uuidV4 } from "uuid";
 
 import {
-  CircuitNodeElementProduction,
-  ElementNodeElementProduction,
-  normalizeElementProduction,
-} from "../../nodes/types/element-production";
+  CircuitSimProduction,
+  ElementSimProduction,
+  normalizeSimProduction,
+} from "../../elements/types/element-production";
 
 import {
   SimulatorGraph,
   SimulatorGraphDependencies,
-  SimulatorNode,
-  SimulatorNodeIdMappingTreeItem,
-  SimulatorNodePin,
+  SimulatorEvolver,
+  EvolverIdMappingTreeItem,
+  EvolverPin,
 } from "./types";
 
 type CircuitProductionResult = SimulatorGraph & {
-  inputElementPinsByCircuitPinId: Record<string, SimulatorNodePin[]>;
-  outputElementPinsByCircuitPinId: Record<string, SimulatorNodePin>;
+  inputElementPinsByCircuitPinId: Record<string, EvolverPin[]>;
+  outputElementPinsByCircuitPinId: Record<string, EvolverPin>;
 };
 
 const EMPTY_PRODUCTION = Object.freeze<CircuitProductionResult>({
-  simulatorNodesById: {},
-  simulatorNodeIdsByCircuitNodeId: {},
+  evolversById: {},
+  evolverIdsByElementId: {},
   inputElementPinsByCircuitPinId: {},
   outputElementPinsByCircuitPinId: {},
 });
@@ -43,62 +43,56 @@ export function produceCircuitGraph(
 
   path = [...path, circuitId];
 
-  const simulatorNodesById: Record<string, SimulatorNode> = {};
-  const simulatorNodeIdsByCircuitNodeId: Record<
-    string,
-    SimulatorNodeIdMappingTreeItem
-  > = {};
-  const inputElementPinsByCircuitPinId: Record<string, SimulatorNodePin[]> = {};
-  const outputElementPinsByCircuitPinId: Record<string, SimulatorNodePin> = {};
+  const evolversById: Record<string, SimulatorEvolver> = {};
+  const evolverIdsByElementId: Record<string, EvolverIdMappingTreeItem> = {};
+  const inputElementPinsByCircuitPinId: Record<string, EvolverPin[]> = {};
+  const outputElementPinsByCircuitPinId: Record<string, EvolverPin> = {};
 
-  const inputCircuitNodeIds: string[] = [];
-  const outputCircuitNodeIds: string[] = [];
+  const inputElementIds: string[] = [];
+  const outputElementIds: string[] = [];
 
   // 1. Create new elements
   // 2. Wire elements amongs themselves.
   // 3. Pass input and output mapping to parent.
 
-  const circuitNodeInputPinsByPinIdByNodeId: Record<
+  const elementInputPinsByPinIdByElementId: Record<
     string,
-    Record<string, SimulatorNodePin[]>
+    Record<string, EvolverPin[]>
   > = {};
-  const circuitNodeOutputPinsByPinIdByNodeId: Record<
+  const elementOutputPinsByPinIdByElementId: Record<
     string,
-    Record<string, SimulatorNodePin>
+    Record<string, EvolverPin>
   > = {};
 
-  const circuitNodeIds = dependencies.nodeIdsByCircuitId[circuitId] ?? [];
-  for (const circuitNodeId of circuitNodeIds) {
-    const nodeType = dependencies.nodeTypesByNodeId[circuitNodeId];
-    if (!nodeType) {
+  const elementIds = dependencies.elementIdsByCircuitId[circuitId] ?? [];
+  for (const elementId of elementIds) {
+    const elementType = dependencies.elementTypesByElementId[elementId];
+    if (!elementType) {
       continue;
     }
 
     // If this node is a pin, remember it to calculate circuit inputs and outputs.
-    if (nodeType === "pin-input") {
-      inputCircuitNodeIds.push(circuitNodeId);
-      inputElementPinsByCircuitPinId[circuitNodeId] = [];
+    if (elementType === "pin-input") {
+      inputElementIds.push(elementId);
+      inputElementPinsByCircuitPinId[elementId] = [];
       continue;
-    } else if (nodeType === "pin-output") {
-      outputCircuitNodeIds.push(circuitNodeId);
+    } else if (elementType === "pin-output") {
+      outputElementIds.push(elementId);
       continue;
     }
 
-    const productionResult = produceNode(circuitNodeId, dependencies, path);
+    const productionResult = produceEvolver(elementId, dependencies, path);
 
-    // Merge the produced simulator nodes.
-    merge(simulatorNodesById, productionResult.simulatorNodesById);
+    // Merge the produced simulator elements.
+    merge(evolversById, productionResult.evolversById);
 
     // Merge the mapping from circuit node to simulator node.
-    merge(
-      simulatorNodeIdsByCircuitNodeId,
-      productionResult.simulatorNodeIdsByCircuitNodeId
-    );
+    merge(evolverIdsByElementId, productionResult.evolverIdsByElementId);
 
     // Remember what these circuit node pins translate to.
-    circuitNodeInputPinsByPinIdByNodeId[circuitNodeId] =
+    elementInputPinsByPinIdByElementId[elementId] =
       productionResult.inputElementPinsByCircuitPinId;
-    circuitNodeOutputPinsByPinIdByNodeId[circuitNodeId] =
+    elementOutputPinsByPinIdByElementId[elementId] =
       productionResult.outputElementPinsByCircuitPinId;
   }
 
@@ -110,34 +104,34 @@ export function produceCircuitGraph(
     // It might be ok to skip this step, and rely on not finding the node mapping.
 
     if (
-      circuitNodeIds.indexOf(inputPin.nodeId) === -1 ||
-      circuitNodeIds.indexOf(outputPin.nodeId) === -1
+      elementIds.indexOf(inputPin.elementId) === -1 ||
+      elementIds.indexOf(outputPin.elementId) === -1
     ) {
       continue;
     }
 
     // We need to find the one output, and connect it to all inputs that match.
     // There might be more than one input if the input was on an IC / circuit production.
-    const outputSimPin = get(circuitNodeOutputPinsByPinIdByNodeId, [
-      outputPin.nodeId,
+    const outputSimPin = get(elementOutputPinsByPinIdByElementId, [
+      outputPin.elementId,
       outputPin.pinId,
     ]);
-    const inputSimPins = get(circuitNodeInputPinsByPinIdByNodeId, [
-      inputPin.nodeId,
+    const inputSimPins = get(elementInputPinsByPinIdByElementId, [
+      inputPin.elementId,
       inputPin.pinId,
     ]);
 
-    // If the output is one of our input nodes, then the inputs
+    // If the output is one of our input elements, then the inputs
     //  need to be saved for our circuit inputs
-    if (inputCircuitNodeIds.indexOf(outputPin.nodeId) !== -1 && inputSimPins) {
-      // pin id is the pin-input nodeId
-      inputElementPinsByCircuitPinId[outputPin.nodeId].push(...inputSimPins);
+    if (inputElementIds.indexOf(outputPin.elementId) !== -1 && inputSimPins) {
+      // pin id is the pin-input elementId
+      inputElementPinsByCircuitPinId[outputPin.elementId].push(...inputSimPins);
       continue;
     } else if (
-      outputCircuitNodeIds.indexOf(inputPin.nodeId) !== -1 &&
+      outputElementIds.indexOf(inputPin.elementId) !== -1 &&
       outputSimPin
     ) {
-      outputElementPinsByCircuitPinId[inputPin.nodeId] = outputSimPin;
+      outputElementPinsByCircuitPinId[inputPin.elementId] = outputSimPin;
       continue;
     }
 
@@ -145,56 +139,56 @@ export function produceCircuitGraph(
       continue;
     }
 
-    const outputSimNode = simulatorNodesById[outputSimPin.simulatorNodeId];
-    let outputsByOutputPin = outputSimNode.outputsByPin[outputSimPin.pinId];
+    const outputEvolver = evolversById[outputSimPin.evolverId];
+    let outputsByOutputPin = outputEvolver.outputsByPin[outputSimPin.pinId];
     if (outputsByOutputPin == null) {
-      outputSimNode.outputsByPin[outputSimPin.pinId] = outputsByOutputPin = [];
+      outputEvolver.outputsByPin[outputSimPin.pinId] = outputsByOutputPin = [];
     }
 
     // Wire up the output to all of the inputs
     for (const inputSimPin of inputSimPins) {
       outputsByOutputPin.push({
-        simulatorNodeId: inputSimPin.simulatorNodeId,
+        evolverId: inputSimPin.evolverId,
         pinId: inputSimPin.pinId,
       });
 
-      const inputNode = simulatorNodesById[inputSimPin.simulatorNodeId];
+      const inputNode = evolversById[inputSimPin.evolverId];
       inputNode.inputsByPin[inputSimPin.pinId] = {
-        simulatorNodeId: outputSimPin.simulatorNodeId,
+        evolverId: outputSimPin.evolverId,
         pinId: outputSimPin.pinId,
       };
     }
   }
 
   return {
-    simulatorNodesById,
-    simulatorNodeIdsByCircuitNodeId,
+    evolversById,
+    evolverIdsByElementId: evolverIdsByElementId,
     inputElementPinsByCircuitPinId,
     outputElementPinsByCircuitPinId,
   };
 }
 
-function produceNode(
-  circuitNodeId: string,
+function produceEvolver(
+  elementId: string,
   dependencies: SimulatorGraphDependencies,
   path: string[]
 ): CircuitProductionResult {
-  const nodeType = dependencies.nodeTypesByNodeId[circuitNodeId];
-  if (!nodeType) {
+  const elementType = dependencies.elementTypesByElementId[elementId];
+  if (!elementType) {
     return EMPTY_PRODUCTION;
   }
 
-  const nodeDef = dependencies.nodeDefsByType[nodeType];
-  if (!nodeDef || !nodeDef.elementProduction) {
+  const def = dependencies.elementDefsByElementType[elementType];
+  if (!def || !def.elementProduction) {
     return EMPTY_PRODUCTION;
   }
 
-  const production = normalizeElementProduction(nodeDef.elementProduction);
+  const production = normalizeSimProduction(def.elementProduction);
   switch (production.type) {
     case "element":
-      return produceElementNode(circuitNodeId, production, dependencies);
+      return produceElementNode(elementId, production, dependencies);
     case "circuit":
-      return produceCircuitNode(circuitNodeId, production, dependencies, path);
+      return produceCircuitNode(elementId, production, dependencies, path);
     default:
       throw new Error(
         "Unsupported production type " + (production as any).type
@@ -203,25 +197,25 @@ function produceNode(
 }
 
 function produceElementNode(
-  circuitNodeId: string,
-  production: ElementNodeElementProduction,
-  { nodeTypesByNodeId, nodeDefsByType }: SimulatorGraphDependencies
+  elementId: string,
+  production: ElementSimProduction,
+  {
+    elementTypesByElementId,
+    elementDefsByElementType,
+  }: SimulatorGraphDependencies
 ): CircuitProductionResult {
-  const nodeType = nodeTypesByNodeId[circuitNodeId];
-  const nodeDef = nodeDefsByType[nodeType];
-  if (!nodeDef) {
+  const elementType = elementTypesByElementId[elementId];
+  const def = elementDefsByElementType[elementType];
+  if (!def) {
     return EMPTY_PRODUCTION;
   }
 
-  const simulatorNodesById: Record<string, SimulatorNode> = {};
-  const simulatorNodeIdsByCircuitNodeId: Record<
-    string,
-    SimulatorNodeIdMappingTreeItem
-  > = {};
+  const evolversById: Record<string, SimulatorEvolver> = {};
+  const evolverIdsByElementId: Record<string, EvolverIdMappingTreeItem> = {};
 
-  const simulatorNodeId = uuidV4();
-  simulatorNodesById[simulatorNodeId] = {
-    elementType: production.elementType,
+  const evolverId = uuidV4();
+  evolversById[evolverId] = {
+    evolverType: production.evolverType,
     // We do not have any internal pins.
     // These will be wired by produceCircuit as
     // it completes is cross-circuit connections.
@@ -229,43 +223,43 @@ function produceElementNode(
     outputsByPin: {},
   };
 
-  simulatorNodeIdsByCircuitNodeId[circuitNodeId] = {
-    simulatorNodeId,
-    subCircuitIds: {},
+  evolverIdsByElementId[elementId] = {
+    evolverId,
+    subElementIds: {},
   };
 
-  const inputElementPinsByCircuitPinId: Record<string, SimulatorNodePin[]> = {};
-  const outputElementPinsByCircuitPinId: Record<string, SimulatorNodePin> = {};
+  const inputElementPinsByCircuitPinId: Record<string, EvolverPin[]> = {};
+  const outputElementPinsByCircuitPinId: Record<string, EvolverPin> = {};
 
   // We have a one to one pin mapping between node and element
-  for (const pinId of Object.keys(nodeDef.pins)) {
-    const { direction } = nodeDef.pins[pinId];
+  for (const pinId of Object.keys(def.pins)) {
+    const { direction } = def.pins[pinId];
     if (direction === "input") {
       inputElementPinsByCircuitPinId[pinId] = [
         {
           pinId,
-          simulatorNodeId,
+          evolverId: evolverId,
         },
       ];
     } else if (direction === "output") {
       outputElementPinsByCircuitPinId[pinId] = {
         pinId,
-        simulatorNodeId,
+        evolverId: evolverId,
       };
     }
   }
 
   return {
-    simulatorNodesById,
-    simulatorNodeIdsByCircuitNodeId,
+    evolversById,
+    evolverIdsByElementId: evolverIdsByElementId,
     inputElementPinsByCircuitPinId,
     outputElementPinsByCircuitPinId,
   };
 }
 
 function produceCircuitNode(
-  circuitNodeId: string,
-  production: CircuitNodeElementProduction,
+  elementId: string,
+  production: CircuitSimProduction,
   dependencies: SimulatorGraphDependencies,
   path: string[]
 ): CircuitProductionResult {
@@ -277,10 +271,10 @@ function produceCircuitNode(
 
   return {
     ...circuitProuction,
-    simulatorNodeIdsByCircuitNodeId: {
-      [circuitNodeId]: {
-        simulatorNodeId: null,
-        subCircuitIds: circuitProuction.simulatorNodeIdsByCircuitNodeId,
+    evolverIdsByElementId: {
+      [elementId]: {
+        evolverId: null,
+        subElementIds: circuitProuction.evolverIdsByElementId,
       },
     },
   };

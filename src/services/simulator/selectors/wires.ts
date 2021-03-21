@@ -3,17 +3,17 @@ import { AppState } from "@/store";
 import {
   connectionFromConnectionIdSelector,
   connectionIdFromInputPinSelector,
-} from "@/services/node-graph/selectors/connections";
-import { nodeTypeFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
+} from "@/services/element-graph/selectors/connections";
+import { elementTypeFromElementIdSelector } from "@/services/element-graph/selectors/elements";
 
-import { nodeOutputsFromCircuitNodeIdSelector } from "./nodes";
-import { NodePin } from "@/services/node-graph/types";
+import { elementOutputsFromCircuitElementIdSelector } from "./elements";
+import { ElementPin } from "@/services/element-graph/types";
 
 // Doesn't need caching for react since it returns primitives, but
 // the additional complexity of tracing IC pins might make it a bit heavy.
 export const wireValueFromConnectionIdSelector = (
   state: AppState,
-  icNodePath: string[],
+  icElementPath: string[],
   connectionId: string
 ): boolean => {
   const connection = connectionFromConnectionIdSelector(state, connectionId);
@@ -22,20 +22,20 @@ export const wireValueFromConnectionIdSelector = (
   }
 
   const {
-    outputPin: { nodeId, pinId },
+    outputPin: { elementId, pinId },
   } = connection;
 
-  const nodeType = nodeTypeFromNodeIdSelector(state, nodeId);
-  if (nodeType === "pin-input") {
+  const elementType = elementTypeFromElementIdSelector(state, elementId);
+  if (elementType === "pin-input") {
     // TODO: The ultimate connection id from the input pin is a good candidate
     // for caching in its own selector, as the ultimate source connection
     // id of a pin is something that only changes with the simulator graph.
 
     // The node id of the ic is the ic-node we are contained in.
-    const nextIcNodePath = icNodePath.slice(0, icNodePath.length - 1);
-    const nextPin: NodePin = {
-      nodeId: icNodePath[icNodePath.length - 1], // target node is our parent.
-      pinId: nodeId, // target pin is the same as the node id for the input node.
+    const nextIcElementPath = icElementPath.slice(0, icElementPath.length - 1);
+    const nextPin: ElementPin = {
+      elementId: icElementPath[icElementPath.length - 1], // target node is our parent.
+      pinId: elementId, // target pin is the same as the node id for the input node.
     };
 
     const nextConnectionId = connectionIdFromInputPinSelector(state, nextPin);
@@ -45,14 +45,14 @@ export const wireValueFromConnectionIdSelector = (
 
     return wireValueFromConnectionIdSelector(
       state,
-      nextIcNodePath,
+      nextIcElementPath,
       nextConnectionId
     );
-  } else if (nodeType?.startsWith("ic-")) {
+  } else if (elementType?.startsWith("ic-")) {
     // Target the ic our output comes from
-    const nextIcNodePath = [...icNodePath, nodeId];
-    const nextPin: NodePin = {
-      nodeId: pinId, // output node id is the same as the target pin id
+    const nextIcElementPath = [...icElementPath, elementId];
+    const nextPin: ElementPin = {
+      elementId: pinId, // output node id is the same as the target pin id
       pinId: "IN",
     };
 
@@ -63,13 +63,13 @@ export const wireValueFromConnectionIdSelector = (
 
     return wireValueFromConnectionIdSelector(
       state,
-      nextIcNodePath,
+      nextIcElementPath,
       nextConnectionId
     );
   } else {
-    const outputs = nodeOutputsFromCircuitNodeIdSelector(state, [
-      ...icNodePath,
-      nodeId,
+    const outputs = elementOutputsFromCircuitElementIdSelector(state, [
+      ...icElementPath,
+      elementId,
     ]);
     if (!outputs) {
       return false;

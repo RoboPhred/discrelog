@@ -1,5 +1,5 @@
-export interface SimNodePinTransition {
-  nodeId: string;
+export interface EvolverPinTransition {
+  elementId: string;
   tick: number;
   valuesByOutputPin: Record<string, boolean>;
 }

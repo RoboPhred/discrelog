@@ -8,7 +8,7 @@ import { getSelectMode } from "@/selection-mode";
 import useSelector from "@/hooks/useSelector";
 import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
 
-import { wireJointPositionFromJointIdSelector } from "@/services/node-layout/selectors/wires";
+import { wireJointPositionFromJointIdSelector } from "@/services/element-layout/selectors/wires";
 import { isJointSelectedFromJointIdSelector } from "@/services/selection/selectors/selection";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 

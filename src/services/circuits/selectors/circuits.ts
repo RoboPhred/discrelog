@@ -1,6 +1,6 @@
 import { AppState } from "@/store";
 
-import { circuitIdToNodeType } from "@/nodes/definitions/integrated-circuits/utils";
+import { circuitIdToElementType } from "@/elements/definitions/integrated-circuits/utils";
 
 import { CircuitsServiceState } from "../state";
 import { createCircuitsSelector } from "../utils";
@@ -18,12 +18,12 @@ export const circuitNameFromIdSelector = createCircuitsSelector(
     state.circuitNamesByCircuitId[circuitId]
 );
 
-const circuitIdForNodeIdSelector = createCircuitsSelector(
-  (state: CircuitsServiceState, nodeId: string) => {
-    const { nodeIdsByCircuitId } = state;
-    const circuitIds = Object.keys(nodeIdsByCircuitId);
+const circuitIdForElementIdSelector = createCircuitsSelector(
+  (state: CircuitsServiceState, elementId: string) => {
+    const { elementIdsByCircuitId } = state;
+    const circuitIds = Object.keys(elementIdsByCircuitId);
     for (const circuitId of circuitIds) {
-      if (nodeIdsByCircuitId[circuitId].indexOf(nodeId) !== -1) {
+      if (elementIdsByCircuitId[circuitId].indexOf(elementId) !== -1) {
         return circuitId;
       }
     }
@@ -43,14 +43,17 @@ export const circuitWouldRecurseSelector = (
     return true;
   }
 
-  const targetCircuitNodeType = circuitIdToNodeType(targetCircuitId);
-  const { nodesById } = state.services.nodeGraph;
-  const targetCircuitNodeIds = Object.keys(nodesById).filter(
-    (nodeId) => nodesById[nodeId].nodeType === targetCircuitNodeType
+  const targetCircuitNodeType = circuitIdToElementType(targetCircuitId);
+  const { elementsById } = state.services.elementGraph;
+  const targetCircuitElementIds = Object.keys(elementsById).filter(
+    (elementId) => elementsById[elementId].elementType === targetCircuitNodeType
   );
 
-  return targetCircuitNodeIds.some((nodeId) => {
-    const targetContainingCircuitId = circuitIdForNodeIdSelector(state, nodeId);
+  return targetCircuitElementIds.some((elementId) => {
+    const targetContainingCircuitId = circuitIdForElementIdSelector(
+      state,
+      elementId
+    );
     if (!targetContainingCircuitId) {
       return false;
     }

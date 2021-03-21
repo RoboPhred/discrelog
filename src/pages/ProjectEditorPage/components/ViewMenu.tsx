@@ -3,10 +3,10 @@ import * as React from "react";
 import { useAction } from "@/hooks/useAction";
 import useSelector from "@/hooks/useSelector";
 
-import { viewNodeNames } from "@/actions/view-node-names";
+import { viewElementNames } from "@/actions/view-element-names";
 import { resetView } from "@/actions/view-reset";
 
-import { nodeNameModeSelector } from "@/services/ui-settings/selectors/node-name";
+import { elementNameModeSelector } from "@/services/ui-settings/selectors/element-name";
 
 import Menu from "@/components/Menus/Menu";
 import CheckboxMenuItemItem from "@/components/Menus/CheckboxMenuItem";
@@ -26,10 +26,10 @@ const ViewMenu: React.FC = () => {
 };
 
 const ElementNamesMenu: React.FC = () => {
-  const mode = useSelector(nodeNameModeSelector);
-  const onAlwaysVisible = useAction(viewNodeNames, "all");
-  const onNamedOnly = useAction(viewNodeNames, "named-only");
-  const onHidden = useAction(viewNodeNames, "none");
+  const mode = useSelector(elementNameModeSelector);
+  const onAlwaysVisible = useAction(viewElementNames, "all");
+  const onNamedOnly = useAction(viewElementNames, "named-only");
+  const onHidden = useAction(viewElementNames, "none");
 
   return (
     <Menu>

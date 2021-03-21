@@ -32,13 +32,3 @@ export interface EvolutionResult {
    */
   transitions?: MaybeArray<OutputTransition>;
 }
-
-export type ElementInteractFunction = (
-  state: any,
-  data: any
-) => EvolutionResult;
-export type ElementEvolverFunction = (
-  state: any,
-  inputs: Record<string, boolean>,
-  tick: number
-) => EvolutionResult;

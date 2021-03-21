@@ -13,12 +13,12 @@ import { moveSelection } from "@/actions/selection-move";
 import { addWireJoint } from "@/actions/wire-joint-add";
 import { attachWire } from "@/actions/wire-attach";
 
-import { nodePinFromPointSelector } from "@/services/node-layout/selectors/node-pin-positions";
+import { elementPinFromPointSelector } from "@/services/element-layout/selectors/element-pin-positions";
 import { circuitIdForEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
 
 import {
   applyGridJointSnapSelector,
-  applyGridNodeSnapSelector,
+  applyGridElementSnapSelector,
 } from "../selectors/snap";
 
 import { defaultCircuitEditorDragServiceState } from "../state";
@@ -69,13 +69,14 @@ export default function dragEndReducer(
     case "move": {
       const { dragModifierKeys } = dragState;
       let moveBy = pointSubtract({ x, y }, dragStart);
-      const hasNodes = state.services.selection.selectedNodeIds.length > 0;
+      const hasElements =
+        state.services.selection.selectedElementIds.length > 0;
       if (!dragModifierKeys.ctrlMetaKey) {
         // We apply the snap here because we want to snap the offset, not the resulting positions.
         // Applying the snap in moveSelection can result in different objects moving different distances
         // depending on their snap.
-        if (hasNodes) {
-          moveBy = applyGridNodeSnapSelector(state, moveBy);
+        if (hasElements) {
+          moveBy = applyGridElementSnapSelector(state, moveBy);
         } else {
           moveBy = applyGridJointSnapSelector(state, moveBy);
         }
@@ -100,7 +101,7 @@ export default function dragEndReducer(
       const circuitId = circuitIdForEditorIdSelector(state, dragStartEditorId);
       if (circuitId) {
         const { dragWireSource } = dragState;
-        const endPin = nodePinFromPointSelector(state, { x, y }, circuitId);
+        const endPin = elementPinFromPointSelector(state, { x, y }, circuitId);
         if (dragWireSource && endPin) {
           state = rootReducer(state, attachWire(dragWireSource, endPin));
         }

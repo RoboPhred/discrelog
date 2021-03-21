@@ -5,9 +5,9 @@ import { isSelectAllAction } from "@/actions/select-all";
 import {
   connectionIdsSelector,
   connectionsByIdSelector,
-} from "@/services/node-graph/selectors/connections";
-import { wireJointIdsByConnectionIdSelector } from "@/services/node-layout/selectors/wires";
-import { nodeIdsFromCircuitIdSelector } from "@/services/circuits/selectors/nodes";
+} from "@/services/element-graph/selectors/connections";
+import { wireJointIdsByConnectionIdSelector } from "@/services/element-layout/selectors/wires";
+import { elementIdsFromCircuitIdSelector } from "@/services/circuits/selectors/elements";
 import { activeCircuitIdSelector } from "@/services/circuit-editors/selectors/editor";
 
 import { createSelectionReducer } from "../utils";
@@ -22,15 +22,15 @@ export default createSelectionReducer((state, action, appState) => {
     return state;
   }
 
-  const nodeIds = nodeIdsFromCircuitIdSelector(appState, circuitId);
+  const elementIds = elementIdsFromCircuitIdSelector(appState, circuitId);
 
   let connectionIds = connectionIdsSelector(appState);
   const connectionsById = connectionsByIdSelector(appState);
   connectionIds = connectionIds.filter((connectionId) => {
     const { inputPin, outputPin } = connectionsById[connectionId];
     if (
-      nodeIds.indexOf(inputPin.nodeId) === -1 ||
-      nodeIds.indexOf(outputPin.nodeId) === -1
+      elementIds.indexOf(inputPin.elementId) === -1 ||
+      elementIds.indexOf(outputPin.elementId) === -1
     ) {
       return false;
     }
@@ -46,7 +46,7 @@ export default createSelectionReducer((state, action, appState) => {
 
   return {
     ...state,
-    selectedNodeIds: nodeIds,
+    selectedElementIds: elementIds,
     selectedConnectionIds: connectionIds,
     selectedJointIds: jointIds,
   };

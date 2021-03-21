@@ -1,11 +1,11 @@
 export interface SelectionServiceState {
-  selectedNodeIds: string[];
+  selectedElementIds: string[];
   selectedConnectionIds: string[];
   selectedJointIds: string[];
 }
 
 const _defaultState: SelectionServiceState = {
-  selectedNodeIds: [],
+  selectedElementIds: [],
   selectedConnectionIds: [],
   selectedJointIds: [],
 };

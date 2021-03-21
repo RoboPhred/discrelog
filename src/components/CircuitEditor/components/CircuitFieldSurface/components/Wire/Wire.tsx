@@ -3,7 +3,7 @@ import * as React from "react";
 import { cls } from "@/utils";
 import useSelector from "@/hooks/useSelector";
 
-import { wireJointIdsFromConnectionIdSelector } from "@/services/node-layout/selectors/wires";
+import { wireJointIdsFromConnectionIdSelector } from "@/services/element-layout/selectors/wires";
 import { isWireSelectedFromConnectionIdSelector } from "@/services/selection/selectors/selection";
 import { wireValueFromConnectionIdSelector } from "@/services/simulator/selectors/wires";
 
@@ -19,13 +19,13 @@ export interface WireProps {
 }
 
 const Wire: React.FC<WireProps> = React.memo(function Wire({ connectionId }) {
-  const { circuitNodeIdPath } = useCircuitEditor();
+  const { elementIdPath } = useCircuitEditor();
 
   const jointIds = useSelector((state) =>
     wireJointIdsFromConnectionIdSelector(state, connectionId)
   );
   const isPowered = useSelector((state) =>
-    wireValueFromConnectionIdSelector(state, circuitNodeIdPath, connectionId)
+    wireValueFromConnectionIdSelector(state, elementIdPath, connectionId)
   );
   const isSelected = useSelector((state) =>
     isWireSelectedFromConnectionIdSelector(state, connectionId)

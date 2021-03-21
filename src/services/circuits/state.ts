@@ -9,14 +9,14 @@ export interface CircuitsServiceState {
   /**
    * Arrays of node ids contained in a circuit by the containing circuit id.
    */
-  nodeIdsByCircuitId: Record<string, string[]>;
+  elementIdsByCircuitId: Record<string, string[]>;
 }
 
 const _defaultState: CircuitsServiceState = {
   circuitNamesByCircuitId: {
     [ROOT_CIRCUIT_ID]: "Root",
   },
-  nodeIdsByCircuitId: {
+  elementIdsByCircuitId: {
     [ROOT_CIRCUIT_ID]: [],
   },
 };
