@@ -30,7 +30,7 @@ const ErrorComponent: React.FC<{ componentName: string }> = ({
 
 export function getNodeVisualElement(
   elementId: string | undefined,
-  circuitNodePath: string[] | undefined,
+  elementPath: string[] | undefined,
   evolverState: any,
   visual: ElementVisualDefinition
 ): JSX.Element {
@@ -38,7 +38,7 @@ export function getNodeVisualElement(
 
   const elementProps = {
     elementId,
-    circuitNodePath,
+    elementPath,
     evolverState,
     ...componentProps,
   };

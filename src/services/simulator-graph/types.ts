@@ -10,14 +10,14 @@ export interface EvolverPin {
 
 export interface SimulatorEvolver {
   /**
-   * The element type of this node.
+   * The type of this evolver.
    */
   evolverType: EvolverType;
 
   /**
    * Input source pins by input pin id.
    *
-   * This is redundant with the opposing node's outputsByPin,
+   * This is redundant with the opposing evolver's outputsByPin,
    * to increase lookup speed.
    */
   inputsByPin: Record<string, EvolverPin>;
@@ -25,7 +25,7 @@ export interface SimulatorEvolver {
   /**
    * Output source pins by output pin id.
    *
-   * This is redundant with the opposing node's inputsByPin,
+   * This is redundant with the opposing evolver's inputsByPin,
    * to increase lookup speed.
    */
   outputsByPin: Record<string, EvolverPin[]>;
@@ -47,7 +47,7 @@ export interface SimulatorGraphDependencies {
 
 export interface SimulatorGraph {
   /**
-   * A map of all evolvers by simulator node id.
+   * A map of all evolvers by their id.
    */
   evolversById: Record<string, SimulatorEvolver>;
 

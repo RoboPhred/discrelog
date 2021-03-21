@@ -7,14 +7,16 @@ export interface OutputTransition {
    * The offset from the current tick to execute this transition.
    */
   tickOffset: number;
+
   /**
    * A map of values by pin output to transition to.
    * Pins not specified will mantain their original value.
    */
   valuesByPin: Record<string, boolean>;
+
   /**
-   * How to handle other scheduled transitions on this node.
-   * - replace: This transition will replace other transitions on this node.
+   * How to handle other scheduled transitions on this evolver.
+   * - replace: This transition will replace other transitions on this evolver.
    * - append: This transition will be scheduled in addition to previous transitions.
    *
    * Default: replace
@@ -24,9 +26,10 @@ export interface OutputTransition {
 
 export interface EvolutionResult {
   /**
-   * The new node state to use.
+   * The new evolver state to use.
    */
   state?: any;
+
   /**
    * Pin value changes to schedule.
    */

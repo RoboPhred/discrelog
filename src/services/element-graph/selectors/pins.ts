@@ -29,7 +29,7 @@ export const pinDirectionFromElementPinSelector = (
 };
 
 /**
- * Gets a map of node input pins to their output sources given a node id.
+ * Gets a map of element input pins to their output sources given an element id.
  *
  * WARN: Not react safe.  For reducer use only
  */

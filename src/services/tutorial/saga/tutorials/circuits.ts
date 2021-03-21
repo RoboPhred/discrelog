@@ -457,7 +457,7 @@ export default function* runCircuitsTutorial() {
 
   yield put(
     tutorialAnnotate([
-      // Unfortunately, since we use absolute positioning, the z-index on the node will not function unless
+      // Unfortunately, since we use absolute positioning, the z-index on the element will not function unless
       // we also raise the field
       {
         selector: "#" + getCircuitEditorHtmlId(activeEditorId),

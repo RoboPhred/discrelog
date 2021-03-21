@@ -140,7 +140,7 @@ function tickWindow(
         valuesByOutputPin
       )
     ) {
-      // Values are unchanged from current, node will not update.
+      // Values are unchanged from current, evolver will not update.
       return;
     }
 
@@ -151,7 +151,7 @@ function tickWindow(
       valuesByOutputPin
     );
 
-    // Add each node we output to, to the output list.
+    // Add each evolver we output to, to the output list.
     const outputEvolverIds = outputEvolverIdsFromEvolverIdSelector(
       appState,
       elementId

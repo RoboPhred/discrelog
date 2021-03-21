@@ -8,7 +8,7 @@ import { createElementGraphReducer } from "../utils";
 
 import elementDelete from "./operations/element-delete";
 
-// We need to know what circuit the node was a part of
+// We need to know what circuit the element was a part of
 export default reducerPriority(
   priorityBefore(circuitsElementDeleteReducer),
   createElementGraphReducer((state, action, rootState) => {

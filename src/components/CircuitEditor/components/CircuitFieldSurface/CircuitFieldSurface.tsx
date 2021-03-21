@@ -50,7 +50,7 @@ const CircuitFieldSurface: React.FC<CircuitFieldSurfaceProps> = ({
   // In contrast, we cannot handle the drag here as
   // we do not know the coordinate system from our scaler.
   // Instead, just capture whether or not we are being dragged into,
-  // and enable the new node drag layer only when we are dragging.
+  // and enable the new element drag layer only when we are dragging.
   const [{ isDraggingNewElement }, dragRef] = useDrop({
     accept: NEW_ELEMENT_DRAG_OBJECT,
     collect: (monitor) => {

@@ -27,7 +27,7 @@ export function getEvolverIdFromElementIdPath(
   map: EvolverIdToElementIdMap,
   elementIdPath: string[]
 ): string | null {
-  // Look up the path through the ic element to reach this node.
+  // Look up the path through the ic element to reach this element.
   const evolverIdPath = flatMap(elementIdPath, (icElementId) => [
     icElementId,
     "subElementIds",

@@ -10,7 +10,7 @@ const EmptyPinArray = Object.freeze([] as string[]);
 const EmptyPinInputs = Object.freeze({} as Record<string, EvolverPin>);
 
 /**
- * Gets an array of simulator node ids connected to the outputs of the given node id.
+ * Gets an array of evolver ids connected to the outputs of the given element id.
  * WARN: Not react safe.  For reducer use only.
  */
 export const outputEvolverIdsFromEvolverIdSelector = (
@@ -30,7 +30,7 @@ export const outputEvolverIdsFromEvolverIdSelector = (
 };
 
 /**
- * Gets a map of node input pins to their output sources given a node id.
+ * Gets a map of element input pins to their output sources given an element id.
  */
 export const inputPinsByPinIdFromEvolverIdSelector = (
   state: AppState,

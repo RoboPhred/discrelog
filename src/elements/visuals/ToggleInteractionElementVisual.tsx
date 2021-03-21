@@ -13,7 +13,7 @@ import styles from "./element-visuals.module.css";
 
 export const ToggleInteractionElementVisual: React.FC<ElementComponentProps<
   ToggleEvolverState
->> = ({ elementId, circuitNodePath, evolverState }) => {
+>> = ({ elementId, elementPath, evolverState }) => {
   const dispatch = useDispatch();
 
   const onClick = React.useCallback(
@@ -28,9 +28,9 @@ export const ToggleInteractionElementVisual: React.FC<ElementComponentProps<
 
       e.preventDefault();
 
-      dispatch(interactElement([...(circuitNodePath || []), elementId]));
+      dispatch(interactElement([...(elementPath || []), elementId]));
     },
-    [elementId, dispatch, circuitNodePath]
+    [elementId, dispatch, elementPath]
   );
 
   let onColor = "darkgreen";

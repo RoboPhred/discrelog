@@ -10,7 +10,7 @@ import elementDefinitionSources from "@/elements/definitions";
 import { ElementDefinition, ElementDefinitionSource } from "@/elements/types";
 
 /**
- * Gets an array of node definitions from the current state.
+ * Gets an array of element definitions from the current state.
  * WARN: Returns an unstable reference, not react safe.
  */
 let cachedDefinitionsSelector: ElementDefinition[] = [];

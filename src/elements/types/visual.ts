@@ -2,24 +2,24 @@ import { Rectangle } from "@/geometry";
 
 export interface ElementVisualDefinition {
   /**
-   * Rectangle relative to the node's position defining the hit area of the node.
+   * Rectangle relative to the element's position defining the hit area of the element.
    * Used to calculate selection during region selections.
    */
   hitRect: Rectangle;
 
   /**
-   * The react component to render when previewing the node on the node tray.
+   * The react component to render when previewing the element on the element tray.
    */
   trayComponent?: React.ComponentType;
 
   /**
    * The react component or component identifier to use when rendering
-   * the node in the field.
+   * the element in the field.
    *
    * This can either be a react component type, or a string identifying a preconfigured
    * react component type.
    *
-   * Note that if a component requires state data that is derived from node definitions,
+   * Note that if a component requires state data that is derived from element definitions,
    * then importing and using its component directly can cause circular dependencies to form.
    * To fix this, make the component a named entry in ../visuals/index.ts and set
    * this property to the component name.
@@ -36,20 +36,17 @@ export interface ElementVisualDefinition {
 //  Should remove components as tray components and rely on the trayComponent def.
 export interface ElementComponentProps<TState = any> {
   /**
-   * The circuit node id, if this node is in a circuit.
+   * The element id, if this element is in a circuit.
    */
   elementId?: string;
 
   /**
-   * The IC node path to the specific instance of this circuit node.
+   * The path of ic element ids to the specific instance of this element.
    */
-  circuitNodePath?: string[];
+  elementPath?: string[];
 
-  // TODO: Nodes can be made of multiple elements.
-  // Allow specifying tag names for element productions, and receive
-  //  a record of tag names to element states.
   /**
-   * The current state of the element for this node.
+   * The current state of the evolver for this element.
    */
   evolverState?: TState;
 }

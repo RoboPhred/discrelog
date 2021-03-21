@@ -9,7 +9,7 @@ import { ElementGraphServiceState } from "../../state";
 import { Connection, elementPinEquals } from "../../types";
 import { elementPinsFromPinElementSelector } from "../../selectors/pins";
 
-export default function nodeDelete(
+export default function elementDelete(
   state: ElementGraphServiceState,
   elementIds: string[],
   rootState: AppState
@@ -28,11 +28,11 @@ export default function nodeDelete(
       elementIds.indexOf(inputPin.elementId) !== -1 ||
       elementIds.indexOf(outputPin.elementId) !== -1
     ) {
-      // Connection went to a removed node
+      // Connection went to a removed element
       return false;
     }
 
-    // Connection was to a removed node pin
+    // Connection was to a removed element pin
     if (
       removedIcPins.some(
         (pin) =>

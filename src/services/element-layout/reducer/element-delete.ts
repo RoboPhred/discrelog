@@ -6,9 +6,9 @@ import elementGraphElementDeleteReducer from "@/services/element-graph/reducer/e
 
 import { createElementLayoutReducer } from "../utils";
 
-import nodeDeleteOperation from "./operations/element-delete";
+import elementDeleteOperation from "./operations/element-delete";
 
-// We need to run this reducer before graph runs, as we want to check what wires are connected to the node being deleted.
+// We need to run this reducer before graph runs, as we want to check what wires are connected to the element being deleted.
 export default reducerPriority(
   priorityBefore(elementGraphElementDeleteReducer),
   createElementLayoutReducer((state, action, rootState) => {
@@ -18,6 +18,6 @@ export default reducerPriority(
 
     const { elementIds } = action.payload;
 
-    return nodeDeleteOperation(state, elementIds, rootState);
+    return elementDeleteOperation(state, elementIds, rootState);
   })
 );

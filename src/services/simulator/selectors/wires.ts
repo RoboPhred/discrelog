@@ -31,11 +31,11 @@ export const wireValueFromConnectionIdSelector = (
     // for caching in its own selector, as the ultimate source connection
     // id of a pin is something that only changes with the simulator graph.
 
-    // The node id of the ic is the ic-node we are contained in.
+    // The element id of the ic is the ic-element we are contained in.
     const nextIcElementPath = icElementPath.slice(0, icElementPath.length - 1);
     const nextPin: ElementPin = {
-      elementId: icElementPath[icElementPath.length - 1], // target node is our parent.
-      pinId: elementId, // target pin is the same as the node id for the input node.
+      elementId: icElementPath[icElementPath.length - 1], // target element is our parent.
+      pinId: elementId, // target pin is the same as the element id for the input element.
     };
 
     const nextConnectionId = connectionIdFromInputPinSelector(state, nextPin);
@@ -52,7 +52,7 @@ export const wireValueFromConnectionIdSelector = (
     // Target the ic our output comes from
     const nextIcElementPath = [...icElementPath, elementId];
     const nextPin: ElementPin = {
-      elementId: pinId, // output node id is the same as the target pin id
+      elementId: pinId, // output element id is the same as the target pin id
       pinId: "IN",
     };
 

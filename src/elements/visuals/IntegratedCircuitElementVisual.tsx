@@ -23,10 +23,10 @@ export interface IntegratedCircuitElementVisualProps {
 
 export const IntegratedCircuitElementVisual: React.FC<
   IntegratedCircuitElementVisualProps & ElementComponentProps
-> = ({ elementId, circuitNodePath, circuitId, inputPinIds, outputPinIds }) => {
+> = ({ elementId, elementPath, circuitId, inputPinIds, outputPinIds }) => {
   const dispatch = useDispatch();
   // TODO: Now that we are relying on components being in a tessel path, we
-  // definitely should move node components into children of CircuitEditor
+  // definitely should move element components into children of CircuitEditor
   // and connect to them from element-types using ids.
   // More practically: this should ignore tessel path and instead rely on ui-layout
   // to open us up in the last interacted with view.
@@ -49,9 +49,9 @@ export const IntegratedCircuitElementVisual: React.FC<
       }
       e.preventDefault();
 
-      dispatch(viewCircuit(circuitId, [...(circuitNodePath || []), elementId]));
+      dispatch(viewCircuit(circuitId, [...(elementPath || []), elementId]));
     },
-    [elementId, dispatch, circuitId, circuitNodePath]
+    [elementId, dispatch, circuitId, elementPath]
   );
 
   const inputPins = inputPinIds.map((pinId, i) => {

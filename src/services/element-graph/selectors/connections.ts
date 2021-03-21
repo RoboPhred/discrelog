@@ -60,7 +60,7 @@ export const connectionIdFromOutputPinSelector = createElementGraphSelector(
 );
 
 /**
- * Gets an array of connection ids supplying input to the specified node.
+ * Gets an array of connection ids supplying input to the specified element.
  * WARN: Not react safe.  For reducer use only.
  */
 export const elementInputConnectionIdsFromElementIdSelector = createElementGraphSelector(
@@ -72,7 +72,7 @@ export const elementInputConnectionIdsFromElementIdSelector = createElementGraph
 );
 
 /**
- * Gets an array of connection ids leaving the given node.
+ * Gets an array of connection ids leaving the given element.
  * WARN: Not react safe.  For reducer use only.
  */
 export const elementOutputConnectionIdsFromElementIdSelector = createElementGraphSelector(
@@ -84,7 +84,7 @@ export const elementOutputConnectionIdsFromElementIdSelector = createElementGrap
 );
 
 /**
- * Gets an array of connection ids attached to the given node.
+ * Gets an array of connection ids attached to the given element.
  * WARN: Not react safe.  For reducer use only.
  */
 export const elementConnectionIdsFromElementIdSelector = createElementGraphSelector(

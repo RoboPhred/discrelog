@@ -42,7 +42,7 @@ export default function dragStartJointReducer(
 
   if (!isJointSelectedFromJointIdSelector(state, jointId)) {
     const selectionMode = getSelectMode(modifierKeys);
-    // Dragging a node that was not previously selected.  Perform a selection on the node.
+    // Dragging an element that was not previously selected.  Perform a selection on the element.
     state = rootReducer(state, selectWireJoints(jointId, selectionMode));
   }
 

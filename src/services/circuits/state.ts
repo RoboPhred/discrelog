@@ -7,7 +7,7 @@ export interface CircuitsServiceState {
   circuitNamesByCircuitId: Record<string, string>;
 
   /**
-   * Arrays of node ids contained in a circuit by the containing circuit id.
+   * Arrays of element ids contained in a circuit by the containing circuit id.
    */
   elementIdsByCircuitId: Record<string, string[]>;
 }

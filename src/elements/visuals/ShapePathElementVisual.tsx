@@ -25,7 +25,7 @@ export type ShapePath = string | ShapePathDefinition;
 
 interface ShapePathElementVisualProps {
   /**
-   * The path or paths that make up the visual component of this node.
+   * The path or paths that make up the visual component of this element.
    */
   shapePath: ShapePath | ShapePath[];
   hitPath: string;
@@ -33,7 +33,7 @@ interface ShapePathElementVisualProps {
 
 const ShapePathElementVisual: React.FC<
   ShapePathElementVisualProps & ElementComponentProps
-> = ({ elementId, circuitNodePath, shapePath, hitPath, evolverState }) => {
+> = ({ elementId, elementPath, shapePath, hitPath, evolverState }) => {
   const dispatch = useDispatch();
 
   const onClick = React.useCallback(
@@ -48,9 +48,9 @@ const ShapePathElementVisual: React.FC<
 
       e.preventDefault();
 
-      dispatch(interactElement([...(circuitNodePath || []), elementId]));
+      dispatch(interactElement([...(elementPath || []), elementId]));
     },
-    [elementId, dispatch, circuitNodePath]
+    [elementId, dispatch, elementPath]
   );
 
   const visuals = normalizeVisuals(shapePath, evolverState);

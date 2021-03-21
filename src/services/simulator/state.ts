@@ -22,7 +22,7 @@ export interface SimulatorServiceState {
   evolverStatesByEvolverId: Record<string, any>;
 
   /**
-   * A map of output-to-value maps by node id.
+   * A map of output-to-value maps by evolver id.
    */
   evolverOutputValuesByEvolverId: Record<string, Record<string, boolean>>;
 

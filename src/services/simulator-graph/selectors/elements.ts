@@ -9,7 +9,7 @@ export const evolverIdsByElementIdSelector = (state: AppState) =>
   rootElementGraphSelector(state).evolverIdsByElementId;
 
 /**
- * Gets the simulator node id for a given circuit node id.
+ * Gets the evolver id for a given element id.
  */
 export const evolverIdFromElementIdSelector = (
   state: AppState,
@@ -20,7 +20,7 @@ export const evolverIdFromElementIdSelector = (
 };
 
 /**
- * Get all simulator node ids.
+ * Get all evolver ids.
  *
  * WARN: Not react safe.
  */

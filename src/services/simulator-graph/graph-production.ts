@@ -71,7 +71,7 @@ export function produceCircuitGraph(
       continue;
     }
 
-    // If this node is a pin, remember it to calculate circuit inputs and outputs.
+    // If this element is a pin, remember it to calculate circuit inputs and outputs.
     if (elementType === "pin-input") {
       inputElementIds.push(elementId);
       inputElementPinsByCircuitPinId[elementId] = [];
@@ -86,10 +86,10 @@ export function produceCircuitGraph(
     // Merge the produced simulator elements.
     merge(evolversById, productionResult.evolversById);
 
-    // Merge the mapping from circuit node to simulator node.
+    // Merge the mapping from circuit element to evolver.
     merge(evolverIdsByElementId, productionResult.evolverIdsByElementId);
 
-    // Remember what these circuit node pins translate to.
+    // Remember what these element pins translate to.
     elementInputPinsByPinIdByElementId[elementId] =
       productionResult.inputElementPinsByCircuitPinId;
     elementOutputPinsByPinIdByElementId[elementId] =
@@ -101,7 +101,7 @@ export function produceCircuitGraph(
     const { inputPin, outputPin } = circuitConnectionsById[connectionId];
     // We are only interested in connections within this circuit.
     // There should not be any cross-circuit connections.
-    // It might be ok to skip this step, and rely on not finding the node mapping.
+    // It might be ok to skip this step, and rely on not finding the element mapping.
 
     if (
       elementIds.indexOf(inputPin.elementId) === -1 ||
@@ -231,7 +231,7 @@ function produceElementNode(
   const inputElementPinsByCircuitPinId: Record<string, EvolverPin[]> = {};
   const outputElementPinsByCircuitPinId: Record<string, EvolverPin> = {};
 
-  // We have a one to one pin mapping between node and element
+  // We have a one to one pin mapping between element and evolver
   for (const pinId of Object.keys(def.pins)) {
     const { direction } = def.pins[pinId];
     if (direction === "input") {

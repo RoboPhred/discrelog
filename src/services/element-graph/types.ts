@@ -2,18 +2,18 @@ import * as yup from "yup";
 
 export interface Element {
   /**
-   * The type of this node.
+   * The type of this element.
    */
   elementType: string;
 
   /**
-   * The user provided name of this node.
+   * The user provided name of this element.
    */
   elementName: string | null;
 }
 
 /**
- * Identifies a pin on a specific node.
+ * Identifies a pin on a specific element.
  */
 export interface ElementPin {
   elementId: string;
@@ -28,16 +28,16 @@ export function elementPinEquals(a: ElementPin, b: ElementPin) {
 }
 
 /**
- * A connection from a node output to a node input.
+ * A connection from an element output to an element input.
  */
 export interface Connection {
   /**
-   * The output pin on a node, sending a value outwards.
+   * The output pin on an element, sending a value outwards.
    */
   outputPin: ElementPin;
 
   /**
-   * The input pin on a node to receive the value.
+   * The input pin on an element to receive the value.
    */
   inputPin: ElementPin;
 }

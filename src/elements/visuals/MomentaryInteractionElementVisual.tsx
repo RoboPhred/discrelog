@@ -15,14 +15,14 @@ import styles from "./element-visuals.module.css";
 
 export const MomentaryInteractionElementVisual: React.FC<ElementComponentProps> = ({
   elementId,
-  circuitNodePath,
+  elementPath,
 }) => {
   const dispatch = useDispatch();
   const isSimActive = useSelector(isSimActiveSelector);
 
   const circuitIdPath = React.useMemo(
-    () => [...(circuitNodePath || []), elementId ?? "~~none"],
-    [circuitNodePath, elementId]
+    () => [...(elementPath || []), elementId ?? "~~none"],
+    [elementPath, elementId]
   );
 
   const outputs = useSelector((state) =>
