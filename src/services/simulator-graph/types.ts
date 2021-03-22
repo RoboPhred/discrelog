@@ -1,7 +1,7 @@
 import { EvolverType } from "@/evolvers";
 import { ElementDefinition } from "@/elements/types";
 
-import { Connection } from "../circuit-graph/types";
+import { ElementConnection } from "../circuit-graph/types";
 
 export interface EvolverPin {
   evolverId: string;
@@ -41,7 +41,7 @@ export type EvolverIdToElementIdMap = Record<string, EvolverIdMappingTreeItem>;
 export interface SimulatorGraphDependencies {
   elementIdsByCircuitId: Record<string, string[]>;
   elementTypesByElementId: Record<string, string>;
-  connectionsById: Record<string, Connection>;
+  connectionsById: Record<string, ElementConnection>;
   elementDefsByElementType: Record<string, ElementDefinition>;
 }
 

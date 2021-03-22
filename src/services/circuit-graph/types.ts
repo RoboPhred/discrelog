@@ -30,7 +30,7 @@ export function elementPinEquals(a: ElementPin, b: ElementPin) {
 /**
  * A connection from an element output to an element input.
  */
-export interface Connection {
+export interface ElementConnection {
   /**
    * The output pin on an element, sending a value outwards.
    */

@@ -7,7 +7,7 @@ import { isAttachConnectionAction } from "@/actions/connection-attach";
 import { elementDefinitionFromTypeSelector } from "@/services/element-types/selectors/element-types";
 
 import { createCircuitGraphReducer } from "../utils";
-import { Connection, ElementPin, elementPinEquals } from "../types";
+import { ElementConnection, ElementPin, elementPinEquals } from "../types";
 import { CircuitGraphServiceState } from "../state";
 
 export default createCircuitGraphReducer((state, action, rootState) => {
@@ -53,7 +53,7 @@ export function pinsToConnection(
   p1: ElementPin,
   p2: ElementPin,
   rootState: AppState
-): Connection | null {
+): ElementConnection | null {
   const p1Node = state.elementsById[p1.elementId];
   const p2Node = state.elementsById[p2.elementId];
 

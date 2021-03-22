@@ -1,6 +1,6 @@
 import { ROOT_CIRCUIT_ID } from "../circuits/constants";
 
-import { Element, Connection } from "./types";
+import { Element, ElementConnection } from "./types";
 
 export interface CircuitGraphServiceState {
   /**
@@ -16,7 +16,7 @@ export interface CircuitGraphServiceState {
   /**
    * A map of connections between elements, by connection id.
    */
-  connectionsById: Record<string, Connection>;
+  connectionsById: Record<string, ElementConnection>;
 }
 
 const _defaultState: CircuitGraphServiceState = {

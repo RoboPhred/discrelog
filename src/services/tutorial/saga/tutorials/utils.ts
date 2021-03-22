@@ -8,7 +8,7 @@ import { ElementDefinition } from "@/elements/types";
 import { activeCircuitEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
 import { elementDefinitionFromTypeSelector } from "@/services/element-types/selectors/element-types";
 import {
-  Connection,
+  ElementConnection,
   ElementPin,
   elementPinEquals,
 } from "@/services/circuit-graph/types";
@@ -88,7 +88,7 @@ function* isConnected(
   outputPin: ElementPin,
   inputPin: ElementPin
 ): SagaIterator<boolean> {
-  const connections: Connection[] = yield select(connectionsSelector);
+  const connections: ElementConnection[] = yield select(connectionsSelector);
   return connections.some(
     ({ inputPin: connInputPin, outputPin: connOutputPin }) =>
       elementPinEquals(connInputPin, inputPin) &&

@@ -7,7 +7,7 @@ import mapValues from "lodash/mapValues";
 import { AppState } from "@/store";
 
 import { CircuitGraphServiceState } from "../../state";
-import { Connection, elementPinEquals } from "../../types";
+import { ElementConnection, elementPinEquals } from "../../types";
 import { elementPinsFromPinElementSelector } from "../../selectors/pins";
 
 export default function elementDelete(
@@ -24,7 +24,7 @@ export default function elementDelete(
     elementPinsFromPinElementSelector(rootState, elementId)
   );
 
-  function isRemainingConnection({ inputPin, outputPin }: Connection) {
+  function isRemainingConnection({ inputPin, outputPin }: ElementConnection) {
     if (
       elementIds.indexOf(inputPin.elementId) !== -1 ||
       elementIds.indexOf(outputPin.elementId) !== -1
