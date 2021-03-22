@@ -1,9 +1,9 @@
-import { isCircuitEditorDragStartNewJointAction } from "@/actions/circuit-editor-drag-start-newjoint";
+import { isCircuitEditorDragStartConnectionNewJointAction } from "@/actions/circuit-editor-drag-start-connection-newjoint";
 
 import { createCircuitEditorDragReducer } from "../utils";
 
 export default createCircuitEditorDragReducer((state, action) => {
-  if (!isCircuitEditorDragStartNewJointAction(action)) {
+  if (!isCircuitEditorDragStartConnectionNewJointAction(action)) {
     return state;
   }
 

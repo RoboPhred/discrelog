@@ -15,7 +15,7 @@ import { getSelectMode } from "@/selection-mode";
 import useSelector from "@/hooks/useSelector";
 import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
 
-import { circuitEditorDragStartNewJoint } from "@/actions/circuit-editor-drag-start-newjoint";
+import { circuitEditorDragStartConnectionNewJoint } from "@/actions/circuit-editor-drag-start-connection-newjoint";
 import { selectConnections } from "@/actions/select-connections";
 
 import {
@@ -82,7 +82,7 @@ const ConnectionSegment: React.FC<ConnectionSegmentProps> = React.memo(
         const p = getMouseCoords(origionalPoint);
         const modifiers = getModifiers(e);
         dispatch(
-          circuitEditorDragStartNewJoint(
+          circuitEditorDragStartConnectionNewJoint(
             connectionId,
             startJointId,
             p,

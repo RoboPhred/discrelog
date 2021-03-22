@@ -56,7 +56,7 @@ export const elementIdsByCircuitIdSelector = createCircuitGraphSelector(
   (state) => state.elementIdsByCircuitId
 );
 
-const EmptyElementIds: string[] = [];
+const EmptyElementIds = Object.freeze([] as string[]);
 export const elementIdsFromCircuitIdSelector = createCircuitGraphSelector<
   string,
   string[]

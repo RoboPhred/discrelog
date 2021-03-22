@@ -6,7 +6,7 @@ import { getSelectMode } from "@/selection-mode";
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
-import { isCircuitEditorDragStartJointAction } from "@/actions/circuit-editor-drag-start-joint";
+import { isCircuitEditorDragStartConnectionJointAction } from "@/actions/circuit-editor-drag-start-connection-joint";
 import { selectConnectionJoints } from "@/actions/select-connection-joints";
 
 import { isJointSelectedFromJointIdSelector } from "@/services/selection/selectors/selection";
@@ -15,7 +15,7 @@ export default function dragStartJointReducer(
   state: AppState = defaultAppState,
   action: AnyAction
 ) {
-  if (!isCircuitEditorDragStartJointAction(action)) {
+  if (!isCircuitEditorDragStartConnectionJointAction(action)) {
     return state;
   }
 

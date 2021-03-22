@@ -80,6 +80,29 @@ export interface CircuitEditorDragConnectionState
   dragPinSource: ElementPin | null;
 }
 
+export interface CircuitEditorDragWireSubjectPin {
+  type: "pin";
+  pin: ElementPin;
+}
+export interface CircuitEditorDragWireSubjectSegment {
+  type: "segment";
+  segmentId: string;
+  segmentPositionFraction: number;
+}
+
+export type CircuitEditorDragWireSubject =
+  | CircuitEditorDragWireSubjectPin
+  | CircuitEditorDragWireSubjectSegment;
+export interface CircuitEditorDragWireState
+  extends CircuitEditorDragActiveState {
+  dragMode: "wire";
+
+  /**
+   * The subject the wire is being dragged from.
+   */
+  dragSourceSubject: CircuitEditorDragWireSubject;
+}
+
 export type CircuitEditorDragServiceState =
   | CircuitEditorDragNullState
   | CircuitEditorDragMoveState

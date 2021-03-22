@@ -57,7 +57,7 @@ export const connectionIdsByCircuitIdSelector = createSelector(
   }
 );
 
-const EmptyConnectionIds: string[] = [];
+const EmptyConnectionIds = Object.freeze([] as string[]);
 export const connectionIdsForCircuitIdSelector = (
   state: AppState,
   circuitId: string

@@ -13,7 +13,7 @@ import { isJointSelectedFromJointIdSelector } from "@/services/selection/selecto
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 
 import { selectConnectionJoints } from "@/actions/select-connection-joints";
-import { circuitEditorDragStartJoint } from "@/actions/circuit-editor-drag-start-joint";
+import { circuitEditorDragStartConnectionJoint } from "@/actions/circuit-editor-drag-start-connection-joint";
 
 import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
 
@@ -43,7 +43,9 @@ const ConectionJoint: React.FC<ConnectionJointProps> = React.memo(
       (e: MouseEvent, originalPoint: Point) => {
         const p = getMouseCoords(originalPoint);
         const modifiers = getModifiers(e);
-        dispatch(circuitEditorDragStartJoint(jointId, p, modifiers, editorId));
+        dispatch(
+          circuitEditorDragStartConnectionJoint(jointId, p, modifiers, editorId)
+        );
       },
       [dispatch, editorId, getMouseCoords, jointId]
     );

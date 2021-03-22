@@ -41,3 +41,85 @@ export interface ElementConnection {
    */
   inputPin: ElementPin;
 }
+
+export interface Wire {
+  wireSegmentIds: string[];
+}
+
+/**
+ * Defines a segment that passes a value into an element from the wire.
+ */
+export interface InputWireSegment {
+  type: "input";
+  /**
+   * The output pin in this wire network that we take our value from.
+   */
+  outputPin: ElementPin;
+
+  /**
+   * The input pin we supply a value to.
+   */
+  inputPin: ElementPin;
+
+  /**
+   * The joint id on the non-pin side of this segment.
+   */
+  jointId: string;
+}
+
+/**
+ * Defines a wire segment that pulls a value into the wire.
+ */
+export interface OutputWireSegment {
+  type: "output";
+
+  /**
+   * The output pin we take our value from.
+   */
+  outputPin: ElementPin;
+
+  /**
+   * The joint id of the non-pin side of this segment.
+   */
+  jointId: string;
+}
+
+/**
+ * Defines a wire segment that directly connects an input to an output.
+ *
+ * This is a special case where a wire goes directly between two elements with no
+ * additional inputs or outputs.
+ */
+export interface InputOutputWireSegment {
+  type: "input-output";
+  /**
+   * The output pin supplying the value.
+   */
+  outputPin: ElementPin;
+  /**
+   * The input pin where the value is supplied.
+   */
+  inputPin: ElementPin;
+}
+
+/**
+ * Defines a wire segment that bridges two other segments.
+ */
+export interface BridgeWireSegment {
+  type: "bridge";
+  /**
+   * The first joint in the bridge.
+   */
+  jointAId: string;
+
+  /**
+   * The second joint in the bridge.
+   */
+  jointBId: string;
+}
+
+export type WireSegment =
+  | InputWireSegment
+  | OutputWireSegment
+  | InputOutputWireSegment
+  | BridgeWireSegment;
