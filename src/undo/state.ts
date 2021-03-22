@@ -1,13 +1,13 @@
 import { AppServicesState } from "@/services/state";
 
 export const UndoServicesStateKeys = [
-  "circuits",
+  "circuitProperties",
   "circuitGraph",
   "circuitLayout",
 ] as const;
 export type UndoServicesStates = Pick<
   AppServicesState,
-  "circuits" | "circuitGraph" | "circuitLayout"
+  "circuitProperties" | "circuitGraph" | "circuitLayout"
 >;
 
 export interface UndoStackState {

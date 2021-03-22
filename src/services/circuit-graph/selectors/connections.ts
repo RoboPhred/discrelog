@@ -1,10 +1,12 @@
+import { createSelector } from "reselect";
 import values from "lodash/values";
 import uniq from "lodash/uniq";
-import { createSelector } from "reselect";
+import includes from "lodash/includes";
 
 import { CircuitGraphServiceState } from "../state";
 import { createCircuitGraphSelector } from "../utils";
 import { ElementPin, elementPinEquals } from "../types";
+import { AppState } from "@/store";
 
 export const connectionsByIdSelector = createCircuitGraphSelector(
   (s) => s.connectionsById
@@ -28,6 +30,41 @@ export const connectionsSelector = createCircuitGraphSelector(
     (connectionsById) => values(connectionsById)
   )
 );
+
+const elementIdsByCircuitIdSelector = createCircuitGraphSelector(
+  (state) => state.elementIdsByCircuitId
+);
+
+export const connectionIdsByCircuitIdSelector = createSelector(
+  elementIdsByCircuitIdSelector,
+  connectionsByIdSelector,
+  (elementIdsByCircuitId, connectionsById) => {
+    const connectionIdsByCircuitId: Record<string, string[]> = {};
+    const connectionIds = Object.keys(connectionsById);
+    const circuitIds = Object.keys(elementIdsByCircuitId);
+    for (const circuitId of circuitIds) {
+      const elementIds = elementIdsByCircuitId[circuitId];
+      connectionIdsByCircuitId[circuitId] = connectionIds.filter((connId) => {
+        const { inputPin, outputPin } = connectionsById[connId];
+        return (
+          includes(elementIds, inputPin.elementId) &&
+          includes(elementIds, outputPin.elementId)
+        );
+      });
+    }
+
+    return connectionIdsByCircuitId;
+  }
+);
+
+const EmptyConnectionIds: string[] = [];
+export const connectionIdsForCircuitIdSelector = (
+  state: AppState,
+  circuitId: string
+) => {
+  const connectionIdsByCircuitId = connectionIdsByCircuitIdSelector(state);
+  return connectionIdsByCircuitId[circuitId] ?? EmptyConnectionIds;
+};
 
 export const connectionIdFromInputPinSelector = createCircuitGraphSelector(
   (state: CircuitGraphServiceState, pin: ElementPin) => {

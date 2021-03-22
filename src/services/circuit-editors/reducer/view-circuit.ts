@@ -1,4 +1,4 @@
-import { circuitIdsSelector } from "@/services/circuits/selectors/circuits";
+import { circuitIdsSelector } from "@/services/circuit-properties/selectors/circuits";
 
 import { isViewCircuitAction } from "@/actions/view-circuit";
 

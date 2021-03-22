@@ -6,7 +6,7 @@ import { combineSelection } from "@/selection-mode";
 
 import { isSelectRegionAction } from "@/actions/select-region";
 
-import { elementIdsFromCircuitIdSelector } from "@/services/circuits/selectors/elements";
+import { elementIdsFromCircuitIdSelector } from "@/services/circuit-graph/selectors/elements";
 import { elementRectsByIdSelector } from "@/services/circuit-layout/selectors/element-bounds";
 import {
   wireJointPositionsByJointIdSelector,

@@ -2,6 +2,7 @@ import pick from "lodash/pick";
 import difference from "lodash/difference";
 import pickBy from "lodash/pickBy";
 import flatMap from "lodash/flatMap";
+import mapValues from "lodash/mapValues";
 
 import { AppState } from "@/store";
 
@@ -45,9 +46,15 @@ export default function elementDelete(
     return true;
   }
 
+  const elementIdsByCircuitId = mapValues(
+    state.elementIdsByCircuitId,
+    (circuitElementIds) => difference(circuitElementIds, elementIds)
+  );
+
   return {
     ...state,
     elementsById: pick(state.elementsById, remainingElementIds),
     connectionsById: pickBy(state.connectionsById, isRemainingConnection),
+    elementIdsByCircuitId,
   };
 }

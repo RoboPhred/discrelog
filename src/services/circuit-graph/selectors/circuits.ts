@@ -2,24 +2,11 @@ import { AppState } from "@/store";
 
 import { circuitIdToElementType } from "@/elements/definitions/integrated-circuits/utils";
 
-import { CircuitsServiceState } from "../state";
-import { createCircuitsSelector } from "../utils";
+import { CircuitGraphServiceState } from "../state";
+import { createCircuitGraphSelector } from "../utils";
 
-export const circuitIdsSelector = createCircuitsSelector((state) =>
-  Object.keys(state.circuitNamesByCircuitId)
-);
-
-export const circuitNamesByIdSelector = createCircuitsSelector(
-  (state) => state.circuitNamesByCircuitId
-);
-
-export const circuitNameFromIdSelector = createCircuitsSelector(
-  (state: CircuitsServiceState, circuitId: string) =>
-    state.circuitNamesByCircuitId[circuitId]
-);
-
-const circuitIdForElementIdSelector = createCircuitsSelector(
-  (state: CircuitsServiceState, elementId: string) => {
+const circuitIdForElementIdSelector = createCircuitGraphSelector(
+  (state: CircuitGraphServiceState, elementId: string) => {
     const { elementIdsByCircuitId } = state;
     const circuitIds = Object.keys(elementIdsByCircuitId);
     for (const circuitId of circuitIds) {

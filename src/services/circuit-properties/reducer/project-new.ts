@@ -1,9 +1,9 @@
 import { isNewProjectAction } from "@/actions/project-new";
 
-import { ROOT_CIRCUIT_ID } from "../constants";
-import { createCircuitsReducer } from "../utils";
+import { ROOT_CIRCUIT_ID } from "../../circuits/constants";
+import { createCircuitPropertiesReducer } from "../utils";
 
-export default createCircuitsReducer((state, action) => {
+export default createCircuitPropertiesReducer((state, action) => {
   if (!isNewProjectAction(action)) {
     return state;
   }

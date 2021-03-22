@@ -13,19 +13,19 @@ export default reducerPriority(
       return state;
     }
 
-    const {
-      elementId: id,
-      elementType: elementType,
-      elementName: elementName,
-    } = action.payload;
+    const { elementId, elementType, elementName, circuitId } = action.payload;
     return {
       ...state,
       elementsById: {
         ...state.elementsById,
-        [id]: {
+        [elementId]: {
           elementType,
           elementName: elementName ?? null,
         },
+      },
+      elementIdsByCircuitId: {
+        ...state.elementIdsByCircuitId,
+        [circuitId]: [...state.elementIdsByCircuitId[circuitId], elementId],
       },
     };
   })

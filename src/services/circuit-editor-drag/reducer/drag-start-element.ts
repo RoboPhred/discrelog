@@ -10,7 +10,6 @@ import { isCircuitEditorDragStartElementAction } from "@/actions/circuit-editor-
 import { selectElements } from "@/actions/select-elements";
 
 import { isElementSelectedFromElementIdSelector } from "@/services/selection/selectors/selection";
-import { circuitIdFromElementIdSelector } from "@/services/circuits/selectors/elements";
 
 export default function dragStartNodeReducer(
   state: AppState = defaultAppState,
@@ -21,11 +20,6 @@ export default function dragStartNodeReducer(
   }
 
   const { elementId, x, y, modifierKeys, editorId } = action.payload;
-
-  const circuitId = circuitIdFromElementIdSelector(state, elementId);
-  if (!circuitId) {
-    return state;
-  }
 
   state = fpSet(state, "services", "circuitEditorDrag", (value) => ({
     ...value,

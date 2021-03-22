@@ -1,12 +1,12 @@
 import { isAddCircuitAction } from "@/actions/circuit-add";
-import { createCircuitsReducer } from "../utils";
+import { createCircuitPropertiesReducer } from "../utils";
 
-export default createCircuitsReducer((state, action) => {
+export default createCircuitPropertiesReducer((state, action) => {
   if (!isAddCircuitAction(action)) {
     return state;
   }
 
-  const circuitId = action.payload.circuitId;
+  const { circuitId } = action.payload;
   let circuitName = action.payload.circuitName;
 
   if (!circuitName) {
@@ -20,10 +20,6 @@ export default createCircuitsReducer((state, action) => {
     circuitNamesByCircuitId: {
       ...state.circuitNamesByCircuitId,
       [circuitId]: circuitName,
-    },
-    elementIdsByCircuitId: {
-      ...state.elementIdsByCircuitId,
-      [circuitId]: [],
     },
   };
 });

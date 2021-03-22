@@ -9,7 +9,7 @@ import useSelector from "@/hooks/useSelector";
 
 import interaction from "@/styles/interaction.module.css";
 
-import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
+import { circuitNameFromIdSelector } from "@/services/circuit-properties/selectors/circuits";
 import { elementNamesByElementIdSelector } from "@/services/circuit-graph/selectors/elements";
 import { ElementComponentProps } from "@/elements/types";
 

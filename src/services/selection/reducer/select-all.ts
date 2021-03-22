@@ -7,7 +7,7 @@ import {
   connectionsByIdSelector,
 } from "@/services/circuit-graph/selectors/connections";
 import { wireJointIdsByConnectionIdSelector } from "@/services/circuit-layout/selectors/wires";
-import { elementIdsFromCircuitIdSelector } from "@/services/circuits/selectors/elements";
+import { elementIdsFromCircuitIdSelector } from "@/services/circuit-graph/selectors/elements";
 import { activeCircuitIdSelector } from "@/services/circuit-editors/selectors/editor";
 
 import { createSelectionReducer } from "../utils";

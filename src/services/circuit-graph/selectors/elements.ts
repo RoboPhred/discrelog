@@ -52,6 +52,32 @@ export const elementTypeFromElementIdSelector = createCircuitGraphSelector(
   }
 );
 
+export const elementIdsByCircuitIdSelector = createCircuitGraphSelector(
+  (state) => state.elementIdsByCircuitId
+);
+
+const EmptyElementIds: string[] = [];
+export const elementIdsFromCircuitIdSelector = createCircuitGraphSelector<
+  string,
+  string[]
+>(
+  (state, circuitId: string) =>
+    state.elementIdsByCircuitId[circuitId] ?? EmptyElementIds
+);
+
+export const circuitIdFromElementIdSelector = createCircuitGraphSelector<
+  string,
+  string | null
+>((state, elementId) => {
+  for (const circuitId of Object.keys(state.elementIdsByCircuitId)) {
+    const elementIds = state.elementIdsByCircuitId[circuitId];
+    if (elementIds.indexOf(elementId) !== -1) {
+      return circuitId;
+    }
+  }
+  return null;
+});
+
 export const elementNamesByElementIdSelector = createCircuitGraphSelector(
   createSelector(
     (state) => state.elementsById,

@@ -11,7 +11,7 @@ import { addElement } from "@/actions/element-add";
 import { elementTypeToCircuitId } from "@/elements/definitions/integrated-circuits/utils";
 
 import { gridElementSnapSelector } from "@/services/circuit-editor-drag/selectors/snap";
-import { circuitWouldRecurseSelector } from "@/services/circuits/selectors/circuits";
+import { circuitWouldRecurseSelector } from "@/services/circuit-graph/selectors/circuits";
 
 import {
   isNewElementDragObject,

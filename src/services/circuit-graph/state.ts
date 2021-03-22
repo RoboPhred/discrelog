@@ -1,6 +1,13 @@
+import { ROOT_CIRCUIT_ID } from "../circuits/constants";
+
 import { Element, Connection } from "./types";
 
 export interface CircuitGraphServiceState {
+  /**
+   * Arrays of element ids contained in a circuit by the containing circuit id.
+   */
+  elementIdsByCircuitId: Record<string, string[]>;
+
   /**
    * A map of elements by element id.
    */
@@ -13,6 +20,9 @@ export interface CircuitGraphServiceState {
 }
 
 const _defaultState: CircuitGraphServiceState = {
+  elementIdsByCircuitId: {
+    [ROOT_CIRCUIT_ID]: [],
+  },
   elementsById: {},
   connectionsById: {},
 };

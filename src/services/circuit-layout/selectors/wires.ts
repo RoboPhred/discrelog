@@ -7,12 +7,12 @@ import { Point, pointAdd, ZeroPoint } from "@/geometry";
 import { ElementDefinition } from "@/elements/types";
 import { elementDefinitionFromElementIdSelector } from "@/services/circuit-graph/selectors/element-def";
 import { elementConnectionIdsFromElementIdSelector } from "@/services/circuit-graph/selectors/connections";
+import { elementIdsFromCircuitIdSelector } from "@/services/circuit-graph/selectors/elements";
 
 import { createCircuitLayoutSelector } from "../utils";
 import { CircuitLayoutServiceState } from "../state";
 
 import { elementPositionFromElementIdSelector } from "./element-positions";
-import { elementIdsFromCircuitIdSelector } from "@/services/circuits/selectors/elements";
 
 interface PositionCache {
   inputElementDef: ElementDefinition;

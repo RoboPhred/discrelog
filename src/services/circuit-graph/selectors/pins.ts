@@ -1,4 +1,4 @@
-import { circuitIdFromElementIdSelector } from "@/services/circuits/selectors/elements";
+import { circuitIdFromElementIdSelector } from "@/services/circuit-graph/selectors/elements";
 import { circuitIdToElementType } from "@/elements/definitions/integrated-circuits/utils";
 import { AppState } from "@/store";
 

@@ -12,7 +12,7 @@ import {
 
 import { elementTypesByElementIdSelector } from "@/services/circuit-graph/selectors/elements";
 import { elementDefinitionsByTypeSelector } from "@/services/element-types/selectors/element-types";
-import { elementIdsFromCircuitIdSelector } from "@/services/circuits/selectors/elements";
+import { elementIdsFromCircuitIdSelector } from "@/services/circuit-graph/selectors/elements";
 import { ElementPin, elementPinEquals } from "@/services/circuit-graph/types";
 
 import { elementPositionsByElementIdSelector } from "./element-positions";

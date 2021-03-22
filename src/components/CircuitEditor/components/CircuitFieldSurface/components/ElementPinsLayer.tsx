@@ -2,7 +2,7 @@ import * as React from "react";
 
 import useSelector from "@/hooks/useSelector";
 
-import { elementIdsFromCircuitIdSelector } from "@/services/circuits/selectors/elements";
+import { elementIdsFromCircuitIdSelector } from "@/services/circuit-graph/selectors/elements";
 
 import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
 

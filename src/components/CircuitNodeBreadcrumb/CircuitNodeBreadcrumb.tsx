@@ -12,7 +12,7 @@ import {
   elementTypeFromElementIdSelector,
 } from "@/services/circuit-graph/selectors/elements";
 import { elementTypeToCircuitId } from "@/elements/definitions/integrated-circuits/utils";
-import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
+import { circuitNameFromIdSelector } from "@/services/circuit-properties/selectors/circuits";
 import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
 
 import Button from "../Button";

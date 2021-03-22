@@ -24,10 +24,10 @@ import { elementPositionFromElementIdSelector } from "../circuit-layout/selector
 import {
   circuitIdsSelector,
   circuitNameFromIdSelector,
-} from "../circuits/selectors/circuits";
+} from "../circuit-properties/selectors/circuits";
 import { ROOT_CIRCUIT_ID } from "../circuits/constants";
 
-import { circuitIdFromElementIdSelector } from "../circuits/selectors/elements";
+import { circuitIdFromElementIdSelector } from "../circuit-graph/selectors/elements";
 import {
   wireJointPositionsByJointIdSelector,
   wireJointIdsFromConnectionIdSelector,
@@ -139,7 +139,7 @@ export function importCircuitsFromSave(
   }
 
   const existingCircuits = Object.keys(
-    state.services.circuits.circuitNamesByCircuitId
+    state.services.circuitProperties.circuitNamesByCircuitId
   );
   const importCircuits = save.circuits.filter(
     (c) =>

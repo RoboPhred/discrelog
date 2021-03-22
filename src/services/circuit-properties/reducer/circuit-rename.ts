@@ -1,7 +1,7 @@
 import { isRenameCircuitAction } from "@/actions/circuit-rename";
-import { createCircuitsReducer } from "../utils";
+import { createCircuitPropertiesReducer } from "../utils";
 
-export default createCircuitsReducer((state, action) => {
+export default createCircuitPropertiesReducer((state, action) => {
   if (!isRenameCircuitAction(action)) {
     return state;
   }

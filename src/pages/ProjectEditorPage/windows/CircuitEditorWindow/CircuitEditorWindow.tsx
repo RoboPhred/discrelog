@@ -10,7 +10,7 @@ import sizing from "@/styles/sizing.module.css";
 import flex from "@/styles/flex.module.css";
 
 import { circuitEditorStateFromIdSelector } from "@/services/circuit-editors/selectors/editor";
-import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
+import { circuitNameFromIdSelector } from "@/services/circuit-properties/selectors/circuits";
 
 import { paste } from "@/actions/clipboard-paste";
 import { copySelection } from "@/actions/selection-copy";
