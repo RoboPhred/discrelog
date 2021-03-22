@@ -1,0 +1,14 @@
+.element-connection {
+  fill: var(--color-element-neutral);
+  stroke: var(--color-element-neutral);
+}
+
+.element-connection.powered {
+  fill: var(--color-element-powered);
+  stroke: var(--color-element-powered);
+}
+
+.element-connection.selected {
+  fill: var(--color-element-selected);
+  stroke: var(--color-element-selected);
+}

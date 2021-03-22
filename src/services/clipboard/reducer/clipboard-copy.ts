@@ -13,9 +13,9 @@ import { elementOutputSourcesByPinIdFromElementIdSelector } from "@/services/cir
 import { elementPositionsByElementIdSelector } from "@/services/circuit-layout/selectors/element-positions";
 import { connectionIdFromInputPinSelector } from "@/services/circuit-graph/selectors/connections";
 import {
-  wireJointIdsFromConnectionIdSelector,
-  wireJointPositionFromJointIdSelector,
-} from "@/services/circuit-layout/selectors/wires";
+  connectionJointIdsFromConnectionIdSelector,
+  connectionJointPositionFromJointIdSelector,
+} from "@/services/circuit-layout/selectors/connections";
 
 import { ClipboardElement } from "../types";
 import { createClipboardReducer } from "../utils";
@@ -59,10 +59,12 @@ export default createClipboardReducer((state, action, appState) => {
           .map((pin) => {
             const connId = connectionIdFromInputPinSelector(appState, pin);
             const jointIds = connId
-              ? wireJointIdsFromConnectionIdSelector(appState, connId)
+              ? connectionJointIdsFromConnectionIdSelector(appState, connId)
               : [];
             const joints = jointIds
-              .map((id) => wireJointPositionFromJointIdSelector(appState, id))
+              .map((id) =>
+                connectionJointPositionFromJointIdSelector(appState, id)
+              )
               .map((jointPos) => pointSubtract(jointPos, rootPosition));
             return {
               pin: {

@@ -30,12 +30,12 @@ export const saveElementSchema = yup.object().shape({
   y: yup.number().required(),
 });
 
-export interface SaveWire {
+export interface SaveConnection {
   output: ElementPin;
   input: ElementPin;
   joints: Point[];
 }
-export const saveWireSchema = yup.object().shape({
+export const saveConnectionSchema = yup.object().shape({
   output: elementPinSchema.required(),
   input: elementPinSchema.required(),
   // Cannot make this required, as yup says required on an array is min length 1...
@@ -45,10 +45,10 @@ export const saveWireSchema = yup.object().shape({
 export interface SaveData {
   circuits: SaveCircuit[];
   elements: SaveElement[];
-  wires: SaveWire[];
+  connections: SaveConnection[];
 }
 export const saveDataSchema = yup.object().shape({
   circuits: yup.array().of(saveCircuitSchema).min(0),
   elements: yup.array().of(saveElementSchema).min(0),
-  wires: yup.array().of(saveWireSchema).min(0),
+  connections: yup.array().of(saveConnectionSchema).min(0),
 });

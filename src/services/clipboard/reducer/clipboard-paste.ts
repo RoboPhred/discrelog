@@ -11,7 +11,7 @@ import { fpSet } from "@/utils";
 import rootReducer from "@/store/reducer";
 
 import { addElement } from "@/actions/element-add";
-import { attachWire } from "@/actions/wire-attach";
+import { attachConnection } from "@/actions/connection-attach";
 import { isPasteAction } from "@/actions/clipboard-paste";
 import { selectElements } from "@/actions/select-elements";
 
@@ -54,7 +54,7 @@ export default function clipboardPasteReducer(
     map(clipboardElements, () => uuidV4())
   );
 
-  // Two passes: Create and Wire.
+  // Two passes: Create and Connect.
 
   // Create the elements.
   for (const element of clipboardElements) {
@@ -66,7 +66,7 @@ export default function clipboardPasteReducer(
     );
   }
 
-  // Wire the elements
+  // Connect the elements
   for (const element of clipboardElements) {
     const { id, outputs } = element;
     const sourceId = pasteIds[id];
@@ -79,7 +79,7 @@ export default function clipboardPasteReducer(
         const targetId = pasteIds[targetCopyId];
         state = rootReducer(
           state,
-          attachWire(
+          attachConnection(
             { elementId: sourceId, pinId: outputPin },
             { elementId: targetId, pinId: targetPin },
             {

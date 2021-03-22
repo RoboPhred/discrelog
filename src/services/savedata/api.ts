@@ -3,14 +3,14 @@ import {
   SaveData,
   saveDataSchema,
   SaveElement,
-  SaveWire,
+  SaveConnection,
 } from "./types";
 
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
 import { addElement } from "@/actions/element-add";
-import { attachWire } from "@/actions/wire-attach";
+import { attachConnection } from "@/actions/connection-attach";
 
 import {
   elementIdsSelector,
@@ -29,15 +29,15 @@ import { ROOT_CIRCUIT_ID } from "../circuits/constants";
 
 import { circuitIdFromElementIdSelector } from "../circuit-graph/selectors/elements";
 import {
-  wireJointPositionsByJointIdSelector,
-  wireJointIdsFromConnectionIdSelector,
-} from "../circuit-layout/selectors/wires";
+  connectionJointPositionsByJointIdSelector,
+  connectionJointIdsFromConnectionIdSelector,
+} from "../circuit-layout/selectors/connections";
 
 import { SaveFormatError } from "./errors";
 import { addCircuit } from "@/actions/circuit-add";
 
 export function createSave(state: AppState): SaveData {
-  const jointPositions = wireJointPositionsByJointIdSelector(state);
+  const jointPositions = connectionJointPositionsByJointIdSelector(state);
   return {
     circuits: circuitIdsSelector(state).map((circuitId) => {
       const circuitName = circuitNameFromIdSelector(state, circuitId);
@@ -61,18 +61,21 @@ export function createSave(state: AppState): SaveData {
       };
       return saveElement;
     }),
-    wires: connectionIdsSelector(state).map((connectionId) => {
-      const wire = connectionFromConnectionIdSelector(state, connectionId);
-      const jointIds = wireJointIdsFromConnectionIdSelector(
+    connections: connectionIdsSelector(state).map((connectionId) => {
+      const conenction = connectionFromConnectionIdSelector(
         state,
         connectionId
       );
-      const saveWire: SaveWire = {
-        input: wire.inputPin,
-        output: wire.outputPin,
+      const jointIds = connectionJointIdsFromConnectionIdSelector(
+        state,
+        connectionId
+      );
+      const saveConnection: SaveConnection = {
+        input: conenction.inputPin,
+        output: conenction.outputPin,
         joints: jointIds.map((jointId) => jointPositions[jointId]),
       };
-      return saveWire;
+      return saveConnection;
     }),
   };
 }
@@ -111,11 +114,13 @@ export function loadSave(state: AppState, save: SaveData): AppState {
       state
     );
 
-    state = (save.wires ?? []).reduce(
-      (state, wire) =>
+    state = (save.connections ?? []).reduce(
+      (state, connection) =>
         rootReducer(
           state,
-          attachWire(wire.output, wire.input, { joints: wire.joints })
+          attachConnection(connection.output, connection.input, {
+            joints: connection.joints,
+          })
         ),
       state
     );
@@ -177,20 +182,24 @@ export function importCircuitsFromSave(
       state
     );
 
-    function isImportableWire(wire: SaveWire) {
+    function isImportableConnection(connection: SaveConnection) {
       return importNodes.some(
         ({ elementId }) =>
-          wire.input.elementId === elementId ||
-          wire.output.elementId === elementId
+          connection.input.elementId === elementId ||
+          connection.output.elementId === elementId
       );
     }
 
-    const importWires = (save.wires ?? []).filter(isImportableWire);
-    state = importWires.reduce(
-      (state, wire) =>
+    const importConnections = (save.connections ?? []).filter(
+      isImportableConnection
+    );
+    state = importConnections.reduce(
+      (state, connection) =>
         rootReducer(
           state,
-          attachWire(wire.output, wire.input, { joints: wire.joints })
+          attachConnection(connection.output, connection.input, {
+            joints: connection.joints,
+          })
         ),
       state
     );

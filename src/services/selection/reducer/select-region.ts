@@ -9,9 +9,9 @@ import { isSelectRegionAction } from "@/actions/select-region";
 import { elementIdsFromCircuitIdSelector } from "@/services/circuit-graph/selectors/elements";
 import { elementRectsByIdSelector } from "@/services/circuit-layout/selectors/element-bounds";
 import {
-  wireJointPositionsByJointIdSelector,
+  connectionJointPositionsByJointIdSelector,
   jointIdsFromCircuitIdSelector,
-} from "@/services/circuit-layout/selectors/wires";
+} from "@/services/circuit-layout/selectors/connections";
 
 import { createSelectionReducer } from "../utils";
 
@@ -32,7 +32,7 @@ export default createSelectionReducer((state, action, appState) => {
     }
   });
 
-  const jointPositions = wireJointPositionsByJointIdSelector(appState);
+  const jointPositions = connectionJointPositionsByJointIdSelector(appState);
   const jointIds = jointIdsFromCircuitIdSelector(appState, circuitId);
   const chosenJointIds = jointIds.filter((jointId) => {
     const position = jointPositions[jointId];

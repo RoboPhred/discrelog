@@ -10,8 +10,8 @@ import rootReducer from "@/store/reducer";
 import { isCircuitEditorDragEndAction } from "@/actions/circuit-editor-drag-end";
 import { selectRegion } from "@/actions/select-region";
 import { moveSelection } from "@/actions/selection-move";
-import { addWireJoint } from "@/actions/wire-joint-add";
-import { attachWire } from "@/actions/wire-attach";
+import { addConnectionJoint } from "@/actions/connection-joint-add";
+import { attachConnection } from "@/actions/connection-attach";
 
 import { elementPinFromPointSelector } from "@/services/circuit-layout/selectors/element-pin-positions";
 import { circuitIdForEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
@@ -42,7 +42,6 @@ export default function dragEndReducer(
   const { dragStart, dragStartEditorId, dragEndEditorId } = dragState;
 
   if (dragStartEditorId != dragEndEditorId) {
-    // TODO: Should allow this if dragMode is move.  Just be sure to cut the cross-circuit wires.
     state = fpSet(
       state,
       "services",
@@ -89,7 +88,7 @@ export default function dragEndReducer(
       const position = applyGridJointSnapSelector(state, { x, y });
       state = rootReducer(
         state,
-        addWireJoint(
+        addConnectionJoint(
           dragNewJointConnectionId!,
           dragNewJointAfterJointId,
           position
@@ -97,13 +96,13 @@ export default function dragEndReducer(
       );
       break;
     }
-    case "wire": {
+    case "connection": {
       const circuitId = circuitIdForEditorIdSelector(state, dragStartEditorId);
       if (circuitId) {
-        const { dragWireSource } = dragState;
+        const { dragPinSource } = dragState;
         const endPin = elementPinFromPointSelector(state, { x, y }, circuitId);
-        if (dragWireSource && endPin) {
-          state = rootReducer(state, attachWire(dragWireSource, endPin));
+        if (dragPinSource && endPin) {
+          state = rootReducer(state, attachConnection(dragPinSource, endPin));
         }
       }
       break;

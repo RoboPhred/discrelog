@@ -52,7 +52,7 @@ export function produceCircuitGraph(
   const outputElementIds: string[] = [];
 
   // 1. Create new elements
-  // 2. Wire elements amongs themselves.
+  // 2. Connect elements amongst themselves.
   // 3. Pass input and output mapping to parent.
 
   const elementInputPinsByPinIdByElementId: Record<
@@ -145,7 +145,7 @@ export function produceCircuitGraph(
       outputEvolver.outputsByPin[outputSimPin.pinId] = outputsByOutputPin = [];
     }
 
-    // Wire up the output to all of the inputs
+    // Connect up the output to all of the inputs
     for (const inputSimPin of inputSimPins) {
       outputsByOutputPin.push({
         evolverId: inputSimPin.evolverId,
@@ -217,7 +217,7 @@ function produceElementNode(
   evolversById[evolverId] = {
     evolverType: production.evolverType,
     // We do not have any internal pins.
-    // These will be wired by produceCircuit as
+    // These will be connected by produceCircuit as
     // it completes is cross-circuit connections.
     inputsByPin: {},
     outputsByPin: {},

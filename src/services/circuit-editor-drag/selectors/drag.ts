@@ -127,7 +127,7 @@ export const dragNewJointPositionSelector = createCircuitEditorDragSelector(
 
 export const dragDropTargetPinSelector = (state: AppState) => {
   const dragState = state.services.circuitEditorDrag;
-  if (dragState.dragMode !== "wire") {
+  if (dragState.dragMode !== "connection") {
     return null;
   }
 

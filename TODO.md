@@ -5,8 +5,8 @@
   - Default to this blank window rather than assuming a default window in both circuit-editors and ui-layout services.
 - Tooltip on hover over sim controls showing the hotkeys.
 - Breakpoints on pin value changes
-- Progress bar effect on logic nodes to show how many ticks left until they update given the current input.
-- Support dragging nodes across windows.
+- Progress bar effect on logic elements to show how many ticks left until they update given the current input.
+- Support dragging elements across windows.
 - If all circuit editors are closed, open a new editor on clicking a circuit.
 - Cut command
 
@@ -28,8 +28,8 @@
 
 - Histogram
 
-  - Mark node pins for inclusion in a histogram showing the logic levels of the pin as the simulator runs.
-  - Maybe instead of marking pins, have a debug / test port node to wire up. Each node creates a histogram entry.
+  - Mark element pins for inclusion in a histogram showing the logic levels of the pin as the simulator runs.
+  - Maybe instead of marking pins, have a debug / test port element to connect up. Each element creates a histogram entry.
   - Need to limit entries in histogram due to vibrators. Keep 100 transitions, and show dashed middle-height line for unknown previous values.
 
 - re-reselect caches items forever, nothing ever clears out the cache. Might want to put a LRU on it.

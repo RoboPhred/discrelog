@@ -5,8 +5,8 @@ import rootReducer from "@/store/reducer";
 
 import { isDeleteSelectionAction } from "@/actions/selection-delete";
 import { deleteElement } from "@/actions/element-delete";
-import { detatchWire } from "@/actions/wire-detatch";
-import { deleteWireJoint } from "@/actions/wire-joint-delete";
+import { detatchConnection } from "@/actions/connection-detatch";
+import { deleteConnectionJoint } from "@/actions/connection-joint-delete";
 
 export default function selectionDeleteReducer(
   state: AppState = defaultAppState,
@@ -26,11 +26,12 @@ export default function selectionDeleteReducer(
     state = rootReducer(state, deleteElement(selectedElementIds));
   }
   state = selectedConnectionIds.reduce(
-    (state, connectionId) => rootReducer(state, detatchWire(connectionId)),
+    (state, connectionId) =>
+      rootReducer(state, detatchConnection(connectionId)),
     state
   );
   state = selectedJointIds.reduce(
-    (state, jointId) => rootReducer(state, deleteWireJoint(jointId)),
+    (state, jointId) => rootReducer(state, deleteConnectionJoint(jointId)),
     state
   );
 

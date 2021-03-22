@@ -7,7 +7,7 @@ import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
 import { isCircuitEditorDragStartJointAction } from "@/actions/circuit-editor-drag-start-joint";
-import { selectWireJoints } from "@/actions/select-wire-joints";
+import { selectConnectionJoints } from "@/actions/select-connection-joints";
 
 import { isJointSelectedFromJointIdSelector } from "@/services/selection/selectors/selection";
 
@@ -37,7 +37,7 @@ export default function dragStartJointReducer(
   if (!isJointSelectedFromJointIdSelector(state, jointId)) {
     const selectionMode = getSelectMode(modifierKeys);
     // Dragging an element that was not previously selected.  Perform a selection on the element.
-    state = rootReducer(state, selectWireJoints(jointId, selectionMode));
+    state = rootReducer(state, selectConnectionJoints(jointId, selectionMode));
   }
 
   return state;

@@ -66,19 +66,19 @@ export default function elementDelete(
   // Remove any joint that is part of a removed connection.
   const removingJointIds = removingConnectionIds.reduce(
     (jointIds, connectionId) => {
-      jointIds.push(...state.wireJointIdsByConnectionId[connectionId]);
+      jointIds.push(...state.connectionJointIdsByConnectionId[connectionId]);
       return jointIds;
     },
     [] as string[]
   );
 
   const remainingConnectionIds = difference(
-    Object.keys(state.wireJointIdsByConnectionId),
+    Object.keys(state.connectionJointIdsByConnectionId),
     removingElementConnectionIds
   );
 
   const remainingJointIds = difference(
-    Object.keys(state.wireJointPositionsByJointId),
+    Object.keys(state.connectionJointPositionsByJointId),
     removingJointIds
   );
 
@@ -90,12 +90,12 @@ export default function elementDelete(
   return {
     ...state,
     elementPositionsById: pick(state.elementPositionsById, remainingElementIds),
-    wireJointIdsByConnectionId: pick(
-      state.wireJointIdsByConnectionId,
+    connectionJointIdsByConnectionId: pick(
+      state.connectionJointIdsByConnectionId,
       remainingConnectionIds
     ),
-    wireJointPositionsByJointId: pick(
-      state.wireJointPositionsByJointId,
+    connectionJointPositionsByJointId: pick(
+      state.connectionJointPositionsByJointId,
       remainingJointIds
     ),
   };

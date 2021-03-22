@@ -34,7 +34,7 @@ import {
   addElementTutorialStep,
   tutorialNextMessage,
   waitFilterAction,
-  waitNodeWired,
+  waitElementConnected,
 } from "./utils";
 
 export default function* runCircuitsTutorial() {
@@ -200,7 +200,7 @@ export default function* runCircuitsTutorial() {
   );
 
   yield call(
-    waitNodeWired,
+    waitElementConnected,
     { elementId: inputPinId, pinId: "OUT" },
     { elementId: bufferId, pinId: "IN" }
   );
@@ -226,7 +226,7 @@ export default function* runCircuitsTutorial() {
   );
 
   yield call(
-    waitNodeWired,
+    waitElementConnected,
     { elementId: bufferId, pinId: "OUT" },
     { elementId: outputPinId1, pinId: "IN" }
   );
@@ -252,7 +252,7 @@ export default function* runCircuitsTutorial() {
   );
 
   yield call(
-    waitNodeWired,
+    waitElementConnected,
     { elementId: inputPinId, pinId: "OUT" },
     { elementId: notId, pinId: "IN" }
   );
@@ -278,7 +278,7 @@ export default function* runCircuitsTutorial() {
   );
 
   yield call(
-    waitNodeWired,
+    waitElementConnected,
     { elementId: notId, pinId: "OUT" },
     { elementId: outputPinId2, pinId: "IN" }
   );
@@ -309,7 +309,7 @@ export default function* runCircuitsTutorial() {
   yield call(
     tutorialNextMessage,
     "#" + getCircuitEditorHtmlId(activeEditorId),
-    "Let's wire it up to see it in action.",
+    "Let's connect it up to see it in action.",
     { placement: "top" }
   );
 
@@ -363,7 +363,7 @@ export default function* runCircuitsTutorial() {
   );
 
   yield call(
-    waitNodeWired,
+    waitElementConnected,
     { elementId: switchId, pinId: "OUT" },
     { elementId: icId, pinId: inputPinId }
   );
@@ -389,7 +389,7 @@ export default function* runCircuitsTutorial() {
   );
 
   yield call(
-    waitNodeWired,
+    waitElementConnected,
     { elementId: icId, pinId: outputPinId1 },
     { elementId: led1Id, pinId: "IN" }
   );
@@ -415,7 +415,7 @@ export default function* runCircuitsTutorial() {
   );
 
   yield call(
-    waitNodeWired,
+    waitElementConnected,
     { elementId: icId, pinId: outputPinId1 },
     { elementId: led1Id, pinId: "IN" }
   );
@@ -441,7 +441,7 @@ export default function* runCircuitsTutorial() {
   );
 
   yield call(
-    waitNodeWired,
+    waitElementConnected,
     { elementId: icId, pinId: outputPinId2 },
     { elementId: led2Id, pinId: "IN" }
   );

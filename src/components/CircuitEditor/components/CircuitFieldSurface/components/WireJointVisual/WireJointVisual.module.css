@@ -1,9 +1,0 @@
-.wire-joint {
-  fill: var(--color-element-neutral);
-  stroke: var(--color-element-neutral);
-}
-
-.wire-joint.selected {
-  fill: var(--color-element-selected);
-  stroke: var(--color-element-selected);
-}

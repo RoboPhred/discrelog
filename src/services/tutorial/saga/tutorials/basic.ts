@@ -22,7 +22,7 @@ import {
   addElementTutorialStep,
   tutorialNextMessage,
   waitFilterAction,
-  waitNodeWired,
+  waitElementConnected,
 } from "./utils";
 
 export default function* runBasicsTutorial() {
@@ -82,7 +82,7 @@ export default function* runBasicsTutorial() {
   );
 
   yield call(
-    waitNodeWired,
+    waitElementConnected,
     { elementId: switchId, pinId: "OUT" },
     { elementId: gateId, pinId: "IN" }
   );
@@ -108,7 +108,7 @@ export default function* runBasicsTutorial() {
   );
 
   yield call(
-    waitNodeWired,
+    waitElementConnected,
     { elementId: gateId, pinId: "OUT" },
     { elementId: ledId, pinId: "IN" }
   );

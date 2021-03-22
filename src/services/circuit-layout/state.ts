@@ -2,14 +2,14 @@ import { Point } from "@/geometry";
 
 export interface CircuitLayoutServiceState {
   elementPositionsById: Record<string, Point>;
-  wireJointIdsByConnectionId: Record<string, string[]>;
-  wireJointPositionsByJointId: Record<string, Point>;
+  connectionJointIdsByConnectionId: Record<string, string[]>;
+  connectionJointPositionsByJointId: Record<string, Point>;
 }
 
 const _defaultState: CircuitLayoutServiceState = {
   elementPositionsById: {},
-  wireJointIdsByConnectionId: {},
-  wireJointPositionsByJointId: {},
+  connectionJointIdsByConnectionId: {},
+  connectionJointPositionsByJointId: {},
 };
 
 export const defaultCircuitLayoutServiceState: Readonly<CircuitLayoutServiceState> = Object.freeze(

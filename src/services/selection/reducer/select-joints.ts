@@ -1,11 +1,11 @@
 import { combineSelection } from "@/selection-mode";
 
-import { isSelectWireJointsAction } from "@/actions/select-wire-joints";
+import { isSelectConnectionJointsAction } from "@/actions/select-connection-joints";
 
 import { createSelectionReducer } from "../utils";
 
 export default createSelectionReducer((state, action) => {
-  if (!isSelectWireJointsAction(action)) {
+  if (!isSelectConnectionJointsAction(action)) {
     return state;
   }
 

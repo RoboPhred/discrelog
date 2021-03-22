@@ -14,6 +14,6 @@ export default createSelectionReducer((state, action) => {
   return {
     ...state,
     selectedElementIds: difference(state.selectedElementIds, elementIds),
-    selectedConnectionIds: [], // Might be removing an element attached to a selected wire
+    selectedConnectionIds: [], // Might be removing an element attached to a selected connection
   };
 });

@@ -26,7 +26,7 @@ export const selectedConnectionIdsSelector = createSelectionSelector(
   (state) => state.selectedConnectionIds
 );
 
-export const isWireSelectedFromConnectionIdSelector = createSelectionSelector(
+export const isConnectionSelectedFromConnectionIdSelector = createSelectionSelector(
   (s: SelectionServiceState, connectionId: string) =>
     s.selectedConnectionIds.indexOf(connectionId) !== -1
 );

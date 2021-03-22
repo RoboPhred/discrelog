@@ -11,15 +11,15 @@ import {
   isEditorDraggingSelector,
 } from "@/services/circuit-editor-drag/selectors/drag";
 import { selectedJointIdsSelector } from "@/services/selection/selectors/selection";
-import { wireJointPositionsByJointIdSelector } from "@/services/circuit-layout/selectors/wires";
+import { connectionJointPositionsByJointIdSelector } from "@/services/circuit-layout/selectors/connections";
 
 import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
 
-import WireJointVisual from "./WireJointVisual";
+import ConnectionJointVisual from "./ConnectionJointVisual";
 
 const selectedJointPositionsByIdSelector = createSelector(
   selectedJointIdsSelector,
-  wireJointPositionsByJointIdSelector,
+  connectionJointPositionsByJointIdSelector,
   (selectedJointIds, jointPositionsById) =>
     pick(jointPositionsById, selectedJointIds)
 );
@@ -46,7 +46,7 @@ const DragJointPreviewLayer: React.FC = React.memo(
     let elements: React.ReactNode | null = null;
     if (dragMoveOffset) {
       elements = values(selectedElementPositionsById).map((p, index) => (
-        <WireJointVisual
+        <ConnectionJointVisual
           key={index}
           interactable={false}
           x={p.x + dragMoveOffset.x}
@@ -59,7 +59,7 @@ const DragJointPreviewLayer: React.FC = React.memo(
     let newJointElement: React.ReactNode | null = null;
     if (newJointPosition) {
       newJointElement = (
-        <WireJointVisual
+        <ConnectionJointVisual
           interactable={false}
           x={newJointPosition.x}
           y={newJointPosition.y}

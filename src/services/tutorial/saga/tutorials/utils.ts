@@ -69,19 +69,22 @@ export function* addElementTutorialStep(
   return addElementAction.payload.elementId;
 }
 
-export function* waitNodeWired(outputPin: ElementPin, inputPin: ElementPin) {
+export function* waitElementConnected(
+  outputPin: ElementPin,
+  inputPin: ElementPin
+) {
   while (true) {
-    const wired: boolean = yield call(isWired, outputPin, inputPin);
-    if (wired) {
+    const connected: boolean = yield call(isConnected, outputPin, inputPin);
+    if (connected) {
       return;
     }
     // TODO: We can only detect wiring through drag end.  Might want to make drag use real actions
-    //  and wait on wire action instead.
+    //  and wait on connect action instead.
     yield take(ACTION_CIRCUIT_EDITOR_DRAG_END);
   }
 }
 
-function* isWired(
+function* isConnected(
   outputPin: ElementPin,
   inputPin: ElementPin
 ): SagaIterator<boolean> {

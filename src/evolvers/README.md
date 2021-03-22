@@ -16,9 +16,6 @@ For the visual items that are created with the UI, see [Elements](../elements/RE
 
 Evolvers define a function to accept input or user interaction, and emit a plan of future changes to their output.
 
-When some external state changes (input pin state change, input pin wired/unwired, user interaction), an element will have the opportunity
-to evolve its state by producing a transition for any of its output pins.
-
 ### Transitions
 
 Evolvers change their outputs by requesting transitions during the evolution step.

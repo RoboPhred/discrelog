@@ -6,7 +6,7 @@ import {
   connectionIdsSelector,
   connectionsByIdSelector,
 } from "@/services/circuit-graph/selectors/connections";
-import { wireJointIdsByConnectionIdSelector } from "@/services/circuit-layout/selectors/wires";
+import { connectionJointIdsByConnectionIdSelector } from "@/services/circuit-layout/selectors/connections";
 import { elementIdsFromCircuitIdSelector } from "@/services/circuit-graph/selectors/elements";
 import { activeCircuitIdSelector } from "@/services/circuit-editors/selectors/editor";
 
@@ -37,11 +37,11 @@ export default createSelectionReducer((state, action, appState) => {
     return true;
   });
 
-  const wireJointIdsFromConnectionId = wireJointIdsByConnectionIdSelector(
+  const connectionJointIdsFromConnectionId = connectionJointIdsByConnectionIdSelector(
     appState
   );
   const jointIds = flatten(
-    connectionIds.map((connId) => wireJointIdsFromConnectionId[connId])
+    connectionIds.map((connId) => connectionJointIdsFromConnectionId[connId])
   );
 
   return {

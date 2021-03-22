@@ -6,7 +6,10 @@ import rootReducer from "@/store/reducer";
 
 import { isMoveSelectionAction } from "@/actions/selection-move";
 import { moveElement, MoveElementOpts } from "@/actions/element-move";
-import { moveWireJoint, MoveWireJointOpts } from "@/actions/wire-joint-move";
+import {
+  moveConnectionJoint,
+  MoveConnectionJointOpts,
+} from "@/actions/connection-joint-move";
 
 import {
   selectedElementIdsSelector,
@@ -36,7 +39,7 @@ export default function selectionMoveReducer(
     elementSnapMode = "element";
   }
 
-  let jointSnapMode: MoveWireJointOpts["snapMode"] = "none";
+  let jointSnapMode: MoveConnectionJointOpts["snapMode"] = "none";
   if (snapMode === "by-type") {
     jointSnapMode = "joint";
   } else {
@@ -52,7 +55,10 @@ export default function selectionMoveReducer(
   );
   state = rootReducer(
     state,
-    moveWireJoint(jointIds, offset, { relative: true, snapMode: jointSnapMode })
+    moveConnectionJoint(jointIds, offset, {
+      relative: true,
+      snapMode: jointSnapMode,
+    })
   );
 
   return state;

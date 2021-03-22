@@ -70,14 +70,14 @@ export interface CircuitEditorDragNewJointState
   dragNewJointAfterJointId: string | null;
 }
 
-export interface CircuitEditorDragWireState
+export interface CircuitEditorDragConnectionState
   extends CircuitEditorDragActiveState {
-  dragMode: "wire";
+  dragMode: "connection";
 
   /**
-   * If drag mode is "wire", this is the source pin being wired by the drag.
+   * The source pin being connected by the drag.
    */
-  dragWireSource: ElementPin | null;
+  dragPinSource: ElementPin | null;
 }
 
 export type CircuitEditorDragServiceState =
@@ -85,7 +85,7 @@ export type CircuitEditorDragServiceState =
   | CircuitEditorDragMoveState
   | CircuitEditorDragSelectState
   | CircuitEditorDragNewJointState
-  | CircuitEditorDragWireState;
+  | CircuitEditorDragConnectionState;
 
 const _defaultState: CircuitEditorDragServiceState = {
   dragMode: null,
