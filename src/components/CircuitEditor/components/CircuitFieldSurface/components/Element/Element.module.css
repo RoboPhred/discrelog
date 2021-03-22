@@ -1,7 +1,11 @@
-:global(.circuit-field-element.element-selected .element-select-highlight--stroke) {
+:global(.circuit-editor:not(.simulator-active)
+    .circuit-field-element.element-selected
+    .element-select-highlight--stroke) {
   stroke: var(--color-element-selected);
 }
 
-:global(.circuit-field-element.element-selected .element-select-highlight--fill) {
+:global(.circuit-editor:not(.simulator-active)
+    .circuit-field-element.element-selected
+    .element-select-highlight--fill) {
   fill: var(--color-element-selected);
 }
