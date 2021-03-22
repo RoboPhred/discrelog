@@ -1,2 +1,2 @@
-import WireJointVisual from "./ConnectionJointVisual";
-export default WireJointVisual;
+import ConnectionJointVisual from "./ConnectionJointVisual";
+export default ConnectionJointVisual;

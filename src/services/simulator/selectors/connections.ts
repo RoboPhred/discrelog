@@ -5,9 +5,9 @@ import {
   connectionIdFromInputPinSelector,
 } from "@/services/circuit-graph/selectors/connections";
 import { elementTypeFromElementIdSelector } from "@/services/circuit-graph/selectors/elements";
+import { ElementPin } from "@/services/circuit-graph/types";
 
 import { elementOutputsFromCircuitElementIdSelector } from "./elements";
-import { ElementPin } from "@/services/circuit-graph/types";
 
 // Doesn't need caching for react since it returns primitives, but
 // the additional complexity of tracing IC pins might make it a bit heavy.

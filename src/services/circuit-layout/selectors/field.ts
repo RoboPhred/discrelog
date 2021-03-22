@@ -20,9 +20,9 @@ const MinFieldRect: Readonly<Rectangle> = Object.freeze({
 export const fieldRectSelector = createSelector(
   elementRectsByIdSelector,
   connectionJointPositionsByJointIdSelector,
-  (elementRectsById, wireJointsById) => {
+  (elementRectsById, jointsById) => {
     const elementRects = values(elementRectsById);
-    const jointRects = values(wireJointsById).map((p) => ({ p1: p, p2: p }));
+    const jointRects = values(jointsById).map((p) => ({ p1: p, p2: p }));
 
     return [...elementRects, ...jointRects].reduce(union, MinFieldRect);
   }
