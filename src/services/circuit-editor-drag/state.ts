@@ -1,7 +1,7 @@
 import { Point } from "@/geometry";
 import { ModifierKeys } from "@/modifier-keys";
 
-import { NodePin } from "../node-graph/types";
+import { ElementPin } from "../circuit-graph/types";
 
 export interface CircuitEditorDragNullState {
   dragMode: null;
@@ -77,7 +77,7 @@ export interface CircuitEditorDragWireState
   /**
    * If drag mode is "wire", this is the source pin being wired by the drag.
    */
-  dragWireSource: NodePin | null;
+  dragWireSource: ElementPin | null;
 }
 
 export type CircuitEditorDragServiceState =

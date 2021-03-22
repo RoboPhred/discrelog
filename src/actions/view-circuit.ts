@@ -7,13 +7,13 @@ interface ViewCircuitOpts {
 export const ACTION_VIEW_CIRCUIT = "@view/circuit" as const;
 export const viewCircuit = (
   circuitId: string,
-  circuitNodeIdPath: string[] | null = null,
+  elementIdPath: string[] | null = null,
   opts: ViewCircuitOpts = {}
 ) => ({
   type: ACTION_VIEW_CIRCUIT,
   payload: {
     circuitId,
-    circuitNodeIdPath,
+    elementIdPath,
     newWindowId: opts.newWindow ? uuidV4() : null,
   },
 });

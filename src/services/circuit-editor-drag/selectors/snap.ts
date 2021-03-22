@@ -3,12 +3,14 @@ import { AppState } from "@/store";
 
 import { createCircuitEditorDragSelector } from "../utils";
 
-export const gridNodeSnapSelector = createCircuitEditorDragSelector(() => 50);
+export const gridElementSnapSelector = createCircuitEditorDragSelector(
+  () => 50
+);
 
 export const gridJointSnapSelector = createCircuitEditorDragSelector(() => 5);
 
-export const applyGridNodeSnapSelector = (s: AppState, p: Point) => {
-  const snap = gridNodeSnapSelector(s);
+export const applyGridElementSnapSelector = (s: AppState, p: Point) => {
+  const snap = gridElementSnapSelector(s);
   return snapPoint(p, snap);
 };
 

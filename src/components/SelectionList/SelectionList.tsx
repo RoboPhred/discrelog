@@ -32,7 +32,7 @@ const SelectionList: React.FC<SelectionListProps> = ({
       className={cls("selection-list", styles["selection-list"], className)}
     >
       {items.map((item) => (
-        <SelectionListItemNode
+        <SelectionListItem
           key={item.value}
           {...item}
           onItemSelected={onItemSelected}
@@ -44,11 +44,11 @@ const SelectionList: React.FC<SelectionListProps> = ({
 
 export default SelectionList;
 
-interface SelectionListItemNodeProps extends SelectionListItem {
+interface SelectionListItemProps extends SelectionListItem {
   onItemSelected(value: string): void;
 }
 
-const SelectionListItemNode: React.FC<SelectionListItemNodeProps> = ({
+const SelectionListItem: React.FC<SelectionListItemProps> = ({
   id,
   value,
   label,

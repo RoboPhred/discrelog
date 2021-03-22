@@ -2,7 +2,7 @@ import { call, put, select, take } from "redux-saga/effects";
 
 import { arrayEquals } from "@/arrays";
 
-import { circuitIdToNodeType } from "@/nodes/definitions/integrated-circuits/utils";
+import { circuitIdToElementType } from "@/elements/definitions/integrated-circuits/utils";
 
 import { tutorialAnnotate } from "@/actions/tutorial-annotate";
 import { tutorialDismiss } from "@/actions/tutorial-dismiss";
@@ -10,11 +10,14 @@ import { ACTION_CIRCUIT_ADD, AddCircuitAction } from "@/actions/circuit-add";
 import { ACTION_CIRCUIT_RENAME } from "@/actions/circuit-rename";
 import { ACTION_VIEW_CIRCUIT, ViewCircuitAction } from "@/actions/view-circuit";
 import {
-  ACTION_NODE_INTERACT,
-  InteractNodeAction,
-} from "@/actions/node-interact";
+  ACTION_ELEMENT_INTERACT,
+  InteractElementAction,
+} from "@/actions/element-interact";
 import { ACTION_SIM_START } from "@/actions/sim-start";
-import { ACTION_NODE_RENAME, RenameNodeAction } from "@/actions/node-rename";
+import {
+  ACTION_ELEMENT_RENAME,
+  RenameElementAction,
+} from "@/actions/element-rename";
 
 import { activeCircuitEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
 import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
@@ -23,12 +26,12 @@ import { getCircuitListItemHtmlId } from "@/pages/ProjectEditorPage/windows/Circ
 
 import {
   getCircuitEditorHtmlId,
-  getNodeHtmlId,
-  getNodePinHtmlId,
+  getElementHtmlId,
+  getElementPinHtmlId,
 } from "@/components/CircuitEditor/ids";
 
 import {
-  createNodeTutorialStep,
+  addElementTutorialStep,
   tutorialNextMessage,
   waitFilterAction,
   waitNodeWired,
@@ -38,7 +41,7 @@ export default function* runCircuitsTutorial() {
   yield call(
     tutorialNextMessage,
     "#circuit-list-window",
-    "Circuits are collections of nodes that can be reused as ICs."
+    "Circuits are collections of elements that can be reused as ICs."
   );
 
   yield put(
@@ -83,7 +86,7 @@ export default function* runCircuitsTutorial() {
   }
 
   const inputPinId: string | null = yield call(
-    createNodeTutorialStep,
+    addElementTutorialStep,
     "pin-input"
   );
   if (!inputPinId) {
@@ -93,7 +96,7 @@ export default function* runCircuitsTutorial() {
 
   yield call(
     tutorialNextMessage,
-    "#" + getNodeHtmlId(activeEditorId, inputPinId),
+    "#" + getElementHtmlId(activeEditorId, inputPinId),
     "Input pins take a signal from outside for use in your circuit.",
     { additionalSelectors: ["#" + getCircuitEditorHtmlId(activeEditorId)] }
   );
@@ -104,7 +107,7 @@ export default function* runCircuitsTutorial() {
         selector: "#" + getCircuitEditorHtmlId(activeEditorId),
       },
       {
-        selector: "#" + getNodeHtmlId(activeEditorId, inputPinId),
+        selector: "#" + getElementHtmlId(activeEditorId, inputPinId),
         message:
           "Rename the pin by right clicking it and clicking on the bolded text.  Choose any name you like",
       },
@@ -112,20 +115,20 @@ export default function* runCircuitsTutorial() {
   );
 
   yield call(() =>
-    waitFilterAction<RenameNodeAction>(
-      ACTION_NODE_RENAME,
-      (action) => action.payload.nodeId === inputPinId
+    waitFilterAction<RenameElementAction>(
+      ACTION_ELEMENT_RENAME,
+      (action) => action.payload.elementId === inputPinId
     )
   );
 
   yield call(
     tutorialNextMessage,
-    "#" + getNodeHtmlId(activeEditorId, inputPinId),
+    "#" + getElementHtmlId(activeEditorId, inputPinId),
     "Pin names will appear on the body of the IC when used in other circuits.  Be sure to name your pins!"
   );
 
   const outputPinId1: string | null = yield call(
-    createNodeTutorialStep,
+    addElementTutorialStep,
     "pin-output"
   );
   if (!outputPinId1) {
@@ -135,12 +138,12 @@ export default function* runCircuitsTutorial() {
 
   yield call(
     tutorialNextMessage,
-    "#" + getNodeHtmlId(activeEditorId, outputPinId1),
+    "#" + getElementHtmlId(activeEditorId, outputPinId1),
     "Output pins take a signal from your circuit and send it to the outside world."
   );
 
   const outputPinId2: string | null = yield call(
-    createNodeTutorialStep,
+    addElementTutorialStep,
     "pin-output",
     {
       trayMessage: "Let's take another output pin",
@@ -162,7 +165,7 @@ export default function* runCircuitsTutorial() {
   );
 
   const bufferId: string | null = yield call(
-    createNodeTutorialStep,
+    addElementTutorialStep,
     "logic-buffer"
   );
   if (!bufferId) {
@@ -170,7 +173,7 @@ export default function* runCircuitsTutorial() {
     return;
   }
 
-  const notId: string | null = yield call(createNodeTutorialStep, "logic-not");
+  const notId: string | null = yield call(addElementTutorialStep, "logic-not");
   if (!notId) {
     yield put(tutorialDismiss());
     return;
@@ -179,12 +182,12 @@ export default function* runCircuitsTutorial() {
   yield put(
     tutorialAnnotate([
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, inputPinId, "OUT"),
+        selector: "#" + getElementPinHtmlId(activeEditorId, inputPinId, "OUT"),
         message: "Connect the input signal pin...",
         placement: "top",
       },
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, bufferId, "IN"),
+        selector: "#" + getElementPinHtmlId(activeEditorId, bufferId, "IN"),
         message: "...to the buffer's input.",
         placement: "bottom",
       },
@@ -198,19 +201,19 @@ export default function* runCircuitsTutorial() {
 
   yield call(
     waitNodeWired,
-    { nodeId: inputPinId, pinId: "OUT" },
-    { nodeId: bufferId, pinId: "IN" }
+    { elementId: inputPinId, pinId: "OUT" },
+    { elementId: bufferId, pinId: "IN" }
   );
 
   yield put(
     tutorialAnnotate([
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, bufferId, "OUT"),
+        selector: "#" + getElementPinHtmlId(activeEditorId, bufferId, "OUT"),
         message: "Connect the buffer's output pin...",
         placement: "top",
       },
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, outputPinId1, "IN"),
+        selector: "#" + getElementPinHtmlId(activeEditorId, outputPinId1, "IN"),
         message: "...to the IC's first output.",
         placement: "bottom",
       },
@@ -224,19 +227,19 @@ export default function* runCircuitsTutorial() {
 
   yield call(
     waitNodeWired,
-    { nodeId: bufferId, pinId: "OUT" },
-    { nodeId: outputPinId1, pinId: "IN" }
+    { elementId: bufferId, pinId: "OUT" },
+    { elementId: outputPinId1, pinId: "IN" }
   );
 
   yield put(
     tutorialAnnotate([
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, inputPinId, "OUT"),
+        selector: "#" + getElementPinHtmlId(activeEditorId, inputPinId, "OUT"),
         message: "Connect the input signal pin...",
         placement: "top",
       },
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, notId, "IN"),
+        selector: "#" + getElementPinHtmlId(activeEditorId, notId, "IN"),
         message: "...to the NOT's input.",
         placement: "bottom",
       },
@@ -250,19 +253,19 @@ export default function* runCircuitsTutorial() {
 
   yield call(
     waitNodeWired,
-    { nodeId: inputPinId, pinId: "OUT" },
-    { nodeId: notId, pinId: "IN" }
+    { elementId: inputPinId, pinId: "OUT" },
+    { elementId: notId, pinId: "IN" }
   );
 
   yield put(
     tutorialAnnotate([
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, notId, "OUT"),
+        selector: "#" + getElementPinHtmlId(activeEditorId, notId, "OUT"),
         message: "Connect the NOT's output...",
         placement: "top",
       },
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, outputPinId2, "IN"),
+        selector: "#" + getElementPinHtmlId(activeEditorId, outputPinId2, "IN"),
         message: "...to the second IC output.",
         placement: "bottom",
       },
@@ -276,8 +279,8 @@ export default function* runCircuitsTutorial() {
 
   yield call(
     waitNodeWired,
-    { nodeId: notId, pinId: "OUT" },
-    { nodeId: outputPinId2, pinId: "IN" }
+    { elementId: notId, pinId: "OUT" },
+    { elementId: outputPinId2, pinId: "IN" }
   );
 
   yield put(
@@ -295,9 +298,9 @@ export default function* runCircuitsTutorial() {
     )
   );
 
-  const icType = circuitIdToNodeType(circuitId);
+  const icType = circuitIdToElementType(circuitId);
 
-  const icId: string | null = yield call(createNodeTutorialStep, icType);
+  const icId: string | null = yield call(addElementTutorialStep, icType);
   if (!icId) {
     yield put(tutorialDismiss());
     return;
@@ -311,7 +314,7 @@ export default function* runCircuitsTutorial() {
   );
 
   const switchId: string | null = yield call(
-    createNodeTutorialStep,
+    addElementTutorialStep,
     "interaction-momentary"
   );
   if (!switchId) {
@@ -320,7 +323,7 @@ export default function* runCircuitsTutorial() {
   }
 
   const led1Id: string | null = yield call(
-    createNodeTutorialStep,
+    addElementTutorialStep,
     "output-led",
     { trayMessage: "Make an LED to check the status of the first pin." }
   );
@@ -330,7 +333,7 @@ export default function* runCircuitsTutorial() {
   }
 
   const led2Id: string | null = yield call(
-    createNodeTutorialStep,
+    addElementTutorialStep,
     "output-led",
     { trayMessage: "Make an LED to check the status of the second pin." }
   );
@@ -342,12 +345,12 @@ export default function* runCircuitsTutorial() {
   yield put(
     tutorialAnnotate([
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, switchId, "OUT"),
+        selector: "#" + getElementPinHtmlId(activeEditorId, switchId, "OUT"),
         message: "Connect the switch output...",
         placement: "top",
       },
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, icId, inputPinId),
+        selector: "#" + getElementPinHtmlId(activeEditorId, icId, inputPinId),
         message: "...to the IC input.",
         placement: "bottom",
       },
@@ -361,19 +364,19 @@ export default function* runCircuitsTutorial() {
 
   yield call(
     waitNodeWired,
-    { nodeId: switchId, pinId: "OUT" },
-    { nodeId: icId, pinId: inputPinId }
+    { elementId: switchId, pinId: "OUT" },
+    { elementId: icId, pinId: inputPinId }
   );
 
   yield put(
     tutorialAnnotate([
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, icId, outputPinId1),
+        selector: "#" + getElementPinHtmlId(activeEditorId, icId, outputPinId1),
         message: "Connect the first IC output...",
         placement: "top",
       },
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, led1Id, "IN"),
+        selector: "#" + getElementPinHtmlId(activeEditorId, led1Id, "IN"),
         message: "...to the first LED.",
         placement: "bottom",
       },
@@ -387,19 +390,19 @@ export default function* runCircuitsTutorial() {
 
   yield call(
     waitNodeWired,
-    { nodeId: icId, pinId: outputPinId1 },
-    { nodeId: led1Id, pinId: "IN" }
+    { elementId: icId, pinId: outputPinId1 },
+    { elementId: led1Id, pinId: "IN" }
   );
 
   yield put(
     tutorialAnnotate([
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, icId, outputPinId1),
+        selector: "#" + getElementPinHtmlId(activeEditorId, icId, outputPinId1),
         message: "Connect the first IC output...",
         placement: "top",
       },
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, led1Id, "IN"),
+        selector: "#" + getElementPinHtmlId(activeEditorId, led1Id, "IN"),
         message: "...to the first LED.",
         placement: "bottom",
       },
@@ -413,19 +416,19 @@ export default function* runCircuitsTutorial() {
 
   yield call(
     waitNodeWired,
-    { nodeId: icId, pinId: outputPinId1 },
-    { nodeId: led1Id, pinId: "IN" }
+    { elementId: icId, pinId: outputPinId1 },
+    { elementId: led1Id, pinId: "IN" }
   );
 
   yield put(
     tutorialAnnotate([
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, icId, outputPinId2),
+        selector: "#" + getElementPinHtmlId(activeEditorId, icId, outputPinId2),
         message: "Connect the second IC output...",
         placement: "top",
       },
       {
-        selector: "#" + getNodePinHtmlId(activeEditorId, led2Id, "IN"),
+        selector: "#" + getElementPinHtmlId(activeEditorId, led2Id, "IN"),
         message: "...to the second LED.",
         placement: "bottom",
       },
@@ -439,8 +442,8 @@ export default function* runCircuitsTutorial() {
 
   yield call(
     waitNodeWired,
-    { nodeId: icId, pinId: outputPinId2 },
-    { nodeId: led2Id, pinId: "IN" }
+    { elementId: icId, pinId: outputPinId2 },
+    { elementId: led2Id, pinId: "IN" }
   );
 
   yield put(
@@ -454,13 +457,13 @@ export default function* runCircuitsTutorial() {
 
   yield put(
     tutorialAnnotate([
-      // Unfortunately, since we use absolute positioning, the z-index on the node will not function unless
+      // Unfortunately, since we use absolute positioning, the z-index on the element will not function unless
       // we also raise the field
       {
         selector: "#" + getCircuitEditorHtmlId(activeEditorId),
       },
       {
-        selector: "#" + getNodeHtmlId(activeEditorId, switchId),
+        selector: "#" + getElementHtmlId(activeEditorId, switchId),
         message:
           "Click the switch to activate it.  Momentary switches need to be held.",
       },
@@ -468,10 +471,10 @@ export default function* runCircuitsTutorial() {
   );
 
   yield call(() =>
-    waitFilterAction<InteractNodeAction>(
-      ACTION_NODE_INTERACT,
-      ({ payload: { circuitNodeIdPath, data } }) =>
-        data === true && arrayEquals(circuitNodeIdPath, [switchId])
+    waitFilterAction<InteractElementAction>(
+      ACTION_ELEMENT_INTERACT,
+      ({ payload: { elementIdPath, data } }) =>
+        data === true && arrayEquals(elementIdPath, [switchId])
     )
   );
 

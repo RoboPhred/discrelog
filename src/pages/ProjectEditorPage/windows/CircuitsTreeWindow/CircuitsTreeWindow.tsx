@@ -15,7 +15,7 @@ import { renameCircuit } from "@/actions/circuit-rename";
 import {
   circuitNameFromIdSelector,
   circuitNamesByIdSelector,
-} from "@/services/circuits/selectors/circuits";
+} from "@/services/circuit-properties/selectors/circuits";
 import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
 
 import { useContextMenu } from "@/components/ContextMenu";

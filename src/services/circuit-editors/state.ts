@@ -4,7 +4,7 @@ import { DEFAULT_CIRCUIT_EDITOR_ID } from "./constants";
 
 export interface CircuitEditorState {
   circuitId: string;
-  circuitNodeIdPath: string[];
+  elementIdPath: string[];
 }
 
 export interface CircuitEditorsServiceState {
@@ -16,7 +16,7 @@ const _defaultState: CircuitEditorsServiceState = {
   circucitEditorsById: {
     [DEFAULT_CIRCUIT_EDITOR_ID]: {
       circuitId: ROOT_CIRCUIT_ID,
-      circuitNodeIdPath: [],
+      elementIdPath: [],
     },
   },
   activeEditorId: null,

@@ -22,7 +22,7 @@ import {
   wireJointPositionFromJointIdSelector,
   wireStartPositionFromConnectionIdSelector,
   wireEndPositionFromConnectionIdSelector,
-} from "@/services/node-layout/selectors/wires";
+} from "@/services/circuit-layout/selectors/wires";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 import { isDraggingSelector } from "@/services/circuit-editor-drag/selectors/drag";
 

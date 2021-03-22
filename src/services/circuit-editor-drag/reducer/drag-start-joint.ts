@@ -10,7 +10,6 @@ import { isCircuitEditorDragStartJointAction } from "@/actions/circuit-editor-dr
 import { selectWireJoints } from "@/actions/select-wire-joints";
 
 import { isJointSelectedFromJointIdSelector } from "@/services/selection/selectors/selection";
-import { circuitIdFromJointIdSelector } from "@/services/circuits/selectors/joints";
 
 export default function dragStartJointReducer(
   state: AppState = defaultAppState,
@@ -21,11 +20,6 @@ export default function dragStartJointReducer(
   }
 
   const { jointId, x, y, modifierKeys, editorId } = action.payload;
-
-  const circuitId = circuitIdFromJointIdSelector(state, jointId);
-  if (!circuitId) {
-    return state;
-  }
 
   state = fpSet(state, "services", "circuitEditorDrag", (value) => ({
     ...value,
@@ -42,7 +36,7 @@ export default function dragStartJointReducer(
 
   if (!isJointSelectedFromJointIdSelector(state, jointId)) {
     const selectionMode = getSelectMode(modifierKeys);
-    // Dragging a node that was not previously selected.  Perform a selection on the node.
+    // Dragging an element that was not previously selected.  Perform a selection on the element.
     state = rootReducer(state, selectWireJoints(jointId, selectionMode));
   }
 

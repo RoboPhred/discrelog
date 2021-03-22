@@ -4,19 +4,19 @@ import { useDrop } from "react-dnd";
 
 import { circuitEditorMouseLeave } from "@/actions/circuit-editor-mouse-leave";
 
-import { NEW_NODE_DRAG_OBJECT } from "../../drag-items/new-node";
+import { NEW_ELEMENT_DRAG_OBJECT } from "../../drag-items/new-element";
 import { useViewportContext } from "../../contexts/viewport-context";
 
 import { FieldSvgElementProvider } from "./contexts/fieldSvgElement";
 
-import DragNewNodeLayer from "./components/DragNewNodeLayer";
-import DragNodePreviewLayer from "./components/DragNodePreviewLayer";
+import DragNewElementLayer from "./components/DragNewElementLayer";
+import DragElementPreviewLayer from "./components/DragElementPreviewLayer";
 import DragJointPreviewLayer from "./components/DragJointPreviewLayer";
 import FieldMouseLayer from "./components/FieldMouseLayer";
 import GridBackground from "./components/GridBackground";
-import NodesLayer from "./components/NodesLayer";
+import ElementsLayer from "./components/ElementsLayer";
 import WiresLayer from "./components/WiresLayer";
-import NodePinsLayer from "./components/NodePinsLayer";
+import ElementPinsLayer from "./components/ElementPinsLayer";
 import DragAttachWirePreviewLayer from "./components/DragAttachWirePreviewLayer";
 import EditorDragReceiver from "./components/EditorDragReceiver";
 
@@ -45,17 +45,17 @@ const CircuitFieldSurface: React.FC<CircuitFieldSurfaceProps> = ({
   }, [dispatch]);
 
   // We need to capture the drag event at a deeper parent,
-  // because mouse events cannot pass through DragNewNodeLayer's
+  // because mouse events cannot pass through DragNewElementLayer's
   // drag capture rect to the underlying DragSelectLayer and other elements.
   // In contrast, we cannot handle the drag here as
   // we do not know the coordinate system from our scaler.
   // Instead, just capture whether or not we are being dragged into,
-  // and enable the new node drag layer only when we are dragging.
-  const [{ isDraggingNewNode }, dragRef] = useDrop({
-    accept: NEW_NODE_DRAG_OBJECT,
+  // and enable the new element drag layer only when we are dragging.
+  const [{ isDraggingNewElement }, dragRef] = useDrop({
+    accept: NEW_ELEMENT_DRAG_OBJECT,
     collect: (monitor) => {
       return {
-        isDraggingNewNode: monitor.isOver(),
+        isDraggingNewElement: monitor.isOver(),
       };
     },
   });
@@ -81,13 +81,13 @@ const CircuitFieldSurface: React.FC<CircuitFieldSurfaceProps> = ({
       >
         <FieldSvgElementProvider svgRef={svgRef} scalerRef={scalerRef}>
           <FieldMouseLayer />
-          <NodesLayer />
+          <ElementsLayer />
           <WiresLayer />
-          <NodePinsLayer />
+          <ElementPinsLayer />
           <DragAttachWirePreviewLayer />
-          <DragNodePreviewLayer />
+          <DragElementPreviewLayer />
           <DragJointPreviewLayer />
-          {isDraggingNewNode && <DragNewNodeLayer />}
+          {isDraggingNewElement && <DragNewElementLayer />}
           <EditorDragReceiver />
         </FieldSvgElementProvider>
       </g>

@@ -1,49 +1,47 @@
 import flatMap from "lodash/flatMap";
 import get from "lodash/get";
 
-import {
-  SimulatorNodeIdMappingTreeItem,
-  SimulatorNodeIdToCircuitNodeIdMap,
-} from "./types";
+import { EvolverIdMappingTreeItem, EvolverIdToElementIdMap } from "./types";
 
-export function walkSimulatorNodeIdToCircuitNodeIdMap(
-  map: SimulatorNodeIdToCircuitNodeIdMap,
-  visit: (circuitNodeIdPath: string[], simulatorNodeId: string) => void,
-  circuitNodeIdPath: string[] = []
+export function walkSimulatorElementIdToCircuitElementIdMap(
+  map: EvolverIdToElementIdMap,
+  visit: (elementIdPath: string[], evolverId: string) => void,
+  elementIdPath: string[] = []
 ) {
-  const circuitNodeIds = Object.keys(map);
-  for (const circuitNodeId of circuitNodeIds) {
-    const { simulatorNodeId, subCircuitIds } = map[circuitNodeId];
-    const currentPath = [...circuitNodeIdPath, circuitNodeId];
-    if (simulatorNodeId) {
-      visit(currentPath, simulatorNodeId);
+  const elementIds = Object.keys(map);
+  for (const elementId of elementIds) {
+    const { evolverId, subElementIds: subCircuitIds } = map[elementId];
+    const currentPath = [...elementIdPath, elementId];
+    if (evolverId) {
+      visit(currentPath, evolverId);
     }
-    walkSimulatorNodeIdToCircuitNodeIdMap(subCircuitIds, visit, currentPath);
+    walkSimulatorElementIdToCircuitElementIdMap(
+      subCircuitIds,
+      visit,
+      currentPath
+    );
   }
 }
 
-export function getSimulatorNodeIdFromCircuitNodeIdPath(
-  map: SimulatorNodeIdToCircuitNodeIdMap,
-  circuitNodeIdPath: string[]
+export function getEvolverIdFromElementIdPath(
+  map: EvolverIdToElementIdMap,
+  elementIdPath: string[]
 ): string | null {
-  // Look up the path through the ic nodes to reach this node.
-  const simulatorNodeIdPath = flatMap(circuitNodeIdPath, (icNodeId) => [
-    icNodeId,
-    "subCircuitIds",
+  // Look up the path through the ic element to reach this element.
+  const evolverIdPath = flatMap(elementIdPath, (icElementId) => [
+    icElementId,
+    "subElementIds",
   ]);
 
   // Remove the last subCircuitIds
-  simulatorNodeIdPath.pop();
+  evolverIdPath.pop();
 
-  const simulatorNodeIdItem: SimulatorNodeIdMappingTreeItem = get(
-    map,
-    simulatorNodeIdPath
-  );
+  const evolverIdItem: EvolverIdMappingTreeItem = get(map, evolverIdPath);
 
-  if (!simulatorNodeIdItem) {
+  if (!evolverIdItem) {
     return null;
   }
 
-  const { simulatorNodeId } = simulatorNodeIdItem;
-  return simulatorNodeId ?? null;
+  const { evolverId: evolverId } = evolverIdItem;
+  return evolverId ?? null;
 }

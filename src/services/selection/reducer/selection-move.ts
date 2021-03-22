@@ -5,11 +5,11 @@ import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
 import { isMoveSelectionAction } from "@/actions/selection-move";
-import { moveNode, MoveNodeOpts } from "@/actions/node-move";
+import { moveElement, MoveElementOpts } from "@/actions/element-move";
 import { moveWireJoint, MoveWireJointOpts } from "@/actions/wire-joint-move";
 
 import {
-  selectedNodeIdsSelector,
+  selectedElementIdsSelector,
   selectedJointIdsSelector,
 } from "@/services/selection/selectors/selection";
 
@@ -23,7 +23,7 @@ export default function selectionMoveReducer(
 
   const { offsetX, offsetY, snapMode } = action.payload;
 
-  const nodeIds = selectedNodeIdsSelector(state);
+  const elementIds = selectedElementIdsSelector(state);
   const jointIds = selectedJointIdsSelector(state);
 
   const offset: Point = {
@@ -31,9 +31,9 @@ export default function selectionMoveReducer(
     y: offsetY,
   };
 
-  let nodeSnapMode: MoveNodeOpts["snapMode"] = "none";
-  if (snapMode === "node" || snapMode === "by-type") {
-    nodeSnapMode = "node";
+  let elementSnapMode: MoveElementOpts["snapMode"] = "none";
+  if (snapMode === "element" || snapMode === "by-type") {
+    elementSnapMode = "element";
   }
 
   let jointSnapMode: MoveWireJointOpts["snapMode"] = "none";
@@ -45,7 +45,10 @@ export default function selectionMoveReducer(
 
   state = rootReducer(
     state,
-    moveNode(nodeIds, offset, { relative: true, snapMode: nodeSnapMode })
+    moveElement(elementIds, offset, {
+      relative: true,
+      snapMode: elementSnapMode,
+    })
   );
   state = rootReducer(
     state,

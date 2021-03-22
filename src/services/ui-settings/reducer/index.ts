@@ -1,5 +1,5 @@
 import { concatReducers } from "@/store/utils";
 
-import viewNodeNamesReducer from "./view-node-names";
+import viewElementNamesReducer from "./view-element-names";
 
-export default concatReducers(viewNodeNamesReducer);
+export default concatReducers(viewElementNamesReducer);

@@ -7,9 +7,9 @@ export const detatchWire = (connectionId: string) => ({
     connectionId,
   },
 });
-export type DetatchWireNodeAction = ReturnType<typeof detatchWire>;
+export type DetatchWireAction = ReturnType<typeof detatchWire>;
 export function isDetatchWireAction(
   action: AnyAction
-): action is DetatchWireNodeAction {
+): action is DetatchWireAction {
   return action.type === ACTION_WIRE_DETATCH;
 }

@@ -1,4 +1,4 @@
-import { circuitIdsSelector } from "@/services/circuits/selectors/circuits";
+import { circuitIdsSelector } from "@/services/circuit-properties/selectors/circuits";
 
 import { isViewCircuitAction } from "@/actions/view-circuit";
 
@@ -9,7 +9,7 @@ export default createCircuitEditorsReducer((state, action, appState) => {
     return state;
   }
 
-  const { circuitId, circuitNodeIdPath, newWindowId } = action.payload;
+  const { circuitId, elementIdPath, newWindowId } = action.payload;
 
   if (circuitIdsSelector(appState).indexOf(circuitId) === -1) {
     return state;
@@ -30,7 +30,7 @@ export default createCircuitEditorsReducer((state, action, appState) => {
       ...state.circucitEditorsById,
       [targetWindowId]: {
         circuitId,
-        circuitNodeIdPath: circuitNodeIdPath ?? [],
+        elementIdPath: elementIdPath ?? [],
       },
     },
     activeEditorId: targetWindowId,

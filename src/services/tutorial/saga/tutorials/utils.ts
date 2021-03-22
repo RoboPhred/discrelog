@@ -3,33 +3,33 @@ import { SagaIterator } from "redux-saga";
 import { call, put, select, take } from "redux-saga/effects";
 import { Options } from "@popperjs/core";
 
-import { NodeDefinition } from "@/nodes/types";
+import { ElementDefinition } from "@/elements/types";
 
 import { activeCircuitEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
-import { nodeDefinitionFromTypeSelector } from "@/services/node-types/selectors/node-types";
+import { elementDefinitionFromTypeSelector } from "@/services/element-types/selectors/element-types";
 import {
   Connection,
-  NodePin,
-  nodePinEquals,
-} from "@/services/node-graph/types";
-import { connectionsSelector } from "@/services/node-graph/selectors/connections";
+  ElementPin,
+  elementPinEquals,
+} from "@/services/circuit-graph/types";
+import { connectionsSelector } from "@/services/circuit-graph/selectors/connections";
 
-import { ACTION_NODE_ADD, AddNodeAction } from "@/actions/node-add";
+import { ACTION_ELEMENT_ADD, AddElementAction } from "@/actions/element-add";
 import { tutorialAnnotate } from "@/actions/tutorial-annotate";
 import { ACTION_CIRCUIT_EDITOR_DRAG_END } from "@/actions/circuit-editor-drag-end";
 import { ACTION_TUTORIAL_NEXT, tutorialNext } from "@/actions/tutorial-next";
 import { getCircuitEditorHtmlId } from "@/components/CircuitEditor/ids";
 
-export interface CreateNodeTutorialStepOptions {
+export interface AddElementTutorialStepOptions {
   trayMessage?: string;
   fieldMessage?: string;
 }
-export function* createNodeTutorialStep(
-  nodeType: string,
-  opts: CreateNodeTutorialStepOptions = {}
+export function* addElementTutorialStep(
+  elementType: string,
+  opts: AddElementTutorialStepOptions = {}
 ): SagaIterator<string | null> {
-  const def: NodeDefinition = yield select((state) =>
-    nodeDefinitionFromTypeSelector(state, nodeType)
+  const def: ElementDefinition = yield select((state) =>
+    elementDefinitionFromTypeSelector(state, elementType)
   );
   if (!def) {
     return null;
@@ -45,7 +45,7 @@ export function* createNodeTutorialStep(
   yield put(
     tutorialAnnotate([
       {
-        selector: `#node-tray--node-${nodeType}`,
+        selector: `#element-tray--element-${elementType}`,
         message: opts.trayMessage ?? `This is a ${def.displayName} element`,
       },
       {
@@ -58,37 +58,38 @@ export function* createNodeTutorialStep(
     ])
   );
 
-  const nodeAddAction: AddNodeAction = yield call(() =>
+  const addElementAction: AddElementAction = yield call(() =>
     waitFilterAction(
-      ACTION_NODE_ADD,
-      ({ payload: { nodeType: addedNodeType } }) => addedNodeType === nodeType
+      ACTION_ELEMENT_ADD,
+      ({ payload: { elementType: addedElementType } }) =>
+        addedElementType === elementType
     )
   );
 
-  return nodeAddAction.payload.nodeId;
+  return addElementAction.payload.elementId;
 }
 
-export function* waitNodeWired(outputPin: NodePin, inputPin: NodePin) {
+export function* waitNodeWired(outputPin: ElementPin, inputPin: ElementPin) {
   while (true) {
     const wired: boolean = yield call(isWired, outputPin, inputPin);
     if (wired) {
       return;
     }
     // TODO: We can only detect wiring through drag end.  Might want to make drag use real actions
-    //  and wait on node-wire instead.
+    //  and wait on wire action instead.
     yield take(ACTION_CIRCUIT_EDITOR_DRAG_END);
   }
 }
 
 function* isWired(
-  outputPin: NodePin,
-  inputPin: NodePin
+  outputPin: ElementPin,
+  inputPin: ElementPin
 ): SagaIterator<boolean> {
   const connections: Connection[] = yield select(connectionsSelector);
   return connections.some(
     ({ inputPin: connInputPin, outputPin: connOutputPin }) =>
-      nodePinEquals(connInputPin, inputPin) &&
-      nodePinEquals(connOutputPin, outputPin)
+      elementPinEquals(connInputPin, inputPin) &&
+      elementPinEquals(connOutputPin, outputPin)
   );
 }
 

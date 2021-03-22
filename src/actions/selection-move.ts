@@ -1,7 +1,7 @@
 import { AnyAction } from "redux";
 
 export interface MoveSelectionOpts {
-  snapMode?: "none" | "node" | "by-type";
+  snapMode?: "none" | "element" | "by-type";
 }
 export const ACTION_SELECTION_MOVE = "@selection/move" as const;
 export const moveSelection = (

@@ -1,65 +1,63 @@
-import { ElementType } from "@/elements";
-import { Connection } from "../node-graph/types";
-import { NodeDefinition } from "../../nodes/types";
+import { EvolverType } from "@/evolvers";
+import { ElementDefinition } from "@/elements/types";
 
-export interface SimulatorNodePin {
-  simulatorNodeId: string;
+import { Connection } from "../circuit-graph/types";
+
+export interface EvolverPin {
+  evolverId: string;
   pinId: string;
 }
 
-export interface SimulatorNode {
+export interface SimulatorEvolver {
   /**
-   * The element type of this node.
+   * The type of this evolver.
    */
-  elementType: ElementType;
+  evolverType: EvolverType;
 
   /**
    * Input source pins by input pin id.
    *
-   * This is redundant with the opposing node's outputsByPin,
+   * This is redundant with the opposing evolver's outputsByPin,
    * to increase lookup speed.
    */
-  inputsByPin: Record<string, SimulatorNodePin>;
+  inputsByPin: Record<string, EvolverPin>;
 
   /**
    * Output source pins by output pin id.
    *
-   * This is redundant with the opposing node's inputsByPin,
+   * This is redundant with the opposing evolver's inputsByPin,
    * to increase lookup speed.
    */
-  outputsByPin: Record<string, SimulatorNodePin[]>;
+  outputsByPin: Record<string, EvolverPin[]>;
 }
 
-export interface SimulatorNodeIdMappingTreeItem {
-  simulatorNodeId: string | null;
-  subCircuitIds: SimulatorNodeIdToCircuitNodeIdMap;
+export interface EvolverIdMappingTreeItem {
+  evolverId: string | null;
+  subElementIds: EvolverIdToElementIdMap;
 }
 
-export type SimulatorNodeIdToCircuitNodeIdMap = Record<
-  string,
-  SimulatorNodeIdMappingTreeItem
->;
+export type EvolverIdToElementIdMap = Record<string, EvolverIdMappingTreeItem>;
 
 export interface SimulatorGraphDependencies {
-  nodeIdsByCircuitId: Record<string, string[]>;
-  nodeTypesByNodeId: Record<string, string>;
+  elementIdsByCircuitId: Record<string, string[]>;
+  elementTypesByElementId: Record<string, string>;
   connectionsById: Record<string, Connection>;
-  nodeDefsByType: Record<string, NodeDefinition>;
+  elementDefsByElementType: Record<string, ElementDefinition>;
 }
 
 export interface SimulatorGraph {
   /**
-   * A map of all simulator nodes by simulator node id.
+   * A map of all evolvers by their id.
    */
-  simulatorNodesById: Record<string, SimulatorNode>;
+  evolversById: Record<string, SimulatorEvolver>;
 
   /**
-   * A map of simulator node ids by the circuit node id that generated them.
+   * A map of evolver ids by the element id that generated them.
    */
-  simulatorNodeIdsByCircuitNodeId: SimulatorNodeIdToCircuitNodeIdMap;
+  evolverIdsByElementId: EvolverIdToElementIdMap;
 }
 
 export const EmptySimulatorGraph: SimulatorGraph = Object.freeze({
-  simulatorNodesById: {},
-  simulatorNodeIdsByCircuitNodeId: {},
+  evolversById: {},
+  evolverIdsByElementId: {},
 });

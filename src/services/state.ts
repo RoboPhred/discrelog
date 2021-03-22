@@ -7,22 +7,22 @@ import {
   defaultCircuitEditorServiceState,
 } from "./circuit-editors/state";
 import {
-  CircuitsServiceState,
-  defaultCircuitsServiceState,
-} from "./circuits/state";
+  CircuitGraphServiceState,
+  defaultCircuitGraphServiceState,
+} from "./circuit-graph/state";
+import {
+  CircuitLayoutServiceState,
+  defaultCircuitLayoutServiceState,
+} from "./circuit-layout/state";
+import {
+  CircuitPropertiesServiceState,
+  defaultCircuitPropertiesServiceState,
+} from "./circuit-properties/state";
 import {
   ClipboardServiceState,
   defaultClipboardServiceState,
 } from "./clipboard/state";
 import { DialogServiceState, defaultDialogServiceState } from "./dialog/state";
-import {
-  NodeGraphServiceState,
-  defaultNodeGraphServiceState,
-} from "./node-graph/state";
-import {
-  NodeLayoutServiceState,
-  defaultNodeLayoutServiceState,
-} from "./node-layout/state";
 import {
   ProjectServiceState,
   defaultProjectServiceState,
@@ -52,11 +52,11 @@ import { UiSettingsState, defaultUiSettingsState } from "./ui-settings/state";
 export interface AppServicesState {
   circuitEditorDrag: CircuitEditorDragServiceState;
   circuitEditors: CircuitEditorsServiceState;
-  circuits: CircuitsServiceState;
   clipboard: ClipboardServiceState;
   dialog: DialogServiceState;
-  nodeGraph: NodeGraphServiceState;
-  nodeLayout: NodeLayoutServiceState;
+  circuitGraph: CircuitGraphServiceState;
+  circuitLayout: CircuitLayoutServiceState;
+  circuitProperties: CircuitPropertiesServiceState;
   project: ProjectServiceState;
   selection: SelectionServiceState;
   simulator: SimulatorServiceState;
@@ -69,9 +69,9 @@ export interface AppServicesState {
 const _defaultServiceState: AppServicesState = {
   circuitEditorDrag: defaultCircuitEditorDragServiceState,
   circuitEditors: defaultCircuitEditorServiceState,
-  nodeGraph: defaultNodeGraphServiceState,
-  nodeLayout: defaultNodeLayoutServiceState,
-  circuits: defaultCircuitsServiceState,
+  circuitGraph: defaultCircuitGraphServiceState,
+  circuitLayout: defaultCircuitLayoutServiceState,
+  circuitProperties: defaultCircuitPropertiesServiceState,
   clipboard: defaultClipboardServiceState,
   dialog: defaultDialogServiceState,
   project: defaultProjectServiceState,

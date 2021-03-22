@@ -3,9 +3,9 @@ import { AnyAction } from "redux";
 import { ACTION_CIRCUIT_ADD } from "@/actions/circuit-add";
 import { ACTION_CIRCUIT_DELETE } from "@/actions/circuit-delete";
 import { ACTION_CIRCUIT_RENAME } from "@/actions/circuit-rename";
-import { ACTION_NODE_ADD } from "@/actions/node-add";
-import { ACTION_NODE_DELETE } from "@/actions/node-delete";
-import { ACTION_NODE_RENAME } from "@/actions/node-rename";
+import { ACTION_ELEMENT_ADD } from "@/actions/element-add";
+import { ACTION_ELEMENT_DELETE } from "@/actions/element-delete";
+import { ACTION_ELEMENT_RENAME } from "@/actions/element-rename";
 import { ACTION_SELECTION_ALIGN_TO_GRID } from "@/actions/selection-align-to-grid";
 import { ACTION_SELECTION_DELETE } from "@/actions/selection-delete";
 import { ACTION_SELECTION_MOVE } from "@/actions/selection-move";
@@ -28,9 +28,9 @@ export const PROJECT_MUTATION_ACTIONS = [
   ACTION_CIRCUIT_ADD,
   ACTION_CIRCUIT_DELETE,
   ACTION_CIRCUIT_RENAME,
-  ACTION_NODE_ADD,
-  ACTION_NODE_DELETE,
-  ACTION_NODE_RENAME,
+  ACTION_ELEMENT_ADD,
+  ACTION_ELEMENT_DELETE,
+  ACTION_ELEMENT_RENAME,
   ACTION_SELECTION_ALIGN_TO_GRID,
   ACTION_SELECTION_DELETE,
   ACTION_SELECTION_MOVE,

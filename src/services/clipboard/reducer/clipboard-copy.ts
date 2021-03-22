@@ -6,56 +6,56 @@ import zipObject from "lodash/zipObject";
 
 import { pointSubtract } from "@/geometry";
 
-import { isCopyNodesAction } from "@/actions/clipboard-copy";
+import { isCopyElementsAction } from "@/actions/clipboard-copy-elements";
 
-import { nodeFromNodeIdSelector } from "@/services/node-graph/selectors/nodes";
-import { nodeOutputSourcesByPinIdFromNodeIdSelector } from "@/services/node-graph/selectors/pins";
-import { nodePositionsByNodeIdSelector } from "@/services/node-layout/selectors/node-positions";
-import { connectionIdFromInputPinSelector } from "@/services/node-graph/selectors/connections";
+import { elementFromElementIdSelector } from "@/services/circuit-graph/selectors/elements";
+import { elementOutputSourcesByPinIdFromElementIdSelector } from "@/services/circuit-graph/selectors/pins";
+import { elementPositionsByElementIdSelector } from "@/services/circuit-layout/selectors/element-positions";
+import { connectionIdFromInputPinSelector } from "@/services/circuit-graph/selectors/connections";
 import {
   wireJointIdsFromConnectionIdSelector,
   wireJointPositionFromJointIdSelector,
-} from "@/services/node-layout/selectors/wires";
+} from "@/services/circuit-layout/selectors/wires";
 
-import { ClipboardNode } from "../types";
+import { ClipboardElement } from "../types";
 import { createClipboardReducer } from "../utils";
 
 export default createClipboardReducer((state, action, appState) => {
-  if (!isCopyNodesAction(action)) {
+  if (!isCopyElementsAction(action)) {
     return state;
   }
 
-  const { nodeIds } = action.payload;
-  if (nodeIds.length === 0) {
+  const { elementIds } = action.payload;
+  if (elementIds.length === 0) {
     return state;
   }
 
-  const nodePositionsById = nodePositionsByNodeIdSelector(appState);
+  const elementPositionsById = elementPositionsByElementIdSelector(appState);
 
   const copyIds = zipObject(
-    nodeIds,
-    map(nodeIds, () => uuidV4())
+    elementIds,
+    map(elementIds, () => uuidV4())
   );
 
-  function nodeIsSelected(id: string): boolean {
-    return findIndex(nodeIds, (x) => x === id) !== -1;
+  function elementIsSelected(id: string): boolean {
+    return findIndex(elementIds, (x) => x === id) !== -1;
   }
 
-  const rootPosition = nodePositionsById[nodeIds[0]];
+  const rootPosition = elementPositionsById[elementIds[0]];
 
-  const copyNodes: ClipboardNode[] = nodeIds.map((nodeId) => {
-    const node = nodeFromNodeIdSelector(appState, nodeId);
-    const outputs = nodeOutputSourcesByPinIdFromNodeIdSelector(
+  const copyElements: ClipboardElement[] = elementIds.map((elementId) => {
+    const element = elementFromElementIdSelector(appState, elementId);
+    const outputs = elementOutputSourcesByPinIdFromElementIdSelector(
       appState,
-      nodeId
+      elementId
     );
-    const copyNode: ClipboardNode = {
-      id: copyIds[nodeId],
-      nodeType: node.nodeType,
-      offset: pointSubtract(nodePositionsById[nodeId], rootPosition),
+    const copyElement: ClipboardElement = {
+      id: copyIds[elementId],
+      elementType: element.elementType,
+      offset: pointSubtract(elementPositionsById[elementId], rootPosition),
       outputs: mapValues(outputs, (pins) =>
         pins
-          .filter((x) => nodeIsSelected(x.nodeId))
+          .filter((x) => elementIsSelected(x.elementId))
           .map((pin) => {
             const connId = connectionIdFromInputPinSelector(appState, pin);
             const jointIds = connId
@@ -66,7 +66,7 @@ export default createClipboardReducer((state, action, appState) => {
               .map((jointPos) => pointSubtract(jointPos, rootPosition));
             return {
               pin: {
-                nodeId: copyIds[pin.nodeId],
+                elementId: copyIds[pin.elementId],
                 pinId: pin.pinId,
               },
               joints,
@@ -74,12 +74,12 @@ export default createClipboardReducer((state, action, appState) => {
           })
       ),
     };
-    return copyNode;
+    return copyElement;
   });
 
   return {
     ...state,
-    clipboardNodes: copyNodes,
+    clipboardElements: copyElements,
     clipboardPasteOrigin: rootPosition,
   };
 });

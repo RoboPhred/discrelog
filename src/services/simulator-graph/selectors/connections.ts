@@ -3,44 +3,44 @@ import flatMap from "lodash/flatMap";
 
 import { AppState } from "@/store";
 
-import { rootNodeGraphSelector } from "./graph";
-import { SimulatorNodePin } from "../types";
+import { rootCircuitGraphSelector } from "./graph";
+import { EvolverPin } from "../types";
 
 const EmptyPinArray = Object.freeze([] as string[]);
-const EmptyPinInputs = Object.freeze({} as Record<string, SimulatorNodePin>);
+const EmptyPinInputs = Object.freeze({} as Record<string, EvolverPin>);
 
 /**
- * Gets an array of simulator node ids connected to the outputs of the given node id.
+ * Gets an array of evolver ids connected to the outputs of the given element id.
  * WARN: Not react safe.  For reducer use only.
  */
-export const outputSimulatorNodeIdsFromSimulatorNodeIdSelector = (
+export const outputEvolverIdsFromEvolverIdSelector = (
   state: AppState,
-  simulatorNodeId: string
+  evolverId: string
 ) => {
-  const { simulatorNodesById } = rootNodeGraphSelector(state);
+  const { evolversById } = rootCircuitGraphSelector(state);
 
-  const simulatorNode = simulatorNodesById[simulatorNodeId];
-  if (!simulatorNode) {
+  const evolver = evolversById[evolverId];
+  if (!evolver) {
     return EmptyPinArray;
   }
 
-  return flatMap(values(simulatorNode.outputsByPin), (pins) =>
-    pins.map((x) => x.simulatorNodeId)
+  return flatMap(values(evolver.outputsByPin), (pins) =>
+    pins.map((x) => x.evolverId)
   );
 };
 
 /**
- * Gets a map of node input pins to their output sources given a node id.
+ * Gets a map of element input pins to their output sources given an element id.
  */
-export const inputPinsByPinIdFromSimulatorNodeIdSelector = (
+export const inputPinsByPinIdFromEvolverIdSelector = (
   state: AppState,
-  simulatorNodeId: string
+  evolverId: string
 ) => {
-  const { simulatorNodesById } = rootNodeGraphSelector(state);
-  const simulatorNode = simulatorNodesById[simulatorNodeId];
-  if (!simulatorNode) {
+  const { evolversById } = rootCircuitGraphSelector(state);
+  const evolver = evolversById[evolverId];
+  if (!evolver) {
     return EmptyPinInputs;
   }
 
-  return simulatorNode.inputsByPin;
+  return evolver.inputsByPin;
 };

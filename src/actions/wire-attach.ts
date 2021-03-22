@@ -3,15 +3,15 @@ import { v4 as uuidV4 } from "uuid";
 
 import { Point } from "@/geometry";
 
-import { NodePin } from "@/services/node-graph/types";
+import { ElementPin } from "@/services/circuit-graph/types";
 
 export interface AttachWireOptions {
   joints?: Point[];
 }
 export const ACTION_WIRE_ATTACH = "@wire/attach" as const;
 export const attachWire = (
-  p1: NodePin,
-  p2: NodePin,
+  p1: ElementPin,
+  p2: ElementPin,
   opts?: AttachWireOptions
 ) => ({
   type: ACTION_WIRE_ATTACH,

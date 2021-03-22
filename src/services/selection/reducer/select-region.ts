@@ -6,12 +6,12 @@ import { combineSelection } from "@/selection-mode";
 
 import { isSelectRegionAction } from "@/actions/select-region";
 
-import { nodeIdsFromCircuitIdSelector } from "@/services/circuits/selectors/nodes";
-import { nodeRectsByIdSelector } from "@/services/node-layout/selectors/node-bounds";
+import { elementIdsFromCircuitIdSelector } from "@/services/circuit-graph/selectors/elements";
+import { elementRectsByIdSelector } from "@/services/circuit-layout/selectors/element-bounds";
 import {
   wireJointPositionsByJointIdSelector,
   jointIdsFromCircuitIdSelector,
-} from "@/services/node-layout/selectors/wires";
+} from "@/services/circuit-layout/selectors/wires";
 
 import { createSelectionReducer } from "../utils";
 
@@ -22,13 +22,13 @@ export default createSelectionReducer((state, action, appState) => {
 
   const { region, circuitId, mode } = action.payload;
 
-  const nodeIds = nodeIdsFromCircuitIdSelector(appState, circuitId);
-  const rects = pick(nodeRectsByIdSelector(appState), nodeIds);
+  const elementIds = elementIdsFromCircuitIdSelector(appState, circuitId);
+  const rects = pick(elementRectsByIdSelector(appState), elementIds);
 
-  const chosenNodeIds: string[] = [];
+  const chosenElementIds: string[] = [];
   forOwn(rects, (rect, id) => {
     if (intersects(rect, region)) {
-      chosenNodeIds.push(id);
+      chosenElementIds.push(id);
     }
   });
 
@@ -41,9 +41,9 @@ export default createSelectionReducer((state, action, appState) => {
 
   return {
     ...state,
-    selectedNodeIds: combineSelection(
-      state.selectedNodeIds,
-      chosenNodeIds,
+    selectedElementIds: combineSelection(
+      state.selectedElementIds,
+      chosenElementIds,
       mode
     ),
     selectedConnectionIds: mode === "set" ? [] : state.selectedConnectionIds,

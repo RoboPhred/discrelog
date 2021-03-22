@@ -1,14 +1,14 @@
 import { Point } from "@/geometry";
 
-import { NodePin } from "../node-graph/types";
+import { ElementPin } from "../circuit-graph/types";
 
-export interface ClipboardNodeOutput {
-  pin: NodePin;
+export interface ClipboardElementOutput {
+  pin: ElementPin;
   joints: Point[];
 }
-export interface ClipboardNode {
+export interface ClipboardElement {
   id: string;
-  nodeType: string;
+  elementType: string;
   offset: Point;
-  outputs: Record<string, ClipboardNodeOutput[]>;
+  outputs: Record<string, ClipboardElementOutput[]>;
 }

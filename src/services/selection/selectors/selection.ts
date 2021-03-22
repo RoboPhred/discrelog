@@ -2,24 +2,24 @@ import { createSelector } from "reselect";
 
 import pick from "lodash/pick";
 
-import { nodesByNodeIdSelector } from "@/services/node-graph/selectors/nodes";
+import { elementsByElementIdSelector } from "@/services/circuit-graph/selectors/elements";
 
 import { createSelectionSelector } from "../utils";
 import { SelectionServiceState } from "../state";
 
-export const selectedNodeIdsSelector = createSelectionSelector(
-  (state) => state.selectedNodeIds
+export const selectedElementIdsSelector = createSelectionSelector(
+  (state) => state.selectedElementIds
 );
 
-export const isNodeSelectedFromNodeIdSelector = createSelectionSelector(
-  (s: SelectionServiceState, nodeId: string) =>
-    s.selectedNodeIds.indexOf(nodeId) !== -1
+export const isElementSelectedFromElementIdSelector = createSelectionSelector(
+  (s: SelectionServiceState, elementId: string) =>
+    s.selectedElementIds.indexOf(elementId) !== -1
 );
 
-export const selectedNodesByIdSelector = createSelector(
-  nodesByNodeIdSelector,
-  selectedNodeIdsSelector,
-  (nodesById, selectedNodeIds) => pick(nodesById, selectedNodeIds)
+export const selectedElementsByIdSelector = createSelector(
+  elementsByElementIdSelector,
+  selectedElementIdsSelector,
+  (elementsById, selectedElementIds) => pick(elementsById, selectedElementIds)
 );
 
 export const selectedConnectionIdsSelector = createSelectionSelector(

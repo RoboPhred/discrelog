@@ -6,7 +6,7 @@ import { Point } from "@/geometry";
 import { useAction } from "@/hooks/useAction";
 import useSelector from "@/hooks/useSelector";
 
-import { selectedNodeIdsSelector } from "@/services/selection/selectors/selection";
+import { selectedElementIdsSelector } from "@/services/selection/selectors/selection";
 import { canPasteSelector } from "@/services/clipboard/selectors/clipboard";
 
 import { paste } from "@/actions/clipboard-paste";
@@ -25,7 +25,7 @@ const ContextMenuItems: React.FC<ContextMenuItemsProps> = ({
 }) => {
   const onAlignToGrid = useAction(selectionAlignToGrid);
 
-  const canCopy = useSelector(selectedNodeIdsSelector).length > 0;
+  const canCopy = useSelector(selectedElementIdsSelector).length > 0;
   const onCopy = useAction(copySelection);
   const canPaste = useSelector(canPasteSelector);
   const onPaste = useAction(paste, { pastePosition: fieldPosition });

@@ -11,7 +11,7 @@ import {
   isEditorDraggingSelector,
 } from "@/services/circuit-editor-drag/selectors/drag";
 import { selectedJointIdsSelector } from "@/services/selection/selectors/selection";
-import { wireJointPositionsByJointIdSelector } from "@/services/node-layout/selectors/wires";
+import { wireJointPositionsByJointIdSelector } from "@/services/circuit-layout/selectors/wires";
 
 import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
 
@@ -33,7 +33,7 @@ const DragJointPreviewLayer: React.FC = React.memo(
     );
 
     const dragMoveOffset = useSelector(dragMoveOffsetSelector);
-    const selectedNodePositionsById = useSelector(
+    const selectedElementPositionsById = useSelector(
       selectedJointPositionsByIdSelector
     );
 
@@ -45,7 +45,7 @@ const DragJointPreviewLayer: React.FC = React.memo(
 
     let elements: React.ReactNode | null = null;
     if (dragMoveOffset) {
-      elements = values(selectedNodePositionsById).map((p, index) => (
+      elements = values(selectedElementPositionsById).map((p, index) => (
         <WireJointVisual
           key={index}
           interactable={false}
