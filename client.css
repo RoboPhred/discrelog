@@ -782,14 +782,14 @@ body,
   cursor: pointer;
 }
 
-.wire-joint--3o_SE {
+.connection-joint--2nCMx {
   fill: black;
   fill: var(--color-element-neutral);
   stroke: black;
   stroke: var(--color-element-neutral);
 }
 
-.wire-joint--3o_SE.selected--33Nsw {
+.connection-joint--2nCMx.selected--hKp55 {
   fill: goldenrod;
   fill: var(--color-element-selected);
   stroke: goldenrod;
@@ -810,21 +810,21 @@ body,
   fill: var(--color-element-selected);
 }
 
-.wire--2lJT9 {
+.element-connection--3wkBf {
   fill: black;
   fill: var(--color-element-neutral);
   stroke: black;
   stroke: var(--color-element-neutral);
 }
 
-.wire--2lJT9.powered--3tsJ_ {
+.element-connection--3wkBf.powered--RGBvy {
   fill: green;
   fill: var(--color-element-powered);
   stroke: green;
   stroke: var(--color-element-powered);
 }
 
-.wire--2lJT9.selected--Dkrv_ {
+.element-connection--3wkBf.selected--333cH {
   fill: goldenrod;
   fill: var(--color-element-selected);
   stroke: goldenrod;
