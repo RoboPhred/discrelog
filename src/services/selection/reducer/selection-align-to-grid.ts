@@ -8,12 +8,12 @@ import { isSelectionAlignToGridAction } from "@/actions/selection-align-to-grid"
 import { moveElement } from "@/actions/element-move";
 import { moveWireJoint } from "@/actions/wire-joint-move";
 
-import { elementPositionsByElementIdSelector } from "@/services/element-layout/selectors/element-positions";
+import { elementPositionsByElementIdSelector } from "@/services/circuit-layout/selectors/element-positions";
 import {
   applyGridJointSnapSelector,
   applyGridElementSnapSelector,
 } from "@/services/circuit-editor-drag/selectors/snap";
-import { wireJointPositionsByJointIdSelector } from "@/services/element-layout/selectors/wires";
+import { wireJointPositionsByJointIdSelector } from "@/services/circuit-layout/selectors/wires";
 
 export default function selectionAlignToGridReducer(
   state: AppState = defaultAppState,

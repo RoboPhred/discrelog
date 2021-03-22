@@ -12,7 +12,7 @@ import { circuitIdToElementType } from "@/elements/definitions/integrated-circui
 import { isDeleteCircuitAction } from "@/actions/circuit-delete";
 import { deleteElement } from "@/actions/element-delete";
 
-import { elementIdsFromTypeSelector } from "@/services/element-graph/selectors/elements";
+import { elementIdsFromTypeSelector } from "@/services/circuit-graph/selectors/elements";
 
 export default (state: AppState = defaultAppState, action: AnyAction) => {
   if (!isDeleteCircuitAction(action)) {
@@ -35,11 +35,11 @@ export default (state: AppState = defaultAppState, action: AnyAction) => {
 
   const elementIdsToDelete = [...circuitTypeElementIds, ...elementIdsInCircuit];
 
-  // We used to handle this in a seperate reducer in element-graph, but we need to
+  // We used to handle this in a seperate reducer in circuit-graph, but we need to
   // know the element types before deletion to know which instances of the circuit to delete,
-  // and element-graph needs to know what elements are in each circuit.  This means
+  // and circuit-graph needs to know what elements are in each circuit.  This means
   // both need the data from the other, and they cannot be ordered separately.
-  // This might be a sign that we need to move elementIdsByCircuitId into element-graph,
+  // This might be a sign that we need to move elementIdsByCircuitId into circuit-graph,
   // but this way seems cleaner as it keeps the separation of concerns while
   // leveraging actions to reuse the element deletion code.
   state = elementIdsToDelete.reduce(

@@ -8,14 +8,14 @@ import { pointSubtract } from "@/geometry";
 
 import { isCopyElementsAction } from "@/actions/clipboard-copy-elements";
 
-import { elementFromElementIdSelector } from "@/services/element-graph/selectors/elements";
-import { elementOutputSourcesByPinIdFromElementIdSelector } from "@/services/element-graph/selectors/pins";
-import { elementPositionsByElementIdSelector } from "@/services/element-layout/selectors/element-positions";
-import { connectionIdFromInputPinSelector } from "@/services/element-graph/selectors/connections";
+import { elementFromElementIdSelector } from "@/services/circuit-graph/selectors/elements";
+import { elementOutputSourcesByPinIdFromElementIdSelector } from "@/services/circuit-graph/selectors/pins";
+import { elementPositionsByElementIdSelector } from "@/services/circuit-layout/selectors/element-positions";
+import { connectionIdFromInputPinSelector } from "@/services/circuit-graph/selectors/connections";
 import {
   wireJointIdsFromConnectionIdSelector,
   wireJointPositionFromJointIdSelector,
-} from "@/services/element-layout/selectors/wires";
+} from "@/services/circuit-layout/selectors/wires";
 
 import { ClipboardElement } from "../types";
 import { createClipboardReducer } from "../utils";

@@ -10,7 +10,7 @@ import { viewCircuit } from "@/actions/view-circuit";
 import {
   elementNameOrDefaultFromElementIdSelector,
   elementTypeFromElementIdSelector,
-} from "@/services/element-graph/selectors/elements";
+} from "@/services/circuit-graph/selectors/elements";
 import { elementTypeToCircuitId } from "@/elements/definitions/integrated-circuits/utils";
 import { circuitNameFromIdSelector } from "@/services/circuits/selectors/circuits";
 import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";

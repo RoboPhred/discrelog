@@ -5,8 +5,8 @@ import circuitEditorsReducer from "./circuit-editors/reducer";
 import circuitsReducer from "./circuits/reducer";
 import clipboardReducer from "./clipboard/reducer";
 import dialogReducer from "./dialog/reducer";
-import elementGraphReducer from "./element-graph/reducer";
-import elementLayoutReducer from "./element-layout/reducer";
+import circuitGraphReducer from "./circuit-graph/reducer";
+import circuitLayoutReducer from "./circuit-layout/reducer";
 import projectReducer from "./project/reducer";
 import selectionReducer from "./selection/reducer";
 import simulatorReducer from "./simulator/reducer";
@@ -21,8 +21,8 @@ const reducer = concatReducers(
   circuitsReducer,
   clipboardReducer,
   dialogReducer,
-  elementGraphReducer,
-  elementLayoutReducer,
+  circuitGraphReducer,
+  circuitLayoutReducer,
   projectReducer,
   selectionReducer,
   simulatorReducer,

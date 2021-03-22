@@ -11,7 +11,7 @@ import {
   isEditorDraggingSelector,
 } from "@/services/circuit-editor-drag/selectors/drag";
 import { selectedJointIdsSelector } from "@/services/selection/selectors/selection";
-import { wireJointPositionsByJointIdSelector } from "@/services/element-layout/selectors/wires";
+import { wireJointPositionsByJointIdSelector } from "@/services/circuit-layout/selectors/wires";
 
 import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
 

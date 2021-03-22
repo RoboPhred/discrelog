@@ -13,7 +13,7 @@ import { viewCircuit } from "@/actions/view-circuit";
 import {
   elementNameOrDefaultFromElementIdSelector,
   elementTypeFromElementIdSelector,
-} from "@/services/element-graph/selectors/elements";
+} from "@/services/circuit-graph/selectors/elements";
 
 import Menu from "@/components/Menus/Menu";
 import DividerMenuItem from "@/components/Menus/DividerMenuItem";

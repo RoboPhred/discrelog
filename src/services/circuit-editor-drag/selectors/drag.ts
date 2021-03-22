@@ -10,7 +10,7 @@ import {
 } from "@/geometry";
 
 import { selectedElementIdsSelector } from "@/services/selection/selectors/selection";
-import { elementPinFromPointSelector } from "@/services/element-layout/selectors/element-pin-positions";
+import { elementPinFromPointSelector } from "@/services/circuit-layout/selectors/element-pin-positions";
 import { circuitIdForEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
 
 import { createCircuitEditorDragSelector } from "../utils";

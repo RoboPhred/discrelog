@@ -7,8 +7,8 @@ import { describeArc } from "@/svg";
 import useSelector from "@/hooks/useSelector";
 import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
 
-import { elementPinPositionFromElementPinSelector } from "@/services/element-layout/selectors/element-pin-positions";
-import { pinDirectionFromElementPinSelector } from "@/services/element-graph/selectors/pins";
+import { elementPinPositionFromElementPinSelector } from "@/services/circuit-layout/selectors/element-pin-positions";
+import { pinDirectionFromElementPinSelector } from "@/services/circuit-graph/selectors/pins";
 import { dragDropTargetPinSelector } from "@/services/circuit-editor-drag/selectors/drag";
 
 import { circuitEditorDragStartWire } from "@/actions/circuit-editor-drag-start-wire";

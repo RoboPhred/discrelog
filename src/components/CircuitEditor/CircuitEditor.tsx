@@ -7,7 +7,7 @@ import useSelector from "@/hooks/useSelector";
 import { useNativeEvent } from "@/hooks/useNativeEvent";
 import { useComponentBounds } from "@/hooks/useComponentBounds";
 
-import { fieldRectSelector } from "@/services/element-layout/selectors/field";
+import { fieldRectSelector } from "@/services/circuit-layout/selectors/field";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 
 import CircuitFieldSurface from "./components/CircuitFieldSurface";

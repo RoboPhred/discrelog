@@ -11,8 +11,8 @@ import {
   Connection,
   ElementPin,
   elementPinEquals,
-} from "@/services/element-graph/types";
-import { connectionsSelector } from "@/services/element-graph/selectors/connections";
+} from "@/services/circuit-graph/types";
+import { connectionsSelector } from "@/services/circuit-graph/selectors/connections";
 
 import { ACTION_ELEMENT_ADD, AddElementAction } from "@/actions/element-add";
 import { tutorialAnnotate } from "@/actions/tutorial-annotate";

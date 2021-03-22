@@ -2,7 +2,7 @@ import * as yup from "yup";
 
 import { Point, pointSchema } from "@/geometry";
 
-import { ElementPin, elementPinSchema } from "../element-graph/types";
+import { ElementPin, elementPinSchema } from "../circuit-graph/types";
 
 export interface SaveCircuit {
   circuitId: string;

@@ -15,12 +15,12 @@ import { attachWire } from "@/actions/wire-attach";
 import {
   elementIdsSelector,
   elementFromElementIdSelector,
-} from "../element-graph/selectors/elements";
+} from "../circuit-graph/selectors/elements";
 import {
   connectionIdsSelector,
   connectionFromConnectionIdSelector,
-} from "../element-graph/selectors/connections";
-import { elementPositionFromElementIdSelector } from "../element-layout/selectors/element-positions";
+} from "../circuit-graph/selectors/connections";
+import { elementPositionFromElementIdSelector } from "../circuit-layout/selectors/element-positions";
 import {
   circuitIdsSelector,
   circuitNameFromIdSelector,
@@ -31,7 +31,7 @@ import { circuitIdFromElementIdSelector } from "../circuits/selectors/elements";
 import {
   wireJointPositionsByJointIdSelector,
   wireJointIdsFromConnectionIdSelector,
-} from "../element-layout/selectors/wires";
+} from "../circuit-layout/selectors/wires";
 
 import { SaveFormatError } from "./errors";
 import { addCircuit } from "@/actions/circuit-add";

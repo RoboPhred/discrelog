@@ -3,7 +3,7 @@ import flatMap from "lodash/flatMap";
 
 import { AppState } from "@/store";
 
-import { rootElementGraphSelector } from "./graph";
+import { rootCircuitGraphSelector } from "./graph";
 import { EvolverPin } from "../types";
 
 const EmptyPinArray = Object.freeze([] as string[]);
@@ -17,7 +17,7 @@ export const outputEvolverIdsFromEvolverIdSelector = (
   state: AppState,
   evolverId: string
 ) => {
-  const { evolversById } = rootElementGraphSelector(state);
+  const { evolversById } = rootCircuitGraphSelector(state);
 
   const evolver = evolversById[evolverId];
   if (!evolver) {
@@ -36,7 +36,7 @@ export const inputPinsByPinIdFromEvolverIdSelector = (
   state: AppState,
   evolverId: string
 ) => {
-  const { evolversById } = rootElementGraphSelector(state);
+  const { evolversById } = rootCircuitGraphSelector(state);
   const evolver = evolversById[evolverId];
   if (!evolver) {
     return EmptyPinInputs;

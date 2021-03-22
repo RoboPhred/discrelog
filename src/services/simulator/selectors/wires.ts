@@ -3,11 +3,11 @@ import { AppState } from "@/store";
 import {
   connectionFromConnectionIdSelector,
   connectionIdFromInputPinSelector,
-} from "@/services/element-graph/selectors/connections";
-import { elementTypeFromElementIdSelector } from "@/services/element-graph/selectors/elements";
+} from "@/services/circuit-graph/selectors/connections";
+import { elementTypeFromElementIdSelector } from "@/services/circuit-graph/selectors/elements";
 
 import { elementOutputsFromCircuitElementIdSelector } from "./elements";
-import { ElementPin } from "@/services/element-graph/types";
+import { ElementPin } from "@/services/circuit-graph/types";
 
 // Doesn't need caching for react since it returns primitives, but
 // the additional complexity of tracing IC pins might make it a bit heavy.

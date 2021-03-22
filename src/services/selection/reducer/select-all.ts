@@ -5,8 +5,8 @@ import { isSelectAllAction } from "@/actions/select-all";
 import {
   connectionIdsSelector,
   connectionsByIdSelector,
-} from "@/services/element-graph/selectors/connections";
-import { wireJointIdsByConnectionIdSelector } from "@/services/element-layout/selectors/wires";
+} from "@/services/circuit-graph/selectors/connections";
+import { wireJointIdsByConnectionIdSelector } from "@/services/circuit-layout/selectors/wires";
 import { elementIdsFromCircuitIdSelector } from "@/services/circuits/selectors/elements";
 import { activeCircuitIdSelector } from "@/services/circuit-editors/selectors/editor";
 

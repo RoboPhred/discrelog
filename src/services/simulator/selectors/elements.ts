@@ -1,13 +1,13 @@
 import { AppState } from "@/store";
 
 import { getEvolverIdFromElementIdPath } from "@/services/simulator-graph/utils";
-import { rootElementGraphSelector } from "@/services/simulator-graph/selectors/graph";
+import { rootCircuitGraphSelector } from "@/services/simulator-graph/selectors/graph";
 
 export const evolverStateFromCircuitElementIdSelector = (
   state: AppState,
   elementIdPath: string[]
 ) => {
-  const { evolverIdsByElementId } = rootElementGraphSelector(state);
+  const { evolverIdsByElementId } = rootCircuitGraphSelector(state);
   const evolverStatesByEvolverId =
     state.services.simulator.evolverStatesByEvolverId;
 
@@ -26,7 +26,7 @@ export const elementOutputsFromCircuitElementIdSelector = (
   state: AppState,
   elementIdPath: string[]
 ) => {
-  const { evolverIdsByElementId } = rootElementGraphSelector(state);
+  const { evolverIdsByElementId } = rootCircuitGraphSelector(state);
   const elementOutputsBySimulatorElementId =
     state.services.simulator.evolverOutputValuesByEvolverId;
 

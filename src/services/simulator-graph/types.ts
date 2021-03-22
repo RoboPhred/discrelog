@@ -1,7 +1,7 @@
 import { EvolverType } from "@/evolvers";
 import { ElementDefinition } from "@/elements/types";
 
-import { Connection } from "../element-graph/types";
+import { Connection } from "../circuit-graph/types";
 
 export interface EvolverPin {
   evolverId: string;

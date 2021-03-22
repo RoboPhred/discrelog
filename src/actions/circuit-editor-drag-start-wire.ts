@@ -1,7 +1,7 @@
 import { AnyAction } from "redux";
 
 import { Point } from "@/geometry";
-import { ElementPin } from "@/services/element-graph/types";
+import { ElementPin } from "@/services/circuit-graph/types";
 
 export const ACTION_CIRCUIT_EDITOR_DRAG_START_WIRE = "@circuit-editor/drag/start/wire" as const;
 export const circuitEditorDragStartWire = (

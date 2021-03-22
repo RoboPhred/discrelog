@@ -6,8 +6,8 @@ import values from "lodash/values";
 
 import { createSelector } from "reselect";
 
-import { elementTypesByElementIdSelector } from "@/services/element-graph/selectors/elements";
-import { elementPositionsByElementIdSelector } from "@/services/element-layout/selectors/element-positions";
+import { elementTypesByElementIdSelector } from "@/services/circuit-graph/selectors/elements";
+import { elementPositionsByElementIdSelector } from "@/services/circuit-layout/selectors/element-positions";
 import { selectedElementIdsSelector } from "@/services/selection/selectors/selection";
 import {
   dragMoveOffsetSelector,

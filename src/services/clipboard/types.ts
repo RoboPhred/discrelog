@@ -1,6 +1,6 @@
 import { Point } from "@/geometry";
 
-import { ElementPin } from "../element-graph/types";
+import { ElementPin } from "../circuit-graph/types";
 
 export interface ClipboardElementOutput {
   pin: ElementPin;

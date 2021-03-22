@@ -11,8 +11,8 @@ import { IntegratedCircuitElementVisualProps } from "@/elements/visuals/Integrat
 
 import { elementIdsByCircuitIdSelector } from "@/services/circuits/selectors/elements";
 import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
-import { elementTypesByElementIdSelector } from "@/services/element-graph/selectors/elements";
-import { elementPositionsByElementIdSelector } from "@/services/element-layout/selectors/element-positions";
+import { elementTypesByElementIdSelector } from "@/services/circuit-graph/selectors/elements";
+import { elementPositionsByElementIdSelector } from "@/services/circuit-layout/selectors/element-positions";
 import { circuitNamesByIdSelector } from "@/services/circuits/selectors/circuits";
 
 import {

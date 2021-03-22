@@ -3,10 +3,10 @@ import { EvolverDefinitionsByType } from "@/evolvers";
 
 import { getEvolverIdFromElementIdPath } from "../utils";
 
-import { rootElementGraphSelector } from "./graph";
+import { rootCircuitGraphSelector } from "./graph";
 
 export const evolverIdsByElementIdSelector = (state: AppState) =>
-  rootElementGraphSelector(state).evolverIdsByElementId;
+  rootCircuitGraphSelector(state).evolverIdsByElementId;
 
 /**
  * Gets the evolver id for a given element id.
@@ -15,7 +15,7 @@ export const evolverIdFromElementIdSelector = (
   state: AppState,
   elementIdPath: string[]
 ) => {
-  const { evolverIdsByElementId } = rootElementGraphSelector(state);
+  const { evolverIdsByElementId } = rootCircuitGraphSelector(state);
   return getEvolverIdFromElementIdPath(evolverIdsByElementId, elementIdPath);
 };
 
@@ -25,7 +25,7 @@ export const evolverIdFromElementIdSelector = (
  * WARN: Not react safe.
  */
 export const evolverIdsSelector = (state: AppState) => {
-  const { evolversById } = rootElementGraphSelector(state);
+  const { evolversById } = rootCircuitGraphSelector(state);
   return Object.keys(evolversById);
 };
 
@@ -33,7 +33,7 @@ export const evolverTypeFromEvolverId = (
   state: AppState,
   evolverId: string
 ) => {
-  const { evolversById } = rootElementGraphSelector(state);
+  const { evolversById } = rootCircuitGraphSelector(state);
   const evolver = evolversById[evolverId];
   if (!evolver) {
     return null;

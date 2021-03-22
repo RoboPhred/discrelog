@@ -13,7 +13,7 @@ import { moveSelection } from "@/actions/selection-move";
 import { addWireJoint } from "@/actions/wire-joint-add";
 import { attachWire } from "@/actions/wire-attach";
 
-import { elementPinFromPointSelector } from "@/services/element-layout/selectors/element-pin-positions";
+import { elementPinFromPointSelector } from "@/services/circuit-layout/selectors/element-pin-positions";
 import { circuitIdForEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
 
 import {

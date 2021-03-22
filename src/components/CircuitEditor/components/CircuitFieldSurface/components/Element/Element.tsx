@@ -15,9 +15,9 @@ import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
 
 import { evolverStateFromCircuitElementIdSelector } from "@/services/simulator/selectors/elements";
 import { isElementSelectedFromElementIdSelector } from "@/services/selection/selectors/selection";
-import { elementPositionFromElementIdSelector } from "@/services/element-layout/selectors/element-positions";
+import { elementPositionFromElementIdSelector } from "@/services/circuit-layout/selectors/element-positions";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
-import { elementDefinitionFromElementIdSelector } from "@/services/element-graph/selectors/element-def";
+import { elementDefinitionFromElementIdSelector } from "@/services/circuit-graph/selectors/element-def";
 import { elementFieldDisplayNameFromElementId } from "@/services/ui-settings/selectors/element-name";
 
 import { circuitEditorDragStartElement } from "@/actions/circuit-editor-drag-start-element";

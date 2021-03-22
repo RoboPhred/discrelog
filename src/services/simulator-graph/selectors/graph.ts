@@ -1,15 +1,15 @@
 import { createSelector } from "reselect";
 
 import { elementIdsByCircuitIdSelector } from "@/services/circuits/selectors/elements";
-import { elementTypesByElementIdSelector } from "@/services/element-graph/selectors/elements";
-import { connectionsByIdSelector } from "@/services/element-graph/selectors/connections";
+import { elementTypesByElementIdSelector } from "@/services/circuit-graph/selectors/elements";
+import { connectionsByIdSelector } from "@/services/circuit-graph/selectors/connections";
 import { elementDefinitionsByTypeSelector } from "@/services/element-types/selectors/element-types";
 import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
 
 import { produceCircuitGraph } from "../graph-production";
 import { EmptySimulatorGraph } from "../types";
 
-export const rootElementGraphSelector = createSelector(
+export const rootCircuitGraphSelector = createSelector(
   elementIdsByCircuitIdSelector,
   elementTypesByElementIdSelector,
   connectionsByIdSelector,

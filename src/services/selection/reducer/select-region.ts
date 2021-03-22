@@ -7,11 +7,11 @@ import { combineSelection } from "@/selection-mode";
 import { isSelectRegionAction } from "@/actions/select-region";
 
 import { elementIdsFromCircuitIdSelector } from "@/services/circuits/selectors/elements";
-import { elementRectsByIdSelector } from "@/services/element-layout/selectors/element-bounds";
+import { elementRectsByIdSelector } from "@/services/circuit-layout/selectors/element-bounds";
 import {
   wireJointPositionsByJointIdSelector,
   jointIdsFromCircuitIdSelector,
-} from "@/services/element-layout/selectors/wires";
+} from "@/services/circuit-layout/selectors/wires";
 
 import { createSelectionReducer } from "../utils";
 

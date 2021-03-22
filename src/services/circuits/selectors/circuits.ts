@@ -44,7 +44,7 @@ export const circuitWouldRecurseSelector = (
   }
 
   const targetCircuitNodeType = circuitIdToElementType(targetCircuitId);
-  const { elementsById } = state.services.elementGraph;
+  const { elementsById } = state.services.circuitGraph;
   const targetCircuitElementIds = Object.keys(elementsById).filter(
     (elementId) => elementsById[elementId].elementType === targetCircuitNodeType
   );

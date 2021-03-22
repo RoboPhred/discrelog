@@ -7,6 +7,14 @@ import {
   defaultCircuitEditorServiceState,
 } from "./circuit-editors/state";
 import {
+  CircuitGraphServiceState,
+  defaultCircuitGraphServiceState,
+} from "./circuit-graph/state";
+import {
+  CircuitLayoutServiceState,
+  defaultCircuitLayoutServiceState,
+} from "./circuit-layout/state";
+import {
   CircuitsServiceState,
   defaultCircuitsServiceState,
 } from "./circuits/state";
@@ -15,14 +23,6 @@ import {
   defaultClipboardServiceState,
 } from "./clipboard/state";
 import { DialogServiceState, defaultDialogServiceState } from "./dialog/state";
-import {
-  ElementGraphServiceState,
-  defaultElementGraphServiceState,
-} from "./element-graph/state";
-import {
-  ElementLayoutServiceState,
-  defaultElementLayoutServiceState,
-} from "./element-layout/state";
 import {
   ProjectServiceState,
   defaultProjectServiceState,
@@ -55,8 +55,8 @@ export interface AppServicesState {
   circuits: CircuitsServiceState;
   clipboard: ClipboardServiceState;
   dialog: DialogServiceState;
-  elementGraph: ElementGraphServiceState;
-  elementLayout: ElementLayoutServiceState;
+  circuitGraph: CircuitGraphServiceState;
+  circuitLayout: CircuitLayoutServiceState;
   project: ProjectServiceState;
   selection: SelectionServiceState;
   simulator: SimulatorServiceState;
@@ -69,8 +69,8 @@ export interface AppServicesState {
 const _defaultServiceState: AppServicesState = {
   circuitEditorDrag: defaultCircuitEditorDragServiceState,
   circuitEditors: defaultCircuitEditorServiceState,
-  elementGraph: defaultElementGraphServiceState,
-  elementLayout: defaultElementLayoutServiceState,
+  circuitGraph: defaultCircuitGraphServiceState,
+  circuitLayout: defaultCircuitLayoutServiceState,
   circuits: defaultCircuitsServiceState,
   clipboard: defaultClipboardServiceState,
   dialog: defaultDialogServiceState,

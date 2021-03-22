@@ -3,7 +3,7 @@ import { AppState } from "@/store";
 import {
   elementNameFromElementIdSelector,
   elementNameOrDefaultFromElementIdSelector,
-} from "@/services/element-graph/selectors/elements";
+} from "@/services/circuit-graph/selectors/elements";
 import { createUiSettingsSelector } from "../utils";
 
 export const elementNameModeSelector = createUiSettingsSelector(
