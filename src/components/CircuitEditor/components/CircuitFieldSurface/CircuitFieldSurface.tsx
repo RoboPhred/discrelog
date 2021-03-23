@@ -17,6 +17,7 @@ import ElementsLayer from "./components/ElementsLayer";
 import ElementPinsLayer from "./components/ElementPinsLayer";
 import EditorDragReceiver from "./components/EditorDragReceiver";
 import WiresLayer from "./components/WiresLayer";
+import DragWirePreviewLayer from "./components/DragWirePreviewLayer";
 
 import styles from "./CircuitFieldSurface.module.css";
 
@@ -83,6 +84,7 @@ const CircuitFieldSurface: React.FC<CircuitFieldSurfaceProps> = ({
           <WiresLayer />
           <ElementPinsLayer />
           <DragElementPreviewLayer />
+          <DragWirePreviewLayer />
           {isDraggingNewElement && <DragNewElementLayer />}
           <EditorDragReceiver />
         </FieldSvgElementProvider>

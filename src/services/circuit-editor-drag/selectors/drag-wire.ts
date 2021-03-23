@@ -2,7 +2,10 @@ import { AppState } from "@/store";
 
 import { Point } from "@/geometry";
 
-import { elementPinFromPointSelector } from "@/services/circuit-layout/selectors/element-pin-positions";
+import {
+  elementPinFromPointSelector,
+  elementPinPositionFromElementPinSelector,
+} from "@/services/circuit-layout/selectors/element-pin-positions";
 import { circuitIdForEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
 import { ElementPin } from "@/services/circuit-graph/types";
 
@@ -60,7 +63,7 @@ export const dragWireEndTargetSelector = (
   return dragWireEndTargetByPointSelector(state, dragEnd);
 };
 
-export const dragDropTargetPinSelector = (
+export const dragWireTargetPinSelector = (
   state: AppState
 ): ElementPin | null => {
   const dropTarget = dragWireEndTargetSelector(state);
@@ -69,4 +72,42 @@ export const dragDropTargetPinSelector = (
   }
 
   return dropTarget.pin;
+};
+
+function getDragTargetPoint(
+  state: AppState,
+  target: CircuitEditorDragWireTarget
+): Point | null {
+  switch (target.type) {
+    case "floating":
+      return target.point;
+    case "pin":
+      return elementPinPositionFromElementPinSelector(
+        state,
+        target.pin.elementId,
+        target.pin.pinId
+      );
+    case "segment":
+    // TODO: Get position on segment.
+  }
+
+  return null;
+}
+
+export const dragWireSegmentStartPositionSelector = (state: AppState) => {
+  const dragService = state.services.circuitEditorDrag;
+  if (dragService.dragMode !== "wire") {
+    return null;
+  }
+
+  return getDragTargetPoint(state, dragService.dragSourceTarget);
+};
+
+export const dragWireSegmentEndPositionSelector = (state: AppState) => {
+  const endTarget = dragWireEndTargetSelector(state);
+  if (!endTarget) {
+    return null;
+  }
+
+  return getDragTargetPoint(state, endTarget);
 };

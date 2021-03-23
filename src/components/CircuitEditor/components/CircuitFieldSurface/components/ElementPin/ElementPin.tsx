@@ -12,7 +12,7 @@ import { circuitEditorDragStartWire } from "@/actions/circuit-editor-drag-start-
 
 import { elementPinPositionFromElementPinSelector } from "@/services/circuit-layout/selectors/element-pin-positions";
 import { pinDirectionFromElementPinSelector } from "@/services/circuit-graph/selectors/pins";
-import { dragDropTargetPinSelector } from "@/services/circuit-editor-drag/selectors/drag-wire";
+import { dragWireTargetPinSelector } from "@/services/circuit-editor-drag/selectors/drag-wire";
 
 import { useCircuitEditor } from "../../../../contexts/circuit-editor-context";
 import { getElementPinHtmlId } from "../../../../ids";
@@ -42,7 +42,7 @@ const ElementPin: React.FC<ElementPinProps> = React.memo(function ElementPin({
     pinDirectionFromElementPinSelector(s, elementId, pinId)
   );
 
-  const dragTargetPin = useSelector(dragDropTargetPinSelector);
+  const dragTargetPin = useSelector(dragWireTargetPinSelector);
 
   const onDragStart = React.useCallback(
     (e, originalPoint) => {
