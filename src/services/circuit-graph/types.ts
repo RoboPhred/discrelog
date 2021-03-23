@@ -1,5 +1,3 @@
-import * as yup from "yup";
-
 export interface Element {
   /**
    * The type of this element.
@@ -19,10 +17,7 @@ export interface ElementPin {
   elementId: string;
   pinId: string;
 }
-export const elementPinSchema = yup.object().shape({
-  elementId: yup.string().required().min(1),
-  pinId: yup.string().required().min(1),
-});
+
 export function elementPinEquals(a: ElementPin, b: ElementPin) {
   return a.elementId === b.elementId && a.pinId === b.pinId;
 }
@@ -153,28 +148,3 @@ export function wireSegmentHasInput(
 ): segment is InputWireSegment | InputOutputWireSegment {
   return segment.type === "input" || segment.type === "input-output";
 }
-
-export const wireSegmentSchema = yup.object().oneOf([
-  yup.object().shape({
-    type: yup.string().oneOf(["input"]),
-    inputPin: elementPinSchema.required(),
-    jointId: yup.string().required().min(1),
-    lineId: yup.string().required().min(1),
-  }),
-  yup.object().shape({
-    type: yup.string().oneOf(["output"]),
-    outputPin: elementPinSchema.required(),
-    jointId: yup.string().required().min(1),
-    lineId: yup.string().required().min(1),
-  }),
-  yup.object().shape({
-    type: yup.string().oneOf(["input-output"]),
-    outputPin: elementPinSchema.required(),
-    inputPin: elementPinSchema.required(),
-  }),
-  yup.object().shape({
-    type: yup.string().oneOf(["bridge"]),
-    jointAId: yup.string().required().min(1),
-    jointBId: yup.string().required().min(1),
-  }),
-]);

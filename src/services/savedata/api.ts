@@ -1,10 +1,10 @@
 import {
   SaveCircuit,
   SaveData,
-  saveDataSchema,
   SaveElement,
   SaveWire,
   SaveWireSegment,
+  validateSaveData,
 } from "./types";
 
 import { AppState, defaultAppState } from "@/store";
@@ -12,12 +12,14 @@ import rootReducer from "@/store/reducer";
 
 import { addElement } from "@/actions/element-add";
 import { addCircuit } from "@/actions/circuit-add";
+import { hydrateWire } from "@/actions/wire-hydrate";
 
 import { circuitIdFromElementIdSelector } from "../circuit-graph/selectors/elements";
 import {
   elementIdsSelector,
   elementFromElementIdSelector,
 } from "../circuit-graph/selectors/elements";
+import { wireSegmentHasInput } from "../circuit-graph/types";
 import {
   wireIdsSelector,
   wireJointIdsByWireIdSelector,
@@ -88,7 +90,7 @@ export function createSave(state: AppState): SaveData {
 
 export function loadSave(state: AppState, save: SaveData): AppState {
   try {
-    saveDataSchema.validateSync(save);
+    validateSaveData(save);
   } catch (e) {
     throw new SaveFormatError(e.message);
   }
@@ -120,7 +122,10 @@ export function loadSave(state: AppState, save: SaveData): AppState {
       state
     );
 
-    // TODO WIRES: Load wires
+    state = (save.wires ?? []).reduce(
+      (state, wire) => rootReducer(state, hydrateWire(wire)),
+      state
+    );
   } catch (e) {
     console.error("Failed to rehydrate SaveData:", e);
     throw new SaveFormatError("Failed to load project.");
@@ -135,7 +140,7 @@ export function importCircuitsFromSave(
   save: SaveData
 ): AppState {
   try {
-    saveDataSchema.validateSync(save);
+    validateSaveData(save);
   } catch (e) {
     throw new SaveFormatError(e.message);
   }
@@ -159,10 +164,10 @@ export function importCircuitsFromSave(
       state
     );
 
-    const importNodes = (save.elements ?? []).filter((x) =>
+    const importElements = (save.elements ?? []).filter((x) =>
       importCircuits.some(({ circuitId }) => circuitId === x.circuitId)
     );
-    state = importNodes.reduce(
+    state = importElements.reduce(
       (state, element) =>
         rootReducer(
           state,
@@ -179,7 +184,23 @@ export function importCircuitsFromSave(
       state
     );
 
-    // TODO WIRES: Load wires
+    function isImportableWire(wire: SaveWire) {
+      return wire.wireSegments.some((segment) => {
+        if (!wireSegmentHasInput(segment)) {
+          return;
+        }
+        const { inputPin } = segment;
+        return importElements.some(
+          (element) => element.elementId === inputPin.elementId
+        );
+      });
+    }
+
+    const importWires = (save.wires ?? []).filter(isImportableWire);
+    state = importWires.reduce(
+      (state, wire) => rootReducer(state, hydrateWire(wire)),
+      state
+    );
   } catch (e) {
     console.error("Failed to import circuit from SaveData:", e);
     throw new SaveFormatError("Failed to import circuit.");

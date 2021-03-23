@@ -1,13 +1,7 @@
-import * as yup from "yup";
-
 export interface Point {
   x: number;
   y: number;
 }
-export const pointSchema = yup.object().shape({
-  x: yup.number().required(),
-  y: yup.number().required(),
-});
 
 export interface Size {
   width: number;
