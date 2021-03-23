@@ -9,9 +9,7 @@ import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
 
 import { elementPinPositionFromElementPinSelector } from "@/services/circuit-layout/selectors/element-pin-positions";
 import { pinDirectionFromElementPinSelector } from "@/services/circuit-graph/selectors/pins";
-import { dragDropTargetPinSelector } from "@/services/circuit-editor-drag/selectors/drag";
-
-import { circuitEditorDragStartConnection } from "@/actions/circuit-editor-drag-start-connection";
+import { dragDropTargetPinSelector } from "@/services/circuit-editor-drag/selectors/drag-connection";
 
 import { useCircuitEditor } from "../../../../contexts/circuit-editor-context";
 import { getElementPinHtmlId } from "../../../../ids";
@@ -19,6 +17,8 @@ import { getElementPinHtmlId } from "../../../../ids";
 import { useMouseCoords } from "../../hooks/useMouseCoords";
 
 import styles from "./ElementPin.module.css";
+import { circuitEditorDragStartWire } from "@/actions/circuit-editor-drag-start-wire";
+import { getModifiers } from "@/modifier-keys";
 
 export interface ElementPinProps {
   elementId: string;
@@ -46,8 +46,15 @@ const ElementPin: React.FC<ElementPinProps> = React.memo(function ElementPin({
   const onDragStart = React.useCallback(
     (e, originalPoint) => {
       const p = getMouseCoords(originalPoint);
+      const modifierKeys = getModifiers(e);
       dispatch(
-        circuitEditorDragStartConnection(p, { elementId, pinId }, editorId)
+        //circuitEditorDragStartConnection(p, { elementId, pinId }, editorId)
+        circuitEditorDragStartWire(
+          p,
+          { type: "pin", pin: { elementId, pinId } },
+          modifierKeys,
+          editorId
+        )
       );
     },
     [dispatch, editorId, getMouseCoords, elementId, pinId]

@@ -8,10 +8,8 @@ import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
 
 import { getModifiers } from "@/modifier-keys";
 
-import {
-  isEditorDraggingSelector,
-  selectionRectSelector,
-} from "@/services/circuit-editor-drag/selectors/drag";
+import { isEditorDraggingSelector } from "@/services/circuit-editor-drag/selectors/drag";
+import { selectionRectSelector } from "@/services/circuit-editor-drag/selectors/drag-select";
 
 import { useContextMenu } from "@/components/ContextMenu";
 

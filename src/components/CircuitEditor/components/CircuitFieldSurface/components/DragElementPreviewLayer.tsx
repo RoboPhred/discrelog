@@ -9,10 +9,8 @@ import { createSelector } from "reselect";
 import { elementTypesByElementIdSelector } from "@/services/circuit-graph/selectors/elements";
 import { elementPositionsByElementIdSelector } from "@/services/circuit-layout/selectors/element-positions";
 import { selectedElementIdsSelector } from "@/services/selection/selectors/selection";
-import {
-  dragMoveOffsetSelector,
-  isEditorDraggingSelector,
-} from "@/services/circuit-editor-drag/selectors/drag";
+import { isEditorDraggingSelector } from "@/services/circuit-editor-drag/selectors/drag";
+import { dragMoveOffsetSelector } from "@/services/circuit-editor-drag/selectors/drag-move";
 
 import useSelector from "@/hooks/useSelector";
 

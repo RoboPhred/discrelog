@@ -5,11 +5,10 @@ import values from "lodash/values";
 
 import useSelector from "@/hooks/useSelector";
 
-import {
-  dragMoveOffsetSelector,
-  dragNewJointPositionSelector,
-  isEditorDraggingSelector,
-} from "@/services/circuit-editor-drag/selectors/drag";
+import { isEditorDraggingSelector } from "@/services/circuit-editor-drag/selectors/drag";
+import { dragMoveOffsetSelector } from "@/services/circuit-editor-drag/selectors/drag-move";
+import { dragNewJointPositionSelector } from "@/services/circuit-editor-drag/selectors/drag-newjoint";
+
 import { selectedJointIdsSelector } from "@/services/selection/selectors/selection";
 import { connectionJointPositionsByJointIdSelector } from "@/services/circuit-layout/selectors/connections";
 
