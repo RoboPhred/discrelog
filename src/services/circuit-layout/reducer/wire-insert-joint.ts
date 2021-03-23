@@ -1,8 +1,8 @@
-import { isWireInsertJointAction } from "@/actions/wire-insert-joint";
+import { isWireSegmentInsertJointAction } from "@/actions/wire-segment-insert-joint";
 import { createCircuitLayoutReducer } from "../utils";
 
 export default createCircuitLayoutReducer((state, action) => {
-  if (!isWireInsertJointAction(action)) {
+  if (!isWireSegmentInsertJointAction(action)) {
     return state;
   }
 

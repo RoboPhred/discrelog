@@ -1,4 +1,4 @@
-import { isWireCreatePinToPinAction } from "@/actions/wire-create-pin-to-pin";
+import { isWireConnectPinToPinAction } from "@/actions/wire-connect-pin-to-pin";
 
 import { pinDirectionFromElementPinSelector } from "../selectors/pins";
 import { pinIsWiredSelector } from "../selectors/wires";
@@ -6,16 +6,12 @@ import { pinIsWiredSelector } from "../selectors/wires";
 import { createCircuitGraphReducer } from "../utils";
 
 export default createCircuitGraphReducer((state, action, rootState) => {
-  if (!isWireCreatePinToPinAction(action)) {
+  if (!isWireConnectPinToPinAction(action)) {
     return state;
   }
 
   const { pin1, pin2, segmentId, wireId } = action.payload;
 
-  // Do checks to see if we can actually create the pin.
-  // Ideally this would be done in the reducers, but due to seperating the layout from the graph,
-  // the layout will not know to ignore the action if the graph ignores it...
-  // I guess we could finally accept redux-thunk into our lives and do this check there...
   const pin1Direction = pinDirectionFromElementPinSelector(
     rootState,
     pin1.elementId,

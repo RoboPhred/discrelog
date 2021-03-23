@@ -6,7 +6,7 @@ import elementAddReducer from "./element-add";
 import elementDeleteReducer from "./element-delete";
 import elementRenameReducer from "./element-rename";
 import projectNewReducer from "./project-new";
-import wireCreatePinToPinReducer from "./wire-create-pin-to-pin";
+import wireConnectPinToPinReducer from "./wire-connect-pin-to-pin";
 import wireHydrateReducer from "./wire-hydrate";
 import wireInsertJointReducer from "./wire-insert-joint";
 
@@ -17,7 +17,7 @@ const graphReducer = concatReducers(
   projectNewReducer,
   elementDeleteReducer,
   elementRenameReducer,
-  wireCreatePinToPinReducer,
+  wireConnectPinToPinReducer,
   wireHydrateReducer,
   wireInsertJointReducer
 );

@@ -13,7 +13,7 @@ export default createCircuitEditorDragReducer((state, action) => {
     dragMode: "wire",
     dragStartEditorId: editorId,
     dragStart: { x, y },
-    dragSourceTarget: target,
+    dragStartTarget: target,
     dragModifierKeys: modifierKeys,
     dragEndEditorId: null,
     dragEnd: null,

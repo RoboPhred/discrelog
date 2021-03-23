@@ -21,8 +21,8 @@ import { ACTION_REDO } from "@/actions/redo";
 import { ACTION_PROJECT_NEW } from "@/actions/project-new";
 import { ACTION_PROJECT_RECEIVE } from "@/actions/project-receive";
 
-import { WIRE_CREATE_PIN_TO_PIN_ACTION } from "@/actions/wire-create-pin-to-pin";
-import { WIRE_INSERT_JOINT_ACTION } from "@/actions/wire-insert-joint";
+import { WIRE_CONNECT_PIN_TO_PIN_ACTION } from "@/actions/wire-connect-pin-to-pin";
+import { WIRE_SEGMENT_INSERT_JOINT_ACTION } from "@/actions/wire-segment-insert-joint";
 
 export const PROJECT_MUTATION_ACTIONS = [
   ACTION_CIRCUIT_ADD,
@@ -40,8 +40,8 @@ export const PROJECT_MUTATION_ACTIONS = [
   ACTION_UNDO,
   ACTION_REDO,
 
-  WIRE_CREATE_PIN_TO_PIN_ACTION,
-  WIRE_INSERT_JOINT_ACTION,
+  WIRE_CONNECT_PIN_TO_PIN_ACTION,
+  WIRE_SEGMENT_INSERT_JOINT_ACTION,
 
   // These actions typically fire off other actions in this list,
   // and are redundant for services that take part in the core reducer.

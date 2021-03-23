@@ -1,13 +1,13 @@
 import pick from "lodash/pick";
 import { v4 as uuidV4 } from "uuid";
 
-import { isWireInsertJointAction } from "@/actions/wire-insert-joint";
+import { isWireSegmentInsertJointAction } from "@/actions/wire-segment-insert-joint";
 
 import { WireSegment } from "../types";
 import { createCircuitGraphReducer } from "../utils";
 
 export default createCircuitGraphReducer((state, action) => {
-  if (!isWireInsertJointAction(action)) {
+  if (!isWireSegmentInsertJointAction(action)) {
     return state;
   }
 

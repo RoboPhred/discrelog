@@ -24,6 +24,7 @@ import { circuitEditorDragStartWireSegment } from "@/actions/circuit-editor-drag
 import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
 
 import { useMouseCoords } from "../hooks/useMouseCoords";
+import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
 
 export interface WireSegmentProps {
   wireId: string;
@@ -34,10 +35,15 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
   const dispatch = useDispatch();
   const { editorId } = useCircuitEditor();
   const getCoords = useMouseCoords();
+
   const isSimActive = useSelector(isSimActiveSelector);
   const isDragging = useSelector(isDraggingSelector);
 
-  const [mousePos, setMousePos] = React.useState<Point | null>(null);
+  const isMouseGesturePending = React.useRef<boolean>(false);
+  const [insertJointPos, setInsertJointPos] = React.useState<Point | null>(
+    null
+  );
+
   const startPos = useSelector((state) =>
     startPositionByWireSegmentId(state, wireSegmentId)
   );
@@ -46,42 +52,79 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
   );
 
   const onMouseMove = (e: React.MouseEvent<SVGLineElement>) => {
-    const p = getCoords({ x: e.pageX, y: e.pageY });
-    setMousePos(p);
-  };
-
-  const onMouseLeave = () => {
-    setMousePos(null);
-  };
-
-  let insertJointPos: Point | undefined;
-  let jointStartFraction: number | undefined;
-  if (!isDragging && !isSimActive && mousePos) {
-    const lineDir = normalize(pointSubtract(endPos, startPos));
-    const v = pointSubtract(mousePos, startPos);
-    jointStartFraction = dotProduct(v, lineDir);
-    insertJointPos = pointAdd(startPos, scale(lineDir, jointStartFraction));
-  }
-
-  const onJointDragStart = (e: React.MouseEvent) => {
-    if (insertJointPos == undefined || jointStartFraction == undefined) {
+    if (isDragging || isSimActive) {
       return;
     }
 
-    const modifierKeys = getModifiers(e);
-    dispatch(
-      circuitEditorDragStartWireSegment(
-        insertJointPos,
-        wireId,
-        wireSegmentId,
-        modifierKeys,
-        editorId
-      )
-    );
+    if (!isMouseGesturePending.current) {
+      const p = getCoords({ x: e.pageX, y: e.pageY });
+      // TODO: Snap to grid.
+      const lineDir = normalize(pointSubtract(endPos, startPos));
+      const v = pointSubtract(p, startPos);
+      const d = dotProduct(v, lineDir);
+      const dotPos = pointAdd(startPos, scale(lineDir, d));
+      setInsertJointPos(dotPos);
+    }
+  };
+
+  const onMouseLeave = () => {
+    if (!isMouseGesturePending.current) {
+      setInsertJointPos(null);
+    }
+  };
+
+  const onJointDragStart = React.useCallback(
+    (e: MouseEvent) => {
+      isMouseGesturePending.current = false;
+      if (!insertJointPos) {
+        return;
+      }
+
+      const modifierKeys = getModifiers(e);
+      dispatch(
+        circuitEditorDragStartWireSegment(
+          insertJointPos,
+          wireId,
+          wireSegmentId,
+          modifierKeys,
+          editorId
+        )
+      );
+
+      setInsertJointPos(null);
+    },
+    [dispatch, editorId, insertJointPos, wireId, wireSegmentId]
+  );
+
+  const onClick = React.useCallback(() => {
+    isMouseGesturePending.current = false;
+    setInsertJointPos(null);
+  }, []);
+
+  const { startTracking } = useMouseDragDetector({
+    onDragStart: onJointDragStart,
+    onClick: onClick,
+  });
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    if (e.defaultPrevented) {
+      return;
+    }
+
+    if (isDragging || isSimActive) {
+      return;
+    }
+
+    isMouseGesturePending.current = true;
+    startTracking(e);
   };
 
   return (
-    <g onMouseMove={onMouseMove} onMouseLeave={onMouseLeave}>
+    <g
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      onMouseDown={onMouseDown}
+    >
       <line
         x1={startPos.x}
         x2={endPos.x}
@@ -108,7 +151,6 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
           r={3}
           fill="orange"
           stroke="none"
-          onMouseDown={onJointDragStart}
         />
       )}
     </g>

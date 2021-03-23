@@ -1,6 +1,6 @@
 import { AppState } from "@/store";
 
-import { Point } from "@/geometry";
+import { normalize, Point, pointAdd, pointSubtract, scale } from "@/geometry";
 
 import {
   elementPinFromPointSelector,
@@ -11,6 +11,10 @@ import { ElementPin } from "@/services/circuit-graph/types";
 
 import { CircuitEditorDragWireTarget } from "../types";
 import { applyGridJointSnapSelector } from "./snap";
+import {
+  endPositionByWireSegmentId,
+  startPositionByWireSegmentId,
+} from "@/services/circuit-layout/selectors/wires";
 
 /**
  * Gets the drag target at the given point.
@@ -75,7 +79,7 @@ export const dragWireTargetPinSelector = (
   return dropTarget.pin;
 };
 
-function getDragTargetPoint(
+export function getDragTargetPoint(
   state: AppState,
   target: CircuitEditorDragWireTarget
 ): Point | null {
@@ -88,8 +92,17 @@ function getDragTargetPoint(
         target.pin.elementId,
         target.pin.pinId
       );
-    case "segment":
-    // TODO: Get position on segment.
+    case "segment": {
+      const { segmentId, segmentPositionFraction } = target;
+      const startPos = startPositionByWireSegmentId(state, segmentId);
+      const endPos = endPositionByWireSegmentId(state, segmentId);
+      const lineDir = normalize(pointSubtract(endPos, startPos));
+      const fracPos = pointAdd(
+        startPos,
+        scale(lineDir, segmentPositionFraction)
+      );
+      return fracPos;
+    }
   }
 
   return null;
@@ -101,7 +114,7 @@ export const dragWireSegmentStartPositionSelector = (state: AppState) => {
     return null;
   }
 
-  return getDragTargetPoint(state, dragService.dragSourceTarget);
+  return getDragTargetPoint(state, dragService.dragStartTarget);
 };
 
 export const dragWireSegmentEndPositionSelector = (state: AppState) => {

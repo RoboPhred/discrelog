@@ -54,7 +54,7 @@ export interface CircuitEditorDragWireState
   /**
    * The subject the wire is being dragged from.
    */
-  dragSourceTarget: CircuitEditorDragWireTarget;
+  dragStartTarget: CircuitEditorDragWireTarget;
 }
 
 export interface CircuitEditorDragWireSegmentNewJointState
