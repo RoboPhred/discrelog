@@ -18,7 +18,5 @@ export default createSelectionReducer((state, action) => {
       elementIds,
       mode
     ),
-    selectedConnectionIds: mode === "set" ? [] : state.selectedConnectionIds,
-    selectedJointIds: mode === "set" ? [] : state.selectedJointIds,
   };
 });

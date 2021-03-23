@@ -21,21 +21,3 @@ export const selectedElementsByIdSelector = createSelector(
   selectedElementIdsSelector,
   (elementsById, selectedElementIds) => pick(elementsById, selectedElementIds)
 );
-
-export const selectedConnectionIdsSelector = createSelectionSelector(
-  (state) => state.selectedConnectionIds
-);
-
-export const isConnectionSelectedFromConnectionIdSelector = createSelectionSelector(
-  (s: SelectionServiceState, connectionId: string) =>
-    s.selectedConnectionIds.indexOf(connectionId) !== -1
-);
-
-export const selectedJointIdsSelector = createSelectionSelector(
-  (state) => state.selectedJointIds
-);
-
-export const isJointSelectedFromJointIdSelector = createSelectionSelector(
-  (s: SelectionServiceState, jointId: string) =>
-    s.selectedJointIds.indexOf(jointId) !== -1
-);

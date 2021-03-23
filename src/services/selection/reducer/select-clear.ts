@@ -10,7 +10,5 @@ export default createSelectionReducer((state, action) => {
   return {
     ...state,
     selectedElementIds: [],
-    selectedConnectionIds: [],
-    selectedJointIds: [],
   };
 });
