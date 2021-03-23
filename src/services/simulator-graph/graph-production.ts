@@ -96,9 +96,7 @@ export function produceCircuitGraph(
       productionResult.outputElementPinsByCircuitPinId;
   }
 
-  const circuitConnectionsById = dependencies.connectionsById;
-  for (const connectionId of Object.keys(circuitConnectionsById)) {
-    const { inputPin, outputPin } = circuitConnectionsById[connectionId];
+  for (const { inputPin, outputPin } of dependencies.connections) {
     // We are only interested in connections within this circuit.
     // There should not be any cross-circuit connections.
     // It might be ok to skip this step, and rely on not finding the element mapping.

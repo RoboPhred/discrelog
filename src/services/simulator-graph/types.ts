@@ -39,10 +39,10 @@ export interface EvolverIdMappingTreeItem {
 export type EvolverIdToElementIdMap = Record<string, EvolverIdMappingTreeItem>;
 
 export interface SimulatorGraphDependencies {
-  elementIdsByCircuitId: Record<string, string[]>;
-  elementTypesByElementId: Record<string, string>;
-  connectionsById: Record<string, ElementConnection>;
-  elementDefsByElementType: Record<string, ElementDefinition>;
+  elementIdsByCircuitId: Readonly<Record<string, string[]>>;
+  elementTypesByElementId: Readonly<Record<string, string>>;
+  connections: Readonly<ElementConnection[]>;
+  elementDefsByElementType: Readonly<Record<string, ElementDefinition>>;
 }
 
 export interface SimulatorGraph {
