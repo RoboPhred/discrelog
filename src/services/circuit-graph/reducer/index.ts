@@ -8,6 +8,7 @@ import elementAddReducer from "./element-add";
 import elementDeleteReducer from "./element-delete";
 import elementRenameReducer from "./element-rename";
 import projectNewReducer from "./project-new";
+import wireCreatePinToPinReducer from "./wire-create-pin-to-pin";
 
 const graphReducer = concatReducers(
   circuitAddReducer,
@@ -17,7 +18,8 @@ const graphReducer = concatReducers(
   elementAddReducer,
   projectNewReducer,
   elementDeleteReducer,
-  elementRenameReducer
+  elementRenameReducer,
+  wireCreatePinToPinReducer
 );
 
 export default graphReducer;

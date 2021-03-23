@@ -123,3 +123,8 @@ export type WireSegment =
   | OutputWireSegment
   | InputOutputWireSegment
   | BridgeWireSegment;
+export function wireSegmentHasInput(
+  segment: WireSegment
+): segment is InputWireSegment | InputOutputWireSegment {
+  return segment.type === "input" || segment.type === "input-output";
+}

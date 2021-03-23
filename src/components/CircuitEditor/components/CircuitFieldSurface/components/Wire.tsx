@@ -2,7 +2,7 @@ import * as React from "react";
 
 import useSelector from "@/hooks/useSelector";
 
-import { wireSegmentIdsByWireId } from "@/services/circuit-graph/selectors/wires";
+import { wireSegmentIdsByWireIdSelector } from "@/services/circuit-graph/selectors/wires";
 
 import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
 import { getWireHtmlId } from "../../../ids";
@@ -16,7 +16,7 @@ export interface WireProps {
 const Wire: React.FC<WireProps> = ({ wireId }) => {
   const { editorId } = useCircuitEditor();
   const wireSegmentIds = useSelector((state) =>
-    wireSegmentIdsByWireId(state, wireId)
+    wireSegmentIdsByWireIdSelector(state, wireId)
   );
 
   // TODO: render wire joints.
