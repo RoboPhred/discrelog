@@ -1,18 +1,21 @@
 import pick from "lodash/pick";
 import difference from "lodash/difference";
-import pickBy from "lodash/pickBy";
+import includes from "lodash/includes";
+import find from "lodash/find";
 import flatMap from "lodash/flatMap";
 import mapValues from "lodash/mapValues";
 
 import { AppState } from "@/store";
 
-import { CircuitGraphServiceState } from "../../state";
-import { ElementConnection, elementPinEquals } from "../../types";
 import { elementPinsFromPinElementSelector } from "../../selectors/pins";
+import { CircuitGraphServiceState } from "../../state";
+import { elementPinEquals, WireSegment } from "../../types";
+
+import wireSegmentDelete from "./wire-segment-delete";
 
 export default function elementDelete(
   state: CircuitGraphServiceState,
-  elementIds: string[],
+  removedElementIds: string[],
   rootState: AppState
 ): CircuitGraphServiceState {
   // TODO WIRE: Remove wire segments connected to elements being removed.
@@ -20,44 +23,72 @@ export default function elementDelete(
 
   const remainingElementIds = difference(
     Object.keys(state.elementsById),
-    elementIds
+    removedElementIds
   );
-
-  const removedIcPins = flatMap(elementIds, (elementId) =>
-    elementPinsFromPinElementSelector(rootState, elementId)
-  );
-
-  function isRemainingConnection({ inputPin, outputPin }: ElementConnection) {
-    if (
-      elementIds.indexOf(inputPin.elementId) !== -1 ||
-      elementIds.indexOf(outputPin.elementId) !== -1
-    ) {
-      // Connection went to a removed element
-      return false;
-    }
-
-    // Connection was to a removed element pin
-    if (
-      removedIcPins.some(
-        (pin) =>
-          elementPinEquals(pin, inputPin) || elementPinEquals(pin, outputPin)
-      )
-    ) {
-      return false;
-    }
-
-    return true;
-  }
 
   const elementIdsByCircuitId = mapValues(
     state.elementIdsByCircuitId,
-    (circuitElementIds) => difference(circuitElementIds, elementIds)
+    (circuitElementIds) => difference(circuitElementIds, removedElementIds)
   );
 
-  return {
+  state = {
     ...state,
     elementsById: pick(state.elementsById, remainingElementIds),
-    connectionsById: pickBy(state.connectionsById, isRemainingConnection),
     elementIdsByCircuitId,
   };
+
+  // Remove connections targeting these elements.
+  const removedIcPins = flatMap(removedElementIds, (elementId) =>
+    elementPinsFromPinElementSelector(rootState, elementId)
+  );
+
+  function isSegmentForRemovedElement(segment: WireSegment) {
+    switch (segment.type) {
+      case "input":
+      case "input-output":
+        return (
+          includes(removedElementIds, segment.inputPin.elementId) ||
+          includes(removedElementIds, segment.outputPin.elementId)
+        );
+      case "output":
+        return includes(removedElementIds, segment.outputPin.elementId);
+    }
+    return false;
+  }
+
+  function isSegmentForRemovedPin(segment: WireSegment) {
+    switch (segment.type) {
+      case "input":
+      case "input-output":
+        return (
+          find(removedIcPins, (removedPin) =>
+            elementPinEquals(removedPin, segment.inputPin)
+          ) ||
+          find(removedIcPins, (removedPin) =>
+            elementPinEquals(removedPin, segment.outputPin)
+          )
+        );
+      case "output":
+        return find(removedIcPins, (removedPin) =>
+          elementPinEquals(removedPin, segment.outputPin)
+        );
+    }
+    return false;
+  }
+
+  const removedSegmentIds = Object.keys(state.wireSegmentsById).filter(
+    (segmentId) => {
+      const segment = state.wireSegmentsById[segmentId];
+      return (
+        isSegmentForRemovedElement(segment) || isSegmentForRemovedPin(segment)
+      );
+    }
+  );
+
+  state = removedSegmentIds.reduce(
+    (state, segmentId) => wireSegmentDelete(state, segmentId),
+    state
+  );
+
+  return state;
 }

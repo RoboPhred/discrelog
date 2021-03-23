@@ -4,7 +4,6 @@ import { createCircuitGraphReducer } from "../utils";
 
 import elementDelete from "./operations/element-delete";
 
-// We need to know what circuit the element was a part of
 export default createCircuitGraphReducer((state, action, rootState) => {
   if (!isDeleteElementAction(action)) {
     return state;
