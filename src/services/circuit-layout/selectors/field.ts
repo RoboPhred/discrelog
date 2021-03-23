@@ -4,7 +4,7 @@ import values from "lodash/values";
 import { Rectangle, union } from "@/geometry";
 
 import { elementRectsByIdSelector } from "./element-bounds";
-import { connectionJointPositionsByJointIdSelector } from "./connections";
+import { wireJointPositionByJointIdSelector } from "./wires";
 
 const MinFieldRect: Readonly<Rectangle> = Object.freeze({
   p1: {
@@ -19,7 +19,7 @@ const MinFieldRect: Readonly<Rectangle> = Object.freeze({
 
 export const fieldRectSelector = createSelector(
   elementRectsByIdSelector,
-  connectionJointPositionsByJointIdSelector,
+  wireJointPositionByJointIdSelector,
   (elementRectsById, jointsById) => {
     const elementRects = values(elementRectsById);
     const jointRects = values(jointsById).map((p) => ({ p1: p, p2: p }));

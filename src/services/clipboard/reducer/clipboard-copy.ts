@@ -11,11 +11,6 @@ import { isCopyElementsAction } from "@/actions/clipboard-copy-elements";
 import { elementFromElementIdSelector } from "@/services/circuit-graph/selectors/elements";
 import { elementOutputSourcesByPinIdFromElementIdSelector } from "@/services/circuit-graph/selectors/pins";
 import { elementPositionsByElementIdSelector } from "@/services/circuit-layout/selectors/element-positions";
-import { connectionIdFromInputPinSelector } from "@/services/circuit-graph/selectors/connections";
-import {
-  connectionJointIdsFromConnectionIdSelector,
-  connectionJointPositionFromJointIdSelector,
-} from "@/services/circuit-layout/selectors/connections";
 
 import { ClipboardElement } from "../types";
 import { createClipboardReducer } from "../utils";
@@ -57,21 +52,11 @@ export default createClipboardReducer((state, action, appState) => {
         pins
           .filter((x) => elementIsSelected(x.elementId))
           .map((pin) => {
-            const connId = connectionIdFromInputPinSelector(appState, pin);
-            const jointIds = connId
-              ? connectionJointIdsFromConnectionIdSelector(appState, connId)
-              : [];
-            const joints = jointIds
-              .map((id) =>
-                connectionJointPositionFromJointIdSelector(appState, id)
-              )
-              .map((jointPos) => pointSubtract(jointPos, rootPosition));
             return {
               pin: {
                 elementId: copyIds[pin.elementId],
                 pinId: pin.pinId,
               },
-              joints,
             };
           })
       ),

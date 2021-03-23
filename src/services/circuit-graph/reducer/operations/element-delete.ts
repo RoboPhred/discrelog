@@ -15,6 +15,9 @@ export default function elementDelete(
   elementIds: string[],
   rootState: AppState
 ): CircuitGraphServiceState {
+  // TODO WIRE: Remove wire segments connected to elements being removed.
+  // TODO WIRE: Remove wire segments connected to pins of pin elements being removed.
+
   const remainingElementIds = difference(
     Object.keys(state.elementsById),
     elementIds

@@ -1,3 +1,6 @@
+import difference from "lodash/difference";
+import pick from "lodash/pick";
+
 import { priorityBefore, reducerPriority } from "@/store/priorities";
 
 import { isDeleteElementAction } from "@/actions/element-delete";
@@ -6,18 +9,27 @@ import circuitGraphElementDeleteReducer from "@/services/circuit-graph/reducer/e
 
 import { createCircuitLayoutReducer } from "../utils";
 
-import elementDeleteOperation from "./operations/element-delete";
-
 // We need to run this reducer before graph runs, as we want to check what connections are on the element being deleted.
 export default reducerPriority(
   priorityBefore(circuitGraphElementDeleteReducer),
-  createCircuitLayoutReducer((state, action, rootState) => {
+  createCircuitLayoutReducer((state, action) => {
     if (!isDeleteElementAction(action)) {
       return state;
     }
 
     const { elementIds } = action.payload;
 
-    return elementDeleteOperation(state, elementIds, rootState);
+    const remainingElementIds = difference(
+      Object.keys(state.elementPositionsById),
+      elementIds
+    );
+
+    return {
+      ...state,
+      elementPositionsById: pick(
+        state.elementPositionsById,
+        remainingElementIds
+      ),
+    };
   })
 );
