@@ -11,10 +11,14 @@ export const wireIdsSelector = createSelector(
   (wiresByWireId) => Object.keys(wiresByWireId)
 );
 
-const EmptyWireSegmentIds = Object.freeze<string[]>([]);
+const EmptyWireSegmentIds = Object.freeze([] as string[]);
 export const wireSegmentIdsByWireId = createCircuitGraphSelector(
   (s: CircuitGraphServiceState, wireId: string) => {
-    return s.wireSegmentsById[wireId] ?? EmptyWireSegmentIds;
+    const wire = s.wiresByWireId[wireId];
+    if (!wire) {
+      return EmptyWireSegmentIds;
+    }
+    return wire.wireSegmentIds;
   }
 );
 

@@ -19,6 +19,7 @@ import ConnectionsLayer from "./components/ConnectionsLayer";
 import ElementPinsLayer from "./components/ElementPinsLayer";
 import DragAttachConnectionPreviewLayer from "./components/DragAttachConnectionPreviewLayer";
 import EditorDragReceiver from "./components/EditorDragReceiver";
+import WiresLayer from "./components/WiresLayer";
 
 import styles from "./CircuitFieldSurface.module.css";
 
@@ -83,6 +84,7 @@ const CircuitFieldSurface: React.FC<CircuitFieldSurfaceProps> = ({
           <FieldMouseLayer />
           <ElementsLayer />
           <ConnectionsLayer />
+          <WiresLayer />
           <ElementPinsLayer />
           <DragAttachConnectionPreviewLayer />
           <DragElementPreviewLayer />

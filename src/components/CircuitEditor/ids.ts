@@ -13,3 +13,7 @@ export function getElementPinHtmlId(
 ): string {
   return `editor-${editorId}--element-${elementId}--pin-${pinId}`;
 }
+
+export function getWireHtmlId(editorId: string, wireId: string) {
+  return `editor-${editorId}--wire-${wireId}`;
+}

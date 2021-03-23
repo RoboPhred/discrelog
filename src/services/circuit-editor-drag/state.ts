@@ -3,6 +3,8 @@ import { ModifierKeys } from "@/modifier-keys";
 
 import { ElementPin } from "../circuit-graph/types";
 
+import { CircuitEditorDragWireTarget } from "./types";
+
 export interface CircuitEditorDragNullState {
   dragMode: null;
 }
@@ -80,27 +82,19 @@ export interface CircuitEditorDragConnectionState
   dragPinSource: ElementPin | null;
 }
 
-export interface CircuitEditorDragWireSubjectPin {
-  type: "pin";
-  pin: ElementPin;
-}
-export interface CircuitEditorDragWireSubjectSegment {
-  type: "segment";
-  segmentId: string;
-  segmentPositionFraction: number;
-}
-
-export type CircuitEditorDragWireSubject =
-  | CircuitEditorDragWireSubjectPin
-  | CircuitEditorDragWireSubjectSegment;
 export interface CircuitEditorDragWireState
   extends CircuitEditorDragActiveState {
   dragMode: "wire";
 
   /**
+   * The modifier keys in play for the drag operation.
+   */
+  dragModifierKeys: ModifierKeys;
+
+  /**
    * The subject the wire is being dragged from.
    */
-  dragSourceSubject: CircuitEditorDragWireSubject;
+  dragSourceTarget: CircuitEditorDragWireTarget;
 }
 
 export type CircuitEditorDragServiceState =
@@ -108,7 +102,8 @@ export type CircuitEditorDragServiceState =
   | CircuitEditorDragMoveState
   | CircuitEditorDragSelectState
   | CircuitEditorDragNewJointState
-  | CircuitEditorDragConnectionState;
+  | CircuitEditorDragConnectionState
+  | CircuitEditorDragWireState;
 
 const _defaultState: CircuitEditorDragServiceState = {
   dragMode: null,
