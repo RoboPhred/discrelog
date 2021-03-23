@@ -26,6 +26,7 @@ import { defaultCircuitEditorDragServiceState } from "../state";
 import { dragWireEndTargetByPointSelector } from "../selectors/drag-wire";
 import { pinDirectionFromElementPinSelector } from "@/services/circuit-graph/selectors/pins";
 import { pinIsWiredSelector } from "@/services/circuit-graph/selectors/wires";
+import { wireInsertJoint } from "@/actions/wire-insert-joint";
 
 export default function dragEndReducer(
   state: AppState = defaultAppState,
@@ -60,6 +61,8 @@ function executeDragMode(
       return executeMoveDrag(state, action);
     case "wire":
       return executeWireDrag(state, action);
+    case "wire-segment-new-joint":
+      return executeWireNewJointDrag(state, action);
   }
 
   return state;
@@ -183,4 +186,27 @@ function executeWireDrag(
   // TODO: Other types of wire operations.
 
   return state;
+}
+
+export function executeWireNewJointDrag(
+  state: AppState,
+  action: CircuitEditorDragEndAction
+): AppState {
+  const dragState = state.services.circuitEditorDrag;
+  if (dragState.dragMode !== "wire-segment-new-joint") {
+    return state;
+  }
+
+  const { dragStartEditorId, dragEndEditorId } = dragState;
+  if (dragStartEditorId != dragEndEditorId) {
+    return state;
+  }
+
+  const { dragWireId, dragWireSegmentId } = dragState;
+  const { x, y } = action.payload;
+
+  return rootReducer(
+    state,
+    wireInsertJoint(dragWireId, dragWireSegmentId, { x, y })
+  );
 }

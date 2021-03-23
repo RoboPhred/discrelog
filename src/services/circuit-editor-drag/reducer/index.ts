@@ -5,6 +5,7 @@ import dragContinueReducer from "./drag-continue";
 import dragEndReducer from "./drag-end";
 import dragStartElementReducer from "./drag-start-element";
 import dragStartSelectReducer from "./drag-start-select";
+import dragStartWireSegmentReducer from "./drag-start-wire-segment";
 import dragStartWireReducer from "./drag-start-wire";
 import mouseLeaveReducer from "./mouse-leave";
 
@@ -14,6 +15,7 @@ export default concatReducers(
   dragEndReducer,
   dragStartElementReducer,
   dragStartSelectReducer,
+  dragStartWireSegmentReducer,
   dragStartWireReducer,
   mouseLeaveReducer
 );

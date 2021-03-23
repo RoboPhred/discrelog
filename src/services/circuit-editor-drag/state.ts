@@ -30,26 +30,21 @@ export interface CircuitEditorDragActiveState {
    * drag position, but the current most up to date position.
    */
   dragEnd: Point | null;
+
+  /**
+   * The modifier keys in play for the drag operation.
+   */
+  dragModifierKeys: ModifierKeys;
 }
 
 export interface CircuitEditorDragMoveState
   extends CircuitEditorDragActiveState {
   dragMode: "move";
-
-  /**
-   * The modifier keys in play for the drag operation.
-   */
-  dragModifierKeys: ModifierKeys;
 }
 
 export interface CircuitEditorDragSelectState
   extends CircuitEditorDragActiveState {
   dragMode: "select";
-
-  /**
-   * The modifier keys in play for the drag operation.
-   */
-  dragModifierKeys: ModifierKeys;
 }
 
 export interface CircuitEditorDragWireState
@@ -57,21 +52,32 @@ export interface CircuitEditorDragWireState
   dragMode: "wire";
 
   /**
-   * The modifier keys in play for the drag operation.
-   */
-  dragModifierKeys: ModifierKeys;
-
-  /**
    * The subject the wire is being dragged from.
    */
   dragSourceTarget: CircuitEditorDragWireTarget;
+}
+
+export interface CircuitEditorDragWireSegmentNewJointState
+  extends CircuitEditorDragActiveState {
+  dragMode: "wire-segment-new-joint";
+
+  /**
+   * The id of the wire whose segment is being dragged.
+   */
+  dragWireId: string;
+
+  /**
+   * The id of the wire segment being dragged.
+   */
+  dragWireSegmentId: string;
 }
 
 export type CircuitEditorDragServiceState =
   | CircuitEditorDragNullState
   | CircuitEditorDragMoveState
   | CircuitEditorDragSelectState
-  | CircuitEditorDragWireState;
+  | CircuitEditorDragWireState
+  | CircuitEditorDragWireSegmentNewJointState;
 
 const _defaultState: CircuitEditorDragServiceState = {
   dragMode: null,

@@ -19,10 +19,10 @@ const Wire: React.FC<WireProps> = ({ wireId }) => {
     wireSegmentIdsByWireIdSelector(state, wireId)
   );
 
-  // TODO: render wire joints.
+  // FIXME WIRE: render wire joints.
 
   const elements = wireSegmentIds.map((id) => (
-    <WireSegment key={id} wireSegmentId={id} />
+    <WireSegment key={id} wireId={wireId} wireSegmentId={id} />
   ));
   return <g id={getWireHtmlId(editorId, wireId)}>{elements}</g>;
 };

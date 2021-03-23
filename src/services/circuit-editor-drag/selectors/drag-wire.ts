@@ -10,6 +10,7 @@ import { circuitIdForEditorIdSelector } from "@/services/circuit-editors/selecto
 import { ElementPin } from "@/services/circuit-graph/types";
 
 import { CircuitEditorDragWireTarget } from "../types";
+import { applyGridJointSnapSelector } from "./snap";
 
 /**
  * Gets the drag target at the given point.
@@ -110,4 +111,22 @@ export const dragWireSegmentEndPositionSelector = (state: AppState) => {
   }
 
   return getDragTargetPoint(state, endTarget);
+};
+
+export const dragWireSegmentNewJointPositionSelector = (state: AppState) => {
+  const dragService = state.services.circuitEditorDrag;
+  if (dragService.dragMode !== "wire-segment-new-joint") {
+    return null;
+  }
+
+  let dragEnd = dragService.dragEnd;
+  if (!dragEnd) {
+    return null;
+  }
+
+  if (!dragService.dragModifierKeys.ctrlMetaKey) {
+    dragEnd = applyGridJointSnapSelector(state, dragEnd);
+  }
+
+  return dragEnd;
 };
