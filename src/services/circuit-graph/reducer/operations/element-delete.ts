@@ -18,9 +18,6 @@ export default function elementDelete(
   removedElementIds: string[],
   rootState: AppState
 ): CircuitGraphServiceState {
-  // TODO WIRE: Remove wire segments connected to elements being removed.
-  // TODO WIRE: Remove wire segments connected to pins of pin elements being removed.
-
   const remainingElementIds = difference(
     Object.keys(state.elementsById),
     removedElementIds
@@ -37,19 +34,20 @@ export default function elementDelete(
     elementIdsByCircuitId,
   };
 
-  // Remove connections targeting these elements.
+  // Remove wires targeting these elements.
   const removedIcPins = flatMap(removedElementIds, (elementId) =>
     elementPinsFromPinElementSelector(rootState, elementId)
   );
 
   function isSegmentForRemovedElement(segment: WireSegment) {
     switch (segment.type) {
-      case "input":
       case "input-output":
         return (
           includes(removedElementIds, segment.inputPin.elementId) ||
           includes(removedElementIds, segment.outputPin.elementId)
         );
+      case "input":
+        return includes(removedElementIds, segment.inputPin.elementId);
       case "output":
         return includes(removedElementIds, segment.outputPin.elementId);
     }
@@ -58,19 +56,26 @@ export default function elementDelete(
 
   function isSegmentForRemovedPin(segment: WireSegment) {
     switch (segment.type) {
-      case "input":
       case "input-output":
-        return (
+        return Boolean(
           find(removedIcPins, (removedPin) =>
             elementPinEquals(removedPin, segment.inputPin)
           ) ||
+            find(removedIcPins, (removedPin) =>
+              elementPinEquals(removedPin, segment.outputPin)
+            )
+        );
+      case "input":
+        return Boolean(
           find(removedIcPins, (removedPin) =>
-            elementPinEquals(removedPin, segment.outputPin)
+            elementPinEquals(removedPin, segment.inputPin)
           )
         );
       case "output":
-        return find(removedIcPins, (removedPin) =>
-          elementPinEquals(removedPin, segment.outputPin)
+        return Boolean(
+          find(removedIcPins, (removedPin) =>
+            elementPinEquals(removedPin, segment.outputPin)
+          )
         );
     }
     return false;

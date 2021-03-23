@@ -58,16 +58,18 @@ export default createCircuitGraphReducer((state, action) => {
       break;
     case "input-output":
       {
+        const lineId = uuidV4();
         firstSegment = {
           type: "output",
           outputPin: targetSegment.outputPin,
           jointId,
+          lineId,
         };
         secondSegment = {
           type: "input",
-          outputPin: targetSegment.outputPin,
           inputPin: targetSegment.inputPin,
           jointId,
+          lineId,
         };
       }
       break;

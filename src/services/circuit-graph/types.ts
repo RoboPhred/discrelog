@@ -51,10 +51,6 @@ export interface Wire {
  */
 export interface InputWireSegment {
   type: "input";
-  /**
-   * The output pin in this wire network that we take our value from.
-   */
-  outputPin: ElementPin;
 
   /**
    * The input pin we supply a value to.
@@ -65,6 +61,11 @@ export interface InputWireSegment {
    * The joint id on the non-pin side of this segment.
    */
   jointId: string;
+
+  /**
+   * The id of the line in the wire, used to match against the source output.
+   */
+  lineId: string;
 }
 
 /**
@@ -82,6 +83,11 @@ export interface OutputWireSegment {
    * The joint id of the non-pin side of this segment.
    */
   jointId: string;
+
+  /**
+   * The id of the line in the wire, used to match against inputs.
+   */
+  lineId: string;
 }
 
 /**
@@ -123,6 +129,25 @@ export type WireSegment =
   | OutputWireSegment
   | InputOutputWireSegment
   | BridgeWireSegment;
+
+export function isOutputWireSegment(
+  segment: WireSegment
+): segment is OutputWireSegment {
+  return segment.type === "output";
+}
+
+export function isInputWireSegment(
+  segment: WireSegment
+): segment is InputWireSegment {
+  return segment.type === "input";
+}
+
+export function isInputOutputWireSegment(
+  segment: WireSegment
+): segment is InputOutputWireSegment {
+  return segment.type === "input-output";
+}
+
 export function wireSegmentHasInput(
   segment: WireSegment
 ): segment is InputWireSegment | InputOutputWireSegment {
@@ -132,14 +157,15 @@ export function wireSegmentHasInput(
 export const wireSegmentSchema = yup.object().oneOf([
   yup.object().shape({
     type: yup.string().oneOf(["input"]),
-    outputPin: elementPinSchema.required(),
     inputPin: elementPinSchema.required(),
     jointId: yup.string().required().min(1),
+    lineId: yup.string().required().min(1),
   }),
   yup.object().shape({
     type: yup.string().oneOf(["output"]),
     outputPin: elementPinSchema.required(),
     jointId: yup.string().required().min(1),
+    lineId: yup.string().required().min(1),
   }),
   yup.object().shape({
     type: yup.string().oneOf(["input-output"]),

@@ -2,9 +2,13 @@ import { createSelector } from "reselect";
 
 import { CircuitGraphServiceState } from "../state";
 import { createCircuitGraphSelector } from "../utils";
-import { ElementConnection, wireSegmentHasInput } from "../types";
+import {
+  ElementConnection,
+  isInputOutputWireSegment,
+  isInputWireSegment,
+  isOutputWireSegment,
+} from "../types";
 
-const EmptyConnections = Object.freeze([] as ElementConnection[]);
 export const connectionsSelector = createCircuitGraphSelector(
   createSelector(
     (state: CircuitGraphServiceState) => state.wiresByWireId,
@@ -15,14 +19,24 @@ export const connectionsSelector = createCircuitGraphSelector(
       const wireIds = Object.keys(wiresById);
       for (const wireId of wireIds) {
         const { wireSegmentIds } = wiresById[wireId];
-        const inputSegments = wireSegmentIds
-          .map((id) => segmentsById[id])
-          .filter(wireSegmentHasInput);
-        for (const { outputPin, inputPin } of inputSegments) {
-          connections.push({
-            inputPin,
-            outputPin,
-          });
+        const segments = wireSegmentIds.map((id) => segmentsById[id]);
+        for (const segment of segments) {
+          if (isInputOutputWireSegment(segment)) {
+            connections.push({
+              inputPin: segment.inputPin,
+              outputPin: segment.outputPin,
+            });
+          } else if (isOutputWireSegment(segment)) {
+            const inputs = segments
+              .filter(isInputWireSegment)
+              .filter(({ lineId }) => lineId === segment.lineId);
+            for (const input of inputs) {
+              connections.push({
+                outputPin: segment.outputPin,
+                inputPin: input.inputPin,
+              });
+            }
+          }
         }
       }
 

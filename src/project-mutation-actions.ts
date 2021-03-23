@@ -12,12 +12,6 @@ import { ACTION_SELECTION_ALIGN_TO_GRID } from "@/actions/selection-align-to-gri
 import { ACTION_SELECTION_DELETE } from "@/actions/selection-delete";
 import { ACTION_SELECTION_MOVE } from "@/actions/selection-move";
 
-import { ACTION_CONNECTION_ATTACH } from "@/actions/connection-attach";
-import { ACTION_CONNECTION_DETATCH } from "@/actions/connection-detatch";
-import { ACTION_CONNECTION_JOINT_ADD } from "@/actions/connection-joint-add";
-import { ACTION_CONNECTION_JOINT_MOVE } from "@/actions/connection-joint-move";
-import { ACTION_CONNECTION_JOINT_DELETE } from "@/actions/connection-joint-delete";
-
 import { ACTION_PASTE } from "@/actions/clipboard-paste";
 import { ACTION_CIRCUIT_EDITOR_DRAG_END } from "@/actions/circuit-editor-drag-end";
 
@@ -42,12 +36,6 @@ export const PROJECT_MUTATION_ACTIONS = [
   ACTION_SELECTION_ALIGN_TO_GRID,
   ACTION_SELECTION_DELETE,
   ACTION_SELECTION_MOVE,
-
-  ACTION_CONNECTION_ATTACH,
-  ACTION_CONNECTION_DETATCH,
-  ACTION_CONNECTION_JOINT_ADD,
-  ACTION_CONNECTION_JOINT_DELETE,
-  ACTION_CONNECTION_JOINT_MOVE,
 
   ACTION_UNDO,
   ACTION_REDO,

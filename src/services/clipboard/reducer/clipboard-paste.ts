@@ -11,7 +11,7 @@ import { fpSet } from "@/utils";
 import rootReducer from "@/store/reducer";
 
 import { addElement } from "@/actions/element-add";
-import { attachConnection } from "@/actions/connection-attach";
+import { createPinToPinWire } from "@/actions/wire-create-pin-to-pin";
 import { isPasteAction } from "@/actions/clipboard-paste";
 import { selectElements } from "@/actions/select-elements";
 
@@ -78,7 +78,7 @@ export default function clipboardPasteReducer(
         const targetId = pasteIds[targetCopyId];
         state = rootReducer(
           state,
-          attachConnection(
+          createPinToPinWire(
             { elementId: sourceId, pinId: outputPin },
             { elementId: targetId, pinId: targetPin }
           )
