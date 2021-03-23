@@ -13,11 +13,8 @@ import {
 } from "@/actions/circuit-editor-drag-end";
 import { selectRegion } from "@/actions/select-region";
 import { moveSelection } from "@/actions/selection-move";
-import { addConnectionJoint } from "@/actions/connection-joint-add";
-import { attachConnection } from "@/actions/connection-attach";
 import { createPinToPinWire } from "@/actions/wire-create-pin-to-pin";
 
-import { elementPinFromPointSelector } from "@/services/circuit-layout/selectors/element-pin-positions";
 import { circuitIdForEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
 
 import {
@@ -61,10 +58,6 @@ function executeDragMode(
       return executeSelectDrag(state, action);
     case "move":
       return executeMoveDrag(state, action);
-    case "new-joint":
-      return executeNewJointDrag(state, action);
-    case "connection":
-      return executeConnectionDrag(state, action);
     case "wire":
       return executeWireDrag(state, action);
   }
@@ -131,69 +124,6 @@ function executeMoveDrag(
   }
 
   return rootReducer(state, moveSelection(moveBy.x, moveBy.y));
-}
-
-function executeNewJointDrag(
-  state: AppState,
-  action: CircuitEditorDragEndAction
-): AppState {
-  const dragState = state.services.circuitEditorDrag;
-  if (dragState.dragMode !== "new-joint") {
-    return state;
-  }
-
-  const { dragStartEditorId, dragEndEditorId } = dragState;
-  if (dragStartEditorId != dragEndEditorId) {
-    return state;
-  }
-
-  const { dragNewJointConnectionId, dragNewJointAfterJointId } = dragState;
-  const { x, y } = action.payload;
-
-  const position = applyGridJointSnapSelector(state, { x, y });
-
-  return rootReducer(
-    state,
-    addConnectionJoint(
-      dragNewJointConnectionId!,
-      dragNewJointAfterJointId,
-      position
-    )
-  );
-}
-
-function executeConnectionDrag(
-  state: AppState,
-  action: CircuitEditorDragEndAction
-): AppState {
-  const dragState = state.services.circuitEditorDrag;
-  if (dragState.dragMode !== "connection") {
-    return state;
-  }
-
-  const { dragStartEditorId, dragEndEditorId } = dragState;
-  if (dragStartEditorId != dragEndEditorId) {
-    return state;
-  }
-
-  const { x, y } = action.payload;
-
-  const circuitId = circuitIdForEditorIdSelector(state, dragStartEditorId);
-  if (!circuitId) {
-    return state;
-  }
-
-  const { dragPinSource } = dragState;
-  if (!dragPinSource) {
-    return state;
-  }
-
-  const endPin = elementPinFromPointSelector(state, { x, y }, circuitId);
-  if (!endPin) {
-    return state;
-  }
-
-  return rootReducer(state, attachConnection(dragPinSource, endPin));
 }
 
 function executeWireDrag(

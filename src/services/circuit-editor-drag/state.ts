@@ -52,36 +52,6 @@ export interface CircuitEditorDragSelectState
   dragModifierKeys: ModifierKeys;
 }
 
-export interface CircuitEditorDragNewJointState
-  extends CircuitEditorDragActiveState {
-  dragMode: "new-joint";
-
-  /**
-   * The modifier keys in play for the drag operation.
-   */
-  dragModifierKeys: ModifierKeys;
-
-  /**
-   * The connection id to create the joint on.
-   */
-  dragNewJointConnectionId: string | null;
-
-  /**
-   * The joint id to add the new joint after.
-   */
-  dragNewJointAfterJointId: string | null;
-}
-
-export interface CircuitEditorDragConnectionState
-  extends CircuitEditorDragActiveState {
-  dragMode: "connection";
-
-  /**
-   * The source pin being connected by the drag.
-   */
-  dragPinSource: ElementPin | null;
-}
-
 export interface CircuitEditorDragWireState
   extends CircuitEditorDragActiveState {
   dragMode: "wire";
@@ -101,8 +71,6 @@ export type CircuitEditorDragServiceState =
   | CircuitEditorDragNullState
   | CircuitEditorDragMoveState
   | CircuitEditorDragSelectState
-  | CircuitEditorDragNewJointState
-  | CircuitEditorDragConnectionState
   | CircuitEditorDragWireState;
 
 const _defaultState: CircuitEditorDragServiceState = {

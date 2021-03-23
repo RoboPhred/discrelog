@@ -4,6 +4,7 @@ import { Point } from "@/geometry";
 
 import { elementPinFromPointSelector } from "@/services/circuit-layout/selectors/element-pin-positions";
 import { circuitIdForEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
+import { ElementPin } from "@/services/circuit-graph/types";
 
 import { CircuitEditorDragWireTarget } from "../types";
 
@@ -57,4 +58,15 @@ export const dragWireEndTargetSelector = (
   }
 
   return dragWireEndTargetByPointSelector(state, dragEnd);
+};
+
+export const dragDropTargetPinSelector = (
+  state: AppState
+): ElementPin | null => {
+  const dropTarget = dragWireEndTargetSelector(state);
+  if (!dropTarget || dropTarget.type !== "pin") {
+    return null;
+  }
+
+  return dropTarget.pin;
 };

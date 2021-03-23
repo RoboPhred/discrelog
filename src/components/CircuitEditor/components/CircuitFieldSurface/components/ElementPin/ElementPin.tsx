@@ -3,13 +3,16 @@ import { useDispatch } from "react-redux";
 
 import { cls } from "@/utils";
 import { describeArc } from "@/svg";
+import { getModifiers } from "@/modifier-keys";
 
 import useSelector from "@/hooks/useSelector";
 import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
 
+import { circuitEditorDragStartWire } from "@/actions/circuit-editor-drag-start-wire";
+
 import { elementPinPositionFromElementPinSelector } from "@/services/circuit-layout/selectors/element-pin-positions";
 import { pinDirectionFromElementPinSelector } from "@/services/circuit-graph/selectors/pins";
-import { dragDropTargetPinSelector } from "@/services/circuit-editor-drag/selectors/drag-connection";
+import { dragDropTargetPinSelector } from "@/services/circuit-editor-drag/selectors/drag-wire";
 
 import { useCircuitEditor } from "../../../../contexts/circuit-editor-context";
 import { getElementPinHtmlId } from "../../../../ids";
@@ -17,8 +20,6 @@ import { getElementPinHtmlId } from "../../../../ids";
 import { useMouseCoords } from "../../hooks/useMouseCoords";
 
 import styles from "./ElementPin.module.css";
-import { circuitEditorDragStartWire } from "@/actions/circuit-editor-drag-start-wire";
-import { getModifiers } from "@/modifier-keys";
 
 export interface ElementPinProps {
   elementId: string;
