@@ -11,13 +11,10 @@ import { FieldSvgElementProvider } from "./contexts/fieldSvgElement";
 
 import DragNewElementLayer from "./components/DragNewElementLayer";
 import DragElementPreviewLayer from "./components/DragElementPreviewLayer";
-import DragJointPreviewLayer from "./components/DragJointPreviewLayer";
 import FieldMouseLayer from "./components/FieldMouseLayer";
 import GridBackground from "./components/GridBackground";
 import ElementsLayer from "./components/ElementsLayer";
-import ConnectionsLayer from "./components/ConnectionsLayer";
 import ElementPinsLayer from "./components/ElementPinsLayer";
-import DragAttachConnectionPreviewLayer from "./components/DragAttachConnectionPreviewLayer";
 import EditorDragReceiver from "./components/EditorDragReceiver";
 import WiresLayer from "./components/WiresLayer";
 
@@ -83,12 +80,9 @@ const CircuitFieldSurface: React.FC<CircuitFieldSurfaceProps> = ({
         <FieldSvgElementProvider svgRef={svgRef} scalerRef={scalerRef}>
           <FieldMouseLayer />
           <ElementsLayer />
-          <ConnectionsLayer />
           <WiresLayer />
           <ElementPinsLayer />
-          <DragAttachConnectionPreviewLayer />
           <DragElementPreviewLayer />
-          <DragJointPreviewLayer />
           {isDraggingNewElement && <DragNewElementLayer />}
           <EditorDragReceiver />
         </FieldSvgElementProvider>
