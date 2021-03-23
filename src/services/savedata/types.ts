@@ -1,8 +1,8 @@
 import * as yup from "yup";
 
-import { Point, pointSchema } from "@/geometry";
+import { Point } from "@/geometry";
 
-import { ElementPin, elementPinSchema } from "../circuit-graph/types";
+import { WireSegment, wireSegmentSchema } from "../circuit-graph/types";
 
 export interface SaveCircuit {
   circuitId: string;
@@ -30,25 +30,42 @@ export const saveElementSchema = yup.object().shape({
   y: yup.number().required(),
 });
 
-export interface SaveConnection {
-  output: ElementPin;
-  input: ElementPin;
-  joints: Point[];
+export type SaveWireSegment = WireSegment & {
+  wireSegmentId: string;
+};
+const saveWireSegmentSchema = wireSegmentSchema.concat(
+  yup.object({
+    wireSchemaId: yup.string().required(),
+  }) as any
+);
+
+export interface SaveWireJoint extends Point {
+  jointId: string;
 }
-export const saveConnectionSchema = yup.object().shape({
-  output: elementPinSchema.required(),
-  input: elementPinSchema.required(),
-  // Cannot make this required, as yup says required on an array is min length 1...
-  joints: yup.array().of(pointSchema),
+const saveWireJointSchema = yup.object({
+  x: yup.number().required(),
+  y: yup.number().required(),
+  jointId: yup.string().required().min(1),
+});
+
+export interface SaveWire {
+  wireId: string;
+  wireSegments: WireSegment[];
+  wireJoints: SaveWireJoint[];
+}
+const saveWireSchema = yup.object({
+  wireId: yup.string().required().min(1),
+  wireSegments: yup.array().of(saveWireSegmentSchema),
+  wireJoints: yup.array().of(saveWireJointSchema),
 });
 
 export interface SaveData {
   circuits: SaveCircuit[];
   elements: SaveElement[];
-  connections: SaveConnection[];
+  wires: SaveWire[];
 }
 export const saveDataSchema = yup.object().shape({
   circuits: yup.array().of(saveCircuitSchema).min(0),
   elements: yup.array().of(saveElementSchema).min(0),
-  connections: yup.array().of(saveConnectionSchema).min(0),
+  wires: yup.array().of(saveWireSchema).min(0),
 });

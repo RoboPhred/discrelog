@@ -128,3 +128,27 @@ export function wireSegmentHasInput(
 ): segment is InputWireSegment | InputOutputWireSegment {
   return segment.type === "input" || segment.type === "input-output";
 }
+
+export const wireSegmentSchema = yup.object().oneOf([
+  yup.object().shape({
+    type: yup.string().oneOf(["input"]),
+    outputPin: elementPinSchema.required(),
+    inputPin: elementPinSchema.required(),
+    jointId: yup.string().required().min(1),
+  }),
+  yup.object().shape({
+    type: yup.string().oneOf(["output"]),
+    outputPin: elementPinSchema.required(),
+    jointId: yup.string().required().min(1),
+  }),
+  yup.object().shape({
+    type: yup.string().oneOf(["input-output"]),
+    outputPin: elementPinSchema.required(),
+    inputPin: elementPinSchema.required(),
+  }),
+  yup.object().shape({
+    type: yup.string().oneOf(["bridge"]),
+    jointAId: yup.string().required().min(1),
+    jointBId: yup.string().required().min(1),
+  }),
+]);

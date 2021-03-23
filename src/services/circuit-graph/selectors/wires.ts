@@ -1,5 +1,7 @@
 import { createSelector } from "reselect";
 import values from "lodash/values";
+import flatMap from "lodash/flatMap";
+import uniq from "lodash/uniq";
 
 import { CircuitGraphServiceState } from "../state";
 import { createCircuitGraphSelector } from "../utils";
@@ -32,6 +34,27 @@ export const wireSegmentIdsByWireIdSelector = createCircuitGraphSelector(
       return EmptyWireSegmentIds;
     }
     return wire.wireSegmentIds;
+  }
+);
+
+export const wireJointIdsByWireIdSelector = createCircuitGraphSelector(
+  (s: CircuitGraphServiceState, wireId: string) => {
+    const segmentIds = wireSegmentIdsByWireIdSelector.local(s, wireId);
+    const jointIds = flatMap(segmentIds, (segmentId) => {
+      const segment = wireSegmentByWireSegmentIdSelector.local(s, segmentId);
+      switch (segment.type) {
+        case "bridge":
+          return [segment.jointAId, segment.jointBId];
+        case "input":
+          return [segment.jointId];
+        case "output":
+          return [segment.jointId];
+        default:
+          return [];
+      }
+    });
+
+    return uniq(jointIds);
   }
 );
 

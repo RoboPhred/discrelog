@@ -3,41 +3,39 @@ import {
   SaveData,
   saveDataSchema,
   SaveElement,
-  SaveConnection,
+  SaveWire,
+  SaveWireSegment,
 } from "./types";
 
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
 
 import { addElement } from "@/actions/element-add";
-import { attachConnection } from "@/actions/connection-attach";
+import { addCircuit } from "@/actions/circuit-add";
 
+import { circuitIdFromElementIdSelector } from "../circuit-graph/selectors/elements";
 import {
   elementIdsSelector,
   elementFromElementIdSelector,
 } from "../circuit-graph/selectors/elements";
 import {
-  connectionIdsSelector,
-  connectionFromConnectionIdSelector,
-} from "../circuit-graph/selectors/connections";
+  wireIdsSelector,
+  wireJointIdsByWireIdSelector,
+  wireSegmentByWireSegmentIdSelector,
+  wireSegmentIdsByWireIdSelector,
+} from "../circuit-graph/selectors/wires";
 import { elementPositionFromElementIdSelector } from "../circuit-layout/selectors/element-positions";
+import { wireJointPositionByJointIdSelector } from "../circuit-layout/selectors/wires";
 import {
   circuitIdsSelector,
   circuitNameFromIdSelector,
 } from "../circuit-properties/selectors/circuits";
 import { ROOT_CIRCUIT_ID } from "../circuits/constants";
 
-import { circuitIdFromElementIdSelector } from "../circuit-graph/selectors/elements";
-import {
-  connectionJointPositionsByJointIdSelector,
-  connectionJointIdsFromConnectionIdSelector,
-} from "../circuit-layout/selectors/connections";
-
 import { SaveFormatError } from "./errors";
-import { addCircuit } from "@/actions/circuit-add";
 
 export function createSave(state: AppState): SaveData {
-  const jointPositions = connectionJointPositionsByJointIdSelector(state);
+  const jointPositionsByJointId = wireJointPositionByJointIdSelector(state);
   return {
     circuits: circuitIdsSelector(state).map((circuitId) => {
       const circuitName = circuitNameFromIdSelector(state, circuitId);
@@ -61,21 +59,29 @@ export function createSave(state: AppState): SaveData {
       };
       return saveElement;
     }),
-    connections: connectionIdsSelector(state).map((connectionId) => {
-      const conenction = connectionFromConnectionIdSelector(
-        state,
-        connectionId
-      );
-      const jointIds = connectionJointIdsFromConnectionIdSelector(
-        state,
-        connectionId
-      );
-      const saveConnection: SaveConnection = {
-        input: conenction.inputPin,
-        output: conenction.outputPin,
-        joints: jointIds.map((jointId) => jointPositions[jointId]),
+    wires: wireIdsSelector(state).map((wireId) => {
+      const jointIds = wireJointIdsByWireIdSelector(state, wireId);
+      const saveWire: SaveWire = {
+        wireId,
+        wireSegments: wireSegmentIdsByWireIdSelector(state, wireId).map(
+          (wireSegmentId) => {
+            const segment = wireSegmentByWireSegmentIdSelector(
+              state,
+              wireSegmentId
+            )!;
+            const saveWireSegment: SaveWireSegment = {
+              wireSegmentId,
+              ...segment,
+            };
+            return saveWireSegment;
+          }
+        ),
+        wireJoints: jointIds.map((jointId) => ({
+          jointId,
+          ...jointPositionsByJointId[jointId],
+        })),
       };
-      return saveConnection;
+      return saveWire;
     }),
   };
 }
@@ -114,16 +120,7 @@ export function loadSave(state: AppState, save: SaveData): AppState {
       state
     );
 
-    state = (save.connections ?? []).reduce(
-      (state, connection) =>
-        rootReducer(
-          state,
-          attachConnection(connection.output, connection.input, {
-            joints: connection.joints,
-          })
-        ),
-      state
-    );
+    // TODO WIRES: Load wires
   } catch (e) {
     console.error("Failed to rehydrate SaveData:", e);
     throw new SaveFormatError("Failed to load project.");
@@ -182,27 +179,7 @@ export function importCircuitsFromSave(
       state
     );
 
-    function isImportableConnection(connection: SaveConnection) {
-      return importNodes.some(
-        ({ elementId }) =>
-          connection.input.elementId === elementId ||
-          connection.output.elementId === elementId
-      );
-    }
-
-    const importConnections = (save.connections ?? []).filter(
-      isImportableConnection
-    );
-    state = importConnections.reduce(
-      (state, connection) =>
-        rootReducer(
-          state,
-          attachConnection(connection.output, connection.input, {
-            joints: connection.joints,
-          })
-        ),
-      state
-    );
+    // TODO WIRES: Load wires
   } catch (e) {
     console.error("Failed to import circuit from SaveData:", e);
     throw new SaveFormatError("Failed to import circuit.");
