@@ -57,6 +57,16 @@ export interface CircuitEditorDragWireState
   dragStartTarget: CircuitEditorDragWireTarget;
 }
 
+export interface CircuitEditorDragWireJointState
+  extends CircuitEditorDragActiveState {
+  dragMode: "wire-joint";
+
+  /**
+   * The joint id of the joint being dragged.
+   */
+  dragJointId: string;
+}
+
 export interface CircuitEditorDragWireSegmentNewJointState
   extends CircuitEditorDragActiveState {
   dragMode: "wire-segment-new-joint";
@@ -77,6 +87,7 @@ export type CircuitEditorDragServiceState =
   | CircuitEditorDragMoveState
   | CircuitEditorDragSelectState
   | CircuitEditorDragWireState
+  | CircuitEditorDragWireJointState
   | CircuitEditorDragWireSegmentNewJointState;
 
 const _defaultState: CircuitEditorDragServiceState = {

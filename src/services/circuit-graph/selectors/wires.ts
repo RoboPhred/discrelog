@@ -5,7 +5,9 @@ import uniq from "lodash/uniq";
 
 import { CircuitGraphServiceState } from "../state";
 import { createCircuitGraphSelector } from "../utils";
-import { elementPinEquals, wireSegmentHasInput } from "../types";
+import { elementPinEquals, WireSegment, wireSegmentHasInput } from "../types";
+
+const EmptyStringArray = Object.freeze([] as string[]);
 
 export const wiresByWireIdSelector = createCircuitGraphSelector(
   (state) => state.wiresByWireId
@@ -26,14 +28,52 @@ export const wireSegmentsSelector = createCircuitGraphSelector(
   )
 );
 
-const EmptyWireSegmentIds = Object.freeze([] as string[]);
 export const wireSegmentIdsFromWireIdSelector = createCircuitGraphSelector(
   (s: CircuitGraphServiceState, wireId: string) => {
     const wire = s.wiresByWireId[wireId];
     if (!wire) {
-      return EmptyWireSegmentIds;
+      return EmptyStringArray;
     }
     return wire.wireSegmentIds;
+  }
+);
+
+// TODO: cache busting
+const jointIdsByWireIdCache = new Map<
+  string,
+  { segmentIds: string[]; jointIds: string[] }
+>();
+function getSegmentJoints(segment: WireSegment): string[] {
+  switch (segment.type) {
+    case "bridge":
+      return [segment.jointAId, segment.jointBId];
+    case "input":
+    case "output":
+      return [segment.jointId];
+    default:
+      return [];
+  }
+}
+
+export const wireJointIdsFromWireIdSelector = createCircuitGraphSelector(
+  (s: CircuitGraphServiceState, wireId: string) => {
+    const wire = s.wiresByWireId[wireId];
+    if (!wire) {
+      return EmptyStringArray;
+    }
+    const segmentIds = wire.wireSegmentIds;
+    const cached = jointIdsByWireIdCache.get(wireId);
+
+    if (!cached || cached.segmentIds !== segmentIds) {
+      let jointIds = flatMap(segmentIds, (segmentId) =>
+        getSegmentJoints(s.wireSegmentsById[segmentId])
+      );
+      jointIds = uniq(jointIds);
+      jointIdsByWireIdCache.set(wireId, { segmentIds, jointIds });
+      return jointIds;
+    }
+
+    return cached.jointIds;
   }
 );
 

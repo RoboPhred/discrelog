@@ -23,13 +23,14 @@ export default function wireSegmentDelete(
     return state;
   }
 
-  if (
-    removedSegment.type === "bridge" ||
-    removedSegment.type === "input-output"
-  ) {
+  if (removedSegment.type === "input-output") {
     // Remove the whole wire.
-    // Maybe in the future we can split bridge segments in to two wires.
     return wireDelete(state, wireId);
+  } else if (removedSegment.type === "bridge") {
+    // TODO: Split the wire in two.
+    return wireDelete(state, wireId);
+    // Should we scramble the lineIds?  If we dont that lets us connect
+    // up again, but could cause problems if we connect inputs then try to bridge back.
   }
 
   // At this point, the segment is a connection from an element to the rest of the wire.

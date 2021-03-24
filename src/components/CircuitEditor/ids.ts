@@ -17,3 +17,7 @@ export function getElementPinHtmlId(
 export function getWireHtmlId(editorId: string, wireId: string) {
   return `editor-${editorId}--wire-${wireId}`;
 }
+
+export function getWireJointHtmlId(editorId: string, jointId: string) {
+  return `editor-${editorId}--wire-joint-${jointId}`;
+}

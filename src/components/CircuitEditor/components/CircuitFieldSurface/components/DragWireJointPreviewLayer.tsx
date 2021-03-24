@@ -2,10 +2,10 @@ import * as React from "react";
 
 import useSelector from "@/hooks/useSelector";
 
-import { dragWireSegmentNewJointPositionSelector } from "@/services/circuit-editor-drag/selectors/drag-wire";
+import { dragWireJointPositionSelector } from "@/services/circuit-editor-drag/selectors/drag-wire";
 
-const DragWireSegmentNewJointPreviewLayer: React.FC = () => {
-  const jointPos = useSelector(dragWireSegmentNewJointPositionSelector);
+const DragWireJointPreviewLayer: React.FC = () => {
+  const jointPos = useSelector(dragWireJointPositionSelector);
 
   if (!jointPos) {
     return null;
@@ -13,7 +13,7 @@ const DragWireSegmentNewJointPreviewLayer: React.FC = () => {
 
   // FIXME: Use css for opacity on all dragging elements.
   return (
-    <g className="circuit-editor-wire-segment-new-joint-layer">
+    <g className="circuit-editor-new-joint-layer">
       <circle
         cx={jointPos.x}
         cy={jointPos.y}
@@ -26,4 +26,4 @@ const DragWireSegmentNewJointPreviewLayer: React.FC = () => {
   );
 };
 
-export default DragWireSegmentNewJointPreviewLayer;
+export default DragWireJointPreviewLayer;

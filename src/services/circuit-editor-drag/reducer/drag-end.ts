@@ -17,6 +17,8 @@ import { connectPinToPin } from "@/actions/wire-connect-pin-to-pin";
 import { connectPinToWireSegment } from "@/actions/wire-connect-pin-to-segment";
 import { connectPinToFloating } from "@/actions/wire-connect-pin-to-floating";
 import { wireSegmentInsertJoint } from "@/actions/wire-segment-insert-joint";
+import { connectFloatingToWireSegment } from "@/actions/wire-connect-floating-to-segment";
+import { moveWireJoint } from "@/actions/wire-joint-move";
 
 import { circuitIdForEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
 import { pinIsWiredSelector } from "@/services/circuit-graph/selectors/wires";
@@ -33,7 +35,6 @@ import {
   CircuitEditorDragWirePinTarget,
   CircuitEditorDragWireSegmentTarget,
 } from "../types";
-import { connectFloatingToWireSegment } from "@/actions/wire-connect-floating-to-segment";
 
 export default function dragEndReducer(
   state: AppState = defaultAppState,
@@ -68,6 +69,8 @@ function executeDragMode(
       return executeMoveDrag(state, action);
     case "wire":
       return executeWireDrag(state, action);
+    case "wire-joint":
+      return executeWireJointDrag(state, action);
     case "wire-segment-new-joint":
       return executeWireNewJointDrag(state, action);
   }
@@ -237,7 +240,26 @@ function executeWireDrag(
   return state;
 }
 
-export function executeWireNewJointDrag(
+function executeWireJointDrag(
+  state: AppState,
+  action: CircuitEditorDragEndAction
+): AppState {
+  const dragState = state.services.circuitEditorDrag;
+  if (dragState.dragMode !== "wire-joint") {
+    return state;
+  }
+
+  const { dragStartEditorId, dragEndEditorId } = dragState;
+  if (dragStartEditorId != dragEndEditorId) {
+    return state;
+  }
+
+  const { dragJointId } = dragState;
+  const { x, y } = action.payload;
+  return rootReducer(state, moveWireJoint(dragJointId, { x, y }));
+}
+
+function executeWireNewJointDrag(
   state: AppState,
   action: CircuitEditorDragEndAction
 ): AppState {
