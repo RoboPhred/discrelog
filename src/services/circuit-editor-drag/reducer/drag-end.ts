@@ -1,6 +1,6 @@
 import { AnyAction } from "redux";
 
-import { normalizeRectangle, pointSubtract } from "@/geometry";
+import { normalizeRectangle, Point, pointSubtract } from "@/geometry";
 import { fpSet } from "@/utils";
 import { getSelectMode } from "@/selection-mode";
 
@@ -152,7 +152,6 @@ function executeWireDrag(
 
   const { dragStartTarget } = dragState;
   const { x, y } = action.payload;
-
   const dragEndTarget = dragWireEndTargetByPointSelector(state, { x, y });
   if (!dragEndTarget) {
     return state;

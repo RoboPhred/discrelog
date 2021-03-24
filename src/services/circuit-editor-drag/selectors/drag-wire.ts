@@ -30,7 +30,7 @@ export const dragWireEndTargetByPointSelector = (
     return null;
   }
 
-  const { dragStartEditorId } = dragService;
+  const { dragStartEditorId, dragModifierKeys } = dragService;
   const circuitId = circuitIdForEditorIdSelector(state, dragStartEditorId);
   if (!circuitId) {
     return null;
@@ -45,6 +45,10 @@ export const dragWireEndTargetByPointSelector = (
   }
 
   // TODO: Check for dropping on wire segments
+
+  if (!dragModifierKeys.ctrlMetaKey) {
+    p = applyGridJointSnapSelector(state, p);
+  }
 
   return {
     type: "floating",

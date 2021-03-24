@@ -46,7 +46,6 @@ export default createCircuitEditorDragReducer((state, action, rootState) => {
     };
   }
 
-  // FIXME WIRE: If holding ctrl, start a new segment.
   return {
     dragMode: "wire-segment-new-joint",
     dragStart: { x, y },
