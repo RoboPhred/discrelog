@@ -1,13 +1,10 @@
-import pick from "lodash/pick";
 import findKey from "lodash/findKey";
 import includes from "lodash/includes";
-import mapValues from "lodash/mapValues";
 
 import { CircuitGraphServiceState } from "../../state";
 
 import wireDelete from "./wire-delete";
 import wireSplit from "./wire-split";
-import { getSegmentJoints } from "../../utils";
 import { removeSegment } from "./utils";
 
 export default function wireSegmentDelete(

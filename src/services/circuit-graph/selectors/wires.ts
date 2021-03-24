@@ -5,7 +5,7 @@ import uniq from "lodash/uniq";
 
 import { CircuitGraphServiceState } from "../state";
 import { createCircuitGraphSelector, getSegmentJoints } from "../utils";
-import { elementPinEquals, WireSegment, wireSegmentHasInput } from "../types";
+import { elementPinEquals, wireSegmentHasInput } from "../types";
 
 const EmptyStringArray = Object.freeze([] as string[]);
 

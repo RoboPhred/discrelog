@@ -55,7 +55,7 @@ export default function selectionMoveReducer(
     state,
     moveWireJoint(jointIds, offset, {
       relative: true,
-      snapMode: elementSnapMode,
+      snapMode: jointSnapMode,
     })
   );
 
