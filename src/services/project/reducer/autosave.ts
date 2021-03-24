@@ -18,6 +18,10 @@ export default reducerPriority(
       return state;
     }
 
+    if (state.services.project.isLoading) {
+      return state;
+    }
+
     // FIXME: Side effect.  Should be a saga.
     const save = createSave(state);
     storeAutosave(save);
