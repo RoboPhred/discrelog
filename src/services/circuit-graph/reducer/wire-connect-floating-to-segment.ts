@@ -15,7 +15,7 @@ export default createCircuitGraphReducer((state, action, rootState) => {
   const {
     wireId,
     wireSegmentId,
-    segmentPositionFraction,
+    segmentSplitLength: segmentSplitLength,
     floatPoint,
   } = action.payload;
 
@@ -23,7 +23,7 @@ export default createCircuitGraphReducer((state, action, rootState) => {
     state,
     wireId,
     wireSegmentId,
-    segmentPositionFraction,
+    segmentSplitLength,
     rootState
   );
   state = afterSplitState;

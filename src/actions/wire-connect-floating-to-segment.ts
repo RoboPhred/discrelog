@@ -7,14 +7,14 @@ export const connectFloatingToWireSegment = (
   floatPoint: Point,
   wireId: string,
   wireSegmentId: string,
-  segmentPositionFraction: number
+  segmentSplitLength: number
 ) => ({
   type: WIRE_CONNECT_FLOATING_TO_SEGMENT_ACTION,
   payload: {
     floatPoint,
     wireId,
     wireSegmentId,
-    segmentPositionFraction,
+    segmentSplitLength,
   },
 });
 export type WireConnectFloatingToSegmentAction = ReturnType<

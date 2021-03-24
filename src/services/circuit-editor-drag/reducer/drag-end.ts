@@ -201,7 +201,7 @@ function executeWireDrag(
             pin,
             target.wireId,
             target.segmentId,
-            target.segmentPositionFraction
+            target.segmentSplitLength
           )
         );
     }
@@ -228,7 +228,7 @@ function executeWireDrag(
         altTarget.point,
         segmentTarget.wireId,
         segmentTarget.segmentId,
-        segmentTarget.segmentPositionFraction
+        segmentTarget.segmentSplitLength
       )
     );
   }

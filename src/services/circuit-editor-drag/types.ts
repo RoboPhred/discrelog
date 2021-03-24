@@ -36,7 +36,7 @@ export interface CircuitEditorDragWireSegmentTarget {
    * A fractional value indicating the distance between the segment's start and end where
    * the new segment wishes to attach.
    */
-  segmentPositionFraction: number;
+  segmentSplitLength: number;
 }
 
 /**

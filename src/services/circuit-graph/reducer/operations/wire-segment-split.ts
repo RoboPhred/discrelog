@@ -17,7 +17,7 @@ export default function wireSegmentSplit(
   state: CircuitGraphServiceState,
   wireId: string,
   wireSegmentId: string,
-  segmentPositionFraction: number,
+  segmentSplitLength: number,
   rootState: AppState
 ): [CircuitGraphServiceState, string | null] {
   const targetWire = state.wiresByWireId[wireId];
@@ -35,7 +35,7 @@ export default function wireSegmentSplit(
   const lineDir = normalize(pointSubtract(endPos, startPos));
   const segmentJointPos = pointAdd(
     startPos,
-    scale(lineDir, segmentPositionFraction)
+    scale(lineDir, segmentSplitLength)
   );
 
   const segmentJointId = uuidV4();

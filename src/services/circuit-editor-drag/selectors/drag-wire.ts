@@ -93,14 +93,11 @@ export function getDragTargetPoint(
         target.pin.pinId
       );
     case "segment": {
-      const { segmentId, segmentPositionFraction } = target;
+      const { segmentId, segmentSplitLength } = target;
       const startPos = startPositionByWireSegmentId(state, segmentId);
       const endPos = endPositionByWireSegmentId(state, segmentId);
       const lineDir = normalize(pointSubtract(endPos, startPos));
-      const fracPos = pointAdd(
-        startPos,
-        scale(lineDir, segmentPositionFraction)
-      );
+      const fracPos = pointAdd(startPos, scale(lineDir, segmentSplitLength));
       return fracPos;
     }
   }

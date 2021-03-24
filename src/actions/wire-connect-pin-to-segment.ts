@@ -7,10 +7,10 @@ export const connectPinToWireSegment = (
   pin: ElementPin,
   wireId: string,
   wireSegmentId: string,
-  segmentPositionFraction: number
+  segmentSplitLength: number
 ) => ({
   type: WIRE_CONNECT_PIN_TO_SEGMENT_ACTION,
-  payload: { pin, wireId, wireSegmentId, segmentPositionFraction },
+  payload: { pin, wireId, wireSegmentId, segmentSplitLength },
 });
 export type WireConnectPinToSegmentAction = ReturnType<
   typeof connectPinToWireSegment

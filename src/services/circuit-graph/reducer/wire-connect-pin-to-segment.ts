@@ -14,12 +14,7 @@ export default createCircuitGraphReducer((state, action, rootState) => {
     return state;
   }
 
-  const {
-    wireId,
-    wireSegmentId,
-    segmentPositionFraction,
-    pin,
-  } = action.payload;
+  const { wireId, wireSegmentId, segmentSplitLength, pin } = action.payload;
 
   const direction = pinDirectionFromElementPinSelector(
     rootState,
@@ -41,7 +36,7 @@ export default createCircuitGraphReducer((state, action, rootState) => {
     state,
     wireId,
     wireSegmentId,
-    segmentPositionFraction,
+    segmentSplitLength,
     rootState
   );
   state = afterSplitState;
