@@ -32,10 +32,10 @@ export default function wireSegmentSplit(
 
   const startPos = startPositionByWireSegmentId(rootState, wireSegmentId);
   const endPos = endPositionByWireSegmentId(rootState, wireSegmentId);
-  const lineDir = normalize(pointSubtract(endPos, startPos));
+  const lineVector = normalize(pointSubtract(endPos, startPos));
   const segmentJointPos = pointAdd(
     startPos,
-    scale(lineDir, segmentSplitLength)
+    scale(lineVector, segmentSplitLength)
   );
 
   const segmentJointId = uuidV4();

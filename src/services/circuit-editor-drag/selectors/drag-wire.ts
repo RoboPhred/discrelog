@@ -46,6 +46,25 @@ export const dragWireEndTargetByPointSelector = (
 
   // TODO: Check for dropping on wire segments
 
+  if (dragModifierKeys.shiftKey) {
+    // Restrict to ordinals
+    const startPos = dragWireSegmentStartPositionSelector(state);
+    if (startPos) {
+      const lineVector = normalize(pointSubtract(p, startPos));
+      if (Math.abs(lineVector.x) >= 0.5) {
+        p = {
+          x: p.x,
+          y: startPos.y,
+        };
+      } else {
+        p = {
+          x: startPos.x,
+          y: p.y,
+        };
+      }
+    }
+  }
+
   if (!dragModifierKeys.ctrlMetaKey) {
     p = applyGridJointSnapSelector(state, p);
   }
@@ -100,8 +119,8 @@ export function getDragTargetPoint(
       const { segmentId, segmentSplitLength } = target;
       const startPos = startPositionByWireSegmentId(state, segmentId);
       const endPos = endPositionByWireSegmentId(state, segmentId);
-      const lineDir = normalize(pointSubtract(endPos, startPos));
-      const fracPos = pointAdd(startPos, scale(lineDir, segmentSplitLength));
+      const lineVector = normalize(pointSubtract(endPos, startPos));
+      const fracPos = pointAdd(startPos, scale(lineVector, segmentSplitLength));
       return fracPos;
     }
   }

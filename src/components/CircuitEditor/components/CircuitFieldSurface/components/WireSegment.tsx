@@ -8,7 +8,7 @@ import {
   pointAdd,
   pointSubtract,
   scale,
-  snapPoint,
+  snapValue,
 } from "@/geometry";
 import { getModifiers } from "@/modifier-keys";
 
@@ -62,29 +62,28 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
   );
 
   const onMouseMove = (e: React.MouseEvent<SVGLineElement>) => {
-    if (isDragging || isSimActive) {
+    if (isDragging || isSimActive || isMouseGesturePending.current) {
       return;
     }
 
-    if (!isMouseGesturePending.current) {
-      const modifierKeys = getModifiers(e);
-      const p = getCoords({ x: e.pageX, y: e.pageY });
-      const lineDir = normalize(pointSubtract(endPos, startPos));
-      const v = pointSubtract(p, startPos);
-      const d = dotProduct(v, lineDir);
-      const dotPos = pointAdd(startPos, scale(lineDir, d));
+    const modifierKeys = getModifiers(e);
+    const p = getCoords({ x: e.pageX, y: e.pageY });
+    const lineVector = normalize(pointSubtract(endPos, startPos));
+    const v = pointSubtract(p, startPos);
+    const d = dotProduct(v, lineVector);
+    const dotPos = pointAdd(startPos, scale(lineVector, d));
 
-      if (!modifierKeys.ctrlMetaKey) {
-        // If snapping is enabled, snap to the axis the line follows.
-        if (Math.abs(lineDir.x) === 1) {
-          dotPos.x = Math.round(dotPos.x / snap) * snap;
-        }
-        if (Math.abs(lineDir.y) === 1) {
-          dotPos.y = Math.round(dotPos.y / snap) * snap;
-        }
+    if (!modifierKeys.ctrlMetaKey) {
+      // If snapping is enabled, snap to the axis the line follows.
+      if (Math.abs(lineVector.x) === 1) {
+        dotPos.x = snapValue(dotPos.x, snap);
       }
-      setInsertJointPos(dotPos);
+      if (Math.abs(lineVector.y) === 1) {
+        dotPos.y = snapValue(dotPos.y, snap);
+      }
     }
+
+    setInsertJointPos(dotPos);
   };
 
   const onMouseLeave = () => {

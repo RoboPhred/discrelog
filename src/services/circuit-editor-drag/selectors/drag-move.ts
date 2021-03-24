@@ -1,6 +1,12 @@
 import { AppState } from "@/store";
 
-import { Point, pointEquals, pointSubtract } from "@/geometry";
+import {
+  normalize,
+  Point,
+  pointEquals,
+  pointSubtract,
+  snapPoint,
+} from "@/geometry";
 
 import { selectedElementIdsSelector } from "@/services/selection/selectors/selection";
 
@@ -27,10 +33,25 @@ export const dragMoveOffsetSelector = (state: AppState) => {
     return null;
   }
 
-  const offset = pointSubtract(dragEnd, dragStart);
+  let offset = pointSubtract(dragEnd, dragStart);
+
+  if (dragModifierKeys.shiftKey) {
+    const lineVector = normalize(pointSubtract(dragEnd, dragStart));
+    if (Math.abs(lineVector.x) >= 0.5) {
+      offset = {
+        x: offset.x,
+        y: 0,
+      };
+    } else {
+      offset = {
+        x: 0,
+        y: offset.y,
+      };
+    }
+  }
+
   if (!dragModifierKeys.ctrlMetaKey) {
-    offset.x = Math.round(offset.x / gridSnap) * gridSnap;
-    offset.y = Math.round(offset.y / gridSnap) * gridSnap;
+    offset = snapPoint(offset, gridSnap);
   }
 
   if (!cachedDragMoveOffset || !pointEquals(offset, cachedDragMoveOffset)) {

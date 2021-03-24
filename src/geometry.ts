@@ -26,10 +26,13 @@ export function boundsToRect(bounds: Bounds): Rectangle {
   };
 }
 
+export function snapValue(v: number, snap: number) {
+  return Math.round(v / snap) * snap;
+}
 export function snapPoint(p: Point, snap: number) {
   return {
-    x: Math.round(p.x / snap) * snap,
-    y: Math.round(p.y / snap) * snap,
+    x: snapValue(p.x, snap),
+    y: snapValue(p.y, snap),
   };
 }
 

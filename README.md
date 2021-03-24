@@ -26,6 +26,8 @@ Right click in the circuit list (right hand side) to create new circuits. Circui
 and output pins on the IC.
 Double-click circuits in the circuit list to rename them. Right click them for more options.
 
+When moving elements or wire joints, holding shift will restrict the item to drag on a horizontal or vertical axis, and holding ctrl will disable grid snapping.
+
 #### Running
 
 Press the play button in the top right to compile and run your circuit. During operation, you can click on buttons to toggle their state.
