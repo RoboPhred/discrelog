@@ -8,6 +8,7 @@ import {
   pointAdd,
   pointSubtract,
   scale,
+  snapPoint,
 } from "@/geometry";
 import { getModifiers } from "@/modifier-keys";
 
@@ -20,12 +21,14 @@ import {
 } from "@/services/circuit-graph/selectors/wire-positions";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 import { isDraggingSelector } from "@/services/circuit-editor-drag/selectors/drag";
+import { wireSegmentTypeFromSegmentIdSelector } from "@/services/circuit-graph/selectors/wires";
+import { gridJointSnapSelector } from "@/services/circuit-editor-drag/selectors/snap";
+
 import { circuitEditorDragStartWireSegment } from "@/actions/circuit-editor-drag-start-wire-segment";
 
 import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
 
 import { useMouseCoords } from "../hooks/useMouseCoords";
-import { wireSegmentTypeFromSegmentIdSelector } from "@/services/circuit-graph/selectors/wires";
 
 export interface WireSegmentProps {
   wireId: string;
@@ -45,6 +48,8 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
   const isSimActive = useSelector(isSimActiveSelector);
   const isDragging = useSelector(isDraggingSelector);
 
+  const snap = useSelector(gridJointSnapSelector);
+
   const segmentType = useSelector((state) =>
     wireSegmentTypeFromSegmentIdSelector(state, wireSegmentId)
   );
@@ -62,12 +67,22 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
     }
 
     if (!isMouseGesturePending.current) {
+      const modifierKeys = getModifiers(e);
       const p = getCoords({ x: e.pageX, y: e.pageY });
-      // TODO: Snap to grid.
       const lineDir = normalize(pointSubtract(endPos, startPos));
       const v = pointSubtract(p, startPos);
       const d = dotProduct(v, lineDir);
       const dotPos = pointAdd(startPos, scale(lineDir, d));
+
+      if (!modifierKeys.ctrlMetaKey) {
+        // If snapping is enabled, snap to the axis the line follows.
+        if (Math.abs(lineDir.x) === 1) {
+          dotPos.x = Math.round(dotPos.x / snap) * snap;
+        }
+        if (Math.abs(lineDir.y) === 1) {
+          dotPos.y = Math.round(dotPos.y / snap) * snap;
+        }
+      }
       setInsertJointPos(dotPos);
     }
   };

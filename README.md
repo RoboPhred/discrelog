@@ -12,15 +12,19 @@ http://discrelog.io
 
 Drag circuit elements from the elements tray to the field to create them.
 Click an element to select it. Click-drag an element to move it, and click-drag the field to select multiple elements.
+Elements can be given names on the right click menu. By default, elements with names will display their name on the field.
+Right click elements for more options.
 
 Click and drag between pins to connect them. An output pin (circular) can connect to multiple input pins (arcs), but each input pin may only be connected to one output pin.
 
-Click+drag on wires to add wire joints, which can be used to route and organize wires. Click or drag-select joints to select them.
+Click-drag on wires to add wire joints, which can be used to route and organize wires. Click or drag-select joints to select them.
+Ctrl-click a wire to drag a new wire off of it.
 
 Click on wires (not wire joints) to select the entire wire.
 
 Right click in the circuit list (right hand side) to create new circuits. Circuits will appear as ICs for use in other circuits. Use input and output pin elements to create corresponding input
 and output pins on the IC.
+Double-click circuits in the circuit list to rename them. Right click them for more options.
 
 #### Running
 

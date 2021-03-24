@@ -1,6 +1,6 @@
 import { AnyAction } from "redux";
 
-import { normalizeRectangle, Point, pointSubtract } from "@/geometry";
+import { normalizeRectangle, pointSubtract } from "@/geometry";
 import { fpSet } from "@/utils";
 import { getSelectMode } from "@/selection-mode";
 
