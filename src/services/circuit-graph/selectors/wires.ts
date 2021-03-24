@@ -38,32 +38,14 @@ export const wireSegmentIdsFromWireIdSelector = createCircuitGraphSelector(
   }
 );
 
-// TODO: cache busting
-const jointIdsByWireIdCache = new Map<
-  string,
-  { segmentIds: string[]; jointIds: string[] }
->();
-
 export const wireJointIdsFromWireIdSelector = createCircuitGraphSelector(
   (s: CircuitGraphServiceState, wireId: string) => {
     const wire = s.wiresByWireId[wireId];
     if (!wire) {
       return EmptyStringArray;
     }
-    const segmentIds = wire.wireSegmentIds;
-    const cached = jointIdsByWireIdCache.get(wireId);
 
-    if (!cached || cached.segmentIds !== segmentIds) {
-      let jointIds = flatMap(segmentIds, (segmentId) =>
-        getSegmentJoints(s.wireSegmentsById[segmentId])
-      );
-      jointIds = uniq(jointIds);
-      jointIdsByWireIdCache.set(wireId, { segmentIds, jointIds });
-      return jointIds;
-    }
-
-    return cached.jointIds;
-  }
+    return wire.wireJointIds;
 );
 
 export const wireSegmentTypeFromSegmentIdSelector = createCircuitGraphSelector(
