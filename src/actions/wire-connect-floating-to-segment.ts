@@ -1,3 +1,5 @@
+import { AnyAction } from "redux";
+
 import { Point } from "@/geometry";
 
 export const WIRE_CONNECT_FLOATING_TO_SEGMENT_ACTION = "@wire/connect/floating-to-segment" as const;
@@ -8,5 +10,18 @@ export const connectFloatingToWireSegment = (
   segmentPositionFraction: number
 ) => ({
   type: WIRE_CONNECT_FLOATING_TO_SEGMENT_ACTION,
-  payload: { floatPoint, wireId, wireSegmentId, segmentPositionFraction },
+  payload: {
+    floatPoint,
+    wireId,
+    wireSegmentId,
+    segmentPositionFraction,
+  },
 });
+export type WireConnectFloatingToSegmentAction = ReturnType<
+  typeof connectFloatingToWireSegment
+>;
+export function isWireConnectFloatingToSegmentAction(
+  action: AnyAction
+): action is WireConnectFloatingToSegmentAction {
+  return action.type === WIRE_CONNECT_FLOATING_TO_SEGMENT_ACTION;
+}

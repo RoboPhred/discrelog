@@ -3,8 +3,9 @@ import values from "lodash/values";
 
 import { Rectangle, union } from "@/geometry";
 
+import { wireJointPositionByJointIdSelector } from "@/services/circuit-graph/selectors/wire-positions";
+
 import { elementRectsByIdSelector } from "./element-bounds";
-import { wireJointPositionByJointIdSelector } from "./wires";
 
 const MinFieldRect: Readonly<Rectangle> = Object.freeze({
   p1: {

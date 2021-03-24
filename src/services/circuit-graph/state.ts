@@ -1,3 +1,4 @@
+import { Point } from "@/geometry";
 import { ROOT_CIRCUIT_ID } from "../circuits/constants";
 
 import { Element, Wire, WireSegment } from "./types";
@@ -22,6 +23,13 @@ export interface CircuitGraphServiceState {
    * A map of wire segments by wire segment id.
    */
   wireSegmentsById: Record<string, WireSegment>;
+
+  // FIXME: It ended up being simplier to track positions in graph...
+  // Move all layout to graph, and find a better name for graph.
+  /**
+   * The positions of wire joints.
+   */
+  wireJointPositionsByJointId: Record<string, Point>;
 }
 
 const _defaultState: CircuitGraphServiceState = {
@@ -31,6 +39,7 @@ const _defaultState: CircuitGraphServiceState = {
   elementsById: {},
   wiresByWireId: {},
   wireSegmentsById: {},
+  wireJointPositionsByJointId: {},
 };
 
 export const defaultCircuitGraphServiceState = Object.freeze(_defaultState);

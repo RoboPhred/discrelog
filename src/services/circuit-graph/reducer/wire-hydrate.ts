@@ -1,3 +1,5 @@
+import { Point } from "@/geometry";
+
 import { isHydrateWireAction } from "@/actions/wire-hydrate";
 
 import { WireSegment } from "../types";
@@ -8,12 +10,18 @@ export default createCircuitGraphReducer((state, action) => {
     return state;
   }
 
-  const { wireId, wireSegments } = action.payload;
+  const { wireId, wireSegments, wireJoints } = action.payload;
 
   const newSegments: Record<string, WireSegment> = {};
   for (const segment of wireSegments) {
     const { wireSegmentId, ...wireSegment } = segment;
     newSegments[wireSegmentId] = wireSegment;
+  }
+
+  const newJoints: Record<string, Point> = {};
+  for (const joint of wireJoints) {
+    const { jointId, ...point } = joint;
+    newJoints[jointId] = point;
   }
 
   return {
@@ -27,6 +35,10 @@ export default createCircuitGraphReducer((state, action) => {
     wireSegmentsById: {
       ...state.wireSegmentsById,
       ...newSegments,
+    },
+    wireJointPositionsByJointId: {
+      ...state.wireJointPositionsByJointId,
+      ...newJoints,
     },
   };
 });

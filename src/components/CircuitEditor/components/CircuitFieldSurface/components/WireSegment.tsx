@@ -16,7 +16,7 @@ import useSelector from "@/hooks/useSelector";
 import {
   endPositionByWireSegmentId,
   startPositionByWireSegmentId,
-} from "@/services/circuit-layout/selectors/wires";
+} from "@/services/circuit-graph/selectors/wire-positions";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 import { isDraggingSelector } from "@/services/circuit-editor-drag/selectors/drag";
 import { circuitEditorDragStartWireSegment } from "@/actions/circuit-editor-drag-start-wire-segment";

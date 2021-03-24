@@ -8,13 +8,13 @@ import {
 } from "@/services/circuit-layout/selectors/element-pin-positions";
 import { circuitIdForEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
 import { ElementPin } from "@/services/circuit-graph/types";
-
-import { CircuitEditorDragWireTarget } from "../types";
-import { applyGridJointSnapSelector } from "./snap";
 import {
   endPositionByWireSegmentId,
   startPositionByWireSegmentId,
-} from "@/services/circuit-layout/selectors/wires";
+} from "@/services/circuit-graph/selectors/wire-positions";
+
+import { CircuitEditorDragWireTarget } from "../types";
+import { applyGridJointSnapSelector } from "./snap";
 
 /**
  * Gets the drag target at the given point.

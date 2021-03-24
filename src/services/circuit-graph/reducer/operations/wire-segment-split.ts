@@ -1,29 +1,44 @@
-import pick from "lodash/pick";
 import { v4 as uuidV4 } from "uuid";
+import pick from "lodash/pick";
 
-import { isWireSegmentInsertJointAction } from "@/actions/wire-segment-insert-joint";
+import { normalize, pointAdd, pointSubtract, scale } from "@/geometry";
 
-import { WireSegment } from "../types";
-import { createCircuitGraphReducer } from "../utils";
+import { AppState } from "@/store";
 
-export default createCircuitGraphReducer((state, action) => {
-  if (!isWireSegmentInsertJointAction(action)) {
-    return state;
-  }
+import {
+  endPositionByWireSegmentId,
+  startPositionByWireSegmentId,
+} from "../../selectors/wire-positions";
 
-  const { wireId, wireSegmentId, jointPos } = action.payload;
+import { CircuitGraphServiceState } from "../../state";
+import { WireSegment } from "../../types";
 
+export default function wireSegmentSplit(
+  state: CircuitGraphServiceState,
+  wireId: string,
+  wireSegmentId: string,
+  segmentPositionFraction: number,
+  rootState: AppState
+): [CircuitGraphServiceState, string | null] {
   const targetWire = state.wiresByWireId[wireId];
   if (!targetWire) {
-    return state;
+    return [state, null];
   }
 
   const targetSegment = state.wireSegmentsById[wireSegmentId];
   if (!targetSegment) {
-    return state;
+    return [state, null];
   }
 
-  const jointId = uuidV4();
+  const startPos = startPositionByWireSegmentId(rootState, wireSegmentId);
+  const endPos = endPositionByWireSegmentId(rootState, wireSegmentId);
+  const lineDir = normalize(pointSubtract(endPos, startPos));
+  const segmentJointPos = pointAdd(
+    startPos,
+    scale(lineDir, segmentPositionFraction)
+  );
+
+  const segmentJointId = uuidV4();
 
   const firstSegmentId = uuidV4();
   const secondSegmentId = uuidV4();
@@ -35,11 +50,11 @@ export default createCircuitGraphReducer((state, action) => {
         firstSegment = {
           type: "bridge",
           jointAId: targetSegment.jointAId,
-          jointBId: jointId,
+          jointBId: segmentJointId,
         };
         secondSegment = {
           type: "bridge",
-          jointAId: jointId,
+          jointAId: segmentJointId,
           jointBId: targetSegment.jointBId,
         };
       }
@@ -49,11 +64,11 @@ export default createCircuitGraphReducer((state, action) => {
       {
         firstSegment = {
           ...targetSegment,
-          jointId,
+          jointId: segmentJointId,
         };
         secondSegment = {
           type: "bridge",
-          jointAId: jointId,
+          jointAId: segmentJointId,
           jointBId: targetSegment.jointId,
         };
       }
@@ -64,31 +79,35 @@ export default createCircuitGraphReducer((state, action) => {
         firstSegment = {
           type: "output",
           outputPin: targetSegment.outputPin,
-          jointId,
+          jointId: segmentJointId,
           lineId,
         };
         secondSegment = {
           type: "input",
           inputPin: targetSegment.inputPin,
-          jointId,
+          jointId: segmentJointId,
           lineId,
         };
       }
       break;
     default:
-      return state;
+      return [state, null];
   }
 
   // Remove the modified segment, it is to be replaced with the two new segments.
-  const wireSegmentsById = pick(
+  const wireSegmentsById: typeof state.wireSegmentsById = pick(
     state.wireSegmentsById,
     Object.keys(state.wireSegmentsById).filter((id) => id !== wireSegmentId)
   );
   wireSegmentsById[firstSegmentId] = firstSegment;
   wireSegmentsById[secondSegmentId] = secondSegment;
 
-  // Add the segment ids to the wire.
-  const wiresByWireId = {
+  const wireJointPositionsByJointId: typeof state.wireJointPositionsByJointId = {
+    ...state.wireJointPositionsByJointId,
+    [segmentJointId]: segmentJointPos,
+  };
+
+  const wiresByWireId: typeof state.wiresByWireId = {
     ...state.wiresByWireId,
     [wireId]: {
       ...targetWire,
@@ -100,15 +119,12 @@ export default createCircuitGraphReducer((state, action) => {
     },
   };
 
-  const wireJointPositionsByJointId = {
-    ...state.wireJointPositionsByJointId,
-    [jointId]: jointPos,
-  };
-
-  return {
+  state = {
     ...state,
-    wireSegmentsById,
     wiresByWireId,
+    wireSegmentsById,
     wireJointPositionsByJointId,
   };
-});
+
+  return [state, segmentJointId];
+}

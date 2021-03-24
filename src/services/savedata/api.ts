@@ -27,7 +27,7 @@ import {
   wireSegmentIdsByWireIdSelector,
 } from "../circuit-graph/selectors/wires";
 import { elementPositionFromElementIdSelector } from "../circuit-layout/selectors/element-positions";
-import { wireJointPositionByJointIdSelector } from "../circuit-layout/selectors/wires";
+import { wireJointPositionByJointIdSelector } from "../circuit-graph/selectors/wire-positions";
 import {
   circuitIdsSelector,
   circuitNameFromIdSelector,

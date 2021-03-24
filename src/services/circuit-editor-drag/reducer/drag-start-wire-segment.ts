@@ -5,7 +5,7 @@ import { isCircuitEditorDragStartWireSegmentAction } from "@/actions/circuit-edi
 import {
   endPositionByWireSegmentId,
   startPositionByWireSegmentId,
-} from "@/services/circuit-layout/selectors/wires";
+} from "@/services/circuit-graph/selectors/wire-positions";
 
 import { createCircuitEditorDragReducer } from "../utils";
 
