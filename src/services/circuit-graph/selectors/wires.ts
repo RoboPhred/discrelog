@@ -127,3 +127,30 @@ export const pinIsWiredSelector = createCircuitGraphSelector(
     return false;
   }
 );
+
+export const circuitIdForWireIdSelector = createCircuitGraphSelector(
+  (s: CircuitGraphServiceState, wireId: string) => {
+    for (const circuitId of Object.keys(s.wireIdsByCircuitId)) {
+      if (s.wireIdsByCircuitId[circuitId].indexOf(wireId) !== -1) {
+        return circuitId;
+      }
+    }
+
+    return null;
+  }
+);
+
+/**
+ * Gets a list of wire joint ids in a given circuit.
+ * WARN: Not react safe.
+ */
+export const wireJointIdsForCircuitIdSelector = createCircuitGraphSelector(
+  (s: CircuitGraphServiceState, circuitId: string) => {
+    const wireIds = s.wireIdsByCircuitId[circuitId];
+    const jointIds = flatMap(
+      wireIds,
+      (wireId) => s.wiresByWireId[wireId].wireJointIds
+    );
+    return jointIds;
+  }
+);

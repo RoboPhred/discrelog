@@ -10,5 +10,6 @@ export default createSelectionReducer((state, action) => {
   return {
     ...state,
     selectedElementIds: [],
+    selectedJointIds: [],
   };
 });

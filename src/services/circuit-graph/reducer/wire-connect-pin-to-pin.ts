@@ -1,4 +1,8 @@
+import { v4 as uuidV4 } from "uuid";
+
 import { isWireConnectPinToPinAction } from "@/actions/wire-connect-pin-to-pin";
+
+import { circuitIdFromElementIdSelector } from "../selectors/elements";
 
 import { pinDirectionFromElementPinSelector } from "../selectors/pins";
 import { pinIsWiredSelector } from "../selectors/wires";
@@ -10,7 +14,9 @@ export default createCircuitGraphReducer((state, action, rootState) => {
     return state;
   }
 
-  const { pin1, pin2, segmentId, wireId } = action.payload;
+  const { pin1, pin2, newWireId } = action.payload;
+
+  const newSegmentId = uuidV4();
 
   const pin1Direction = pinDirectionFromElementPinSelector(
     rootState,
@@ -26,6 +32,12 @@ export default createCircuitGraphReducer((state, action, rootState) => {
     return state;
   }
 
+  const pin1Circuit = circuitIdFromElementIdSelector(rootState, pin1.elementId);
+  const pin2Circuit = circuitIdFromElementIdSelector(rootState, pin2.elementId);
+  if (!pin1Circuit || pin1Circuit !== pin2Circuit) {
+    return state;
+  }
+
   const inputPin = pin1Direction === "input" ? pin1 : pin2;
   const outputPin = pin1Direction === "output" ? pin1 : pin2;
   if (pinIsWiredSelector(rootState, inputPin.elementId, inputPin.pinId)) {
@@ -34,15 +46,19 @@ export default createCircuitGraphReducer((state, action, rootState) => {
 
   return {
     ...state,
+    wireIdsByCircuitId: {
+      [pin1Circuit]: [...state.wireIdsByCircuitId[pin1Circuit], newWireId],
+    },
     wiresByWireId: {
       ...state.wiresByWireId,
-      [wireId]: {
-        wireSegmentIds: [segmentId],
+      [newWireId]: {
+        wireSegmentIds: [newSegmentId],
+        wireJointIds: [],
       },
     },
     wireSegmentsById: {
       ...state.wireSegmentsById,
-      [segmentId]: {
+      [newSegmentId]: {
         type: "input-output",
         inputPin,
         outputPin,

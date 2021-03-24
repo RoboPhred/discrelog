@@ -33,7 +33,8 @@ export default function wireSegmentDelete(
     // up again, but could cause problems if we connect inputs then try to bridge back.
   }
 
-  // At this point, the segment is a connection from an element to the rest of the wire.
+  // At this point, the segment is a connection from an element pin to the rest of the wire.
+  // There are no joints to delete, as the single joint will be used by the other wire segment.
 
   return {
     ...state,

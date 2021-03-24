@@ -1,23 +1,21 @@
+import { isSelectJointsAction } from "@/actions/select-joints";
 import { combineExtraniousSelection, combineSelection } from "@/selection-mode";
-
-import { isSelectElementsAction } from "@/actions/select-elements";
 
 import { createSelectionReducer } from "../utils";
 
 export default createSelectionReducer((state, action) => {
-  if (!isSelectElementsAction(action)) {
+  if (!isSelectJointsAction(action)) {
     return state;
   }
 
-  const { elementIds, mode } = action.payload;
+  const { jointIds, mode } = action.payload;
 
   return {
     ...state,
-    selectedElementIds: combineSelection(
+    selectedElementIds: combineExtraniousSelection(
       state.selectedElementIds,
-      elementIds,
       mode
     ),
-    selectedJointIds: combineExtraniousSelection(state.selectedJointIds, mode),
+    selectedJointIds: combineSelection(state.selectedJointIds, jointIds, mode),
   };
 });

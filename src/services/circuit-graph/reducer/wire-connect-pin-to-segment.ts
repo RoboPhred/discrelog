@@ -88,16 +88,17 @@ export default createCircuitGraphReducer((state, action, rootState) => {
   };
 
   // Add the segment ids to the wire.
+  const wire = state.wiresByWireId[wireId];
   const wiresByWireId: typeof state.wiresByWireId = {
     ...state.wiresByWireId,
     [wireId]: {
-      ...state.wiresByWireId[wireId],
-      wireSegmentIds: [
-        ...state.wiresByWireId[wireId].wireSegmentIds,
-        pinSegmentId,
-      ],
+      ...wire,
+      wireSegmentIds: [...wire.wireSegmentIds, pinSegmentId],
+      wireJointIds: [...wire.wireJointIds, pinSegmentId],
     },
   };
+
+  // Segment is from an existing wire so we do not need to set the circuit id for the wire.
 
   return {
     ...state,

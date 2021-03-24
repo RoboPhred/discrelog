@@ -39,6 +39,7 @@ export interface ElementConnection {
 
 export interface Wire {
   wireSegmentIds: string[];
+  wireJointIds: string[];
 }
 
 /**

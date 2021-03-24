@@ -16,6 +16,11 @@ export const isElementSelectedFromElementIdSelector = createSelectionSelector(
     s.selectedElementIds.indexOf(elementId) !== -1
 );
 
+export const isJointSelectedFromJointIdSelector = createSelectionSelector(
+  (s: SelectionServiceState, jointId: string) =>
+    s.selectedJointIds.indexOf(jointId) !== -1
+);
+
 export const selectedElementsByIdSelector = createSelector(
   elementsByElementIdSelector,
   selectedElementIdsSelector,

@@ -12,7 +12,8 @@ export default function wireDelete(
     return state;
   }
 
-  const { wireSegmentIds } = wire;
+  const { wireSegmentIds, wireJointIds } = wire;
+
   return {
     ...state,
     wireSegmentsById: pick(
@@ -22,6 +23,10 @@ export default function wireDelete(
     wiresByWireId: pick(
       state.wiresByWireId,
       Object.keys(state.wiresByWireId).filter((x) => x !== removedWireId)
+    ),
+    wireJointPositionsByJointId: pick(
+      state.wireJointPositionsByJointId,
+      difference(Object.keys(state.wireJointPositionsByJointId), wireJointIds)
     ),
   };
 }

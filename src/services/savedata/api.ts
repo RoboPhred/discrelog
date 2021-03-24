@@ -1,11 +1,4 @@
-import {
-  SaveCircuit,
-  SaveData,
-  SaveElement,
-  SaveWire,
-  SaveWireSegment,
-  validateSaveData,
-} from "./types";
+import { isTruthy } from "@/utils";
 
 import { AppState, defaultAppState } from "@/store";
 import rootReducer from "@/store/reducer";
@@ -21,6 +14,7 @@ import {
 } from "../circuit-graph/selectors/elements";
 import { wireSegmentHasInput } from "../circuit-graph/types";
 import {
+  circuitIdForWireIdSelector,
   wireIdsSelector,
   wireJointIdsByWireIdSelector,
   wireSegmentByWireSegmentIdSelector,
@@ -33,6 +27,15 @@ import {
   circuitNameFromIdSelector,
 } from "../circuit-properties/selectors/circuits";
 import { ROOT_CIRCUIT_ID } from "../circuits/constants";
+
+import {
+  SaveCircuit,
+  SaveData,
+  SaveElement,
+  SaveWire,
+  SaveWireSegment,
+  validateSaveData,
+} from "./types";
 
 import { SaveFormatError } from "./errors";
 
@@ -61,30 +64,37 @@ export function createSave(state: AppState): SaveData {
       };
       return saveElement;
     }),
-    wires: wireIdsSelector(state).map((wireId) => {
-      const jointIds = wireJointIdsByWireIdSelector(state, wireId);
-      const saveWire: SaveWire = {
-        wireId,
-        wireSegments: wireSegmentIdsFromWireIdSelector(state, wireId).map(
-          (wireSegmentId) => {
-            const segment = wireSegmentByWireSegmentIdSelector(
-              state,
-              wireSegmentId
-            )!;
-            const saveWireSegment: SaveWireSegment = {
-              wireSegmentId,
-              ...segment,
-            };
-            return saveWireSegment;
-          }
-        ),
-        wireJoints: jointIds.map((jointId) => ({
-          jointId,
-          ...jointPositionsByJointId[jointId],
-        })),
-      };
-      return saveWire;
-    }),
+    wires: wireIdsSelector(state)
+      .map((wireId) => {
+        const jointIds = wireJointIdsByWireIdSelector(state, wireId);
+        const circuitId = circuitIdForWireIdSelector(state, wireId);
+        if (!circuitId) {
+          return null;
+        }
+        const saveWire: SaveWire = {
+          wireId,
+          circuitId,
+          wireSegments: wireSegmentIdsFromWireIdSelector(state, wireId).map(
+            (wireSegmentId) => {
+              const segment = wireSegmentByWireSegmentIdSelector(
+                state,
+                wireSegmentId
+              )!;
+              const saveWireSegment: SaveWireSegment = {
+                wireSegmentId,
+                ...segment,
+              };
+              return saveWireSegment;
+            }
+          ),
+          wireJoints: jointIds.map((jointId) => ({
+            jointId,
+            ...jointPositionsByJointId[jointId],
+          })),
+        };
+        return saveWire;
+      })
+      .filter(isTruthy),
   };
 }
 

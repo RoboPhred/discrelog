@@ -15,6 +15,11 @@ export interface CircuitGraphServiceState {
   elementsById: Record<string, Element>;
 
   /**
+   * Arrays of wire ids contained in a circuit by the containing circuit id.
+   */
+  wireIdsByCircuitId: Record<string, string[]>;
+
+  /**
    * A map of wire data by the wire id.
    */
   wiresByWireId: Record<string, Wire>;
@@ -37,6 +42,7 @@ const _defaultState: CircuitGraphServiceState = {
     [ROOT_CIRCUIT_ID]: [],
   },
   elementsById: {},
+  wireIdsByCircuitId: {},
   wiresByWireId: {},
   wireSegmentsById: {},
   wireJointPositionsByJointId: {},

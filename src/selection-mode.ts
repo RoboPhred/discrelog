@@ -56,3 +56,16 @@ export function combineSelection(
 
   return chosenIds;
 }
+
+export function combineExtraniousSelection(
+  selectedIds: string[],
+  mode: SelectionMode
+) {
+  switch (mode) {
+    case "append":
+    case "remove":
+      return selectedIds;
+  }
+
+  return [];
+}

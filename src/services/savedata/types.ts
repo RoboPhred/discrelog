@@ -26,6 +26,7 @@ export interface SaveWireJoint extends Point {
 
 export interface SaveWire {
   wireId: string;
+  circuitId: string;
   wireSegments: SaveWireSegment[];
   wireJoints: SaveWireJoint[];
 }

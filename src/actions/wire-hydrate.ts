@@ -7,6 +7,7 @@ import { WireSegment } from "@/services/circuit-graph/types";
 export const WIRE_HYDRATE_ACTION = "@wire/hydrate" as const;
 export interface HydrateWireSettings {
   wireId: string;
+  circuitId: string;
   wireSegments: (WireSegment & { wireSegmentId: string })[];
   wireJoints: (Point & { jointId: string })[];
 }

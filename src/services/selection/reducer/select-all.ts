@@ -2,6 +2,7 @@ import { isSelectAllAction } from "@/actions/select-all";
 
 import { elementIdsFromCircuitIdSelector } from "@/services/circuit-graph/selectors/elements";
 import { activeCircuitIdSelector } from "@/services/circuit-editors/selectors/editor";
+import { wireJointIdsForCircuitIdSelector } from "@/services/circuit-graph/selectors/wires";
 
 import { createSelectionReducer } from "../utils";
 
@@ -16,9 +17,11 @@ export default createSelectionReducer((state, action, appState) => {
   }
 
   const elementIds = elementIdsFromCircuitIdSelector(appState, circuitId);
+  const jointIds = wireJointIdsForCircuitIdSelector(appState, circuitId);
 
   return {
     ...state,
     selectedElementIds: elementIds,
+    selectedJointIds: jointIds,
   };
 });

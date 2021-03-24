@@ -116,6 +116,7 @@ export default function wireSegmentSplit(
         firstSegmentId,
         secondSegmentId,
       ],
+      wireJointIds: [...targetWire.wireJointIds, segmentJointId],
     },
   };
 

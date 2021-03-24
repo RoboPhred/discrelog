@@ -9,8 +9,7 @@ export const connectPinToPin = (pin1: ElementPin, pin2: ElementPin) => ({
   payload: {
     pin1,
     pin2,
-    wireId: uuidV4(),
-    segmentId: uuidV4(),
+    newWireId: uuidV4(),
   },
 });
 export type WireConnectPinToPinAction = ReturnType<typeof connectPinToPin>;

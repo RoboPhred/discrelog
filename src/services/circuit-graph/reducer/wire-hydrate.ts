@@ -10,7 +10,7 @@ export default createCircuitGraphReducer((state, action) => {
     return state;
   }
 
-  const { wireId, wireSegments, wireJoints } = action.payload;
+  const { wireId, circuitId, wireSegments, wireJoints } = action.payload;
 
   const newSegments: Record<string, WireSegment> = {};
   for (const segment of wireSegments) {
@@ -26,10 +26,15 @@ export default createCircuitGraphReducer((state, action) => {
 
   return {
     ...state,
+    wireIdsByCircuitId: {
+      ...state.wireIdsByCircuitId,
+      [circuitId]: [...state.wireIdsByCircuitId[circuitId], wireId],
+    },
     wiresByWireId: {
       ...state.wiresByWireId,
       [wireId]: {
-        wireSegmentIds: wireSegments.map((x) => x.wireSegmentId),
+        wireSegmentIds: Object.keys(newSegments),
+        wireJointIds: Object.keys(newJoints),
       },
     },
     wireSegmentsById: {
