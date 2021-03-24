@@ -24,7 +24,7 @@ import {
   wireIdsSelector,
   wireJointIdsByWireIdSelector,
   wireSegmentByWireSegmentIdSelector,
-  wireSegmentIdsByWireIdSelector,
+  wireSegmentIdsFromWireIdSelector,
 } from "../circuit-graph/selectors/wires";
 import { elementPositionFromElementIdSelector } from "../circuit-layout/selectors/element-positions";
 import { wireJointPositionByJointIdSelector } from "../circuit-graph/selectors/wire-positions";
@@ -65,7 +65,7 @@ export function createSave(state: AppState): SaveData {
       const jointIds = wireJointIdsByWireIdSelector(state, wireId);
       const saveWire: SaveWire = {
         wireId,
-        wireSegments: wireSegmentIdsByWireIdSelector(state, wireId).map(
+        wireSegments: wireSegmentIdsFromWireIdSelector(state, wireId).map(
           (wireSegmentId) => {
             const segment = wireSegmentByWireSegmentIdSelector(
               state,

@@ -27,7 +27,7 @@ export const wireSegmentsSelector = createCircuitGraphSelector(
 );
 
 const EmptyWireSegmentIds = Object.freeze([] as string[]);
-export const wireSegmentIdsByWireIdSelector = createCircuitGraphSelector(
+export const wireSegmentIdsFromWireIdSelector = createCircuitGraphSelector(
   (s: CircuitGraphServiceState, wireId: string) => {
     const wire = s.wiresByWireId[wireId];
     if (!wire) {
@@ -37,9 +37,19 @@ export const wireSegmentIdsByWireIdSelector = createCircuitGraphSelector(
   }
 );
 
+export const wireSegmentTypeFromSegmentIdSelector = createCircuitGraphSelector(
+  (s: CircuitGraphServiceState, segmentId: string) => {
+    const segment = s.wireSegmentsById[segmentId];
+    if (!segment) {
+      return null;
+    }
+    return segment.type;
+  }
+);
+
 export const wireJointIdsByWireIdSelector = createCircuitGraphSelector(
   (s: CircuitGraphServiceState, wireId: string) => {
-    const segmentIds = wireSegmentIdsByWireIdSelector.local(s, wireId);
+    const segmentIds = wireSegmentIdsFromWireIdSelector.local(s, wireId);
     const jointIds = flatMap(segmentIds, (segmentId) => {
       const segment = wireSegmentByWireSegmentIdSelector.local(s, segmentId);
       switch (segment.type) {

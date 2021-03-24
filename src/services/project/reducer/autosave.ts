@@ -19,6 +19,8 @@ export default reducerPriority(
     }
 
     // FIXME: Side effect.  Should be a saga.
+    // FIXME: This saves while loading a save.  Suppress storing autosaves
+    //  while load is in progress.
     const save = createSave(state);
     storeAutosave(save);
 

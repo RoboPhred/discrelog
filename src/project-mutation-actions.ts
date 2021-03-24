@@ -21,7 +21,11 @@ import { ACTION_REDO } from "@/actions/redo";
 import { ACTION_PROJECT_NEW } from "@/actions/project-new";
 import { ACTION_PROJECT_RECEIVE } from "@/actions/project-receive";
 
+import { WIRE_CONNECT_FLOATING_TO_SEGMENT_ACTION } from "@/actions/wire-connect-floating-to-segment";
+import { WIRE_CONNECT_PIN_TO_FLOATING_ACTION } from "@/actions/wire-connect-pin-to-floating";
 import { WIRE_CONNECT_PIN_TO_PIN_ACTION } from "@/actions/wire-connect-pin-to-pin";
+import { WIRE_CONNECT_PIN_TO_SEGMENT_ACTION } from "@/actions/wire-connect-pin-to-segment";
+import { WIRE_HYDRATE_ACTION } from "@/actions/wire-hydrate";
 import { WIRE_SEGMENT_INSERT_JOINT_ACTION } from "@/actions/wire-segment-insert-joint";
 
 export const PROJECT_MUTATION_ACTIONS = [
@@ -40,7 +44,11 @@ export const PROJECT_MUTATION_ACTIONS = [
   ACTION_UNDO,
   ACTION_REDO,
 
+  WIRE_CONNECT_FLOATING_TO_SEGMENT_ACTION,
+  WIRE_CONNECT_PIN_TO_FLOATING_ACTION,
   WIRE_CONNECT_PIN_TO_PIN_ACTION,
+  WIRE_CONNECT_PIN_TO_SEGMENT_ACTION,
+  WIRE_HYDRATE_ACTION,
   WIRE_SEGMENT_INSERT_JOINT_ACTION,
 
   // These actions typically fire off other actions in this list,

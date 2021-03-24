@@ -12,6 +12,7 @@ import {
 import { getModifiers } from "@/modifier-keys";
 
 import useSelector from "@/hooks/useSelector";
+import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
 
 import {
   endPositionByWireSegmentId,
@@ -24,7 +25,7 @@ import { circuitEditorDragStartWireSegment } from "@/actions/circuit-editor-drag
 import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
 
 import { useMouseCoords } from "../hooks/useMouseCoords";
-import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
+import { wireSegmentTypeFromSegmentIdSelector } from "@/services/circuit-graph/selectors/wires";
 
 export interface WireSegmentProps {
   wireId: string;
@@ -36,12 +37,16 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
   const { editorId } = useCircuitEditor();
   const getCoords = useMouseCoords();
 
-  const isSimActive = useSelector(isSimActiveSelector);
-  const isDragging = useSelector(isDraggingSelector);
-
   const isMouseGesturePending = React.useRef<boolean>(false);
   const [insertJointPos, setInsertJointPos] = React.useState<Point | null>(
     null
+  );
+
+  const isSimActive = useSelector(isSimActiveSelector);
+  const isDragging = useSelector(isDraggingSelector);
+
+  const segmentType = useSelector((state) =>
+    wireSegmentTypeFromSegmentIdSelector(state, wireSegmentId)
   );
 
   const startPos = useSelector((state) =>
@@ -144,6 +149,9 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
         stroke="transparent"
         strokeWidth={4}
       />
+      {segmentType === "input" && (
+        <circle cx={endPos.x} cy={endPos.y} r={2} stroke="none" fill="black" />
+      )}
       {insertJointPos && (
         <circle
           cx={insertJointPos.x}
