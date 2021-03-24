@@ -11,7 +11,7 @@ export const createCircuitGraphSelector = createServiceSelectorCreator(
   "circuitGraph"
 );
 
-export function getSegmentJoints(segment: WireSegment): string[] {
+export function getWireSegmentJoints(segment: WireSegment): string[] {
   switch (segment.type) {
     case "bridge":
       return [segment.jointAId, segment.jointBId];

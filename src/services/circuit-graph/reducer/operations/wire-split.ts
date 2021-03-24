@@ -3,7 +3,7 @@ import difference from "lodash/difference";
 import { v4 as uuidV4 } from "uuid";
 
 import { CircuitGraphServiceState } from "../../state";
-import { getSegmentJoints } from "../../utils";
+import { getWireSegmentJoints } from "../../utils";
 import { isInputWireSegment, isOutputWireSegment } from "../../types";
 import { circuitIdForWireIdSelector } from "../../selectors/wires";
 
@@ -90,7 +90,7 @@ function collectWireNetwork(
     }
 
     segmentIds.add(segmentId);
-    const jointIds = getSegmentJoints(segment);
+    const jointIds = getWireSegmentJoints(segment);
     jointIds.forEach(collectJoint);
   }
 
@@ -121,7 +121,7 @@ function getJointSegments(
   const segmentIds = Object.keys(state.wireSegmentsById);
   for (const segmentId of segmentIds) {
     const segment = state.wireSegmentsById[segmentId];
-    if (getSegmentJoints(segment).indexOf(jointId) !== -1) {
+    if (getWireSegmentJoints(segment).indexOf(jointId) !== -1) {
       jointSegmentIds.push(segmentId);
     }
   }

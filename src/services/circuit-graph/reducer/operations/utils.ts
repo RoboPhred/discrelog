@@ -3,7 +3,7 @@ import mapValues from "lodash/mapValues";
 import difference from "lodash/difference";
 
 import { CircuitGraphServiceState } from "../../state";
-import { getSegmentJoints } from "../../utils";
+import { getWireSegmentJoints } from "../../utils";
 
 export function removeJoint(
   state: CircuitGraphServiceState,
@@ -64,12 +64,12 @@ export function removeSegment(
   }
 
   if (removeOrphanJoints) {
-    const joints = getSegmentJoints(segment);
+    const joints = getWireSegmentJoints(segment);
     for (const jointId of joints) {
       if (
         remainingSegmentIds.every(
           (remainingSegmentId) =>
-            getSegmentJoints(
+            getWireSegmentJoints(
               state.wireSegmentsById[remainingSegmentId]
             ).indexOf(jointId) === -1
         )
