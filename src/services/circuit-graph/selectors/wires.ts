@@ -144,7 +144,7 @@ export const circuitIdForWireIdSelector = createCircuitGraphSelector(
  * Gets a list of wire joint ids in a given circuit.
  * WARN: Not react safe.
  */
-export const wireJointIdsForCircuitIdSelector = createCircuitGraphSelector(
+export const wireJointIdsFromCircuitIdSelector = createCircuitGraphSelector(
   (s: CircuitGraphServiceState, circuitId: string) => {
     const wireIds = s.wireIdsByCircuitId[circuitId];
     const jointIds = flatMap(

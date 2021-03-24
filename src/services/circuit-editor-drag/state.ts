@@ -1,8 +1,6 @@
 import { Point } from "@/geometry";
 import { ModifierKeys } from "@/modifier-keys";
 
-import { ElementPin } from "../circuit-graph/types";
-
 import { CircuitEditorDragWireTarget } from "./types";
 
 export interface CircuitEditorDragNullState {

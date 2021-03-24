@@ -18,7 +18,6 @@ import { connectPinToWireSegment } from "@/actions/wire-connect-pin-to-segment";
 import { connectPinToFloating } from "@/actions/wire-connect-pin-to-floating";
 import { wireSegmentInsertJoint } from "@/actions/wire-segment-insert-joint";
 import { connectFloatingToWireSegment } from "@/actions/wire-connect-floating-to-segment";
-import { moveWireJoint } from "@/actions/wire-joint-move";
 
 import { circuitIdForEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
 import { pinIsWiredSelector } from "@/services/circuit-graph/selectors/wires";
