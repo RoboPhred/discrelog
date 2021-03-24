@@ -23,7 +23,7 @@ export default createCircuitGraphReducer((state, action) => {
     return state;
   }
 
-  const jointId = uuidV4();
+  const newJointId = uuidV4();
 
   const firstSegmentId = uuidV4();
   const secondSegmentId = uuidV4();
@@ -35,11 +35,11 @@ export default createCircuitGraphReducer((state, action) => {
         firstSegment = {
           type: "bridge",
           jointAId: targetSegment.jointAId,
-          jointBId: jointId,
+          jointBId: newJointId,
         };
         secondSegment = {
           type: "bridge",
-          jointAId: jointId,
+          jointAId: newJointId,
           jointBId: targetSegment.jointBId,
         };
       }
@@ -49,11 +49,11 @@ export default createCircuitGraphReducer((state, action) => {
       {
         firstSegment = {
           ...targetSegment,
-          jointId,
+          jointId: newJointId,
         };
         secondSegment = {
           type: "bridge",
-          jointAId: jointId,
+          jointAId: newJointId,
           jointBId: targetSegment.jointId,
         };
       }
@@ -64,13 +64,13 @@ export default createCircuitGraphReducer((state, action) => {
         firstSegment = {
           type: "output",
           outputPin: targetSegment.outputPin,
-          jointId,
+          jointId: newJointId,
           lineId,
         };
         secondSegment = {
           type: "input",
           inputPin: targetSegment.inputPin,
-          jointId,
+          jointId: newJointId,
           lineId,
         };
       }
@@ -80,7 +80,7 @@ export default createCircuitGraphReducer((state, action) => {
   }
 
   // Remove the modified segment, it is to be replaced with the two new segments.
-  const wireSegmentsById = pick(
+  const wireSegmentsById: typeof state.wireSegmentsById = pick(
     state.wireSegmentsById,
     Object.keys(state.wireSegmentsById).filter((id) => id !== wireSegmentId)
   );
@@ -88,7 +88,7 @@ export default createCircuitGraphReducer((state, action) => {
   wireSegmentsById[secondSegmentId] = secondSegment;
 
   // Add the segment ids to the wire.
-  const wiresByWireId = {
+  const wiresByWireId: typeof state.wiresByWireId = {
     ...state.wiresByWireId,
     [wireId]: {
       ...targetWire,
@@ -97,12 +97,13 @@ export default createCircuitGraphReducer((state, action) => {
         firstSegmentId,
         secondSegmentId,
       ],
+      wireJointIds: [...targetWire.wireJointIds, newJointId],
     },
   };
 
-  const wireJointPositionsByJointId = {
+  const wireJointPositionsByJointId: typeof state.wireJointPositionsByJointId = {
     ...state.wireJointPositionsByJointId,
-    [jointId]: jointPos,
+    [newJointId]: jointPos,
   };
 
   return {

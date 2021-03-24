@@ -1,5 +1,6 @@
 import pick from "lodash/pick";
 import difference from "lodash/difference";
+import mapValues from "lodash/mapValues";
 
 import { CircuitGraphServiceState } from "../../state";
 
@@ -16,6 +17,9 @@ export default function wireDelete(
 
   return {
     ...state,
+    wireIdsByCircuitId: mapValues(state.wireIdsByCircuitId, (wiresInCircuit) =>
+      wiresInCircuit.filter((x) => x !== removedWireId)
+    ),
     wireSegmentsById: pick(
       state.wireSegmentsById,
       difference(Object.keys(state.wireSegmentsById), wireSegmentIds)

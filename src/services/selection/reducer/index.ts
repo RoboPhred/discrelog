@@ -11,6 +11,7 @@ import selectionAlignToGrid from "./selection-align-to-grid";
 import selectionCopyReducer from "./selection-copy";
 import selectionDeleteReducer from "./selection-delete";
 import selectionMoveReducer from "./selection-move";
+import wireJointDeleteReducer from "./wire-joint-delete";
 
 const selectionReducer = concatReducers(
   projectNewReducer,
@@ -23,7 +24,8 @@ const selectionReducer = concatReducers(
   selectionAlignToGrid,
   selectionCopyReducer,
   selectionDeleteReducer,
-  selectionMoveReducer
+  selectionMoveReducer,
+  wireJointDeleteReducer
 );
 
 export default selectionReducer;

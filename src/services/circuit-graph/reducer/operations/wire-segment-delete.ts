@@ -29,8 +29,11 @@ export default function wireSegmentDelete(
   } else if (removedSegment.type === "bridge") {
     // TODO: Split the wire in two.
     return wireDelete(state, wireId);
-    // Should we scramble the lineIds?  If we dont that lets us connect
-    // up again, but could cause problems if we connect inputs then try to bridge back.
+  }
+
+  if (state.wiresByWireId[wireId].wireSegmentIds.length === 1) {
+    // Removing this segment will remove the entire wire
+    return wireDelete(state, wireId);
   }
 
   // At this point, the segment is a connection from an element pin to the rest of the wire.

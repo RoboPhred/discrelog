@@ -52,7 +52,7 @@ export default createCircuitGraphReducer((state, action, rootState) => {
     [wireId]: {
       ...wire,
       wireSegmentIds: [...wire.wireSegmentIds, floatSegmentId],
-      wireJointIds: [...wire.wireJointIds, floatSegmentId],
+      wireJointIds: [...wire.wireJointIds, floatJointId],
     },
   };
 

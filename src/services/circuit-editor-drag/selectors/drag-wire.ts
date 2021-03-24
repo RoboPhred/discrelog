@@ -1,6 +1,13 @@
 import { AppState } from "@/store";
 
-import { normalize, Point, pointAdd, pointSubtract, scale } from "@/geometry";
+import {
+  normalize,
+  Point,
+  pointAdd,
+  pointSubtract,
+  scale,
+  snapValue,
+} from "@/geometry";
 
 import {
   elementPinFromPointSelector,
@@ -15,7 +22,7 @@ import {
 } from "@/services/circuit-graph/selectors/wire-positions";
 
 import { CircuitEditorDragWireTarget } from "../types";
-import { applyGridJointSnapSelector } from "./snap";
+import { applyGridJointSnapSelector, gridJointSnapSelector } from "./snap";
 
 /**
  * Gets the drag target at the given point.
@@ -48,26 +55,26 @@ export const dragWireEndTargetByPointSelector = (
   // TODO: Check for dropping on wire segments
   // TODO: Check for dropping on joints.
 
-  if (dragModifierKeys.shiftKey) {
+  const snap = gridJointSnapSelector(state);
+  const snapToGrid = !dragModifierKeys.ctrlMetaKey;
+  if (!dragModifierKeys.shiftKey) {
     // Restrict to ordinals
     const startPos = dragWireSegmentStartPositionSelector(state);
     if (startPos) {
       const lineVector = normalize(pointSubtract(p, startPos));
       if (Math.abs(lineVector.x) >= 0.5) {
         p = {
-          x: p.x,
+          x: snapToGrid ? snapValue(p.x, snap) : p.x,
           y: startPos.y,
         };
       } else {
         p = {
           x: startPos.x,
-          y: p.y,
+          y: snapToGrid ? snapValue(p.y, snap) : p.y,
         };
       }
     }
-  }
-
-  if (!dragModifierKeys.ctrlMetaKey) {
+  } else if (snapToGrid) {
     p = applyGridJointSnapSelector(state, p);
   }
 

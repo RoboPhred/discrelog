@@ -14,6 +14,7 @@ import wireConnectPinToPinReducer from "./wire-connect-pin-to-pin";
 import wireConnectPinToSegmentReducer from "./wire-connect-pin-to-segment";
 import wireHydrateReducer from "./wire-hydrate";
 import wireInsertJointReducer from "./wire-insert-joint";
+import wireJointDeleteReducer from "./wire-joint-delete";
 import wireJointMoveReducer from "./wire-joint-move";
 
 const graphReducer = concatReducers(
@@ -31,6 +32,7 @@ const graphReducer = concatReducers(
   wireConnectPinToSegmentReducer,
   wireHydrateReducer,
   wireInsertJointReducer,
+  wireJointDeleteReducer,
   wireJointMoveReducer
 );
 

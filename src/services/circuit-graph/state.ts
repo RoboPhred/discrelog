@@ -42,7 +42,9 @@ const _defaultState: CircuitGraphServiceState = {
     [ROOT_CIRCUIT_ID]: [],
   },
   elementsById: {},
-  wireIdsByCircuitId: {},
+  wireIdsByCircuitId: {
+    [ROOT_CIRCUIT_ID]: [],
+  },
   wiresByWireId: {},
   wireSegmentsById: {},
   wireJointPositionsByJointId: {},
