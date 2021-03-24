@@ -22,6 +22,7 @@ import {
 } from "@/services/circuit-graph/selectors/wire-positions";
 
 import { CircuitEditorDragWireTarget } from "../types";
+
 import { applyGridJointSnapSelector, gridJointSnapSelector } from "./snap";
 
 /**
