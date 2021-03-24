@@ -32,7 +32,7 @@ const Wire: React.FC<WireProps> = ({ wireId }) => {
 
   // TODO: Might want to render joints on a new layer so they are always rendered above other wire segments
   const jointElements = wireJointIds.map((id) => (
-    <WireJoint key={id} jointId={id} />
+    <WireJoint key={id} wireId={wireId} jointId={id} />
   ));
 
   return (

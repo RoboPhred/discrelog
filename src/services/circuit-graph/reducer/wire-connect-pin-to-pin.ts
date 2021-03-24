@@ -3,7 +3,6 @@ import { v4 as uuidV4 } from "uuid";
 import { isWireConnectPinToPinAction } from "@/actions/wire-connect-pin-to-pin";
 
 import { circuitIdFromElementIdSelector } from "../selectors/elements";
-
 import { pinDirectionFromElementPinSelector } from "../selectors/pins";
 import { pinIsWiredSelector } from "../selectors/wires";
 

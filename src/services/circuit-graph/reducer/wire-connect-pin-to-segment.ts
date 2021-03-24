@@ -5,9 +5,11 @@ import { isWireConnectPinToSegmentAction } from "@/actions/wire-connect-pin-to-s
 import { createCircuitGraphReducer } from "../utils";
 
 import wireSegmentSplit from "./operations/wire-segment-split";
+
 import { pinDirectionFromElementPinSelector } from "../selectors/pins";
-import { WireSegment } from "../types";
 import { pinIsWiredSelector } from "../selectors/wires";
+
+import { WireSegment } from "../types";
 
 export default createCircuitGraphReducer((state, action, rootState) => {
   if (!isWireConnectPinToSegmentAction(action)) {

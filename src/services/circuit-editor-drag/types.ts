@@ -39,6 +39,20 @@ export interface CircuitEditorDragWireSegmentTarget {
   segmentSplitLength: number;
 }
 
+export interface CircuitEditorDragWireJointTarget {
+  type: "joint";
+
+  /**
+   * The wire id of the wire the joint belongs to.
+   */
+  wireId: string;
+
+  /**
+   * The joint id of the joint being targeted.
+   */
+  jointId: string;
+}
+
 /**
  * Defines a target for a wire drag that is free-floating in the field.
  * This is typically used for the end of a wire drag event, not for the beginning.
@@ -55,4 +69,5 @@ export interface CircuitEditorDragWireFloatingTarget {
 export type CircuitEditorDragWireTarget =
   | CircuitEditorDragWirePinTarget
   | CircuitEditorDragWireSegmentTarget
+  | CircuitEditorDragWireJointTarget
   | CircuitEditorDragWireFloatingTarget;

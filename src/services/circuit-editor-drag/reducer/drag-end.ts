@@ -18,19 +18,21 @@ import { connectPinToWireSegment } from "@/actions/wire-connect-pin-to-segment";
 import { connectPinToFloating } from "@/actions/wire-connect-pin-to-floating";
 import { wireSegmentInsertJoint } from "@/actions/wire-segment-insert-joint";
 import { connectFloatingToWireSegment } from "@/actions/wire-connect-floating-to-segment";
+import { connectJointToPin } from "@/actions/wire-connect-joint-to-pin";
+import { connectJointToFloating } from "@/actions/wire-connect-joint-to-floating";
 
 import { circuitIdForEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
-import { pinIsWiredSelector } from "@/services/circuit-graph/selectors/wires";
-import { pinDirectionFromElementPinSelector } from "@/services/circuit-graph/selectors/pins";
+
+import { defaultCircuitEditorDragServiceState } from "../state";
 
 import {
   applyGridJointSnapSelector,
   applyGridElementSnapSelector,
 } from "../selectors/snap";
-
-import { defaultCircuitEditorDragServiceState } from "../state";
 import { dragWireEndTargetByPointSelector } from "../selectors/drag-wire";
+
 import {
+  CircuitEditorDragWireJointTarget,
   CircuitEditorDragWirePinTarget,
   CircuitEditorDragWireSegmentTarget,
 } from "../types";
@@ -172,24 +174,7 @@ function executeWireDrag(
     const target =
       dragStartTarget.type === "pin" ? dragEndTarget : dragStartTarget;
 
-    // Check that we can connect to this pin.
-    // We need to check here, as these operations create joints,
-    // and the graph service cannot bail without having the layout service
-    // still create a joint.
-    // FIXME: Consider moving layout into graph so we do not have to make this check.
-    const pinDirection = pinDirectionFromElementPinSelector(
-      state,
-      pin.elementId,
-      pin.pinId
-    );
-    if (
-      pinDirection === "input" &&
-      pinIsWiredSelector(state, pin.elementId, pin.pinId)
-    ) {
-      return state;
-    }
-
-    // Target is now a floating or segment insertion point.  We need to insert a joint for it.
+    // Target is now a floating, segment, or joint insertion point.
     switch (target.type) {
       case "floating":
         return rootReducer(state, connectPinToFloating(pin, target.point));
@@ -203,6 +188,11 @@ function executeWireDrag(
             target.segmentSplitLength
           )
         );
+      case "joint":
+        return rootReducer(
+          state,
+          connectJointToPin(target.wireId, target.jointId, pin)
+        );
     }
   } else if (
     dragStartTarget.type === "segment" ||
@@ -215,8 +205,8 @@ function executeWireDrag(
     const altTarget =
       dragStartTarget.type === "segment" ? dragEndTarget : dragStartTarget;
 
-    // Segment to segment would either bridge wires (which we currently do not support), or make a loop (which is pointless)
-    if (altTarget.type === "segment") {
+    // Segment to segment or joint would either bridge wires (which we currently do not support), or make a loop (which is pointless)
+    if (altTarget.type === "segment" || altTarget.type === "joint") {
       return state;
     }
 
@@ -228,6 +218,31 @@ function executeWireDrag(
         segmentTarget.wireId,
         segmentTarget.segmentId,
         segmentTarget.segmentSplitLength
+      )
+    );
+  } else if (
+    dragStartTarget.type === "joint" ||
+    dragEndTarget.type === "joint"
+  ) {
+    const jointTarget =
+      dragStartTarget.type === "joint"
+        ? dragStartTarget
+        : (dragEndTarget as CircuitEditorDragWireJointTarget);
+    const altTarget =
+      dragStartTarget.type === "joint" ? dragEndTarget : dragStartTarget;
+
+    // Joint to joint would either bridge wires (which we currently do not support), or make a loop (which is pointless)
+    if (altTarget.type === "joint") {
+      return state;
+    }
+
+    // At this point, we are connecting a joint to floating.
+    return rootReducer(
+      state,
+      connectJointToFloating(
+        jointTarget.wireId,
+        jointTarget.jointId,
+        altTarget.point
       )
     );
   }

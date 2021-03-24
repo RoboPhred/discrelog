@@ -20,12 +20,15 @@ import { getWireJointHtmlId } from "../../../../ids";
 import { useMouseCoords } from "../../hooks/useMouseCoords";
 
 import styles from "./WireJoint.module.css";
+import { describeArc } from "@/svg";
+import { circuitEditorDragStartWire } from "@/actions/circuit-editor-drag-start-wire";
 
 export interface WireJointProps {
+  wireId: string;
   jointId: string;
 }
 
-const WireJoint: React.FC<WireJointProps> = ({ jointId }) => {
+const WireJoint: React.FC<WireJointProps> = ({ wireId, jointId }) => {
   const dispatch = useDispatch();
   const { editorId } = useCircuitEditor();
   const getCoords = useMouseCoords();
@@ -52,11 +55,34 @@ const WireJoint: React.FC<WireJointProps> = ({ jointId }) => {
       const p = getCoords({ x: e.pageX, y: e.pageY });
       const modifierKeys = getModifiers(e);
       dispatch(
-        circuitEditorDragStartWireJoint(p, jointId, modifierKeys, editorId)
+        circuitEditorDragStartWireJoint(
+          p,
+          wireId,
+          jointId,
+          modifierKeys,
+          editorId
+        )
       );
     },
-    [dispatch, editorId, getCoords, jointId]
+    [dispatch, editorId, getCoords, jointId, wireId]
   );
+
+  const onNewJointMouseDown = (e: React.MouseEvent) => {
+    const p = getCoords({ x: e.pageX, y: e.pageY });
+    const modifierKeys = getModifiers(e);
+    dispatch(
+      circuitEditorDragStartWire(
+        p,
+        {
+          type: "joint",
+          wireId,
+          jointId,
+        },
+        modifierKeys,
+        editorId
+      )
+    );
+  };
 
   const onClick = React.useCallback(
     (e: MouseEvent) => {
@@ -72,6 +98,20 @@ const WireJoint: React.FC<WireJointProps> = ({ jointId }) => {
     onClick,
   });
 
+  const newSegmentArc = `${describeArc(
+    position.x,
+    position.y,
+    8.5,
+    0,
+    180
+  )} ${describeArc(position.x, position.y, 8.5, 180, 0)} z ${describeArc(
+    position.x,
+    position.y,
+    5,
+    0,
+    180
+  )} ${describeArc(position.x, position.y, 5, 180, 0)}`;
+
   if (!position) {
     return null;
   }
@@ -85,23 +125,36 @@ const WireJoint: React.FC<WireJointProps> = ({ jointId }) => {
       <circle
         cx={position.x}
         cy={position.y}
-        r={4}
+        r={6}
         fill="transparent"
         stroke="none"
       />
       {(mouseOver || isSelected) && (
-        <circle
+        <g
           className={cls(
             styles["wire-joint--interactor"],
             isSelected && styles["selected"]
           )}
-          cx={position.x}
-          cy={position.y}
-          r={3}
-          fill="black"
-          stroke="none"
-          onMouseDown={startTracking}
-        />
+        >
+          <circle
+            cx={position.x}
+            cy={position.y}
+            r={3}
+            fill="black"
+            stroke="none"
+            onMouseDown={startTracking}
+          />
+          {mouseOver && (
+            <path
+              shapeRendering="geometricPrecision"
+              stroke="none"
+              fill="black"
+              fillRule="evenodd"
+              d={newSegmentArc}
+              onMouseDown={onNewJointMouseDown}
+            />
+          )}
+        </g>
       )}
     </g>
   );

@@ -1,7 +1,7 @@
 import { v4 as uuidV4 } from "uuid";
+import { AnyAction } from "redux";
 
 import { ElementPin } from "@/services/circuit-graph/types";
-import { AnyAction } from "redux";
 
 export const WIRE_CONNECT_PIN_TO_PIN_ACTION = "@wire/connect/pin-to-pin" as const;
 export const connectPinToPin = (pin1: ElementPin, pin2: ElementPin) => ({

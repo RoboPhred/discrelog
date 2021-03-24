@@ -6,6 +6,7 @@ import { ModifierKeys } from "@/modifier-keys";
 export const CIRCUIT_EDITOR_DRAG_START_WIRE_JOINT_ACTION = "@circuit-editor/drag/start/wire-joint" as const;
 export const circuitEditorDragStartWireJoint = (
   p: Point,
+  wireId: string,
   jointId: string,
   modifierKeys: ModifierKeys,
   editorId: string
@@ -13,6 +14,7 @@ export const circuitEditorDragStartWireJoint = (
   type: CIRCUIT_EDITOR_DRAG_START_WIRE_JOINT_ACTION,
   payload: {
     ...p,
+    wireId,
     jointId,
     modifierKeys,
     editorId,

@@ -3,8 +3,10 @@ import { v4 as uuidV4 } from "uuid";
 import { isWireConnectPinToFloatingAction } from "@/actions/wire-connect-pin-to-floating";
 
 import { circuitIdFromElementIdSelector } from "../selectors/elements";
-import { createCircuitGraphReducer } from "../utils";
+import { pinIsWiredSelector } from "../selectors/wires";
 import { pinDirectionFromElementPinSelector } from "../selectors/pins";
+
+import { createCircuitGraphReducer } from "../utils";
 import { WireSegment } from "../types";
 
 export default createCircuitGraphReducer((state, action, rootState) => {
@@ -21,6 +23,13 @@ export default createCircuitGraphReducer((state, action, rootState) => {
   );
   const pinCircuitId = circuitIdFromElementIdSelector(rootState, pin.elementId);
   if (!pinCircuitId || !direction) {
+    return state;
+  }
+
+  if (
+    direction === "input" &&
+    pinIsWiredSelector(rootState, pin.elementId, pin.pinId)
+  ) {
     return state;
   }
 

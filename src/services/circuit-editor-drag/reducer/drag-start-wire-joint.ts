@@ -16,21 +16,37 @@ export default (state: AppState = defaultAppState, action: AnyAction) => {
     return state;
   }
 
-  const { x, y, editorId, jointId, modifierKeys } = action.payload;
+  const { x, y, editorId, wireId, jointId, modifierKeys } = action.payload;
 
-  state = fpSet(state, "services", "circuitEditorDrag", () => ({
-    dragMode: "move" as const,
-    dragStart: { x, y },
-    dragStartEditorId: editorId,
-    dragModifierKeys: modifierKeys,
-    dragEnd: null,
-    dragEndEditorId: null,
-  }));
+  if (modifierKeys.ctrlMetaKey) {
+    state = fpSet(state, "services", "circuitEditorDrag", () => ({
+      dragMode: "wire" as const,
+      dragStart: { x, y },
+      dragStartEditorId: editorId,
+      dragStartTarget: {
+        type: "joint" as const,
+        wireId,
+        jointId,
+      },
+      dragModifierKeys: modifierKeys,
+      dragEnd: null,
+      dragEndEditorId: null,
+    }));
+  } else {
+    state = fpSet(state, "services", "circuitEditorDrag", () => ({
+      dragMode: "move" as const,
+      dragStart: { x, y },
+      dragStartEditorId: editorId,
+      dragModifierKeys: modifierKeys,
+      dragEnd: null,
+      dragEndEditorId: null,
+    }));
 
-  if (!isJointSelectedFromJointIdSelector(state, jointId)) {
-    const selectionMode = getSelectMode(modifierKeys);
-    // Dragging an element that was not previously selected.  Perform a selection on the element.
-    state = rootReducer(state, selectJoints(jointId, selectionMode));
+    if (!isJointSelectedFromJointIdSelector(state, jointId)) {
+      const selectionMode = getSelectMode(modifierKeys);
+      // Dragging an element that was not previously selected.  Perform a selection on the element.
+      state = rootReducer(state, selectJoints(jointId, selectionMode));
+    }
   }
 
   return state;

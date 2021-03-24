@@ -11,6 +11,7 @@ import { ElementPin } from "@/services/circuit-graph/types";
 import {
   endPositionByWireSegmentId,
   startPositionByWireSegmentId,
+  wireJointPositionFromJointIdSelector,
 } from "@/services/circuit-graph/selectors/wire-positions";
 
 import { CircuitEditorDragWireTarget } from "../types";
@@ -45,6 +46,7 @@ export const dragWireEndTargetByPointSelector = (
   }
 
   // TODO: Check for dropping on wire segments
+  // TODO: Check for dropping on joints.
 
   if (dragModifierKeys.shiftKey) {
     // Restrict to ordinals
@@ -123,6 +125,8 @@ export function getDragTargetPoint(
       const fracPos = pointAdd(startPos, scale(lineVector, segmentSplitLength));
       return fracPos;
     }
+    case "joint":
+      return wireJointPositionFromJointIdSelector(state, target.jointId);
   }
 
   return null;
