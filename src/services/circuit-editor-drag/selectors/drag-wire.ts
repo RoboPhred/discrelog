@@ -128,10 +128,7 @@ export const dragWireSegmentEndPositionSelector = (state: AppState) => {
 
 export const dragWireJointPositionSelector = (state: AppState) => {
   const dragService = state.services.circuitEditorDrag;
-  if (
-    dragService.dragMode !== "wire-segment-new-joint" &&
-    dragService.dragMode !== "wire-joint"
-  ) {
+  if (dragService.dragMode !== "wire-segment-new-joint") {
     return null;
   }
 

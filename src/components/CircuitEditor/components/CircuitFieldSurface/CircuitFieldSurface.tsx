@@ -10,7 +10,7 @@ import { useViewportContext } from "../../contexts/viewport-context";
 import { FieldSvgElementProvider } from "./contexts/fieldSvgElement";
 
 import DragNewElementLayer from "./components/DragNewElementLayer";
-import DragElementPreviewLayer from "./components/DragElementPreviewLayer";
+import DragMovePreviewLayer from "./components/DragMovePreviewLayer";
 import FieldMouseLayer from "./components/FieldMouseLayer";
 import GridBackground from "./components/GridBackground";
 import ElementsLayer from "./components/ElementsLayer";
@@ -84,7 +84,7 @@ const CircuitFieldSurface: React.FC<CircuitFieldSurfaceProps> = ({
           <ElementsLayer />
           <WiresLayer />
           <ElementPinsLayer />
-          <DragElementPreviewLayer />
+          <DragMovePreviewLayer />
           <DragWirePreviewLayer />
           <DragWireSegmentNewJointPreviewLayer />
           {isDraggingNewElement && <DragNewElementLayer />}

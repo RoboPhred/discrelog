@@ -34,5 +34,6 @@ export default createCircuitGraphReducer((state, action, rootState) => {
       state.elementIdsByCircuitId,
       remainingCircuitIds
     ),
+    wireIdsByCircuitId: pick(state.wireIdsByCircuitId, remainingCircuitIds),
   };
 });

@@ -69,8 +69,6 @@ function executeDragMode(
       return executeMoveDrag(state, action);
     case "wire":
       return executeWireDrag(state, action);
-    case "wire-joint":
-      return executeWireJointDrag(state, action);
     case "wire-segment-new-joint":
       return executeWireNewJointDrag(state, action);
   }
@@ -238,25 +236,6 @@ function executeWireDrag(
 
   // The only option left is both are floating, which is not something our ui allows.
   return state;
-}
-
-function executeWireJointDrag(
-  state: AppState,
-  action: CircuitEditorDragEndAction
-): AppState {
-  const dragState = state.services.circuitEditorDrag;
-  if (dragState.dragMode !== "wire-joint") {
-    return state;
-  }
-
-  const { dragStartEditorId, dragEndEditorId } = dragState;
-  if (dragStartEditorId != dragEndEditorId) {
-    return state;
-  }
-
-  const { dragJointId } = dragState;
-  const { x, y } = action.payload;
-  return rootReducer(state, moveWireJoint(dragJointId, { x, y }));
 }
 
 function executeWireNewJointDrag(

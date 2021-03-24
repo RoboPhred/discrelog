@@ -8,7 +8,10 @@ import { createSelector } from "reselect";
 
 import { elementTypesByElementIdSelector } from "@/services/circuit-graph/selectors/elements";
 import { elementPositionsByElementIdSelector } from "@/services/circuit-layout/selectors/element-positions";
-import { selectedElementIdsSelector } from "@/services/selection/selectors/selection";
+import {
+  selectedElementIdsSelector,
+  selectedJointIdsSelector,
+} from "@/services/selection/selectors/selection";
 import { isEditorDraggingSelector } from "@/services/circuit-editor-drag/selectors/drag";
 import { dragMoveOffsetSelector } from "@/services/circuit-editor-drag/selectors/drag-move";
 
@@ -17,6 +20,7 @@ import useSelector from "@/hooks/useSelector";
 import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
 
 import ElementVisual from "./ElementVisual";
+import { wireJointPositionByJointIdSelector } from "@/services/circuit-graph/selectors/wire-positions";
 
 const selectedElementPositionsByIdSelector = createSelector(
   selectedElementIdsSelector,
@@ -32,7 +36,14 @@ const selectedElementTypesByIdSelector = createSelector(
     pick(elementTypesById, selectedElementIds)
 );
 
-const DragElementPreviewLayer: React.FC = React.memo(
+const selectedJointPositionsByIdSelector = createSelector(
+  selectedJointIdsSelector,
+  wireJointPositionByJointIdSelector,
+  (selectedJointIds, jointPositionsById) =>
+    pick(jointPositionsById, selectedJointIds)
+);
+
+const DragMovePreviewLayer: React.FC = React.memo(
   function DragElementPreviewLayer() {
     const { editorId } = useCircuitEditor();
 
@@ -46,31 +57,48 @@ const DragElementPreviewLayer: React.FC = React.memo(
     const selectedElementTypesById = useSelector(
       selectedElementTypesByIdSelector
     );
+    const selectedJointPositionsById = useSelector(
+      selectedJointPositionsByIdSelector
+    );
+
     const dragMoveOffset = useSelector(dragMoveOffsetSelector);
 
     if (!isDragging || !dragMoveOffset) {
       return null;
     }
 
-    let elements: React.ReactNode | null = null;
-    if (dragMoveOffset) {
-      elements = values(
-        mapValues(selectedElementPositionsById, (p, elementId) => (
-          <ElementVisual
-            key={elementId}
-            elementType={selectedElementTypesById[elementId]}
-            x={p.x + dragMoveOffset.x}
-            y={p.y + dragMoveOffset.y}
-          />
-        ))
-      );
-    }
+    const movingElements = values(
+      mapValues(selectedElementPositionsById, (p, elementId) => (
+        <ElementVisual
+          key={elementId}
+          elementType={selectedElementTypesById[elementId]}
+          x={p.x + dragMoveOffset.x}
+          y={p.y + dragMoveOffset.y}
+        />
+      ))
+    );
+
+    const movingJoints = values(
+      mapValues(selectedJointPositionsById, (p, jointId) => (
+        <circle
+          key={jointId}
+          cx={p.x + dragMoveOffset.x}
+          cy={p.y + dragMoveOffset.y}
+          r={2}
+          stroke="none"
+          fill="black"
+        />
+      ))
+    );
+
     return (
+      // FIXME: Get opacity from css
       <g id="drag-element-preview-layer" opacity={0.3}>
-        {elements}
+        {movingElements}
+        {movingJoints}
       </g>
     );
   }
 );
 
-export default DragElementPreviewLayer;
+export default DragMovePreviewLayer;
