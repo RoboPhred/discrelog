@@ -18,6 +18,10 @@ export default reducerPriority(
       return state;
     }
 
+    if (state.services.project.isLoading) {
+      return state;
+    }
+
     // FIXME: Side effect.  Should be a saga.
     // FIXME: This saves while loading a save.  Suppress storing autosaves
     //  while load is in progress.
