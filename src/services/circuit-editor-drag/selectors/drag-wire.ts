@@ -6,9 +6,11 @@ import {
   normalize,
   Point,
   pointAdd,
+  pointEquals,
   pointSubtract,
   scale,
   snapValue,
+  ZeroPoint,
 } from "@/geometry";
 
 import {
@@ -16,7 +18,7 @@ import {
   elementPinPositionFromElementPinSelector,
 } from "@/services/circuit-layout/selectors/element-pin-positions";
 import { circuitIdForEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
-import { ElementPin } from "@/services/circuit-graph/types";
+import { ElementPin, elementPinEquals } from "@/services/circuit-graph/types";
 import {
   endPositionByWireSegmentId,
   startPositionByWireSegmentId,
@@ -197,6 +199,7 @@ export const dragWireEndTargetSelector = (
   return dragWireEndTargetByPointSelector(state, dragEnd);
 };
 
+let dragWireTargetPinCache: ElementPin | null = null;
 export const dragWireTargetPinSelector = (
   state: AppState
 ): ElementPin | null => {
@@ -205,7 +208,15 @@ export const dragWireTargetPinSelector = (
     return null;
   }
 
-  return dropTarget.pin;
+  const pin = dropTarget.pin;
+  if (
+    !dragWireTargetPinCache ||
+    !elementPinEquals(dragWireTargetPinCache, pin)
+  ) {
+    dragWireTargetPinCache = pin;
+  }
+
+  return dragWireTargetPinCache;
 };
 
 export function getDragTargetPoint(
@@ -245,13 +256,23 @@ export const dragWireSegmentStartPositionSelector = (state: AppState) => {
   return getDragTargetPoint(state, dragService.dragStartTarget);
 };
 
+let dragWireSegmentEndPositionCache: Point = ZeroPoint;
 export const dragWireSegmentEndPositionSelector = (state: AppState) => {
   const endTarget = dragWireEndTargetSelector(state);
   if (!endTarget) {
     return null;
   }
 
-  return getDragTargetPoint(state, endTarget);
+  const pt = getDragTargetPoint(state, endTarget);
+  if (!pt) {
+    return null;
+  }
+
+  if (!pointEquals(pt, dragWireSegmentEndPositionCache)) {
+    dragWireSegmentEndPositionCache = pt;
+  }
+
+  return dragWireSegmentEndPositionCache;
 };
 
 export const dragWireJointPositionSelector = (state: AppState) => {
