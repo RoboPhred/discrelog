@@ -19,7 +19,7 @@ export default function wireSegmentSplit(
   wireSegmentId: string,
   segmentSplitLength: number,
   rootState: AppState
-): [CircuitGraphServiceState, string | null] {
+): [state: CircuitGraphServiceState, splitJointId: string | null] {
   const targetWire = state.wiresByWireId[wireId];
   if (!targetWire) {
     return [state, null];

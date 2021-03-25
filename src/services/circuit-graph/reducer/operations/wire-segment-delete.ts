@@ -4,8 +4,7 @@ import includes from "lodash/includes";
 import { CircuitGraphServiceState } from "../../state";
 
 import wireDelete from "./wire-delete";
-import wireSplit from "./wire-split";
-import { removeSegment } from "./utils";
+import { removeSegment, wireSplit } from "./utils";
 
 export default function wireSegmentDelete(
   state: CircuitGraphServiceState,
@@ -23,14 +22,22 @@ export default function wireSegmentDelete(
     return state;
   }
 
-  if (removedSegment.type === "input-output") {
-    // Remove the whole wire.
+  if (
+    removedSegment.type === "input-output" ||
+    state.wiresByWireId[wireId].wireSegmentIds.length === 1
+  ) {
+    // Removing this segment will remove the entire wire.
     return wireDelete(state, wireId);
-  } else if (removedSegment.type === "bridge") {
-    // Remove the bridge.
-    state = removeSegment(state, wireId, wireSegmentId);
+  }
 
-    // If both joints are remaining in the wire, split off one of them into a new wire
+  if (removedSegment.type === "bridge") {
+    // Remove the bridge.
+    state = removeSegment(state, wireId, wireSegmentId, true);
+
+    // Check if we cut the wire into two networks.
+    // We can tell because removeSegment will delete orphaned joints, and
+    // if both joints werent removed then other parts of the wire network still exist
+    // at both ends.
     const wire = state.wiresByWireId[wireId]!;
     const { jointAId, jointBId } = removedSegment;
     if (
@@ -38,15 +45,13 @@ export default function wireSegmentDelete(
       wire.wireJointIds.indexOf(jointAId) !== -1 &&
       wire.wireJointIds.indexOf(jointBId) !== -1
     ) {
-      state = wireSplit(state, wireId, removedSegment.jointBId);
+      const splitState = wireSplit(state, wireId, removedSegment.jointBId);
+      if (splitState) {
+        state = splitState;
+      }
     }
 
     return state;
-  }
-
-  if (state.wiresByWireId[wireId].wireSegmentIds.length === 1) {
-    // Removing this segment will remove the entire wire
-    return wireDelete(state, wireId);
   }
 
   // At this point, the segment is a connection from an element pin to the rest of the wire.

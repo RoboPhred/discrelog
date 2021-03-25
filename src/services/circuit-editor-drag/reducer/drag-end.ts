@@ -207,6 +207,7 @@ function executeWireDrag(
 
     // Segment to segment or joint would either bridge wires (which we currently do not support), or make a loop (which is pointless)
     if (altTarget.type === "segment" || altTarget.type === "joint") {
+      // TODO: If wire networks are different, merge the two wire networks.
       return state;
     }
 

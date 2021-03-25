@@ -4,7 +4,7 @@ import flatMap from "lodash/flatMap";
 import uniq from "lodash/uniq";
 
 import { CircuitGraphServiceState } from "../state";
-import { createCircuitGraphSelector, getWireSegmentJoints } from "../utils";
+import { createCircuitGraphSelector, getJointIdsFromSegment } from "../utils";
 import { elementPinEquals, wireSegmentHasInput } from "../types";
 
 const EmptyStringArray = Object.freeze([] as string[]);
@@ -64,7 +64,7 @@ export const wireJointIdsByWireIdSelector = createCircuitGraphSelector(
     const segmentIds = wireSegmentIdsFromWireIdSelector.local(s, wireId);
     const jointIds = flatMap(segmentIds, (segmentId) => {
       const segment = wireSegmentByWireSegmentIdSelector.local(s, segmentId);
-      return getWireSegmentJoints(segment);
+      return getJointIdsFromSegment(segment);
     });
 
     return uniq(jointIds);
