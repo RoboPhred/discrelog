@@ -103,7 +103,7 @@ export function pointEquals(p1: Point, p2: Point): boolean {
   return p1.x === p2.x && p1.y === p2.y;
 }
 
-export function pointIntersects(p: Point, r: Rectangle): boolean {
+export function pointIntersectsRect(p: Point, r: Rectangle): boolean {
   r = normalizeRectangle(r);
 
   if (r.p1.x > p.x || r.p2.x < p.x) {
@@ -140,7 +140,7 @@ export function union(r1: Rectangle, r2: Rectangle): Rectangle {
   };
 }
 
-export function intersects(r1: Rectangle, r2: Rectangle): boolean {
+export function rectIntersectsRect(r1: Rectangle, r2: Rectangle): boolean {
   r1 = normalizeRectangle(r1);
   r2 = normalizeRectangle(r2);
 

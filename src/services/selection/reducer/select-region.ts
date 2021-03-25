@@ -1,7 +1,7 @@
 import forOwn from "lodash/forOwn";
 import pick from "lodash/pick";
 
-import { intersects, pointIntersects } from "@/geometry";
+import { rectIntersectsRect, pointIntersectsRect } from "@/geometry";
 import { combineSelection } from "@/selection-mode";
 
 import { isSelectRegionAction } from "@/actions/select-region";
@@ -25,7 +25,7 @@ export default createSelectionReducer((state, action, appState) => {
 
   const chosenElementIds: string[] = [];
   forOwn(rects, (rect, elementId) => {
-    if (intersects(rect, region)) {
+    if (rectIntersectsRect(rect, region)) {
       chosenElementIds.push(elementId);
     }
   });
@@ -37,7 +37,7 @@ export default createSelectionReducer((state, action, appState) => {
   );
   const chosenJointIds: string[] = [];
   forOwn(jointPositions, (p, jointId) => {
-    if (pointIntersects(p, region)) {
+    if (pointIntersectsRect(p, region)) {
       chosenJointIds.push(jointId);
     }
   });

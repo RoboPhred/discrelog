@@ -91,6 +91,12 @@ export const pinIsWiredSelector = createCircuitGraphSelector(
   }
 );
 
+export const wireIdsFromCircuitIdSelector = createCircuitGraphSelector(
+  (s: CircuitGraphServiceState, circuitId: string) => {
+    return s.wireIdsByCircuitId[circuitId] ?? EmptyStringArray;
+  }
+);
+
 export const circuitIdForWireIdSelector = createCircuitGraphSelector(
   (s: CircuitGraphServiceState, wireId: string) => {
     for (const circuitId of Object.keys(s.wireIdsByCircuitId)) {

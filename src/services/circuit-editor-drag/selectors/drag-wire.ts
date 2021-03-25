@@ -1,6 +1,8 @@
 import { AppState } from "@/store";
 
 import {
+  dotProduct,
+  magnitude,
   normalize,
   Point,
   pointAdd,
@@ -20,10 +22,70 @@ import {
   startPositionByWireSegmentId,
   wireJointPositionFromJointIdSelector,
 } from "@/services/circuit-graph/selectors/wire-positions";
+import {
+  wireIdsFromCircuitIdSelector,
+  wireSegmentIdsFromWireIdSelector,
+} from "@/services/circuit-graph/selectors/wires";
 
-import { CircuitEditorDragWireTarget } from "../types";
+import {
+  CircuitEditorDragWireSegmentTarget,
+  CircuitEditorDragWireTarget,
+} from "../types";
 
 import { applyGridJointSnapSelector, gridJointSnapSelector } from "./snap";
+
+function wireSegmentFromPoint(
+  state: AppState,
+  circuitId: string,
+  p: Point,
+  snapToGrid: boolean
+): CircuitEditorDragWireSegmentTarget | null {
+  const snap = gridJointSnapSelector(state);
+  const wireIds = wireIdsFromCircuitIdSelector(state, circuitId);
+  for (const wireId of wireIds) {
+    const segmentIds = wireSegmentIdsFromWireIdSelector(state, wireId);
+    for (const segmentId of segmentIds) {
+      const startPos = startPositionByWireSegmentId(state, segmentId);
+      const endPos = endPositionByWireSegmentId(state, segmentId);
+
+      const lineSub = pointSubtract(endPos, startPos);
+      const length = magnitude(lineSub);
+      const lineVector = normalize(lineSub);
+
+      const v = pointSubtract(p, startPos);
+      const distanceAlongLine = dotProduct(v, lineVector);
+
+      if (distanceAlongLine < 0 || distanceAlongLine > length) {
+        continue;
+      }
+
+      const dotPos = pointAdd(startPos, scale(lineVector, distanceAlongLine));
+      if (snapToGrid) {
+        // If snapping is enabled, snap to the axis the line follows.
+        if (Math.abs(lineVector.x) === 1) {
+          dotPos.x = snapValue(dotPos.x, snap);
+        }
+        if (Math.abs(lineVector.y) === 1) {
+          dotPos.y = snapValue(dotPos.y, snap);
+        }
+      }
+
+      const lineToDotDist = magnitude(pointSubtract(p, dotPos));
+      if (lineToDotDist > 4) {
+        continue;
+      }
+
+      return {
+        type: "segment",
+        wireId,
+        segmentId,
+        segmentSplitLength: magnitude(pointSubtract(dotPos, startPos)),
+      };
+    }
+  }
+
+  return null;
+}
 
 /**
  * Gets the drag target at the given point.
@@ -40,6 +102,7 @@ export const dragWireEndTargetByPointSelector = (
   }
 
   const { dragStartEditorId, dragModifierKeys } = dragService;
+  const snapToGrid = !dragModifierKeys.ctrlMetaKey;
   const circuitId = circuitIdForEditorIdSelector(state, dragStartEditorId);
   if (!circuitId) {
     return null;
@@ -53,11 +116,14 @@ export const dragWireEndTargetByPointSelector = (
     };
   }
 
-  // TODO: Check for dropping on wire segments
+  const segmentTarget = wireSegmentFromPoint(state, circuitId, p, snapToGrid);
+  if (segmentTarget) {
+    return segmentTarget;
+  }
+
   // TODO: Check for dropping on joints.
 
   const snap = gridJointSnapSelector(state);
-  const snapToGrid = !dragModifierKeys.ctrlMetaKey;
   if (!dragModifierKeys.shiftKey) {
     // Restrict to ordinals
     const startPos = dragWireSegmentStartPositionSelector(state);
