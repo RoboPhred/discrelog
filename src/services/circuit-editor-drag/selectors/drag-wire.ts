@@ -24,15 +24,42 @@ import {
 } from "@/services/circuit-graph/selectors/wire-positions";
 import {
   wireIdsFromCircuitIdSelector,
+  wireJointIdsFromWireIdSelector,
   wireSegmentIdsFromWireIdSelector,
 } from "@/services/circuit-graph/selectors/wires";
 
 import {
+  CircuitEditorDragWireJointTarget,
   CircuitEditorDragWireSegmentTarget,
   CircuitEditorDragWireTarget,
 } from "../types";
 
 import { applyGridJointSnapSelector, gridJointSnapSelector } from "./snap";
+
+function wireJointFromPoint(
+  state: AppState,
+  circuitId: string,
+  p: Point
+): CircuitEditorDragWireJointTarget | null {
+  const wireIds = wireIdsFromCircuitIdSelector(state, circuitId);
+  for (const wireId of wireIds) {
+    const jointIds = wireJointIdsFromWireIdSelector(state, wireId);
+    for (const jointId of jointIds) {
+      const jointPos = wireJointPositionFromJointIdSelector(state, jointId);
+      if (magnitude(pointSubtract(p, jointPos)) > 4) {
+        continue;
+      }
+
+      return {
+        type: "joint",
+        wireId,
+        jointId,
+      };
+    }
+  }
+
+  return null;
+}
 
 function wireSegmentFromPoint(
   state: AppState,
@@ -116,12 +143,15 @@ export const dragWireEndTargetByPointSelector = (
     };
   }
 
+  const jointTarget = wireJointFromPoint(state, circuitId, p);
+  if (jointTarget) {
+    return jointTarget;
+  }
+
   const segmentTarget = wireSegmentFromPoint(state, circuitId, p, snapToGrid);
   if (segmentTarget) {
     return segmentTarget;
   }
-
-  // TODO: Check for dropping on joints.
 
   const snap = gridJointSnapSelector(state);
   if (!dragModifierKeys.shiftKey) {
