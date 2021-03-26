@@ -1,6 +1,3 @@
-import findKey from "lodash/findKey";
-import includes from "lodash/includes";
-
 import { CircuitGraphServiceState } from "../../state";
 
 import wireDelete from "./wire-delete";

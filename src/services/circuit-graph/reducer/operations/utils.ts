@@ -182,6 +182,23 @@ export function wireMerge(
     return null;
   }
 
+  const [targetInputs, targetOutputs] = collectWireLineIds(state, targetWireId);
+  const [subjectInputs, subjectOutputs] = collectWireLineIds(
+    state,
+    subjectWireId
+  );
+
+  if (
+    targetOutputs.length + subjectOutputs.length <= 1 &&
+    targetInputs.length <= 1 &&
+    subjectInputs.length <= 1
+  ) {
+    // At most one output between them, and each has at most one input.  combine the lines.
+    const sourceLineId = uuidV4();
+    state = setWireLineIds(state, targetWireId, sourceLineId);
+    state = setWireLineIds(state, subjectWireId, sourceLineId);
+  }
+
   const remainingWireIds = Object.keys(state.wiresByWireId).filter(
     (x) => x !== subjectWireId
   );
@@ -205,6 +222,36 @@ export function wireMerge(
         wireJointIds: [...targetWire.wireJointIds, ...subjectWire.wireJointIds],
       },
     },
+  };
+}
+
+function setWireLineIds(
+  state: CircuitGraphServiceState,
+  wireId: string,
+  lineId: string
+): CircuitGraphServiceState {
+  const wire = state.wiresByWireId[wireId];
+  if (!wire) {
+    return state;
+  }
+
+  const wireSegmentsById: typeof state.wireSegmentsById = {
+    ...state.wireSegmentsById,
+  };
+
+  for (const segId of wire.wireSegmentIds) {
+    const seg = state.wireSegmentsById[segId];
+    if (seg.type === "input" || seg.type === "output") {
+      wireSegmentsById[segId] = {
+        ...seg,
+        lineId,
+      };
+    }
+  }
+
+  return {
+    ...state,
+    wireSegmentsById,
   };
 }
 

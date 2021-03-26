@@ -36,6 +36,7 @@ import {
   CircuitEditorDragWirePinTarget,
   CircuitEditorDragWireSegmentTarget,
 } from "../types";
+import { connectWireJointToJoint } from "@/actions/wire-connect-joint-to-joint";
 
 export default function dragEndReducer(
   state: AppState = defaultAppState,
@@ -232,9 +233,16 @@ function executeWireDrag(
     const altTarget =
       dragStartTarget.type === "joint" ? dragEndTarget : dragStartTarget;
 
-    // Joint to joint would either bridge wires (which we currently do not support), or make a loop (which is pointless)
     if (altTarget.type === "joint") {
-      return state;
+      return rootReducer(
+        state,
+        connectWireJointToJoint(
+          jointTarget.wireId,
+          jointTarget.jointId,
+          altTarget.wireId,
+          altTarget.jointId
+        )
+      );
     }
 
     // At this point, we are connecting a joint to floating.

@@ -67,7 +67,7 @@ const WireJoint: React.FC<WireJointProps> = ({ wireId, jointId }) => {
     [dispatch, editorId, getCoords, jointId, wireId]
   );
 
-  const onNewJointMouseDown = (e: React.MouseEvent) => {
+  const onNewSegmentMouseDown = (e: React.MouseEvent) => {
     const p = getCoords({ x: e.pageX, y: e.pageY });
     const modifierKeys = getModifiers(e);
     dispatch(
@@ -145,14 +145,22 @@ const WireJoint: React.FC<WireJointProps> = ({ wireId, jointId }) => {
             onMouseDown={startTracking}
           />
           {mouseOver && (
-            <path
-              shapeRendering="geometricPrecision"
-              stroke="none"
-              fill="black"
-              fillRule="evenodd"
-              d={newSegmentArc}
-              onMouseDown={onNewJointMouseDown}
-            />
+            <g onMouseDown={onNewSegmentMouseDown}>
+              <circle
+                cx={position.x}
+                cy={position.y}
+                r={8.5}
+                stroke="none"
+                fill="transparent"
+              />
+              <path
+                shapeRendering="geometricPrecision"
+                stroke="none"
+                fill="black"
+                fillRule="evenodd"
+                d={newSegmentArc}
+              />
+            </g>
           )}
         </g>
       )}
