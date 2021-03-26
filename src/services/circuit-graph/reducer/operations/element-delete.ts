@@ -12,6 +12,7 @@ import { CircuitGraphServiceState } from "../../state";
 import { elementPinEquals, WireSegment } from "../../types";
 
 import wireSegmentDelete from "./wire-segment-delete";
+import { wireIdFromWireSegmentIdSelector } from "../../selectors/wires";
 
 export default function elementDelete(
   state: CircuitGraphServiceState,
@@ -90,10 +91,13 @@ export default function elementDelete(
     }
   );
 
-  state = removedSegmentIds.reduce(
-    (state, segmentId) => wireSegmentDelete(state, segmentId),
-    state
-  );
+  state = removedSegmentIds.reduce((state, segmentId) => {
+    const wireId = wireIdFromWireSegmentIdSelector.local(state, segmentId);
+    if (!wireId) {
+      return state;
+    }
+    return wireSegmentDelete(state, wireId, segmentId);
+  }, state);
 
   return state;
 }

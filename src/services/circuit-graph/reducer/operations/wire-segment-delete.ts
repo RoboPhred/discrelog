@@ -8,23 +8,22 @@ import { removeSegment, wireSplit } from "./utils";
 
 export default function wireSegmentDelete(
   state: CircuitGraphServiceState,
+  wireId: string,
   wireSegmentId: string
 ): CircuitGraphServiceState {
+  const wire = state.wiresByWireId[wireId];
+  if (!wire || wire.wireSegmentIds.indexOf(wireSegmentId) === -1) {
+    return state;
+  }
+
   const removedSegment = state.wireSegmentsById[wireSegmentId];
   if (!removedSegment) {
     return state;
   }
 
-  const wireId = findKey(state.wiresByWireId, (wire) =>
-    includes(wire.wireSegmentIds, wireSegmentId)
-  );
-  if (!wireId) {
-    return state;
-  }
-
   if (
     removedSegment.type === "input-output" ||
-    state.wiresByWireId[wireId].wireSegmentIds.length === 1
+    wire.wireSegmentIds.length === 1
   ) {
     // Removing this segment will remove the entire wire.
     return wireDelete(state, wireId);
@@ -38,7 +37,8 @@ export default function wireSegmentDelete(
     // We can tell because removeSegment will delete orphaned joints, and
     // if both joints werent removed then other parts of the wire network still exist
     // at both ends.
-    const wire = state.wiresByWireId[wireId]!;
+    // We need to re-obtain the wire, as removeSegment made a new instance for it with new data.
+    const wire = state.wiresByWireId[wireId];
     const { jointAId, jointBId } = removedSegment;
     if (
       wire &&

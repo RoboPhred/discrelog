@@ -8,12 +8,11 @@ import wireSegmentDelete from "./wire-segment-delete";
 
 export default function wireJointDelete(
   state: CircuitGraphServiceState,
+  wireId: string,
   jointId: string
 ): CircuitGraphServiceState {
-  const wireId = Object.keys(state.wiresByWireId).find(
-    (id) => state.wiresByWireId[id].wireJointIds.indexOf(jointId) !== -1
-  );
-  if (!wireId) {
+  const wire = state.wiresByWireId[wireId];
+  if (!wire || wire.wireJointIds.indexOf(jointId) === -1) {
     return state;
   }
 
@@ -33,7 +32,7 @@ export default function wireJointDelete(
   }
 
   state = jointedSegmentIds.reduce(
-    (state, segmentId) => wireSegmentDelete(state, segmentId),
+    (state, segmentId) => wireSegmentDelete(state, wireId, segmentId),
     state
   );
 
