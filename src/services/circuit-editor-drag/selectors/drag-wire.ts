@@ -54,7 +54,6 @@ function wireJointFromPoint(
 
       return {
         type: "joint",
-        wireId,
         jointId,
       };
     }
@@ -106,7 +105,6 @@ function wireSegmentFromPoint(
 
       return {
         type: "segment",
-        wireId,
         segmentId,
         segmentSplitLength: magnitude(pointSubtract(dotPos, startPos)),
       };

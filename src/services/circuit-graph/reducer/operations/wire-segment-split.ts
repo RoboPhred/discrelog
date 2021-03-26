@@ -12,14 +12,19 @@ import {
 
 import { CircuitGraphServiceState } from "../../state";
 import { WireSegment } from "../../types";
+import { wireIdFromWireSegmentIdSelector } from "../../selectors/wires";
 
 export default function wireSegmentSplit(
   state: CircuitGraphServiceState,
-  wireId: string,
   wireSegmentId: string,
   segmentSplitLength: number,
   rootState: AppState
 ): [state: CircuitGraphServiceState, splitJointId: string | null] {
+  const wireId = wireIdFromWireSegmentIdSelector.local(state, wireSegmentId);
+  if (!wireId) {
+    return [state, null];
+  }
+
   const targetWire = state.wiresByWireId[wireId];
   if (!targetWire) {
     return [state, null];

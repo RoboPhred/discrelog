@@ -9,16 +9,9 @@ export default createCircuitGraphReducer((state, action, rootState) => {
     return state;
   }
 
-  const { wireId, jointId, pin } = action.payload;
+  const { jointId, pin } = action.payload;
 
   // FIXME: Let user select line id.
-  const connectedState = wireConnectPin(
-    state,
-    wireId,
-    jointId,
-    pin,
-    null,
-    rootState
-  );
+  const connectedState = wireConnectPin(state, jointId, pin, null, rootState);
   return connectedState ?? state;
 });

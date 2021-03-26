@@ -4,16 +4,22 @@ import { isWireConnectJointToFloatingAction } from "@/actions/wire-connect-joint
 
 import { createCircuitGraphReducer } from "../utils";
 import { WireSegment } from "../types";
+import { wireIdFromWireJointIdSelector } from "../selectors/wires";
 
 export default createCircuitGraphReducer((state, action) => {
   if (!isWireConnectJointToFloatingAction(action)) {
     return state;
   }
 
-  const { wireId, jointId, floatPoint } = action.payload;
+  const { jointId, floatPoint } = action.payload;
+
+  const wireId = wireIdFromWireJointIdSelector.local(state, jointId);
+  if (!wireId) {
+    return state;
+  }
 
   const wire = state.wiresByWireId[wireId];
-  if (!wire || wire.wireJointIds.indexOf(jointId) === -1) {
+  if (wire.wireJointIds.indexOf(jointId) === -1) {
     return state;
   }
 

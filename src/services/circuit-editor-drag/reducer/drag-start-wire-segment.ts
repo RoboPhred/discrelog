@@ -37,7 +37,6 @@ export default createCircuitEditorDragReducer((state, action, rootState) => {
       dragModifierKeys: modifierKeys,
       dragStartTarget: {
         type: "segment",
-        wireId: wireId,
         segmentId: wireSegmentId,
         segmentSplitLength,
       },

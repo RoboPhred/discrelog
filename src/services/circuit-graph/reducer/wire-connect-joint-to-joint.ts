@@ -7,7 +7,7 @@ export default createCircuitGraphReducer((state, action) => {
     return state;
   }
 
-  const { wireId1, jointId1, wireId2, jointId2 } = action.payload;
+  const { jointId1, jointId2 } = action.payload;
 
-  return wireBridgeJoints(state, wireId1, jointId1, wireId2, jointId2);
+  return wireBridgeJoints(state, jointId1, jointId2);
 });

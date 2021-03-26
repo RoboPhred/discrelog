@@ -13,11 +13,10 @@ export default createCircuitGraphReducer((state, action, rootState) => {
 
   const originalState = state;
 
-  const { wireId, wireSegmentId, segmentSplitLength, pin } = action.payload;
+  const { wireSegmentId, segmentSplitLength, pin } = action.payload;
 
   const [afterSplitState, segmentJointId] = wireSegmentSplit(
     state,
-    wireId,
     wireSegmentId,
     segmentSplitLength,
     rootState
@@ -30,7 +29,6 @@ export default createCircuitGraphReducer((state, action, rootState) => {
   // FIXME: Let user select line id.
   const connectedState = wireConnectPin(
     state,
-    wireId,
     segmentJointId,
     pin,
     null,

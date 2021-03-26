@@ -23,11 +23,6 @@ export interface CircuitEditorDragWireSegmentTarget {
   type: "segment";
 
   /**
-   * The wire id of the wire the segment belongs to.
-   */
-  wireId: string;
-
-  /**
    * The segment id of the segment being targeted.
    */
   segmentId: string;
@@ -41,11 +36,6 @@ export interface CircuitEditorDragWireSegmentTarget {
 
 export interface CircuitEditorDragWireJointTarget {
   type: "joint";
-
-  /**
-   * The wire id of the wire the joint belongs to.
-   */
-  wireId: string;
 
   /**
    * The joint id of the joint being targeted.

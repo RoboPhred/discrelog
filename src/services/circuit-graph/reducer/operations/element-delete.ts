@@ -96,7 +96,7 @@ export default function elementDelete(
     if (!wireId) {
       return state;
     }
-    return wireSegmentDelete(state, wireId, segmentId);
+    return wireSegmentDelete(state, segmentId);
   }, state);
 
   return state;

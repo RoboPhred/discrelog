@@ -75,7 +75,6 @@ const WireJoint: React.FC<WireJointProps> = ({ wireId, jointId }) => {
         p,
         {
           type: "joint",
-          wireId,
           jointId,
         },
         modifierKeys,

@@ -6,28 +6,28 @@ import { createCircuitGraphReducer } from "../utils";
 
 import wireSegmentSplit from "./operations/wire-segment-split";
 import { WireSegment } from "../types";
+import { wireIdFromWireSegmentIdSelector } from "../selectors/wires";
 
 export default createCircuitGraphReducer((state, action, rootState) => {
   if (!isWireConnectFloatingToSegmentAction(action)) {
     return state;
   }
 
-  const {
-    wireId,
-    wireSegmentId,
-    segmentSplitLength: segmentSplitLength,
-    floatPoint,
-  } = action.payload;
+  const { wireSegmentId, segmentSplitLength, floatPoint } = action.payload;
 
   const [afterSplitState, segmentJointId] = wireSegmentSplit(
     state,
-    wireId,
     wireSegmentId,
     segmentSplitLength,
     rootState
   );
   state = afterSplitState;
   if (!segmentJointId) {
+    return state;
+  }
+
+  const wireId = wireIdFromWireSegmentIdSelector.local(state, wireSegmentId);
+  if (!wireId) {
     return state;
   }
 

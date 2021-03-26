@@ -1,15 +1,16 @@
+import { wireIdFromWireJointIdSelector } from "../../selectors/wires";
 import { CircuitGraphServiceState } from "../../state";
 
 import { addSegment, wireMerge } from "./utils";
 
 export default function wireBridgeJoints(
   state: CircuitGraphServiceState,
-  wire1Id: string,
   joint1Id: string,
-  wire2Id: string,
   joint2Id: string
 ): CircuitGraphServiceState {
-  if (wire1Id === wire2Id) {
+  const wire1Id = wireIdFromWireJointIdSelector.local(state, joint1Id);
+  const wire2Id = wireIdFromWireJointIdSelector.local(state, joint2Id);
+  if (!wire1Id || !wire2Id || wire1Id === wire2Id) {
     return state;
   }
 

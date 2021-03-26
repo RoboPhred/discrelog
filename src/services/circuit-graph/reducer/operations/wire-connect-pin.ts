@@ -1,7 +1,10 @@
 import { AppState } from "@/store";
 import { v4 as uuidV4 } from "uuid";
 import { pinDirectionFromElementPinSelector } from "../../selectors/pins";
-import { pinIsWiredSelector } from "../../selectors/wires";
+import {
+  pinIsWiredSelector,
+  wireIdFromWireJointIdSelector,
+} from "../../selectors/wires";
 
 import { CircuitGraphServiceState } from "../../state";
 import { ElementPin, WireSegment } from "../../types";
@@ -10,12 +13,16 @@ import { collectWireLineIds } from "./utils";
 
 export default function wireConnectPin(
   state: CircuitGraphServiceState,
-  wireId: string,
   jointId: string,
   pin: ElementPin,
   lineId: string | null,
   rootState: AppState
 ): CircuitGraphServiceState | null {
+  const wireId = wireIdFromWireJointIdSelector.local(state, jointId);
+  if (!wireId) {
+    return null;
+  }
+
   if (!lineId) {
     lineId = defaultLineIdFromWiredPin(rootState, wireId, pin);
   }

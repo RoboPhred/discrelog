@@ -1,3 +1,4 @@
+import { wireIdFromWireJointIdSelector } from "../../selectors/wires";
 import { CircuitGraphServiceState } from "../../state";
 import { InputWireSegment, OutputWireSegment } from "../../types";
 
@@ -8,11 +9,15 @@ import wireSegmentDelete from "./wire-segment-delete";
 
 export default function wireJointDelete(
   state: CircuitGraphServiceState,
-  wireId: string,
   jointId: string
 ): CircuitGraphServiceState {
+  const wireId = wireIdFromWireJointIdSelector.local(state, jointId);
+  if (!wireId) {
+    return state;
+  }
+
   const wire = state.wiresByWireId[wireId];
-  if (!wire || wire.wireJointIds.indexOf(jointId) === -1) {
+  if (wire.wireJointIds.indexOf(jointId) === -1) {
     return state;
   }
 
@@ -32,7 +37,7 @@ export default function wireJointDelete(
   }
 
   state = jointedSegmentIds.reduce(
-    (state, segmentId) => wireSegmentDelete(state, wireId, segmentId),
+    (state, segmentId) => wireSegmentDelete(state, segmentId),
     state
   );
 
@@ -77,8 +82,8 @@ function mergeSegments(
     const outputSegment =
       seg1.type === "output" ? seg1 : (seg2 as OutputWireSegment);
     state = removeJoint(state, wireId, jointId);
-    state = removeSegment(state, wireId, segmentId1, false);
-    state = removeSegment(state, wireId, segmentId2, false);
+    state = removeSegment(state, segmentId1, false);
+    state = removeSegment(state, segmentId2, false);
     state = addSegment(state, wireId, {
       type: "input-output",
       inputPin: inputSegment.inputPin,
@@ -106,8 +111,8 @@ function mergeSegments(
   }
 
   state = removeJoint(state, wireId, jointId);
-  state = removeSegment(state, wireId, segmentId1, false);
-  state = removeSegment(state, wireId, segmentId2, false);
+  state = removeSegment(state, segmentId1, false);
+  state = removeSegment(state, segmentId2, false);
 
   switch (alt.type) {
     case "bridge": {

@@ -184,16 +184,12 @@ function executeWireDrag(
           state,
           connectPinToWireSegment(
             pin,
-            target.wireId,
             target.segmentId,
             target.segmentSplitLength
           )
         );
       case "joint":
-        return rootReducer(
-          state,
-          connectJointToPin(target.wireId, target.jointId, pin)
-        );
+        return rootReducer(state, connectJointToPin(target.jointId, pin));
     }
   } else if (
     dragStartTarget.type === "segment" ||
@@ -217,7 +213,6 @@ function executeWireDrag(
       state,
       connectFloatingToWireSegment(
         altTarget.point,
-        segmentTarget.wireId,
         segmentTarget.segmentId,
         segmentTarget.segmentSplitLength
       )
@@ -236,23 +231,14 @@ function executeWireDrag(
     if (altTarget.type === "joint") {
       return rootReducer(
         state,
-        connectWireJointToJoint(
-          jointTarget.wireId,
-          jointTarget.jointId,
-          altTarget.wireId,
-          altTarget.jointId
-        )
+        connectWireJointToJoint(jointTarget.jointId, altTarget.jointId)
       );
     }
 
     // At this point, we are connecting a joint to floating.
     return rootReducer(
       state,
-      connectJointToFloating(
-        jointTarget.wireId,
-        jointTarget.jointId,
-        altTarget.point
-      )
+      connectJointToFloating(jointTarget.jointId, altTarget.point)
     );
   }
 

@@ -9,7 +9,11 @@ import {
   isOutputWireSegment,
   WireSegment,
 } from "../../types";
-import { circuitIdForWireIdSelector } from "../../selectors/wires";
+import {
+  circuitIdForWireIdSelector,
+  wireIdFromWireJointIdSelector,
+  wireIdFromWireSegmentIdSelector,
+} from "../../selectors/wires";
 import { getJointIdsFromSegment, getSegmentIdsFromJoint } from "../../utils";
 
 export function removeJoint(
@@ -75,15 +79,15 @@ export function addSegment(
 
 export function removeSegment(
   state: CircuitGraphServiceState,
-  wireId: string,
   wireSegmentId: string,
   removeOrphanJoints = true
 ): CircuitGraphServiceState {
-  const wire = state.wiresByWireId[wireId];
-  if (!wire) {
+  const wireId = wireIdFromWireSegmentIdSelector.local(state, wireSegmentId);
+  if (!wireId) {
     return state;
   }
 
+  const wire = state.wiresByWireId[wireId];
   const segment = state.wireSegmentsById[wireSegmentId];
   if (!segment) {
     return state;
@@ -283,9 +287,13 @@ export function collectWireLineIds(
  */
 export function wireSplit(
   state: CircuitGraphServiceState,
-  wireId: string,
   jointId: string
 ): CircuitGraphServiceState | null {
+  const wireId = wireIdFromWireJointIdSelector.local(state, jointId);
+  if (!wireId) {
+    return null;
+  }
+
   const circuitId = circuitIdForWireIdSelector.local(state, wireId);
   if (!circuitId) {
     return null;
