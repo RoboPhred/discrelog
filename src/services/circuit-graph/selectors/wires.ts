@@ -3,11 +3,11 @@ import values from "lodash/values";
 import flatMap from "lodash/flatMap";
 import uniq from "lodash/uniq";
 
+import { immutableEmptyArray } from "@/arrays";
+
 import { CircuitGraphServiceState } from "../state";
 import { createCircuitGraphSelector, getJointIdsFromSegment } from "../utils";
 import { elementPinEquals, wireSegmentHasInput } from "../types";
-
-const EmptyStringArray = Object.freeze([] as string[]);
 
 export const wiresByWireIdSelector = createCircuitGraphSelector(
   (state) => state.wiresByWireId
@@ -32,7 +32,7 @@ export const wireSegmentIdsFromWireIdSelector = createCircuitGraphSelector(
   (s: CircuitGraphServiceState, wireId: string) => {
     const wire = s.wiresByWireId[wireId];
     if (!wire) {
-      return EmptyStringArray;
+      return immutableEmptyArray<string>();
     }
     return wire.wireSegmentIds;
   }
@@ -54,7 +54,7 @@ export const wireJointIdsFromWireIdSelector = createCircuitGraphSelector(
   (s: CircuitGraphServiceState, wireId: string) => {
     const wire = s.wiresByWireId[wireId];
     if (!wire) {
-      return EmptyStringArray;
+      return immutableEmptyArray<string>();
     }
 
     return wire.wireJointIds;
@@ -134,7 +134,7 @@ export const pinIsWiredSelector = createCircuitGraphSelector(
 
 export const wireIdsFromCircuitIdSelector = createCircuitGraphSelector(
   (s: CircuitGraphServiceState, circuitId: string) => {
-    return s.wireIdsByCircuitId[circuitId] ?? EmptyStringArray;
+    return s.wireIdsByCircuitId[circuitId] ?? immutableEmptyArray<string>();
   }
 );
 
@@ -162,5 +162,24 @@ export const wireJointIdsFromCircuitIdSelector = createCircuitGraphSelector(
       (wireId) => s.wiresByWireId[wireId].wireJointIds
     );
     return jointIds;
+  }
+);
+
+export const segmentIdsForJointIdSelector = createCircuitGraphSelector(
+  (s: CircuitGraphServiceState, jointId: string) => {
+    const wireId = wireIdFromWireJointIdSelector.local(s, jointId);
+    if (!wireId) {
+      return immutableEmptyArray<string>();
+    }
+    const wire = s.wiresByWireId[wireId];
+
+    const segmentIds: string[] = [];
+    for (const segmentId of wire.wireSegmentIds) {
+      const jointIds = getJointIdsFromSegment(s.wireSegmentsById[segmentId]);
+      if (jointIds.indexOf(jointId) !== -1) {
+        segmentIds.push(segmentId);
+      }
+    }
+    return segmentIds;
   }
 );

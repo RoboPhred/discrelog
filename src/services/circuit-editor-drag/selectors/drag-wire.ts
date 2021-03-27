@@ -12,6 +12,7 @@ import {
   snapValue,
   ZeroPoint,
 } from "@/geometry";
+import { immutableEmptyArray } from "@/arrays";
 
 import {
   elementPinFromPointSelector,
@@ -298,28 +299,24 @@ export const dragJointGhostLinesSelector = (
   state: AppState
 ): [start: Point, end: Point][] => {
   const dragService = state.services.circuitEditorDrag;
-  if (dragService.dragMode === "wire-segment-new-joint") {
-    const { dragWireSegmentId } = dragService;
-    const jointPosition = dragWireJointPositionSelector(state);
-    if (!dragWireSegmentId || !jointPosition) {
-      return [];
-    }
-
-    const startPos = startPositionForWireSegmentId(state, dragWireSegmentId);
-    const endPos = endPositionForWireSegmentId(state, dragWireSegmentId);
-    if (!startPos || !endPos) {
-      return [];
-    }
-
-    return [
-      [startPos, jointPosition],
-      [jointPosition, endPos],
-    ];
+  if (dragService.dragMode !== "wire-segment-new-joint") {
+    return immutableEmptyArray<[Point, Point]>();
   }
 
-  // TODO: If drag move, show ghost lines between joints.
-  // Several joints might be moving, so current position of each joint
-  // must be calculated.
+  const { dragWireSegmentId } = dragService;
+  const jointPosition = dragWireJointPositionSelector(state);
+  if (!dragWireSegmentId || !jointPosition) {
+    return immutableEmptyArray<[Point, Point]>();
+  }
 
-  return [];
+  const startPos = startPositionForWireSegmentId(state, dragWireSegmentId);
+  const endPos = endPositionForWireSegmentId(state, dragWireSegmentId);
+  if (!startPos || !endPos) {
+    return immutableEmptyArray<[Point, Point]>();
+  }
+
+  return [
+    [startPos, jointPosition],
+    [jointPosition, endPos],
+  ];
 };

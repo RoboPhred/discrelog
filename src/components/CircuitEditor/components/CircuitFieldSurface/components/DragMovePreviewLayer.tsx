@@ -13,14 +13,17 @@ import {
   selectedJointIdsSelector,
 } from "@/services/selection/selectors/selection";
 import { isEditorDraggingSelector } from "@/services/circuit-editor-drag/selectors/drag";
-import { dragMoveOffsetSelector } from "@/services/circuit-editor-drag/selectors/drag-move";
+import {
+  dragMoveGhostLinesSelector,
+  dragMoveOffsetSelector,
+} from "@/services/circuit-editor-drag/selectors/drag-move";
+import { wireJointPositionByJointIdSelector } from "@/services/circuit-graph/selectors/wire-positions";
 
 import useSelector from "@/hooks/useSelector";
 
 import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
 
 import ElementVisual from "./ElementVisual";
-import { wireJointPositionByJointIdSelector } from "@/services/circuit-graph/selectors/wire-positions";
 
 const selectedElementPositionsByIdSelector = createSelector(
   selectedElementIdsSelector,
@@ -51,6 +54,7 @@ const DragMovePreviewLayer: React.FC = React.memo(
       isEditorDraggingSelector(state, editorId)
     );
 
+    // TODO: Make service selectors for these plus the offset.
     const selectedElementPositionsById = useSelector(
       selectedElementPositionsByIdSelector
     );
@@ -62,6 +66,8 @@ const DragMovePreviewLayer: React.FC = React.memo(
     );
 
     const dragMoveOffset = useSelector(dragMoveOffsetSelector);
+
+    const ghostLines = useSelector(dragMoveGhostLinesSelector);
 
     if (!isDragging || !dragMoveOffset) {
       return null;
@@ -91,11 +97,25 @@ const DragMovePreviewLayer: React.FC = React.memo(
       ))
     );
 
+    // FIXME: Get wire style and opacity from css
+    const ghostLineElements = ghostLines.map(([start, end], i) => (
+      <line
+        key={i}
+        x1={start.x}
+        y1={start.y}
+        x2={end.x}
+        y2={end.y}
+        stroke="black"
+        strokeWidth={2}
+      />
+    ));
+
     return (
       // FIXME: Get opacity from css
-      <g id="drag-element-preview-layer" opacity={0.3}>
+      <g id="drag-element-move-preview-layer" opacity={0.4}>
         {movingElements}
         {movingJoints}
+        {ghostLineElements}
       </g>
     );
   }
