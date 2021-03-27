@@ -18,7 +18,7 @@ export const wireJointPositionFromJointIdSelector = createCircuitGraphSelector(
     state.wireJointPositionsByJointId[jointId] ?? ZeroPoint
 );
 
-export const startPositionByWireSegmentId = (
+export const startPositionForWireSegmentId = (
   state: AppState,
   wireSegmentId: string
 ) => {
@@ -46,7 +46,7 @@ export const startPositionByWireSegmentId = (
   }
 };
 
-export const endPositionByWireSegmentId = (
+export const endPositionForWireSegmentId = (
   state: AppState,
   wireSegmentId: string
 ) => {

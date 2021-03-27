@@ -16,8 +16,8 @@ import useSelector from "@/hooks/useSelector";
 import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
 
 import {
-  endPositionByWireSegmentId,
-  startPositionByWireSegmentId,
+  endPositionForWireSegmentId,
+  startPositionForWireSegmentId,
 } from "@/services/circuit-graph/selectors/wire-positions";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 import { isDraggingSelector } from "@/services/circuit-editor-drag/selectors/drag";
@@ -55,10 +55,10 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
   );
 
   const startPos = useSelector((state) =>
-    startPositionByWireSegmentId(state, wireSegmentId)
+    startPositionForWireSegmentId(state, wireSegmentId)
   );
   const endPos = useSelector((state) =>
-    endPositionByWireSegmentId(state, wireSegmentId)
+    endPositionForWireSegmentId(state, wireSegmentId)
   );
 
   const onMouseMove = (e: React.MouseEvent<SVGLineElement>) => {

@@ -26,8 +26,8 @@ import {
   WireConnectTarget,
 } from "@/services/circuit-graph/types";
 import {
-  endPositionByWireSegmentId,
-  startPositionByWireSegmentId,
+  endPositionForWireSegmentId,
+  startPositionForWireSegmentId,
   wireJointPositionFromJointIdSelector,
 } from "@/services/circuit-graph/selectors/wire-positions";
 import {
@@ -73,8 +73,8 @@ function wireSegmentFromPoint(
   for (const wireId of wireIds) {
     const segmentIds = wireSegmentIdsFromWireIdSelector(state, wireId);
     for (const segmentId of segmentIds) {
-      const startPos = startPositionByWireSegmentId(state, segmentId);
-      const endPos = endPositionByWireSegmentId(state, segmentId);
+      const startPos = startPositionForWireSegmentId(state, segmentId);
+      const endPos = endPositionForWireSegmentId(state, segmentId);
 
       const lineSub = pointSubtract(endPos, startPos);
       const length = magnitude(lineSub);
@@ -232,8 +232,8 @@ function getDragTargetPoint(
       );
     case "segment": {
       const { segmentId, segmentInsertLength } = target;
-      const startPos = startPositionByWireSegmentId(state, segmentId);
-      const endPos = endPositionByWireSegmentId(state, segmentId);
+      const startPos = startPositionForWireSegmentId(state, segmentId);
+      const endPos = endPositionForWireSegmentId(state, segmentId);
       const lineVector = normalize(pointSubtract(endPos, startPos));
       const fracPos = pointAdd(
         startPos,
@@ -292,4 +292,34 @@ export const dragWireJointPositionSelector = (state: AppState) => {
   }
 
   return dragEnd;
+};
+
+export const dragJointGhostLinesSelector = (
+  state: AppState
+): [start: Point, end: Point][] => {
+  const dragService = state.services.circuitEditorDrag;
+  if (dragService.dragMode === "wire-segment-new-joint") {
+    const { dragWireSegmentId } = dragService;
+    const jointPosition = dragWireJointPositionSelector(state);
+    if (!dragWireSegmentId || !jointPosition) {
+      return [];
+    }
+
+    const startPos = startPositionForWireSegmentId(state, dragWireSegmentId);
+    const endPos = endPositionForWireSegmentId(state, dragWireSegmentId);
+    if (!startPos || !endPos) {
+      return [];
+    }
+
+    return [
+      [startPos, jointPosition],
+      [jointPosition, endPos],
+    ];
+  }
+
+  // TODO: If drag move, show ghost lines between joints.
+  // Several joints might be moving, so current position of each joint
+  // must be calculated.
+
+  return [];
 };

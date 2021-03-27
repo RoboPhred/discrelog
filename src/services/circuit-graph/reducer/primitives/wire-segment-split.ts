@@ -5,8 +5,8 @@ import { normalize, pointAdd, pointSubtract, scale } from "@/geometry";
 import { AppState } from "@/store";
 
 import {
-  endPositionByWireSegmentId,
-  startPositionByWireSegmentId,
+  endPositionForWireSegmentId,
+  startPositionForWireSegmentId,
 } from "../../selectors/wire-positions";
 
 import { CircuitGraphServiceState } from "../../state";
@@ -34,8 +34,8 @@ export default function wireSegmentSplit(
     throw new WireOperationError("Wire segment not found.");
   }
 
-  const startPos = startPositionByWireSegmentId(rootState, wireSegmentId);
-  const endPos = endPositionByWireSegmentId(rootState, wireSegmentId);
+  const startPos = startPositionForWireSegmentId(rootState, wireSegmentId);
+  const endPos = endPositionForWireSegmentId(rootState, wireSegmentId);
   const lineVector = normalize(pointSubtract(endPos, startPos));
   const segmentJointPos = pointAdd(
     startPos,

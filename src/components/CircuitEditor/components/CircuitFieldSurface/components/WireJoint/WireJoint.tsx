@@ -142,14 +142,6 @@ const WireJoint: React.FC<WireJointProps> = ({ wireId, jointId }) => {
             isSelected && styles["selected"]
           )}
         >
-          <circle
-            cx={position.x}
-            cy={position.y}
-            r={3}
-            fill="black"
-            stroke="none"
-            onMouseDown={startTracking}
-          />
           {mouseOver && (
             <g onMouseDown={onNewSegmentMouseDown}>
               <circle
@@ -168,6 +160,14 @@ const WireJoint: React.FC<WireJointProps> = ({ wireId, jointId }) => {
               />
             </g>
           )}
+          <circle
+            cx={position.x}
+            cy={position.y}
+            r={3}
+            fill="black"
+            stroke="none"
+            onMouseDown={startTracking}
+          />
         </g>
       )}
     </g>
