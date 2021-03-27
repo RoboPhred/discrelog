@@ -128,6 +128,13 @@ const WireJoint: React.FC<WireJointProps> = ({ wireId, jointId }) => {
         fill="transparent"
         stroke="none"
       />
+      <circle
+        cx={position.x}
+        cy={position.y}
+        r={2}
+        fill="black"
+        stroke="none"
+      />
       {(mouseOver || isSelected) && (
         <g
           className={cls(
