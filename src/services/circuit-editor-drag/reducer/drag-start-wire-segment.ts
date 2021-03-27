@@ -28,7 +28,7 @@ export default createCircuitEditorDragReducer((state, action, rootState) => {
     const endPos = endPositionByWireSegmentId(rootState, wireSegmentId);
     const lineVector = normalize(pointSubtract(endPos, startPos));
     const v = pointSubtract({ x, y }, startPos);
-    const segmentSplitLength = dotProduct(v, lineVector);
+    const segmentInsertLength = dotProduct(v, lineVector);
 
     return {
       dragMode: "wire",
@@ -38,7 +38,7 @@ export default createCircuitEditorDragReducer((state, action, rootState) => {
       dragStartTarget: {
         type: "segment",
         segmentId: wireSegmentId,
-        segmentSplitLength,
+        segmentInsertLength,
       },
       dragEnd: null,
       dragEndEditorId: null,

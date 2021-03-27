@@ -1,8 +1,10 @@
 import { CircuitGraphServiceState } from "../../state";
 
-import wireDelete from "./wire-delete";
-import { removeSegment, wireSplit } from "./utils";
 import { wireIdFromWireSegmentIdSelector } from "../../selectors/wires";
+
+import { wireRemove } from "../primitives/wire-remove";
+import { wireSplit } from "../primitives/wire-split";
+import { wireSegmentRemove } from "../primitives/wire-segment-remove";
 
 export default function wireSegmentDelete(
   state: CircuitGraphServiceState,
@@ -28,12 +30,16 @@ export default function wireSegmentDelete(
     wire.wireSegmentIds.length === 1
   ) {
     // Removing this segment will remove the entire wire.
-    return wireDelete(state, wireId);
+    return wireRemove(state, wireId);
   }
 
   if (removedSegment.type === "bridge") {
     // Remove the bridge.
-    state = removeSegment(state, wireSegmentId, true);
+    // Make sure to remove the orpahned joints, we will detect their
+    // remaining presense as an indicator if the network was split.
+    state = wireSegmentRemove(state, wireSegmentId, {
+      removeOrphanJoints: true,
+    });
 
     // Check if we cut the wire into two networks.
     // We can tell because removeSegment will delete orphaned joints, and
@@ -58,5 +64,5 @@ export default function wireSegmentDelete(
 
   // At this point, the segment is a connection from an element pin to the rest of the wire.
   // There are no joints to delete, as the single joint will be used by the other wire segment.
-  return removeSegment(state, wireSegmentId);
+  return wireSegmentRemove(state, wireSegmentId);
 }

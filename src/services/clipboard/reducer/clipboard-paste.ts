@@ -11,8 +11,8 @@ import { fpSet } from "@/utils";
 import rootReducer from "@/store/reducer";
 
 import { addElement } from "@/actions/element-add";
-import { connectPinToPin } from "@/actions/wire-connect-pin-to-pin";
 import { isPasteAction } from "@/actions/clipboard-paste";
+import { wireConnect } from "@/actions/wire-connect";
 import { selectElements } from "@/actions/select-elements";
 
 import { gridElementSnapSelector } from "@/services/circuit-editor-drag/selectors/snap";
@@ -78,9 +78,16 @@ export default function clipboardPasteReducer(
         const targetId = pasteIds[targetCopyId];
         state = rootReducer(
           state,
-          connectPinToPin(
-            { elementId: sourceId, pinId: outputPin },
-            { elementId: targetId, pinId: targetPin }
+          wireConnect(
+            circuitId,
+            {
+              type: "pin",
+              pin: { elementId: sourceId, pinId: outputPin },
+            },
+            {
+              type: "pin",
+              pin: { elementId: targetId, pinId: targetPin },
+            }
           )
         );
       }

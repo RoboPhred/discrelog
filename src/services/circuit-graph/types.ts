@@ -1,3 +1,5 @@
+import { Point } from "@/geometry";
+
 export interface Element {
   /**
    * The type of this element.
@@ -149,3 +151,62 @@ export function wireSegmentHasInput(
 ): segment is InputWireSegment | InputOutputWireSegment {
   return segment.type === "input" || segment.type === "input-output";
 }
+
+/**
+ * Signifies a joint as a connection target.
+ */
+export interface JointWireConnectTarget {
+  type: "joint";
+
+  /**
+   * The id of the joint being connected to.
+   */
+  jointId: string;
+}
+
+/**
+ * Signifies a wire segment as a connection target.
+ */
+export interface SegmentWireConnectTarget {
+  type: "segment";
+
+  /**
+   * The id of the segment being connected to.
+   */
+  segmentId: string;
+
+  /**
+   * The length along the segment the connection is connecting to.
+   */
+  segmentInsertLength: number;
+}
+
+/**
+ * Signifies an element pin as a connection target.
+ */
+export interface PinWireConnectTarget {
+  type: "pin";
+
+  /**
+   * The pin being connected to.
+   */
+  pin: ElementPin;
+}
+
+/**
+ * Signifies a loose connection floating on the field as a connection target.
+ */
+export interface FloatingWireConnectTarget {
+  type: "floating";
+
+  /**
+   * The point where the wire will float at.
+   */
+  point: Point;
+}
+
+export type WireConnectTarget =
+  | JointWireConnectTarget
+  | SegmentWireConnectTarget
+  | PinWireConnectTarget
+  | FloatingWireConnectTarget;

@@ -2,12 +2,12 @@ import { AnyAction } from "redux";
 
 import { Point } from "@/geometry";
 import { ModifierKeys } from "@/modifier-keys";
-import { CircuitEditorDragWireTarget } from "@/services/circuit-editor-drag/types";
+import { WireConnectTarget } from "@/services/circuit-graph/types";
 
 export const CIRCUIT_EDITOR_DRAG_START_WIRE_ACTION = "@circuit-editor/drag/start/wire" as const;
 export const circuitEditorDragStartWire = (
   p: Point,
-  target: CircuitEditorDragWireTarget,
+  target: WireConnectTarget,
   modifierKeys: ModifierKeys,
   editorId: string
 ) => ({

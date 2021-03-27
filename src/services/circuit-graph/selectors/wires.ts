@@ -61,6 +61,23 @@ export const wireJointIdsFromWireIdSelector = createCircuitGraphSelector(
   }
 );
 
+export const circuitIdFromWireJointIdSelector = createCircuitGraphSelector(
+  (s: CircuitGraphServiceState, jointId: string) => {
+    const wireId = wireIdFromWireJointIdSelector.local(s, jointId);
+    if (!wireId) {
+      return null;
+    }
+
+    for (const circuitId of Object.keys(s.wireIdsByCircuitId)) {
+      if (s.wireIdsByCircuitId[circuitId].indexOf(wireId) !== -1) {
+        return circuitId;
+      }
+    }
+
+    return null;
+  }
+);
+
 export const wireIdFromWireJointIdSelector = createCircuitGraphSelector(
   (s: CircuitGraphServiceState, jointId: string) => {
     for (const wireId of Object.keys(s.wiresByWireId)) {

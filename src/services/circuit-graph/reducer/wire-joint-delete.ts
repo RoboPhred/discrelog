@@ -2,7 +2,7 @@ import { isWireJointDeleteAction } from "@/actions/wire-joint-delete";
 
 import { createCircuitGraphReducer } from "../utils";
 
-import wireJointDelete from "./operations/wire-joint-delete";
+import { wireJointMergeOrDelete } from "./operations/wire-joint-merge-or-delete";
 
 export default createCircuitGraphReducer((state, action) => {
   if (!isWireJointDeleteAction(action)) {
@@ -12,7 +12,7 @@ export default createCircuitGraphReducer((state, action) => {
   const { jointIds } = action.payload;
 
   state = jointIds.reduce(
-    (state, jointId) => wireJointDelete(state, jointId),
+    (state, jointId) => wireJointMergeOrDelete(state, jointId),
     state
   );
 

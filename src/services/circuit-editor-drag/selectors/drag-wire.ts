@@ -18,7 +18,13 @@ import {
   elementPinPositionFromElementPinSelector,
 } from "@/services/circuit-layout/selectors/element-pin-positions";
 import { circuitIdForEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
-import { ElementPin, elementPinEquals } from "@/services/circuit-graph/types";
+import {
+  ElementPin,
+  elementPinEquals,
+  JointWireConnectTarget,
+  SegmentWireConnectTarget,
+  WireConnectTarget,
+} from "@/services/circuit-graph/types";
 import {
   endPositionByWireSegmentId,
   startPositionByWireSegmentId,
@@ -30,19 +36,13 @@ import {
   wireSegmentIdsFromWireIdSelector,
 } from "@/services/circuit-graph/selectors/wires";
 
-import {
-  CircuitEditorDragWireJointTarget,
-  CircuitEditorDragWireSegmentTarget,
-  CircuitEditorDragWireTarget,
-} from "../types";
-
 import { applyGridJointSnapSelector, gridJointSnapSelector } from "./snap";
 
 function wireJointFromPoint(
   state: AppState,
   circuitId: string,
   p: Point
-): CircuitEditorDragWireJointTarget | null {
+): JointWireConnectTarget | null {
   const wireIds = wireIdsFromCircuitIdSelector(state, circuitId);
   for (const wireId of wireIds) {
     const jointIds = wireJointIdsFromWireIdSelector(state, wireId);
@@ -67,7 +67,7 @@ function wireSegmentFromPoint(
   circuitId: string,
   p: Point,
   snapToGrid: boolean
-): CircuitEditorDragWireSegmentTarget | null {
+): SegmentWireConnectTarget | null {
   const snap = gridJointSnapSelector(state);
   const wireIds = wireIdsFromCircuitIdSelector(state, circuitId);
   for (const wireId of wireIds) {
@@ -106,7 +106,7 @@ function wireSegmentFromPoint(
       return {
         type: "segment",
         segmentId,
-        segmentSplitLength: magnitude(pointSubtract(dotPos, startPos)),
+        segmentInsertLength: magnitude(pointSubtract(dotPos, startPos)),
       };
     }
   }
@@ -122,7 +122,7 @@ function wireSegmentFromPoint(
 export const dragWireEndTargetByPointSelector = (
   state: AppState,
   p: Point
-): CircuitEditorDragWireTarget | null => {
+): WireConnectTarget | null => {
   const dragService = state.services.circuitEditorDrag;
   if (dragService.dragMode !== "wire") {
     return null;
@@ -183,7 +183,7 @@ export const dragWireEndTargetByPointSelector = (
 
 export const dragWireEndTargetSelector = (
   state: AppState
-): CircuitEditorDragWireTarget | null => {
+): WireConnectTarget | null => {
   const dragService = state.services.circuitEditorDrag;
   if (dragService.dragMode !== "wire") {
     return null;
@@ -217,9 +217,9 @@ export const dragWireTargetPinSelector = (
   return dragWireTargetPinCache;
 };
 
-export function getDragTargetPoint(
+function getDragTargetPoint(
   state: AppState,
-  target: CircuitEditorDragWireTarget
+  target: WireConnectTarget
 ): Point | null {
   switch (target.type) {
     case "floating":
@@ -231,11 +231,14 @@ export function getDragTargetPoint(
         target.pin.pinId
       );
     case "segment": {
-      const { segmentId, segmentSplitLength } = target;
+      const { segmentId, segmentInsertLength } = target;
       const startPos = startPositionByWireSegmentId(state, segmentId);
       const endPos = endPositionByWireSegmentId(state, segmentId);
       const lineVector = normalize(pointSubtract(endPos, startPos));
-      const fracPos = pointAdd(startPos, scale(lineVector, segmentSplitLength));
+      const fracPos = pointAdd(
+        startPos,
+        scale(lineVector, segmentInsertLength)
+      );
       return fracPos;
     }
     case "joint":

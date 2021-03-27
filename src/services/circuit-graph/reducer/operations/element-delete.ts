@@ -7,12 +7,13 @@ import mapValues from "lodash/mapValues";
 
 import { AppState } from "@/store";
 
-import { elementPinsFromPinElementSelector } from "../../selectors/pins";
 import { CircuitGraphServiceState } from "../../state";
 import { elementPinEquals, WireSegment } from "../../types";
 
-import wireSegmentDelete from "./wire-segment-delete";
+import { elementPinsFromPinElementSelector } from "../../selectors/pins";
 import { wireIdFromWireSegmentIdSelector } from "../../selectors/wires";
+
+import wireSegmentDelete from "./wire-segment-delete";
 
 export default function elementDelete(
   state: CircuitGraphServiceState,

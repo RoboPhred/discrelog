@@ -1,10 +1,13 @@
-import pick from "lodash/pick";
 import { v4 as uuidV4 } from "uuid";
 
 import { isWireSegmentInsertJointAction } from "@/actions/wire-segment-insert-joint";
 
 import { WireSegment } from "../types";
 import { createCircuitGraphReducer } from "../utils";
+
+import { wireJointInsert } from "./primitives/wire-joint-insert";
+import { wireSegmentRemove } from "./primitives/wire-segment-remove";
+import { wireSegmentInsert } from "./primitives/wire-segment-insert";
 
 export default createCircuitGraphReducer((state, action) => {
   if (!isWireSegmentInsertJointAction(action)) {
@@ -25,8 +28,6 @@ export default createCircuitGraphReducer((state, action) => {
 
   const newJointId = uuidV4();
 
-  const firstSegmentId = uuidV4();
-  const secondSegmentId = uuidV4();
   let firstSegment: WireSegment;
   let secondSegment: WireSegment;
   switch (targetSegment.type) {
@@ -79,37 +80,13 @@ export default createCircuitGraphReducer((state, action) => {
       return state;
   }
 
-  // Remove the modified segment, it is to be replaced with the two new segments.
-  const wireSegmentsById: typeof state.wireSegmentsById = pick(
-    state.wireSegmentsById,
-    Object.keys(state.wireSegmentsById).filter((id) => id !== wireSegmentId)
-  );
-  wireSegmentsById[firstSegmentId] = firstSegment;
-  wireSegmentsById[secondSegmentId] = secondSegment;
+  state = wireJointInsert(state, wireId, newJointId, jointPos);
+  state = wireSegmentRemove(state, wireSegmentId, {
+    deleteWireIfLastSegment: false,
+    removeOrphanJoints: false,
+  });
+  state = wireSegmentInsert(state, wireId, uuidV4(), firstSegment);
+  state = wireSegmentInsert(state, wireId, uuidV4(), secondSegment);
 
-  // Add the segment ids to the wire.
-  const wiresByWireId: typeof state.wiresByWireId = {
-    ...state.wiresByWireId,
-    [wireId]: {
-      ...targetWire,
-      wireSegmentIds: [
-        ...targetWire.wireSegmentIds.filter((x) => x !== wireSegmentId),
-        firstSegmentId,
-        secondSegmentId,
-      ],
-      wireJointIds: [...targetWire.wireJointIds, newJointId],
-    },
-  };
-
-  const wireJointPositionsByJointId: typeof state.wireJointPositionsByJointId = {
-    ...state.wireJointPositionsByJointId,
-    [newJointId]: jointPos,
-  };
-
-  return {
-    ...state,
-    wireSegmentsById,
-    wiresByWireId,
-    wireJointPositionsByJointId,
-  };
+  return state;
 });

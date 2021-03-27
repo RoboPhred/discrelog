@@ -1,7 +1,6 @@
 import { Point } from "@/geometry";
 import { ModifierKeys } from "@/modifier-keys";
-
-import { CircuitEditorDragWireTarget } from "./types";
+import { WireConnectTarget } from "../circuit-graph/types";
 
 export interface CircuitEditorDragNullState {
   dragMode: null;
@@ -50,9 +49,9 @@ export interface CircuitEditorDragWireState
   dragMode: "wire";
 
   /**
-   * The subject the wire is being dragged from.
+   * The wire connection target this drag is starting from.
    */
-  dragStartTarget: CircuitEditorDragWireTarget;
+  dragStartTarget: WireConnectTarget;
 }
 
 export interface CircuitEditorDragWireSegmentNewJointState

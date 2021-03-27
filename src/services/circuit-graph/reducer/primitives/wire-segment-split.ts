@@ -1,5 +1,4 @@
 import { v4 as uuidV4 } from "uuid";
-import pick from "lodash/pick";
 
 import { normalize, pointAdd, pointSubtract, scale } from "@/geometry";
 
@@ -13,26 +12,26 @@ import {
 import { CircuitGraphServiceState } from "../../state";
 import { WireSegment } from "../../types";
 import { wireIdFromWireSegmentIdSelector } from "../../selectors/wires";
+import { wireJointInsert } from "./wire-joint-insert";
+import { wireSegmentRemove } from "./wire-segment-remove";
+import { wireSegmentInsert } from "./wire-segment-insert";
+import { WireOperationError } from "../errors/WireOperationError";
 
 export default function wireSegmentSplit(
   state: CircuitGraphServiceState,
   wireSegmentId: string,
   segmentSplitLength: number,
+  splitJointId: string,
   rootState: AppState
-): [state: CircuitGraphServiceState, splitJointId: string | null] {
+): CircuitGraphServiceState {
   const wireId = wireIdFromWireSegmentIdSelector.local(state, wireSegmentId);
   if (!wireId) {
-    return [state, null];
-  }
-
-  const targetWire = state.wiresByWireId[wireId];
-  if (!targetWire) {
-    return [state, null];
+    throw new WireOperationError("Wire segment parent wire not found.");
   }
 
   const targetSegment = state.wireSegmentsById[wireSegmentId];
   if (!targetSegment) {
-    return [state, null];
+    throw new WireOperationError("Wire segment not found.");
   }
 
   const startPos = startPositionByWireSegmentId(rootState, wireSegmentId);
@@ -43,7 +42,7 @@ export default function wireSegmentSplit(
     scale(lineVector, segmentSplitLength)
   );
 
-  const segmentJointId = uuidV4();
+  state = wireJointInsert(state, wireId, splitJointId, segmentJointPos);
 
   const firstSegmentId = uuidV4();
   const secondSegmentId = uuidV4();
@@ -55,11 +54,11 @@ export default function wireSegmentSplit(
         firstSegment = {
           type: "bridge",
           jointAId: targetSegment.jointAId,
-          jointBId: segmentJointId,
+          jointBId: splitJointId,
         };
         secondSegment = {
           type: "bridge",
-          jointAId: segmentJointId,
+          jointAId: splitJointId,
           jointBId: targetSegment.jointBId,
         };
       }
@@ -69,11 +68,11 @@ export default function wireSegmentSplit(
       {
         firstSegment = {
           ...targetSegment,
-          jointId: segmentJointId,
+          jointId: splitJointId,
         };
         secondSegment = {
           type: "bridge",
-          jointAId: segmentJointId,
+          jointAId: splitJointId,
           jointBId: targetSegment.jointId,
         };
       }
@@ -84,53 +83,30 @@ export default function wireSegmentSplit(
         firstSegment = {
           type: "output",
           outputPin: targetSegment.outputPin,
-          jointId: segmentJointId,
+          jointId: splitJointId,
           lineId,
         };
         secondSegment = {
           type: "input",
           inputPin: targetSegment.inputPin,
-          jointId: segmentJointId,
+          jointId: splitJointId,
           lineId,
         };
       }
       break;
     default:
-      return [state, null];
+      throw new WireOperationError("Unknown segment type.");
   }
 
   // Remove the modified segment, it is to be replaced with the two new segments.
-  const wireSegmentsById: typeof state.wireSegmentsById = pick(
-    state.wireSegmentsById,
-    Object.keys(state.wireSegmentsById).filter((id) => id !== wireSegmentId)
-  );
-  wireSegmentsById[firstSegmentId] = firstSegment;
-  wireSegmentsById[secondSegmentId] = secondSegment;
+  state = wireSegmentRemove(state, wireSegmentId, {
+    deleteWireIfLastSegment: false,
+    removeOrphanJoints: false,
+  });
 
-  const wireJointPositionsByJointId: typeof state.wireJointPositionsByJointId = {
-    ...state.wireJointPositionsByJointId,
-    [segmentJointId]: segmentJointPos,
-  };
+  // Add the new segments.
+  state = wireSegmentInsert(state, wireId, firstSegmentId, firstSegment);
+  state = wireSegmentInsert(state, wireId, secondSegmentId, secondSegment);
 
-  const wiresByWireId: typeof state.wiresByWireId = {
-    ...state.wiresByWireId,
-    [wireId]: {
-      ...targetWire,
-      wireSegmentIds: [
-        ...targetWire.wireSegmentIds.filter((x) => x !== wireSegmentId),
-        firstSegmentId,
-        secondSegmentId,
-      ],
-      wireJointIds: [...targetWire.wireJointIds, segmentJointId],
-    },
-  };
-
-  state = {
-    ...state,
-    wiresByWireId,
-    wireSegmentsById,
-    wireJointPositionsByJointId,
-  };
-
-  return [state, segmentJointId];
+  return state;
 }
