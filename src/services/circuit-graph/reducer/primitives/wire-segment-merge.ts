@@ -61,8 +61,14 @@ export function wireSegmentMerge(
     const outputSegment =
       seg1.type === "output" ? seg1 : (seg2 as OutputWireSegment);
     state = wireJointRemove(state, jointId);
-    state = wireSegmentRemove(state, segmentId1);
-    state = wireSegmentRemove(state, segmentId2);
+    state = wireSegmentRemove(state, segmentId1, {
+      deleteWireIfLastSegment: false,
+      removeOrphanJoints: false,
+    });
+    state = wireSegmentRemove(state, segmentId2, {
+      deleteWireIfLastSegment: false,
+      removeOrphanJoints: false,
+    });
     state = wireSegmentInsert(state, wireId1, uuidV4(), {
       type: "input-output",
       inputPin: inputSegment.inputPin,

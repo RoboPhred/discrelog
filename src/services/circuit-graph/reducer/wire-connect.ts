@@ -144,7 +144,7 @@ export default createCircuitGraphReducer((state, action, rootState) => {
       return unchangedState;
     }
 
-    const lineId = defaultLineIdFromWiredPin(rootState, wireId, pin);
+    const lineId = defaultLineIdFromWiredPin(state, wireId, pin, rootState);
 
     let segment: WireSegment;
     if (direction === "input") {
@@ -175,22 +175,20 @@ export default createCircuitGraphReducer((state, action, rootState) => {
 });
 
 function defaultLineIdFromWiredPin(
-  state: AppState,
+  state: CircuitGraphServiceState,
   wireId: string,
-  pin: ElementPin
+  pin: ElementPin,
+  rootState: AppState
 ) {
   let lineId: string;
 
   const direction = pinDirectionFromElementPinSelector(
-    state,
+    rootState,
     pin.elementId,
     pin.pinId
   );
 
-  const [inputLineIds, outputLineIds] = collectWireLineIds(
-    state.services.circuitGraph,
-    wireId
-  );
+  const [inputLineIds, outputLineIds] = collectWireLineIds(state, wireId);
 
   if (direction === "output" && outputLineIds.length > 0) {
     // Already have an output connected, create a new line for this one.

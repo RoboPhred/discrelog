@@ -2,12 +2,17 @@ import * as React from "react";
 
 import useSelector from "@/hooks/useSelector";
 
-import { wireIdsSelector } from "@/services/circuit-graph/selectors/wires";
+import { wireIdsFromCircuitIdSelector } from "@/services/circuit-graph/selectors/wires";
+
+import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
 
 import Wire from "./Wire";
 
 const WiresLayer = React.memo(function WiresLayer() {
-  const wireIds = useSelector(wireIdsSelector);
+  const { circuitId } = useCircuitEditor();
+  const wireIds = useSelector((state) =>
+    wireIdsFromCircuitIdSelector(state, circuitId)
+  );
 
   const elements = wireIds.map((wireId) => (
     <Wire key={wireId} wireId={wireId} />
