@@ -156,3 +156,64 @@ export function rectIntersectsRect(r1: Rectangle, r2: Rectangle): boolean {
 
   return true;
 }
+
+export interface LinePointInterceptOpts {
+  threshhold?: number;
+  axialGridSnap?: number;
+}
+
+export interface LinePointInterceptResult {
+  interceptPoint: Point;
+  interceptLineLengthDistance: number;
+  interceptLinePointDistance: number;
+}
+export function linePointIntercept(
+  lineStart: Point,
+  lineEnd: Point,
+  point: Point,
+  { threshhold = 4, axialGridSnap = 0 }: LinePointInterceptOpts
+): LinePointInterceptResult | null {
+  const lineSub = pointSubtract(lineEnd, lineStart);
+  const lineLength = magnitude(lineSub);
+  const lineVector = normalize(lineSub);
+
+  if (Number.isNaN(lineVector.x) || Number.isNaN(lineVector.y)) {
+    return null;
+  }
+
+  const v = pointSubtract(point, lineStart);
+  const interceptDistance = dotProduct(v, lineVector);
+
+  if (interceptDistance < 0 || interceptDistance > lineLength) {
+    return null;
+  }
+
+  const interceptPoint = pointAdd(
+    lineStart,
+    scale(lineVector, interceptDistance)
+  );
+
+  if (axialGridSnap > 0) {
+    // If snapping is enabled, snap to the axis the line follows.
+    if (Math.abs(lineVector.x) === 1) {
+      interceptPoint.x = snapValue(interceptPoint.x, axialGridSnap);
+    }
+    if (Math.abs(lineVector.y) === 1) {
+      interceptPoint.y = snapValue(interceptPoint.y, axialGridSnap);
+    }
+  }
+
+  const lineToDotDist = magnitude(pointSubtract(point, interceptPoint));
+  if (lineToDotDist > threshhold) {
+    return null;
+  }
+
+  return {
+    interceptPoint,
+    // Point may have snapped, recalculate distance
+    interceptLineLengthDistance: magnitude(
+      pointSubtract(interceptPoint, lineStart)
+    ),
+    interceptLinePointDistance: lineToDotDist,
+  };
+}

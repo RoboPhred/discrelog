@@ -2,6 +2,7 @@ import { AppState } from "@/store";
 
 import {
   dotProduct,
+  linePointIntercept,
   magnitude,
   normalize,
   Point,
@@ -77,37 +78,17 @@ function wireSegmentFromPoint(
       const startPos = startPositionForWireSegmentId(state, segmentId);
       const endPos = endPositionForWireSegmentId(state, segmentId);
 
-      const lineSub = pointSubtract(endPos, startPos);
-      const length = magnitude(lineSub);
-      const lineVector = normalize(lineSub);
-
-      const v = pointSubtract(p, startPos);
-      const distanceAlongLine = dotProduct(v, lineVector);
-
-      if (distanceAlongLine < 0 || distanceAlongLine > length) {
-        continue;
-      }
-
-      const dotPos = pointAdd(startPos, scale(lineVector, distanceAlongLine));
-      if (snapToGrid) {
-        // If snapping is enabled, snap to the axis the line follows.
-        if (Math.abs(lineVector.x) === 1) {
-          dotPos.x = snapValue(dotPos.x, snap);
-        }
-        if (Math.abs(lineVector.y) === 1) {
-          dotPos.y = snapValue(dotPos.y, snap);
-        }
-      }
-
-      const lineToDotDist = magnitude(pointSubtract(p, dotPos));
-      if (lineToDotDist > 4) {
+      const intercept = linePointIntercept(startPos, endPos, p, {
+        axialGridSnap: snapToGrid ? snap : undefined,
+      });
+      if (!intercept) {
         continue;
       }
 
       return {
         type: "segment",
         segmentId,
-        segmentInsertLength: magnitude(pointSubtract(dotPos, startPos)),
+        segmentInsertLength: intercept.interceptLineLengthDistance,
       };
     }
   }
