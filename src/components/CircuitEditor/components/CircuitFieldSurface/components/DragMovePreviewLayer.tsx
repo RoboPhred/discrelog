@@ -1,50 +1,21 @@
 import * as React from "react";
 
-import pick from "lodash/pick";
 import mapValues from "lodash/mapValues";
 import values from "lodash/values";
 
-import { createSelector } from "reselect";
-
 import { elementTypesByElementIdSelector } from "@/services/circuit-graph/selectors/elements";
-import { elementPositionsByElementIdSelector } from "@/services/circuit-layout/selectors/element-positions";
-import {
-  selectedElementIdsSelector,
-  selectedJointIdsSelector,
-} from "@/services/selection/selectors/selection";
 import { isEditorDraggingSelector } from "@/services/circuit-editor-drag/selectors/drag";
 import {
+  dragMoveElementPositionsByIdSelector,
   dragMoveGhostLinesSelector,
-  dragMoveOffsetSelector,
+  dragMoveJointPositionsByIdSelector,
 } from "@/services/circuit-editor-drag/selectors/drag-move";
-import { wireJointPositionByJointIdSelector } from "@/services/circuit-graph/selectors/wire-positions";
 
 import useSelector from "@/hooks/useSelector";
 
 import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
 
 import ElementVisual from "./ElementVisual";
-
-const selectedElementPositionsByIdSelector = createSelector(
-  selectedElementIdsSelector,
-  elementPositionsByElementIdSelector,
-  (selectedElementIds, elementPositionsById) =>
-    pick(elementPositionsById, selectedElementIds)
-);
-
-const selectedElementTypesByIdSelector = createSelector(
-  selectedElementIdsSelector,
-  elementTypesByElementIdSelector,
-  (selectedElementIds, elementTypesById) =>
-    pick(elementTypesById, selectedElementIds)
-);
-
-const selectedJointPositionsByIdSelector = createSelector(
-  selectedJointIdsSelector,
-  wireJointPositionByJointIdSelector,
-  (selectedJointIds, jointPositionsById) =>
-    pick(jointPositionsById, selectedJointIds)
-);
 
 const DragMovePreviewLayer: React.FC = React.memo(
   function DragElementPreviewLayer() {
@@ -54,42 +25,40 @@ const DragMovePreviewLayer: React.FC = React.memo(
       isEditorDraggingSelector(state, editorId)
     );
 
-    // TODO: Make service selectors for these plus the offset.
-    const selectedElementPositionsById = useSelector(
-      selectedElementPositionsByIdSelector
+    const dragMoveElementPositionsByElementId = useSelector(
+      dragMoveElementPositionsByIdSelector
     );
-    const selectedElementTypesById = useSelector(
-      selectedElementTypesByIdSelector
-    );
-    const selectedJointPositionsById = useSelector(
-      selectedJointPositionsByIdSelector
+    const elementTypesByElementId = useSelector(
+      elementTypesByElementIdSelector
     );
 
-    const dragMoveOffset = useSelector(dragMoveOffsetSelector);
+    const dragMoveJointPositionsByJointId = useSelector(
+      dragMoveJointPositionsByIdSelector
+    );
 
     const ghostLines = useSelector(dragMoveGhostLinesSelector);
 
-    if (!isDragging || !dragMoveOffset) {
+    if (!isDragging) {
       return null;
     }
 
     const movingElements = values(
-      mapValues(selectedElementPositionsById, (p, elementId) => (
+      mapValues(dragMoveElementPositionsByElementId, (p, elementId) => (
         <ElementVisual
           key={elementId}
-          elementType={selectedElementTypesById[elementId]}
-          x={p.x + dragMoveOffset.x}
-          y={p.y + dragMoveOffset.y}
+          elementType={elementTypesByElementId[elementId]}
+          x={p.x}
+          y={p.y}
         />
       ))
     );
 
     const movingJoints = values(
-      mapValues(selectedJointPositionsById, (p, jointId) => (
+      mapValues(dragMoveJointPositionsByJointId, (p, jointId) => (
         <circle
           key={jointId}
-          cx={p.x + dragMoveOffset.x}
-          cy={p.y + dragMoveOffset.y}
+          cx={p.x}
+          cy={p.y}
           r={2}
           stroke="none"
           fill="black"

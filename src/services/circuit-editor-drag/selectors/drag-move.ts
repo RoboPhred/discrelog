@@ -9,18 +9,22 @@ import {
   snapPoint,
   ZeroPoint,
 } from "@/geometry";
+import { immutableEmptyArray } from "@/arrays";
 
 import {
   selectedElementIdsSelector,
   selectedJointIdsSelector,
 } from "@/services/selection/selectors/selection";
-
-import { gridElementSnapSelector, gridJointSnapSelector } from "./snap";
-import { immutableEmptyArray } from "@/arrays";
 import { segmentIdsForJointIdSelector } from "@/services/circuit-graph/selectors/wires";
 import { WireSegment } from "@/services/circuit-graph/types";
 import { elementPinPositionFromElementPinSelector } from "@/services/circuit-layout/selectors/element-pin-positions";
-import { wireJointPositionFromJointIdSelector } from "@/services/circuit-graph/selectors/wire-positions";
+import {
+  wireJointPositionByJointIdSelector,
+  wireJointPositionFromJointIdSelector,
+} from "@/services/circuit-graph/selectors/wire-positions";
+import { elementPositionsByElementIdSelector } from "@/services/circuit-layout/selectors/element-positions";
+
+import { gridElementSnapSelector, gridJointSnapSelector } from "./snap";
 
 let cachedDragMoveOffset: Point | null = null;
 export const dragMoveOffsetSelector = (state: AppState) => {
@@ -69,6 +73,46 @@ export const dragMoveOffsetSelector = (state: AppState) => {
   }
 
   return cachedDragMoveOffset;
+};
+
+export const dragMoveElementPositionsByIdSelector = (state: AppState) => {
+  const offset = dragMoveOffsetSelector(state);
+
+  if (!offset) {
+    return null;
+  }
+
+  const selectedElementIds = selectedElementIdsSelector(state);
+  const elementPositionsById = elementPositionsByElementIdSelector(state);
+
+  const dragMoveElementPositionsById: Record<string, Point> = {};
+  for (const elementId of selectedElementIds) {
+    dragMoveElementPositionsById[elementId] = pointAdd(
+      elementPositionsById[elementId],
+      offset
+    );
+  }
+  return dragMoveElementPositionsById;
+};
+
+export const dragMoveJointPositionsByIdSelector = (state: AppState) => {
+  const offset = dragMoveOffsetSelector(state);
+
+  if (!offset) {
+    return null;
+  }
+
+  const selectedJointIds = selectedJointIdsSelector(state);
+  const JointPositionsById = wireJointPositionByJointIdSelector(state);
+
+  const dragMoveJointPositionsById: Record<string, Point> = {};
+  for (const jointId of selectedJointIds) {
+    dragMoveJointPositionsById[jointId] = pointAdd(
+      JointPositionsById[jointId],
+      offset
+    );
+  }
+  return dragMoveJointPositionsById;
 };
 
 export const dragMoveGhostLinesSelector = (

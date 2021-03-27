@@ -150,6 +150,7 @@ const WireJoint: React.FC<WireJointProps> = ({ wireId, jointId }) => {
                 r={8.5}
                 stroke="none"
                 fill="transparent"
+                className={styles["mouse-detector"]}
               />
               <path
                 shapeRendering="geometricPrecision"
