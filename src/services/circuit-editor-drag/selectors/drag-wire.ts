@@ -1,7 +1,6 @@
 import { AppState } from "@/store";
 
 import {
-  dotProduct,
   linePointIntercept,
   magnitude,
   normalize,

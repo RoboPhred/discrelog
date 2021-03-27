@@ -16,7 +16,7 @@ import {
   selectedJointIdsSelector,
 } from "@/services/selection/selectors/selection";
 import { segmentIdsForJointIdSelector } from "@/services/circuit-graph/selectors/wires";
-import { WireSegment } from "@/services/circuit-graph/types";
+import { ElementPin, WireSegment } from "@/services/circuit-graph/types";
 import { elementPinPositionFromElementPinSelector } from "@/services/circuit-layout/selectors/element-pin-positions";
 import {
   wireJointPositionByJointIdSelector,
@@ -124,12 +124,25 @@ export const dragMoveGhostLinesSelector = (
   }
 
   const selectedJointIds = selectedJointIdsSelector(state);
+  const selectedElementIds = selectedElementIdsSelector(state);
   const offset = dragMoveOffsetSelector(state);
   if (!offset) {
     return immutableEmptyArray<[Point, Point]>();
   }
 
-  function getJointPosition(jointId: string) {
+  function getPinPosition(pin: ElementPin): Point {
+    let pos = elementPinPositionFromElementPinSelector(
+      state,
+      pin.elementId,
+      pin.pinId
+    );
+    if (selectedElementIds.indexOf(pin.elementId) !== -1) {
+      pos = pointAdd(pos, offset!);
+    }
+    return pos;
+  }
+
+  function getJointPosition(jointId: string): Point {
     let pos = wireJointPositionFromJointIdSelector(state, jointId);
     if (!pos) {
       return ZeroPoint;
@@ -144,21 +157,13 @@ export const dragMoveGhostLinesSelector = (
     switch (segment.type) {
       case "output":
         return [
-          elementPinPositionFromElementPinSelector(
-            state,
-            segment.outputPin.elementId,
-            segment.outputPin.pinId
-          ),
+          getPinPosition(segment.outputPin),
           getJointPosition(segment.jointId),
         ];
       case "input":
         return [
           getJointPosition(segment.jointId),
-          elementPinPositionFromElementPinSelector(
-            state,
-            segment.inputPin.elementId,
-            segment.inputPin.pinId
-          ),
+          getPinPosition(segment.inputPin),
         ];
       case "bridge":
         return [
