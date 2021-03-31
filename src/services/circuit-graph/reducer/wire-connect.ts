@@ -144,6 +144,12 @@ export default createCircuitGraphReducer((state, action, rootState) => {
       return unchangedState;
     }
 
+    // TEMP: Disable multiple outputs for release without line id selection
+    const [, outputLineIds] = collectWireLineIds(state, wireId);
+    if (direction === "output" && outputLineIds.length > 0) {
+      return unchangedState;
+    }
+
     const lineId = defaultLineIdFromWiredPin(state, wireId, pin, rootState);
 
     let segment: WireSegment;
