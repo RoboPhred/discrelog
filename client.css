@@ -782,20 +782,6 @@ body,
   cursor: pointer;
 }
 
-.connection-joint--2nCMx {
-  fill: black;
-  fill: var(--color-element-neutral);
-  stroke: black;
-  stroke: var(--color-element-neutral);
-}
-
-.connection-joint--2nCMx.selected--hKp55 {
-  fill: goldenrod;
-  fill: var(--color-element-selected);
-  stroke: goldenrod;
-  stroke: var(--color-element-selected);
-}
-
 .circuit-editor:not(.simulator-active)
     .circuit-field-element.element-selected
     .element-select-highlight--stroke {
@@ -808,27 +794,6 @@ body,
     .element-select-highlight--fill {
   fill: goldenrod;
   fill: var(--color-element-selected);
-}
-
-.element-connection--3wkBf {
-  fill: black;
-  fill: var(--color-element-neutral);
-  stroke: black;
-  stroke: var(--color-element-neutral);
-}
-
-.element-connection--3wkBf.powered--RGBvy {
-  fill: green;
-  fill: var(--color-element-powered);
-  stroke: green;
-  stroke: var(--color-element-powered);
-}
-
-.element-connection--3wkBf.selected--333cH {
-  fill: goldenrod;
-  fill: var(--color-element-selected);
-  stroke: goldenrod;
-  stroke: var(--color-element-selected);
 }
 
 .element-pin-output--1jFy- {
@@ -858,6 +823,11 @@ body,
   stroke: goldenrod;
   stroke: var(--color-element-selected);
   stroke-width: 3px;
+}
+
+.wire-joint--interactor--3h5o4.selected--2L-Hh *:not(.mouse-detector--23NpN) {
+  fill: goldenrod;
+  fill: var(--color-element-selected);
 }
 
 .circuit-field-svg--o7YIn {
