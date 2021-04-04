@@ -4,7 +4,7 @@ import { Point } from "@/geometry";
 
 import { WireSegment } from "@/services/circuit-graph/types";
 
-export const WIRE_HYDRATE_ACTION = "@wire/hydrate" as const;
+export const ACTION_WIRE_HYDRATE = "@wire/hydrate" as const;
 export interface HydrateWireSettings {
   wireId: string;
   circuitId: string;
@@ -12,12 +12,12 @@ export interface HydrateWireSettings {
   wireJoints: (Point & { jointId: string })[];
 }
 export const hydrateWire = (settings: HydrateWireSettings) => ({
-  type: WIRE_HYDRATE_ACTION,
+  type: ACTION_WIRE_HYDRATE,
   payload: settings,
 });
 export type HydrateWireAction = ReturnType<typeof hydrateWire>;
 export function isHydrateWireAction(
   action: AnyAction
 ): action is HydrateWireAction {
-  return action.type === WIRE_HYDRATE_ACTION;
+  return action.type === ACTION_WIRE_HYDRATE;
 }

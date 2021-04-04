@@ -3,7 +3,7 @@ import { AnyAction } from "redux";
 import { Point } from "@/geometry";
 import { ModifierKeys } from "@/modifier-keys";
 
-export const CIRCUIT_EDITOR_DRAG_START_WIRE_JOINT_ACTION = "@circuit-editor/drag/start/wire-joint" as const;
+export const ACTION_CIRCUIT_EDITOR_DRAG_START_WIRE_JOINT = "@circuit-editor/drag/start/wire-joint" as const;
 export const circuitEditorDragStartWireJoint = (
   p: Point,
   wireId: string,
@@ -11,7 +11,7 @@ export const circuitEditorDragStartWireJoint = (
   modifierKeys: ModifierKeys,
   editorId: string
 ) => ({
-  type: CIRCUIT_EDITOR_DRAG_START_WIRE_JOINT_ACTION,
+  type: ACTION_CIRCUIT_EDITOR_DRAG_START_WIRE_JOINT,
   payload: {
     ...p,
     wireId,
@@ -26,5 +26,5 @@ export type CircuitEditorDragStartWireJointAction = ReturnType<
 export function isCircuitEditorDragStartWireJointAction(
   action: AnyAction
 ): action is CircuitEditorDragStartWireJointAction {
-  return action.type === CIRCUIT_EDITOR_DRAG_START_WIRE_JOINT_ACTION;
+  return action.type === ACTION_CIRCUIT_EDITOR_DRAG_START_WIRE_JOINT;
 }

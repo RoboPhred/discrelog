@@ -21,9 +21,11 @@ import { ACTION_REDO } from "@/actions/redo";
 import { ACTION_PROJECT_NEW } from "@/actions/project-new";
 import { ACTION_PROJECT_RECEIVE } from "@/actions/project-receive";
 
-import { WIRE_CONNECT_ACTION } from "@/actions/wire-connect";
-import { WIRE_HYDRATE_ACTION } from "@/actions/wire-hydrate";
-import { WIRE_SEGMENT_INSERT_JOINT_ACTION } from "@/actions/wire-segment-insert-joint";
+import { ACTION_WIRE_CONNECT } from "@/actions/wire-connect";
+import { ACTION_WIRE_HYDRATE } from "@/actions/wire-hydrate";
+import { ACTION_WIRE_SEGMENT_INSERT_JOINT } from "@/actions/wire-segment-insert-joint";
+import { ACTION_WIRE_JOINT_MOVE } from "@/actions/wire-joint-move";
+import { ACTION_WIRE_JOINT_DELETE } from "@/actions/wire-joint-delete";
 
 export const PROJECT_MUTATION_ACTIONS = [
   ACTION_CIRCUIT_ADD,
@@ -41,9 +43,11 @@ export const PROJECT_MUTATION_ACTIONS = [
   ACTION_UNDO,
   ACTION_REDO,
 
-  WIRE_CONNECT_ACTION,
-  WIRE_HYDRATE_ACTION,
-  WIRE_SEGMENT_INSERT_JOINT_ACTION,
+  ACTION_WIRE_CONNECT,
+  ACTION_WIRE_HYDRATE,
+  ACTION_WIRE_SEGMENT_INSERT_JOINT,
+  ACTION_WIRE_JOINT_MOVE,
+  ACTION_WIRE_JOINT_DELETE,
 
   // These actions typically fire off other actions in this list,
   // and are redundant for services that take part in the core reducer.
