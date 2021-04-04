@@ -11,7 +11,8 @@ import circuitsReducer from "./circuits/reducer";
 import projectReducer from "./project/reducer";
 import selectionReducer from "./selection/reducer";
 import simulatorReducer from "./simulator/reducer";
-import simulatorControlReducer from "./simulator-control/reducers";
+import simulatorControlReducer from "./simulator-control/reducer";
+import snapshotsReducer from "./snapshots/reducer";
 import tutorialReducer from "./tutorial/reducer";
 import uiLayoutReducer from "./ui-layout/reducer";
 import uiSettingsReducer from "./ui-settings/reducer";
@@ -29,6 +30,7 @@ const reducer = concatReducers(
   selectionReducer,
   simulatorReducer,
   simulatorControlReducer,
+  snapshotsReducer,
   tutorialReducer,
   uiLayoutReducer,
   uiSettingsReducer
