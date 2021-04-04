@@ -23,7 +23,14 @@ const _defaultState: UiLayoutServiceState = {
       first: "circuits-list",
       second: "element-tray",
     },
-    second: circuitEditorTesselWindow(DEFAULT_CIRCUIT_EDITOR_ID),
+    second: {
+      direction: "row",
+      division: {
+        secondSize: 200,
+      },
+      first: circuitEditorTesselWindow(DEFAULT_CIRCUIT_EDITOR_ID),
+      second: "snapshots-list",
+    },
   },
 };
 

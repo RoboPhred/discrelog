@@ -1,11 +1,15 @@
 import { SnapshotsServiceState } from "../state";
 import { createSnapshotsSelector } from "../utils";
 
-export const snapshotIds = createSnapshotsSelector((s) => s.snapshotIds);
+export const snapshotIdsSelector = createSnapshotsSelector(
+  (s) => s.snapshotIds
+);
 
-export const peekSnapshotId = createSnapshotsSelector((s) => s.peekSnapshotId);
+export const peekSnapshotIdSelector = createSnapshotsSelector(
+  (s) => s.peekSnapshotId
+);
 
-export const snapshotNameFromSnapshotId = createSnapshotsSelector(
+export const snapshotNameFromSnapshotIdSelector = createSnapshotsSelector(
   (s: SnapshotsServiceState, snapshotId: string) =>
     s.snapshotsById[snapshotId].name
 );

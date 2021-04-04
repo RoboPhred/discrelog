@@ -21,11 +21,13 @@ import ProjectEditorTitleBar from "./components/ProjectEditorTitleBar";
 import CircuitFieldWindow from "./windows/CircuitEditorWindow";
 import CircuitsTreeWindow from "./windows/CircuitsTreeWindow";
 import ElementTrayWindow from "./windows/ElementTrayWindow";
+import SnapshotsWindow from "./windows/SnapshotsWindow";
 
 const WindowsById: Record<string, React.ComponentType<any>> = {
   "element-tray": ElementTrayWindow,
   "circuit-field": CircuitFieldWindow,
   "circuits-list": CircuitsTreeWindow,
+  "snapshots-list": SnapshotsWindow,
 };
 
 function renderWindow(window: TesselWindowItem): React.ReactElement | null {

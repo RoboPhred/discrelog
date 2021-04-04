@@ -1,0 +1,13 @@
+.snapshots-window {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+}
+
+.snapshot-item {
+  width: "100%";
+  background: var(--color-ui-light-bg);
+}
