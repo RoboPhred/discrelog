@@ -1,5 +1,5 @@
 export interface Breakpoint {
-  expression: string;
+  valueExpression: string;
   trigger: "true" | "false" | "change";
 }
 

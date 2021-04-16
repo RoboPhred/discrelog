@@ -1,4 +1,4 @@
-export class TokenParseError extends Error {
+export class ValueExpressionParseError extends Error {
   index: number;
   constructor(index: number, message: string) {
     super(message);
