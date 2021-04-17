@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 
+import { cls } from "@/utils";
+
 import {
   dotProduct,
   normalize,
@@ -21,14 +23,19 @@ import {
 } from "@/services/circuit-graph/selectors/wire-positions";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 import { isDraggingSelector } from "@/services/circuit-editor-drag/selectors/drag";
-import { wireSegmentTypeFromSegmentIdSelector } from "@/services/circuit-graph/selectors/wires";
+import {
+  wireSegmentPoweredSelector,
+  wireSegmentTypeFromSegmentIdSelector,
+} from "@/services/circuit-graph/selectors/wires";
 import { gridJointSnapSelector } from "@/services/circuit-editor-drag/selectors/snap";
 
 import { circuitEditorDragStartWireSegment } from "@/actions/circuit-editor-drag-start-wire-segment";
 
-import { useCircuitEditor } from "../../../contexts/circuit-editor-context";
+import { useCircuitEditor } from "../../../../contexts/circuit-editor-context";
 
-import { useMouseCoords } from "../hooks/useMouseCoords";
+import { useMouseCoords } from "../../hooks/useMouseCoords";
+
+import styles from "./WireSegment.module.css";
 
 export interface WireSegmentProps {
   wireId: string;
@@ -37,7 +44,7 @@ export interface WireSegmentProps {
 
 const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
   const dispatch = useDispatch();
-  const { editorId } = useCircuitEditor();
+  const { editorId, elementIdPath } = useCircuitEditor();
   const getCoords = useMouseCoords();
 
   const isMouseGesturePending = React.useRef<boolean>(false);
@@ -46,6 +53,10 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
   );
 
   const isSimActive = useSelector(isSimActiveSelector);
+  const wireSegmentPowered = useSelector((state) =>
+    wireSegmentPoweredSelector(state, elementIdPath, wireSegmentId)
+  );
+
   const isDragging = useSelector(isDraggingSelector);
 
   const snap = useSelector(gridJointSnapSelector);
@@ -140,6 +151,10 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
 
   return (
     <g
+      className={cls(
+        styles["wire-segment"],
+        wireSegmentPowered && styles["powered"]
+      )}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
       onMouseDown={onMouseDown}
@@ -151,7 +166,7 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
         y2={endPos.y}
         // TODO: Color if power is flowing in this segment and sim is active.
         // Do this with css.
-        stroke="black"
+        stroke="inherit"
         // TODO: Thicker wires when more than one input is attached
         strokeWidth={2}
       />
@@ -163,8 +178,14 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
         stroke="transparent"
         strokeWidth={4}
       />
-      {segmentType === "input" && (
-        <circle cx={endPos.x} cy={endPos.y} r={2} stroke="none" fill="black" />
+      {(segmentType === "input" || segmentType === "input-output") && (
+        <circle
+          cx={endPos.x}
+          cy={endPos.y}
+          r={2}
+          stroke="none"
+          fill="inherit"
+        />
       )}
       {insertJointPos && (
         <circle

@@ -1,7 +1,7 @@
 :root {
   --color-element-neutral: black;
   --color-element-selected: goldenrod;
-  --color-element-powered: green;
+  --color-element-powered: rgb(0, 230, 0);
 
   --color-ui-primary-bg: rgb(0, 182, 0);
 
