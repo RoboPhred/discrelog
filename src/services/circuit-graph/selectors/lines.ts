@@ -4,6 +4,7 @@ import { isTruthy } from "@/utils";
 
 import { CircuitGraphServiceState } from "../state";
 import {
+  ElementPin,
   isInputOutputWireSegment,
   isInputWireSegment,
   isOutputWireSegment,
@@ -13,6 +14,7 @@ import { collectWireLineIds, createCircuitGraphSelector } from "../utils";
 
 import { wireIdFromWireSegmentIdSelector } from "./wires";
 import { elementNameOrDefaultFromElementIdSelector } from "./elements";
+import { pinNameFromElementPinSelector } from "./pins";
 
 export interface WireLineCandidate {
   name: string;
@@ -37,16 +39,21 @@ export const wireLineCandidatesForSegmentId = createCircuitGraphSelector(
     if (isInputWireSegment(segment)) {
       return outputLineIds
         .map((lineId) => {
-          const elementId = outputElementIdFromLineId(state, lineId);
-          if (!elementId) {
+          const elementPin = outputElementPinFromLineId(state, lineId);
+          if (!elementPin) {
             return null;
           }
           const elementName = elementNameOrDefaultFromElementIdSelector.local(
             state,
-            elementId
+            elementPin.elementId
+          );
+          const pinName = pinNameFromElementPinSelector.local(
+            state,
+            elementPin.elementId,
+            elementPin.pinId
           );
           return {
-            name: `From ${elementName}`,
+            name: `From [${elementName}]:[${pinName}]`,
             lineId,
             selected: lineId === segment.lineId,
           };
@@ -56,17 +63,22 @@ export const wireLineCandidatesForSegmentId = createCircuitGraphSelector(
       return inputLineIds
         .filter((lineId) => !lineHasOutput(state, lineId, segment))
         .map((lineId) => {
-          const inputIds = inputElementIdsFromLineId(state, lineId);
-          if (inputIds.length === 0) {
+          const inputPins = inputElementPinsFromLineId(state, lineId);
+          if (inputPins.length === 0) {
             return null;
           }
           const firstElementName = elementNameOrDefaultFromElementIdSelector.local(
             state,
-            inputIds[0]
+            inputPins[0].elementId
           );
-          let name = `To ${firstElementName}`;
-          if (inputIds.length > 1) {
-            name += `(+${inputIds.length - 1})`;
+          const firstPinName = pinNameFromElementPinSelector.local(
+            state,
+            inputPins[0].elementId,
+            inputPins[0].pinId
+          );
+          let name = `To [${firstElementName}]:[${firstPinName}]`;
+          if (inputPins.length > 1) {
+            name += `(+${inputPins.length - 1})`;
           }
           return {
             name,
@@ -81,33 +93,33 @@ export const wireLineCandidatesForSegmentId = createCircuitGraphSelector(
   }
 );
 
-function outputElementIdFromLineId(
+function outputElementPinFromLineId(
   state: CircuitGraphServiceState,
   lineId: string
-): string | null {
+): ElementPin | null {
   for (const segment of values(state.wireSegmentsById)) {
     if (!isOutputWireSegment(segment) || segment.lineId !== lineId) {
       continue;
     }
-    return segment.outputPin.elementId;
+    return segment.outputPin;
   }
 
   return null;
 }
 
-function inputElementIdsFromLineId(
+function inputElementPinsFromLineId(
   state: CircuitGraphServiceState,
   lineId: string
-): string[] {
-  const inputIds: string[] = [];
+): ElementPin[] {
+  const inputPins: ElementPin[] = [];
   for (const segment of values(state.wireSegmentsById)) {
     if (!isInputWireSegment(segment) || segment.lineId !== lineId) {
       continue;
     }
-    inputIds.push(segment.inputPin.elementId);
+    inputPins.push(segment.inputPin);
   }
 
-  return inputIds;
+  return inputPins;
 }
 
 function lineHasOutput(

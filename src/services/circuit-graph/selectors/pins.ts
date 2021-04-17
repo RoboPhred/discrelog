@@ -1,6 +1,13 @@
-import { circuitIdFromElementIdSelector } from "@/services/circuit-graph/selectors/elements";
-import { circuitIdToElementType } from "@/elements/definitions/integrated-circuits/utils";
 import { AppState } from "@/store";
+
+import {
+  circuitIdFromElementIdSelector,
+  elementNameOrDefaultFromElementIdSelector,
+} from "@/services/circuit-graph/selectors/elements";
+import {
+  circuitIdToElementType,
+  elementTypeToCircuitId,
+} from "@/elements/definitions/integrated-circuits/utils";
 
 import { ElementPin } from "../types";
 
@@ -10,6 +17,8 @@ import {
   elementIdsFromTypeSelector,
   elementTypeFromElementIdSelector,
 } from "./elements";
+import { createCircuitGraphSelector } from "../utils";
+import { CircuitGraphServiceState } from "../state";
 
 export const pinDirectionFromElementPinSelector = (
   state: AppState,
@@ -88,3 +97,19 @@ export const elementPinsFromPinElementSelector = (
     pinId: elementId,
   }));
 };
+
+export const pinNameFromElementPinSelector = createCircuitGraphSelector(
+  (state: CircuitGraphServiceState, elementId: string, pinId: string) => {
+    const elementType = elementTypeFromElementIdSelector.local(
+      state,
+      elementId
+    );
+    const circuitId = elementTypeToCircuitId(elementType);
+    if (circuitId) {
+      // Pin id is the element id of the pin, look up it's name.
+      return elementNameOrDefaultFromElementIdSelector.local(state, pinId);
+    }
+
+    return pinId;
+  }
+);
