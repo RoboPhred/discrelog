@@ -39,6 +39,7 @@ export default createCircuitGraphReducer((state, action, rootState) => {
     pin: fromPin,
   } = targetToParts(state, circuitId, from, rootState);
   state = fromState;
+
   const fromCircuitId = fromPin
     ? circuitIdFromElementIdSelector.local(state, fromPin.elementId)
     : fromJointId
@@ -52,6 +53,7 @@ export default createCircuitGraphReducer((state, action, rootState) => {
     rootState
   );
   state = toState;
+
   const toCircuitId = toPin
     ? circuitIdFromElementIdSelector.local(state, toPin.elementId)
     : toJointId
@@ -147,10 +149,10 @@ export default createCircuitGraphReducer((state, action, rootState) => {
     }
 
     // TEMP: Disable multiple outputs for release without line id selection
-    const [, outputLineIds] = collectWireLineIds(state, wireId);
-    if (direction === "output" && outputLineIds.length > 0) {
-      return unchangedState;
-    }
+    // const [, outputLineIds] = collectWireLineIds(state, wireId);
+    // if (direction === "output" && outputLineIds.length > 0) {
+    //   return unchangedState;
+    // }
 
     const lineId = defaultLineIdFromWiredPin(state, wireId, pin, rootState);
 

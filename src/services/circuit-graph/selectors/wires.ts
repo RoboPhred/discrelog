@@ -23,6 +23,7 @@ import {
   isInputOutputWireSegment,
   isInputWireSegment,
   isOutputWireSegment,
+  OutputWireSegment,
   wireSegmentHasInput,
 } from "../types";
 import { elementTypeFromElementIdSelector } from "./elements";
@@ -248,7 +249,7 @@ function collectSegmentSources(
         wireId,
         segmentId,
         null,
-        segment.outputPin,
+        segment,
         segmentSources,
         circuitGraph
       );
@@ -260,14 +261,18 @@ function traceSegmentToInput(
   wireId: string,
   segmentId: string,
   entryJointId: string | null,
-  output: ElementPin,
+  outputSegment: OutputWireSegment,
   segmentSources: Record<string, ElementPin[]>,
   circuitGraph: CircuitGraphServiceState
 ): boolean {
   const segment = circuitGraph.wireSegmentsById[segmentId];
 
   if (isInputWireSegment(segment)) {
-    addSegmentSource(segmentSources, segmentId, output);
+    if (segment.lineId !== outputSegment.lineId) {
+      return false;
+    }
+
+    addSegmentSource(segmentSources, segmentId, outputSegment.outputPin);
     return true;
   }
 
@@ -292,7 +297,7 @@ function traceSegmentToInput(
       wireId,
       connectedSegmentId,
       jointId,
-      output,
+      outputSegment,
       segmentSources,
       circuitGraph
     );
@@ -303,7 +308,7 @@ function traceSegmentToInput(
   }
 
   if (hasAtLeastOneInput) {
-    addSegmentSource(segmentSources, segmentId, output);
+    addSegmentSource(segmentSources, segmentId, outputSegment.outputPin);
   }
 
   return hasAtLeastOneInput;
