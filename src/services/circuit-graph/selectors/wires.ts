@@ -1,4 +1,5 @@
 import { createSelector } from "reselect";
+import first from "lodash/first";
 import values from "lodash/values";
 import flatMap from "lodash/flatMap";
 import uniq from "lodash/uniq";
@@ -11,10 +12,16 @@ import { immutableEmptyArray } from "@/arrays";
 import { elementOutputFromCircuitElementPinSelector } from "@/services/simulator/selectors/elements";
 
 import { CircuitGraphServiceState } from "../state";
-import { createCircuitGraphSelector, getJointIdsFromSegment } from "../utils";
+import {
+  createCircuitGraphSelector,
+  getJointIdsFromSegment,
+  getSegmentIdsFromJoint,
+} from "../utils";
 import {
   ElementPin,
   elementPinEquals,
+  isInputOutputWireSegment,
+  isInputWireSegment,
   isOutputWireSegment,
   wireSegmentHasInput,
 } from "../types";
@@ -203,42 +210,133 @@ export const segmentIdsForJointIdSelector = createCircuitGraphSelector(
   }
 );
 
+/**
+ * A map of all element pins supplying power to a segment by the segment id.
+ * TODO: This cache could be made more aggressive.  We can only generate it on sim start,
+ * or only invalidate specific wire networks when modified.  This would speed up editing.
+ */
+const wireSegmentSourcesBySegmentIdSelector = createSelector(
+  (state: AppState) => state.services.circuitGraph,
+  (circuitGraph) => {
+    const sources: Record<string, ElementPin[]> = {};
+    for (const wireId of Object.keys(circuitGraph.wiresByWireId)) {
+      collectSegmentSources(wireId, sources, circuitGraph);
+    }
+    return sources;
+  }
+);
+
+function collectSegmentSources(
+  wireId: string,
+  segmentSources: Record<string, ElementPin[]>,
+  circuitGraph: CircuitGraphServiceState
+): void {
+  const wire = circuitGraph.wiresByWireId[wireId];
+  if (!wire) {
+    return;
+  }
+
+  for (const segmentId of wire.wireSegmentIds) {
+    const segment = circuitGraph.wireSegmentsById[segmentId];
+    if (isInputOutputWireSegment(segment)) {
+      addSegmentSource(segmentSources, segmentId, segment.outputPin);
+      continue;
+    }
+
+    if (isOutputWireSegment(segment)) {
+      traceSegmentToInput(
+        wireId,
+        segmentId,
+        null,
+        segment.outputPin,
+        segmentSources,
+        circuitGraph
+      );
+    }
+  }
+}
+
+function traceSegmentToInput(
+  wireId: string,
+  segmentId: string,
+  entryJointId: string | null,
+  output: ElementPin,
+  segmentSources: Record<string, ElementPin[]>,
+  circuitGraph: CircuitGraphServiceState
+): boolean {
+  const segment = circuitGraph.wireSegmentsById[segmentId];
+
+  if (isInputWireSegment(segment)) {
+    addSegmentSource(segmentSources, segmentId, output);
+    return true;
+  }
+
+  // Max of 2 joints.  We always start on an output, and follow other joints.
+  // This will have at most 1 joint.
+  const jointId = first(
+    getJointIdsFromSegment(segment).filter((x) => x !== entryJointId)
+  );
+  if (!jointId) {
+    return false;
+  }
+
+  const connectedSegmentIds = getSegmentIdsFromJoint(
+    circuitGraph,
+    wireId,
+    jointId
+  ).filter((x) => x !== segmentId);
+
+  let hasAtLeastOneInput = false;
+  for (const connectedSegmentId of connectedSegmentIds) {
+    const hasInput = traceSegmentToInput(
+      wireId,
+      connectedSegmentId,
+      jointId,
+      output,
+      segmentSources,
+      circuitGraph
+    );
+    if (hasInput) {
+      // A connection passes through us, mark it.
+      hasAtLeastOneInput = true;
+    }
+  }
+
+  if (hasAtLeastOneInput) {
+    addSegmentSource(segmentSources, segmentId, output);
+  }
+
+  return hasAtLeastOneInput;
+}
+
+function addSegmentSource(
+  segmentSources: Record<string, ElementPin[]>,
+  segmentId: string,
+  source: ElementPin
+) {
+  if (!segmentSources[segmentId]) {
+    segmentSources[segmentId] = [];
+  }
+  // TODO: We can probably resolve this pin across ics, but that would need to involve
+  // calculating a delta of into our out of ics which still works when approached from different
+  // paths.
+  segmentSources[segmentId].push(source);
+}
+
 export const wireSegmentPoweredSelector = (
   state: AppState,
   elementIdPath: string[],
   wireSegmentId: string
 ) => {
-  const segment = state.services.circuitGraph.wireSegmentsById[wireSegmentId];
-  if (!segment) {
+  const sourcesById = wireSegmentSourcesBySegmentIdSelector(state);
+  const segmentSources = sourcesById[wireSegmentId];
+  if (!segmentSources) {
     return false;
   }
 
-  switch (segment.type) {
-    case "input-output":
-    case "output": {
-      return getPoweredStateFromOutputPin(
-        state,
-        elementIdPath,
-        segment.outputPin
-      );
-    }
-    case "input": {
-      const outputPin = getOutputPinForLineId(
-        state,
-        wireSegmentId,
-        segment.lineId
-      );
-      if (!outputPin) {
-        return false;
-      }
-      return getPoweredStateFromOutputPin(state, elementIdPath, outputPin);
-    }
-    case "bridge":
-      // TODO: Figure out if any active line ids are crossing this bridge.
-      return false;
-  }
-
-  return false;
+  return segmentSources.some((sourcePin) =>
+    getPoweredStateFromOutputPin(state, elementIdPath, sourcePin)
+  );
 };
 
 function getPoweredStateFromOutputPin(
@@ -299,30 +397,8 @@ function resolveOutputPin(
     }
     return resolveOutputPin(state, icPath, outputPin);
   }
+
   return { elementIdPath, elementPin };
-}
-
-function getOutputPinForLineId(
-  state: AppState,
-  segmentId: string,
-  lineId: string
-): ElementPin | null {
-  const wire = find(
-    values(state.services.circuitGraph.wiresByWireId),
-    (wire) => wire.wireSegmentIds.indexOf(segmentId) !== -1
-  );
-  if (!wire) {
-    return null;
-  }
-  for (const segmentId of wire.wireSegmentIds) {
-    const segment = state.services.circuitGraph.wireSegmentsById[segmentId];
-    if (!isOutputWireSegment(segment) || segment.lineId !== lineId) {
-      continue;
-    }
-    return segment.outputPin;
-  }
-
-  return null;
 }
 
 function getOutputPinForInputPin(

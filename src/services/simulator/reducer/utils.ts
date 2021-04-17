@@ -128,8 +128,6 @@ function tickWindow(
     ),
   }) as SimulatorServiceState;
 
-  // Could benefit from being changed to a Set, although elements usually arent hooked up to too many
-  //  outputs at a time.
   const updatedEvolverIds = new Set<string>();
   window.transitionIds.forEach((tid) => {
     const { elementId, valuesByOutputPin } = state.transitionsById[tid];

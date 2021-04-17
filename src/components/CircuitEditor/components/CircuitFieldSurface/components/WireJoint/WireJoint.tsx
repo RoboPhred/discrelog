@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { cls } from "@/utils";
 import { getModifiers } from "@/modifier-keys";
+import { describeArc } from "@/svg";
 
 import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
 import useSelector from "@/hooks/useSelector";
@@ -10,9 +11,11 @@ import { getSelectMode } from "@/selection-mode";
 
 import { circuitEditorDragStartWireJoint } from "@/actions/circuit-editor-drag-start-wire-joint";
 import { selectJoints } from "@/actions/select-joints";
+import { circuitEditorDragStartWire } from "@/actions/circuit-editor-drag-start-wire";
 
 import { wireJointPositionFromJointIdSelector } from "@/services/circuit-graph/selectors/wire-positions";
 import { isJointSelectedFromJointIdSelector } from "@/services/selection/selectors/selection";
+import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 
 import { useCircuitEditor } from "../../../../contexts/circuit-editor-context";
 import { getWireJointHtmlId } from "../../../../ids";
@@ -20,8 +23,6 @@ import { getWireJointHtmlId } from "../../../../ids";
 import { useMouseCoords } from "../../hooks/useMouseCoords";
 
 import styles from "./WireJoint.module.css";
-import { describeArc } from "@/svg";
-import { circuitEditorDragStartWire } from "@/actions/circuit-editor-drag-start-wire";
 
 export interface WireJointProps {
   wireId: string;
@@ -32,6 +33,7 @@ const WireJoint: React.FC<WireJointProps> = ({ wireId, jointId }) => {
   const dispatch = useDispatch();
   const { editorId } = useCircuitEditor();
   const getCoords = useMouseCoords();
+  const isSimActive = useSelector(isSimActiveSelector);
 
   const position = useSelector((state) =>
     wireJointPositionFromJointIdSelector(state, jointId)
@@ -135,7 +137,7 @@ const WireJoint: React.FC<WireJointProps> = ({ wireId, jointId }) => {
         fill="black"
         stroke="none"
       />
-      {(mouseOver || isSelected) && (
+      {!isSimActive && (mouseOver || isSelected) && (
         <g
           className={cls(
             styles["wire-joint--interactor"],
