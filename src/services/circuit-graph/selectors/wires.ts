@@ -138,7 +138,7 @@ export const wireSegmentByWireSegmentIdSelector = createCircuitGraphSelector(
   }
 );
 
-export const inputPinIsWiredSelector = createCircuitGraphSelector(
+export const wireSegmentIdFromElementPinSelector = createCircuitGraphSelector(
   (state: CircuitGraphServiceState, elementId: string, pinId: string) => {
     const wireIds = Object.keys(state.wiresByWireId);
 
@@ -146,16 +146,38 @@ export const inputPinIsWiredSelector = createCircuitGraphSelector(
       const wire = state.wiresByWireId[wireId];
       for (const segmentId of wire.wireSegmentIds) {
         const segment = state.wireSegmentsById[segmentId];
-        if (!wireSegmentHasInput(segment)) {
-          continue;
+        if (
+          wireSegmentHasInput(segment) &&
+          elementPinEquals(segment.inputPin, { elementId, pinId })
+        ) {
+          return segmentId;
         }
-        if (elementPinEquals(segment.inputPin, { elementId, pinId })) {
-          return true;
+        if (
+          isOutputWireSegment(segment) &&
+          elementPinEquals(segment.outputPin, { elementId, pinId })
+        ) {
+          return segmentId;
         }
       }
     }
 
-    return false;
+    return null;
+  }
+);
+
+export const inputPinIsWiredSelector = createCircuitGraphSelector(
+  (state: CircuitGraphServiceState, elementId: string, pinId: string) => {
+    const segmentId = wireSegmentIdFromElementPinSelector.local(
+      state,
+      elementId,
+      pinId
+    );
+    if (!segmentId) {
+      return false;
+    }
+
+    const segment = state.wireSegmentsById[segmentId];
+    return wireSegmentHasInput(segment);
   }
 );
 

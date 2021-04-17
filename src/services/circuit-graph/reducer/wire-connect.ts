@@ -5,7 +5,7 @@ import { AppState } from "@/store";
 import { isWireConnectAction } from "@/actions/wire-connect";
 
 import { ElementPin, WireConnectTarget, WireSegment } from "../types";
-import { createCircuitGraphReducer } from "../utils";
+import { createCircuitGraphReducer, collectWireLineIds } from "../utils";
 import { CircuitGraphServiceState } from "../state";
 
 import { circuitIdFromElementIdSelector } from "../selectors/elements";
@@ -22,7 +22,6 @@ import { wireJointInsert } from "./primitives/wire-joint-insert";
 import wireSegmentSplit from "./primitives/wire-segment-split";
 import { WireOperationError } from "./errors/WireOperationError";
 import { wireMerge } from "./primitives/wire-merge";
-import { collectWireLineIds } from "./primitives/wire-lineids-collect";
 
 export default createCircuitGraphReducer((state, action, rootState) => {
   if (!isWireConnectAction(action)) {
@@ -164,17 +163,7 @@ function wireJointToPin(
     return null;
   }
 
-  // TEMP: Disable multiple outputs for release without line id selection
-  // const [, outputLineIds] = collectWireLineIds(state, wireId);
-  // if (direction === "output" && outputLineIds.length > 0) {
-  //   return unchangedState;
-  // }
-
   const lineId = defaultLineIdFromWiredPin(state, wireId, pin, rootState);
-  if (!lineId) {
-    // TODO: Prompt user to select the desired line id.
-    return null;
-  }
 
   let segment: WireSegment;
   if (direction === "input") {
@@ -208,7 +197,7 @@ function defaultLineIdFromWiredPin(
   wireId: string,
   pin: ElementPin,
   rootState: AppState
-): string | null {
+): string {
   const direction = pinDirectionFromElementPinSelector(
     rootState,
     pin.elementId,
@@ -232,7 +221,8 @@ function defaultLineIdFromWiredPin(
   }
 
   // Multiple outputs are available.
-  return null;
+  // Make a new line
+  return uuidV4();
 }
 
 function targetToParts(

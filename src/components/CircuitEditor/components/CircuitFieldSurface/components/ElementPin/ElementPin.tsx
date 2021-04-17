@@ -8,6 +8,8 @@ import { getModifiers } from "@/modifier-keys";
 import useSelector from "@/hooks/useSelector";
 import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
 
+import { useContextMenu } from "@/components/ContextMenu";
+
 import { circuitEditorDragStartWire } from "@/actions/circuit-editor-drag-start-wire";
 
 import { elementPinPositionFromElementPinSelector } from "@/services/circuit-layout/selectors/element-pin-positions";
@@ -18,6 +20,8 @@ import { useCircuitEditor } from "../../../../contexts/circuit-editor-context";
 import { getElementPinHtmlId } from "../../../../ids";
 
 import { useMouseCoords } from "../../hooks/useMouseCoords";
+
+import PinContextMenu from "../PinContextMenu";
 
 import styles from "./ElementPin.module.css";
 
@@ -30,10 +34,14 @@ const ElementPin: React.FC<ElementPinProps> = React.memo(function ElementPin({
   elementId,
   pinId,
 }) {
+  const dispatch = useDispatch();
+
   const { editorId } = useCircuitEditor();
   const getMouseCoords = useMouseCoords();
+
+  const { openContextMenu, renderContextMenu } = useContextMenu();
+
   const [highlight, setHighlight] = React.useState(false);
-  const dispatch = useDispatch();
 
   const position = useSelector((s) =>
     elementPinPositionFromElementPinSelector(s, elementId, pinId)
@@ -49,7 +57,6 @@ const ElementPin: React.FC<ElementPinProps> = React.memo(function ElementPin({
       const p = getMouseCoords(originalPoint);
       const modifierKeys = getModifiers(e);
       dispatch(
-        //circuitEditorDragStartConnection(p, { elementId, pinId }, editorId)
         circuitEditorDragStartWire(
           p,
           { type: "pin", pin: { elementId, pinId } },
@@ -89,6 +96,18 @@ const ElementPin: React.FC<ElementPinProps> = React.memo(function ElementPin({
   const onMouseLeave = React.useCallback(() => {
     setHighlight(false);
   }, []);
+
+  const onContextMenu = React.useCallback(
+    (e: React.MouseEvent) => {
+      if (e.defaultPrevented) {
+        return;
+      }
+      e.preventDefault();
+
+      openContextMenu(e);
+    },
+    [openContextMenu]
+  );
 
   if (!position) {
     return null;
@@ -135,6 +154,7 @@ const ElementPin: React.FC<ElementPinProps> = React.memo(function ElementPin({
       id={getElementPinHtmlId(editorId, elementId, pinId)}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onContextMenu={onContextMenu}
     >
       {pinVisual}
       <circle
@@ -145,6 +165,9 @@ const ElementPin: React.FC<ElementPinProps> = React.memo(function ElementPin({
         r={5}
         onMouseDown={onMouseDown}
       />
+      {renderContextMenu(
+        <PinContextMenu elementId={elementId} pinId={pinId} />
+      )}
     </g>
   );
 });
