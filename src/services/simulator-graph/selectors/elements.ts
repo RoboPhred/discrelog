@@ -4,6 +4,8 @@ import { EvolverDefinitionsByType } from "@/evolvers";
 import { getEvolverIdFromElementIdPath } from "../utils";
 
 import { rootCircuitGraphSelector } from "./graph";
+import { ElementPin } from "@/services/circuit-graph/types";
+import { EvolverPin } from "../types";
 
 export const evolverIdsByElementIdSelector = (state: AppState) =>
   rootCircuitGraphSelector(state).evolverIdsByElementId;

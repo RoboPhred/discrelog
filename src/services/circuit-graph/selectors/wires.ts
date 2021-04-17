@@ -3,11 +3,15 @@ import values from "lodash/values";
 import flatMap from "lodash/flatMap";
 import uniq from "lodash/uniq";
 
+import { AppState } from "@/store";
+
 import { immutableEmptyArray } from "@/arrays";
+
+import { elementOutputFromCircuitElementPinSelector } from "@/services/simulator/selectors/elements";
 
 import { CircuitGraphServiceState } from "../state";
 import { createCircuitGraphSelector, getJointIdsFromSegment } from "../utils";
-import { elementPinEquals, wireSegmentHasInput } from "../types";
+import { ElementPin, elementPinEquals, wireSegmentHasInput } from "../types";
 
 export const wiresByWireIdSelector = createCircuitGraphSelector(
   (state) => state.wiresByWireId
@@ -183,3 +187,46 @@ export const segmentIdsForJointIdSelector = createCircuitGraphSelector(
     return segmentIds;
   }
 );
+
+export const wireSegmentPoweredSelector = (
+  state: AppState,
+  elementIdPath: string[],
+  wireSegmentId: string
+) => {
+  const segment = state.services.circuitGraph.wireSegmentsById[wireSegmentId];
+  if (!segment) {
+    return false;
+  }
+
+  switch (segment.type) {
+    case "input-output":
+    case "output": {
+      const {
+        elementPin: resolvedElementPin,
+        elementIdPath: resolvedElementIdPath,
+      } = resolveOutputPin(state, elementIdPath, segment.outputPin);
+      return elementOutputFromCircuitElementPinSelector(
+        state,
+        [...resolvedElementIdPath, resolvedElementPin.elementId],
+        resolvedElementPin.pinId
+      );
+    }
+    case "input":
+    // TODO: Find output for input and resolve value.
+    case "bridge":
+      // TODO: Figure out if any active line ids are crossing this bridge.
+      return false;
+  }
+
+  return false;
+};
+
+function resolveOutputPin(
+  state: AppState,
+  elementIdPath: string[],
+  elementPin: ElementPin
+): { elementIdPath: string[]; elementPin: ElementPin } {
+  // TODO: If target is a pin, keep chasing through the pins until we find the real element
+  // the pin is sourcing from.
+  return { elementIdPath, elementPin };
+}
