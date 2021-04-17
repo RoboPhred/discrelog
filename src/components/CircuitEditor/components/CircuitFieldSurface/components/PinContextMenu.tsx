@@ -1,17 +1,19 @@
 import * as React from "react";
+import { useDispatch } from "react-redux";
 import { v4 as uuidV4 } from "uuid";
 
 import useSelector from "@/hooks/useSelector";
 
+import { wireSegmentSetLine } from "@/actions/wire-segment-set-line";
+
 import { pinDirectionFromElementPinSelector } from "@/services/circuit-graph/selectors/pins";
 import { wireSegmentIdFromElementPinSelector } from "@/services/circuit-graph/selectors/wires";
 import { wireLineCandidatesForSegmentId } from "@/services/circuit-graph/selectors/lines";
+import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 
 import Menu from "@/components/Menus/Menu";
-import MenuItem from "@/components/Menus/MenuItem";
+import CheckboxMenuItem from "@/components/Menus/CheckboxMenuItem";
 import SubMenuItem from "@/components/Menus/SubMenuItem";
-import { useDispatch } from "react-redux";
-import { wireSegmentSetLine } from "@/actions/wire-segment-set-line";
 
 export interface PinContextMenuProps {
   elementId: string;
@@ -22,6 +24,8 @@ const PinContextMenu: React.FC<PinContextMenuProps> = ({
   elementId,
   pinId,
 }) => {
+  const isSimActive = useSelector(isSimActiveSelector);
+
   const direction = useSelector((state) =>
     pinDirectionFromElementPinSelector(state, elementId, pinId)
   );
@@ -30,7 +34,7 @@ const PinContextMenu: React.FC<PinContextMenuProps> = ({
     wireSegmentIdFromElementPinSelector(state, elementId, pinId)
   );
 
-  if (!direction || !segmentId) {
+  if (isSimActive || !direction || !segmentId) {
     return null;
   }
 
@@ -62,18 +66,20 @@ const SetLineIdMenu: React.FC<SetLineIdMenuProps> = ({
   );
   return (
     <Menu>
-      <MenuItem
-        onClick={() => dispatch(wireSegmentSetLine(segmentId, uuidV4()))}
+      <CheckboxMenuItem
+        value={false}
+        onChange={() => dispatch(wireSegmentSetLine(segmentId, uuidV4()))}
       >
         New {direction === "input" ? "Input" : "Output"}
-      </MenuItem>
-      {candidates.map(({ lineId, name }) => (
-        <MenuItem
+      </CheckboxMenuItem>
+      {candidates.map(({ lineId, name, selected }) => (
+        <CheckboxMenuItem
           key={lineId}
-          onClick={() => dispatch(wireSegmentSetLine(segmentId, lineId))}
+          value={selected}
+          onChange={() => dispatch(wireSegmentSetLine(segmentId, lineId))}
         >
           {name}
-        </MenuItem>
+        </CheckboxMenuItem>
       ))}
     </Menu>
   );

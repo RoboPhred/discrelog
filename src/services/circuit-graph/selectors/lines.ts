@@ -7,6 +7,7 @@ import {
   isInputOutputWireSegment,
   isInputWireSegment,
   isOutputWireSegment,
+  WireSegment,
 } from "../types";
 import { collectWireLineIds, createCircuitGraphSelector } from "../utils";
 
@@ -16,6 +17,7 @@ import { elementNameOrDefaultFromElementIdSelector } from "./elements";
 export interface WireLineCandidate {
   name: string;
   lineId: string;
+  selected: boolean;
 }
 
 export const wireLineCandidatesForSegmentId = createCircuitGraphSelector(
@@ -46,12 +48,13 @@ export const wireLineCandidatesForSegmentId = createCircuitGraphSelector(
           return {
             name: `From ${elementName}`,
             lineId,
+            selected: lineId === segment.lineId,
           };
         })
         .filter(isTruthy);
-    } else {
+    } else if (isOutputWireSegment(segment)) {
       return inputLineIds
-        .filter((lineId) => !lineHasOutput(state, lineId))
+        .filter((lineId) => !lineHasOutput(state, lineId, segment))
         .map((lineId) => {
           const inputIds = inputElementIdsFromLineId(state, lineId);
           if (inputIds.length === 0) {
@@ -68,10 +71,13 @@ export const wireLineCandidatesForSegmentId = createCircuitGraphSelector(
           return {
             name,
             lineId,
+            selected: lineId === segment.lineId,
           };
         })
         .filter(isTruthy);
     }
+
+    return [];
   }
 );
 
@@ -106,9 +112,13 @@ function inputElementIdsFromLineId(
 
 function lineHasOutput(
   state: CircuitGraphServiceState,
-  lineId: string
+  lineId: string,
+  excludeSegment?: WireSegment
 ): boolean {
   for (const segment of values(state.wireSegmentsById)) {
+    if (excludeSegment === segment) {
+      continue;
+    }
     if (isOutputWireSegment(segment) && segment.lineId === lineId) {
       return true;
     }

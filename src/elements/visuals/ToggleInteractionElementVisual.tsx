@@ -22,6 +22,10 @@ export const ToggleInteractionElementVisual: React.FC<ElementComponentProps<
         return;
       }
 
+      if (e.button !== 0) {
+        return;
+      }
+
       if (e.defaultPrevented) {
         return;
       }
