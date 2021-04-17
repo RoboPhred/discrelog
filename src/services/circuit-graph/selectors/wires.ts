@@ -2,6 +2,7 @@ import { createSelector } from "reselect";
 import values from "lodash/values";
 import flatMap from "lodash/flatMap";
 import uniq from "lodash/uniq";
+import find from "lodash/find";
 
 import { AppState } from "@/store";
 
@@ -11,7 +12,14 @@ import { elementOutputFromCircuitElementPinSelector } from "@/services/simulator
 
 import { CircuitGraphServiceState } from "../state";
 import { createCircuitGraphSelector, getJointIdsFromSegment } from "../utils";
-import { ElementPin, elementPinEquals, wireSegmentHasInput } from "../types";
+import {
+  ElementPin,
+  elementPinEquals,
+  isOutputWireSegment,
+  wireSegmentHasInput,
+} from "../types";
+import { elementTypeFromElementIdSelector } from "./elements";
+import { elementTypeToCircuitId } from "@/elements/definitions/integrated-circuits/utils";
 
 export const wiresByWireIdSelector = createCircuitGraphSelector(
   (state) => state.wiresByWireId
@@ -122,13 +130,20 @@ export const wireSegmentByWireSegmentIdSelector = createCircuitGraphSelector(
   }
 );
 
-export const pinIsWiredSelector = createCircuitGraphSelector(
+export const inputPinIsWiredSelector = createCircuitGraphSelector(
   (state: CircuitGraphServiceState, elementId: string, pinId: string) => {
-    const segments = wireSegmentsSelector.local(state);
+    const wireIds = Object.keys(state.wiresByWireId);
 
-    for (const { inputPin } of segments.filter(wireSegmentHasInput)) {
-      if (elementPinEquals(inputPin, { elementId, pinId })) {
-        return true;
+    for (const wireId of wireIds) {
+      const wire = state.wiresByWireId[wireId];
+      for (const segmentId of wire.wireSegmentIds) {
+        const segment = state.wireSegmentsById[segmentId];
+        if (!wireSegmentHasInput(segment)) {
+          continue;
+        }
+        if (elementPinEquals(segment.inputPin, { elementId, pinId })) {
+          return true;
+        }
       }
     }
 
@@ -201,18 +216,23 @@ export const wireSegmentPoweredSelector = (
   switch (segment.type) {
     case "input-output":
     case "output": {
-      const {
-        elementPin: resolvedElementPin,
-        elementIdPath: resolvedElementIdPath,
-      } = resolveOutputPin(state, elementIdPath, segment.outputPin);
-      return elementOutputFromCircuitElementPinSelector(
+      return getPoweredStateFromOutputPin(
         state,
-        [...resolvedElementIdPath, resolvedElementPin.elementId],
-        resolvedElementPin.pinId
+        elementIdPath,
+        segment.outputPin
       );
     }
-    case "input":
-    // TODO: Find output for input and resolve value.
+    case "input": {
+      const outputPin = getOutputPinForLineId(
+        state,
+        wireSegmentId,
+        segment.lineId
+      );
+      if (!outputPin) {
+        return false;
+      }
+      return getPoweredStateFromOutputPin(state, elementIdPath, outputPin);
+    }
     case "bridge":
       // TODO: Figure out if any active line ids are crossing this bridge.
       return false;
@@ -221,12 +241,121 @@ export const wireSegmentPoweredSelector = (
   return false;
 };
 
+function getPoweredStateFromOutputPin(
+  state: AppState,
+  elementIdPath: string[],
+  elementPin: ElementPin
+): boolean {
+  const resolved = resolveOutputPin(state, elementIdPath, elementPin);
+  if (!resolved) {
+    return false;
+  }
+  return elementOutputFromCircuitElementPinSelector(
+    state,
+    [...resolved.elementIdPath, resolved.elementPin.elementId],
+    resolved.elementPin.pinId
+  );
+}
+
 function resolveOutputPin(
   state: AppState,
   elementIdPath: string[],
   elementPin: ElementPin
-): { elementIdPath: string[]; elementPin: ElementPin } {
+): { elementIdPath: string[]; elementPin: ElementPin } | null {
   // TODO: If target is a pin, keep chasing through the pins until we find the real element
   // the pin is sourcing from.
+  const elementType = elementTypeFromElementIdSelector(
+    state,
+    elementPin.elementId
+  );
+
+  if (elementType === "pin-input") {
+    // We are wired to an input pin inside an ic, track down the element outside the ic that powers us.
+    const icId = elementIdPath[elementIdPath.length - 1];
+    const icPath = elementIdPath.slice(0, elementIdPath.length - 1);
+    // ic pin is the same id as the pin element.
+    const outputPin = getOutputPinForInputPin(state, {
+      elementId: icId,
+      pinId: elementPin.elementId,
+    });
+    if (!outputPin) {
+      return null;
+    }
+    return resolveOutputPin(state, icPath, outputPin);
+  }
+
+  const icCircuit = elementTypeToCircuitId(elementType);
+  if (icCircuit != null) {
+    // We are wired to an IC, enter the ic and track the output.
+    const icPath = [...elementIdPath, elementPin.elementId];
+    const inputPin: ElementPin = {
+      // element id of the pin element will be the pin id of the ic.
+      elementId: elementPin.pinId,
+      pinId: "IN",
+    };
+    const outputPin = getOutputPinForInputPin(state, inputPin);
+    if (!outputPin) {
+      return null;
+    }
+    return resolveOutputPin(state, icPath, outputPin);
+  }
   return { elementIdPath, elementPin };
+}
+
+function getOutputPinForLineId(
+  state: AppState,
+  segmentId: string,
+  lineId: string
+): ElementPin | null {
+  const wire = find(
+    values(state.services.circuitGraph.wiresByWireId),
+    (wire) => wire.wireSegmentIds.indexOf(segmentId) !== -1
+  );
+  if (!wire) {
+    return null;
+  }
+  for (const segmentId of wire.wireSegmentIds) {
+    const segment = state.services.circuitGraph.wireSegmentsById[segmentId];
+    if (!isOutputWireSegment(segment) || segment.lineId !== lineId) {
+      continue;
+    }
+    return segment.outputPin;
+  }
+
+  return null;
+}
+
+function getOutputPinForInputPin(
+  state: AppState,
+  elementPin: ElementPin
+): ElementPin | null {
+  const { wiresByWireId, wireSegmentsById } = state.services.circuitGraph;
+  const wireIds = Object.keys(wiresByWireId);
+  for (const wireId of wireIds) {
+    const wire = wiresByWireId[wireId];
+    for (const segmentId of wire.wireSegmentIds) {
+      const segment = wireSegmentsById[segmentId];
+      if (!wireSegmentHasInput(segment)) {
+        continue;
+      }
+      if (elementPinEquals(segment.inputPin, elementPin)) {
+        if (segment.type === "input-output") {
+          return segment.outputPin;
+        } else {
+          const outputSegment = find(
+            wire.wireSegmentIds
+              .map((id) => wireSegmentsById[id])
+              .filter(isOutputWireSegment),
+            (search) => segment.lineId === search.lineId
+          );
+          if (!outputSegment) {
+            return null;
+          }
+          return outputSegment.outputPin;
+        }
+      }
+    }
+  }
+
+  return null;
 }

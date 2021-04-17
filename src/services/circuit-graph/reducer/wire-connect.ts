@@ -11,7 +11,7 @@ import { CircuitGraphServiceState } from "../state";
 import { circuitIdFromElementIdSelector } from "../selectors/elements";
 import {
   circuitIdFromWireJointIdSelector,
-  pinIsWiredSelector,
+  inputPinIsWiredSelector,
   wireIdFromWireJointIdSelector,
 } from "../selectors/wires";
 import { pinDirectionFromElementPinSelector } from "../selectors/pins";
@@ -83,7 +83,9 @@ export default createCircuitGraphReducer((state, action, rootState) => {
     const outputPin = fromDirection === "input" ? toPin : fromPin;
 
     // Input pins can only have one wire.
-    if (pinIsWiredSelector(rootState, inputPin.elementId, inputPin.pinId)) {
+    if (
+      inputPinIsWiredSelector(rootState, inputPin.elementId, inputPin.pinId)
+    ) {
       return unchangedState;
     }
 
@@ -154,7 +156,7 @@ export default createCircuitGraphReducer((state, action, rootState) => {
 
     let segment: WireSegment;
     if (direction === "input") {
-      if (pinIsWiredSelector(rootState, pin.elementId, pin.pinId)) {
+      if (inputPinIsWiredSelector(rootState, pin.elementId, pin.pinId)) {
         return unchangedState;
       }
 
