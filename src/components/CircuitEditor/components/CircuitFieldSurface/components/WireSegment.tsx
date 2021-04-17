@@ -163,7 +163,7 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
         stroke="transparent"
         strokeWidth={4}
       />
-      {segmentType === "input" && (
+      {(segmentType === "input" || segmentType === "input-output") && (
         <circle cx={endPos.x} cy={endPos.y} r={2} stroke="none" fill="black" />
       )}
       {insertJointPos && (
