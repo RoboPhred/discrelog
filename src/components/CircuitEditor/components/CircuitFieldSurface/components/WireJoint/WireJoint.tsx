@@ -133,7 +133,7 @@ const WireJoint: React.FC<WireJointProps> = ({ wireId, jointId }) => {
       <circle
         cx={position.x}
         cy={position.y}
-        r={2}
+        r={3}
         fill="black"
         stroke="none"
       />
