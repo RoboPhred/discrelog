@@ -11,7 +11,6 @@ import { CircuitGraphServiceState } from "../../state";
 import { elementPinEquals, WireSegment } from "../../types";
 
 import { elementPinsFromPinElementSelector } from "../../selectors/pins";
-import { wireIdFromWireSegmentIdSelector } from "../../selectors/wires";
 
 import wireSegmentDelete from "./wire-segment-delete";
 
