@@ -10,7 +10,7 @@ import useSelector from "@/hooks/useSelector";
 import { getSelectMode } from "@/selection-mode";
 
 import { circuitEditorDragStartWireJoint } from "@/actions/circuit-editor-drag-start-wire-joint";
-import { selectJoints } from "@/actions/select-joints";
+import { selectWireJoints } from "@/actions/select-wire-joints";
 import { circuitEditorDragStartWire } from "@/actions/circuit-editor-drag-start-wire";
 
 import { wireJointPositionFromJointIdSelector } from "@/services/circuit-graph/selectors/wire-positions";
@@ -87,9 +87,15 @@ const WireJoint: React.FC<WireJointProps> = ({ wireId, jointId }) => {
 
   const onClick = React.useCallback(
     (e: MouseEvent) => {
+      if (e.defaultPrevented) {
+        return;
+      }
+
+      e.preventDefault();
+
       const modifierKeys = getModifiers(e);
       const selectionMode = getSelectMode(modifierKeys);
-      dispatch(selectJoints(jointId, selectionMode));
+      dispatch(selectWireJoints(jointId, selectionMode));
     },
     [dispatch, jointId]
   );

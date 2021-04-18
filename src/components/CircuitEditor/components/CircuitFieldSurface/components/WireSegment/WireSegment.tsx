@@ -13,6 +13,7 @@ import {
   snapValue,
 } from "@/geometry";
 import { getModifiers } from "@/modifier-keys";
+import { getSelectMode } from "@/selection-mode";
 
 import useSelector from "@/hooks/useSelector";
 import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
@@ -28,8 +29,10 @@ import {
   wireSegmentTypeFromSegmentIdSelector,
 } from "@/services/circuit-graph/selectors/wires";
 import { gridJointSnapSelector } from "@/services/circuit-editor-drag/selectors/snap";
+import { isSegmentSelectedFromSegmentIdSelector } from "@/services/selection/selectors/selection";
 
 import { circuitEditorDragStartWireSegment } from "@/actions/circuit-editor-drag-start-wire-segment";
+import { selectWireSegments } from "@/actions/select-wire-segments";
 
 import { useCircuitEditor } from "../../../../contexts/circuit-editor-context";
 
@@ -53,6 +56,10 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
   );
 
   const isSimActive = useSelector(isSimActiveSelector);
+
+  const isSelected = useSelector((state) =>
+    isSegmentSelectedFromSegmentIdSelector(state, wireSegmentId)
+  );
   const wireSegmentPowered = useSelector((state) =>
     wireSegmentPoweredSelector(state, elementIdPath, wireSegmentId)
   );
@@ -103,7 +110,7 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
     }
   };
 
-  const onJointDragStart = React.useCallback(
+  const onDragStart = React.useCallback(
     (e: MouseEvent) => {
       isMouseGesturePending.current = false;
       if (!insertJointPos) {
@@ -126,14 +133,27 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
     [dispatch, editorId, insertJointPos, wireId, wireSegmentId]
   );
 
-  const onClick = React.useCallback(() => {
-    isMouseGesturePending.current = false;
-    setInsertJointPos(null);
-  }, []);
+  const onClick = React.useCallback(
+    (e: MouseEvent) => {
+      if (e.defaultPrevented) {
+        return;
+      }
+
+      e.preventDefault();
+
+      isMouseGesturePending.current = false;
+      setInsertJointPos(null);
+
+      const modifierKeys = getModifiers(e);
+      const selectionMode = getSelectMode(modifierKeys);
+      dispatch(selectWireSegments(wireSegmentId, selectionMode));
+    },
+    [dispatch, wireSegmentId]
+  );
 
   const { startTracking } = useMouseDragDetector({
-    onDragStart: onJointDragStart,
-    onClick: onClick,
+    onDragStart,
+    onClick,
   });
 
   const onMouseDown = (e: React.MouseEvent) => {
@@ -153,6 +173,7 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
     <g
       className={cls(
         styles["wire-segment"],
+        isSelected && styles["selected"],
         wireSegmentPowered && styles["powered"]
       )}
       onMouseMove={onMouseMove}
@@ -164,10 +185,7 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
         x2={endPos.x}
         y1={startPos.y}
         y2={endPos.y}
-        // TODO: Color if power is flowing in this segment and sim is active.
-        // Do this with css.
         stroke="inherit"
-        // TODO: Thicker wires when more than one input is attached
         strokeWidth={2}
       />
       <line

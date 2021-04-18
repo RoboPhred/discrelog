@@ -1,4 +1,3 @@
-
 .wire-segment {
   stroke: var(--color-element-neutral);
   fill: var(--color-element-neutral);
@@ -7,4 +6,9 @@
 .wire-segment.powered {
   stroke: var(--color-element-powered);
   fill: var(--color-element-powered);
+}
+
+:global(.circuit-editor:not(.simulator-active)) .wire-segment.selected {
+  stroke: var(--color-element-selected);
+  fill: var(--color-element-selected);
 }

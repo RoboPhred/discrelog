@@ -19,9 +19,10 @@ import { pinDirectionFromElementPinSelector } from "../selectors/pins";
 import { wireCreate } from "./primitives/wire-create";
 import { wireSegmentInsert } from "./primitives/wire-segment-insert";
 import { wireJointInsert } from "./primitives/wire-joint-insert";
-import wireSegmentSplit from "./primitives/wire-segment-split";
-import { WireOperationError } from "./errors/WireOperationError";
+import wireSegmentAddJoint from "./primitives/wire-segment-add-joint";
 import { wireMerge } from "./primitives/wire-merge";
+
+import { WireOperationError } from "./errors/WireOperationError";
 
 export default createCircuitGraphReducer((state, action, rootState) => {
   if (!isWireConnectAction(action)) {
@@ -269,7 +270,7 @@ function targetToParts(
     }
     case "segment": {
       const jointId = uuidV4();
-      state = wireSegmentSplit(
+      state = wireSegmentAddJoint(
         state,
         target.segmentId,
         target.segmentInsertLength,

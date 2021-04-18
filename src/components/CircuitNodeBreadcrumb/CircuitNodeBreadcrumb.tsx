@@ -5,13 +5,14 @@ import { useDispatch } from "react-redux";
 import { cls } from "@/utils";
 import useSelector from "@/hooks/useSelector";
 
+import { elementTypeToCircuitId } from "@/elements/definitions/integrated-circuits/utils";
+
 import { viewCircuit } from "@/actions/view-circuit";
 
 import {
   elementNameOrDefaultFromElementIdSelector,
   elementTypeFromElementIdSelector,
 } from "@/services/circuit-graph/selectors/elements";
-import { elementTypeToCircuitId } from "@/elements/definitions/integrated-circuits/utils";
 import { circuitNameFromIdSelector } from "@/services/circuit-properties/selectors/circuits";
 import { ROOT_CIRCUIT_ID } from "@/services/circuits/constants";
 

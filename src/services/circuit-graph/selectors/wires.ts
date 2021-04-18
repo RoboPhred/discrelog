@@ -214,6 +214,21 @@ export const wireJointIdsFromCircuitIdSelector = createCircuitGraphSelector(
   }
 );
 
+/**
+ * Gets a list of wire segment ids in a given circuit.
+ * WARN: Not react safe.
+ */
+export const wireSegmentIdsFromCircuitIdSelector = createCircuitGraphSelector(
+  (s: CircuitGraphServiceState, circuitId: string) => {
+    const wireIds = s.wireIdsByCircuitId[circuitId];
+    const jointIds = flatMap(
+      wireIds,
+      (wireId) => s.wiresByWireId[wireId].wireSegmentIds
+    );
+    return jointIds;
+  }
+);
+
 export const segmentIdsForJointIdSelector = createCircuitGraphSelector(
   (s: CircuitGraphServiceState, jointId: string) => {
     const wireId = wireIdFromWireJointIdSelector.local(s, jointId);

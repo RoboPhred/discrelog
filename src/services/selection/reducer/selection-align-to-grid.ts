@@ -23,7 +23,10 @@ export default function selectionAlignToGridReducer(
     return state;
   }
 
-  const { selectedElementIds, selectedJointIds } = state.services.selection;
+  const {
+    selectedElementIds,
+    selectedWireJointIds: selectedJointIds,
+  } = state.services.selection;
 
   // Align elements.
   const elementPositions = elementPositionsByElementIdSelector(state);

@@ -1,11 +1,13 @@
 export interface SelectionServiceState {
   selectedElementIds: string[];
-  selectedJointIds: string[];
+  selectedWireJointIds: string[];
+  selectedWireSegmentIds: string[];
 }
 
 const _defaultState: SelectionServiceState = {
   selectedElementIds: [],
-  selectedJointIds: [],
+  selectedWireJointIds: [],
+  selectedWireSegmentIds: [],
 };
 
 export const defaultSelectionServiceState = Object.freeze(_defaultState);

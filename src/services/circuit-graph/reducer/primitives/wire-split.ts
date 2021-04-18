@@ -37,16 +37,34 @@ export function wireSplit(
     jointId
   );
 
+  // New wire won't have any content.
+  if (jointIds.length === 0 || segmentIds.length === 0) {
+    return state;
+  }
+
   // Strip values from existing wire network
   const oldWire = state.wiresByWireId[oldWireId];
+  const remainingWireSegmentIds = difference(
+    oldWire.wireSegmentIds,
+    segmentIds
+  );
+  const remainingWireJointIds = difference(oldWire.wireJointIds, jointIds);
+  if (
+    remainingWireJointIds.length === 0 ||
+    remainingWireSegmentIds.length === 0
+  ) {
+    // Old wire won't have any content.
+    return state;
+  }
+
   state = {
     ...state,
     wiresByWireId: {
       ...state.wiresByWireId,
       [oldWireId]: {
         ...oldWire,
-        wireSegmentIds: difference(oldWire.wireSegmentIds, segmentIds),
-        wireJointIds: difference(oldWire.wireJointIds, jointIds),
+        wireSegmentIds: remainingWireSegmentIds,
+        wireJointIds: remainingWireJointIds,
       },
     },
   };

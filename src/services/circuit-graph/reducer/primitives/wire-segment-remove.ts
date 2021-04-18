@@ -25,14 +25,13 @@ export function wireSegmentRemove(
   if (!wireId) {
     throw new WireOperationError("Wire for segment not found.");
   }
-  const wire = state.wiresByWireId[wireId];
 
   const segment = state.wireSegmentsById[segmentId];
   if (!segment) {
     throw new WireOperationError("Segment not found");
   }
 
-  const remainingSegmentIds = wire.wireSegmentIds.filter(
+  const remainingSegmentIds = state.wiresByWireId[wireId].wireSegmentIds.filter(
     (x) => x !== segmentId
   );
 
@@ -62,7 +61,8 @@ export function wireSegmentRemove(
     wiresByWireId: {
       ...state.wiresByWireId,
       [wireId]: {
-        ...wire,
+        // Re-obtain wire ref as wireRemoveJoint will have changed it.
+        ...state.wiresByWireId[wireId],
         wireSegmentIds: remainingSegmentIds,
       },
     },

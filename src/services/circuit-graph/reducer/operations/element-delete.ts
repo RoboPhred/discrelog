@@ -93,10 +93,6 @@ export default function elementDelete(
   );
 
   state = removedSegmentIds.reduce((state, segmentId) => {
-    const wireId = wireIdFromWireSegmentIdSelector.local(state, segmentId);
-    if (!wireId) {
-      return state;
-    }
     return wireSegmentDelete(state, segmentId);
   }, state);
 
