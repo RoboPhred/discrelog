@@ -362,7 +362,7 @@ body,
 :root {
   --color-element-neutral: black;
   --color-element-selected: goldenrod;
-  --color-element-powered: green;
+  --color-element-powered: rgb(0, 230, 0);
 
   --color-ui-primary-bg: rgb(0, 182, 0);
 
@@ -823,6 +823,27 @@ body,
   stroke: goldenrod;
   stroke: var(--color-element-selected);
   stroke-width: 3px;
+}
+
+.wire-segment--3ENBk {
+  stroke: black;
+  stroke: var(--color-element-neutral);
+  fill: black;
+  fill: var(--color-element-neutral);
+}
+
+.wire-segment--3ENBk.powered--I4EaN {
+  stroke: rgb(0, 230, 0);
+  stroke: var(--color-element-powered);
+  fill: rgb(0, 230, 0);
+  fill: var(--color-element-powered);
+}
+
+.circuit-editor:not(.simulator-active) .wire-segment--3ENBk.selected--1ceWg {
+  stroke: goldenrod;
+  stroke: var(--color-element-selected);
+  fill: goldenrod;
+  fill: var(--color-element-selected);
 }
 
 .wire-joint--interactor--3h5o4.selected--2L-Hh *:not(.mouse-detector--23NpN) {
