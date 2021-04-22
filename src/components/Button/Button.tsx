@@ -3,7 +3,7 @@ import * as React from "react";
 import { cls } from "@/utils";
 
 export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "default" | "menu";
+  variant?: "default" | "primary" | "text" | "menu";
   size?: "default" | "small";
 }
 

@@ -1,20 +1,26 @@
 .button {
   border-radius: 3px;
   border: none;
-  background: var(--color-ui-surface-bg);
   cursor: pointer;
   margin: 2px;
   user-select: none;
+
+  /*
+  Default size and variant
+    These are specified here and not in their -default classNames
+    as variants need to override them
+  */
   padding: 7px 10px;
+  background: var(--color-ui-surface-bg);
 }
 
 .button:hover {
-  background-color: var(--color-ui-light-hover);
+  background-color: var(--color-ui-surface-hover);
 }
 
 .button:focus {
   border: none;
-  background-color: var(--color-ui-light-hover);
+  background-color: var(--color-ui-surface-hover);
 }
 
 .button--size-small {
@@ -23,6 +29,17 @@
 
 .button--variant-primary {
   background: var(--color-ui-primary-bg);
+}
+.button--variant-primary:hover {
+  background: var(--color-ui-primary-bg-hover);
+}
+.button--variant-primary:focus {
+  border: none;
+  background: var(--color-ui-primary-bg-hover);
+}
+
+.button--variant-text {
+  background: none;
 }
 
 .button--variant-menu {

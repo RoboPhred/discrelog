@@ -81,7 +81,7 @@ const CircuitNodeBreadcrumbRootItem: React.FC<CircuitNodeBreadcrumbRootItemProps
   );
 
   return (
-    <Button size="small" onClick={onClick}>
+    <Button variant="text" size="small" onClick={onClick}>
       {elementIdPath.length === 0 ? circuitName : rootCircuitName}
     </Button>
   );
@@ -121,7 +121,7 @@ const CircuitNodeBreadcrumbItem: React.FC<CircuitNodeBreadcrumbItemProps> = ({
   );
 
   return (
-    <Button size="small" onClick={onClick}>
+    <Button variant="text" size="small" onClick={onClick}>
       {elementName} [{circuitName}]
     </Button>
   );
