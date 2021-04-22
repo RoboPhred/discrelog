@@ -4,6 +4,7 @@ import projectExportLink from "./project-export-link";
 import projectImportCircuits from "./project-import-circuits";
 import projectImportLink from "./project-import-link";
 import projectLoadSaga from "./project-load";
+import projectNewSaga from "./project-new";
 import projectSaveSaga from "./project-save";
 
 export default function* saveDataSaga() {
@@ -11,5 +12,6 @@ export default function* saveDataSaga() {
   yield fork(projectImportCircuits);
   yield fork(projectImportLink);
   yield fork(projectLoadSaga);
+  yield fork(projectNewSaga);
   yield fork(projectSaveSaga);
 }

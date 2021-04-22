@@ -8,6 +8,7 @@ const { DefinePlugin } = require("webpack");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { version } = require("./package.json");
 
 const isProd = process.env["NODE_ENV"] === "production";
 const publicPath = process.env["PUBLIC_PATH"] ?? "/";
@@ -137,6 +138,7 @@ module.exports = {
       "process.env": {
         NODE_ENV: JSON.stringify(isDev ? "development" : "production"),
       },
+      DISCRELOG_VERSION: JSON.stringify(version),
     }),
     new HtmlWebpackPlugin({
       inject: true,

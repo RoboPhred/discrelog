@@ -2,6 +2,8 @@ import { SagaIterator } from "redux-saga";
 import { call, put, takeEvery } from "redux-saga/effects";
 import fileDialog from "file-dialog";
 
+import history from "@/history";
+
 import { ACTION_PROJECT_LOAD } from "@/actions/project-load";
 import { receiveProject } from "@/actions/project-receive";
 
@@ -25,6 +27,8 @@ function* loadProject(): SagaIterator {
       fileName = "Unnamed Project";
     }
     yield put(receiveProject(fileName, saveData));
+
+    history.push("/editor");
   } catch (e) {
     // TODO: Handle error
     console.warn("Failed to load project:", e);
