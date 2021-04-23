@@ -3,9 +3,9 @@ import * as React from "react";
 import { cls } from "@/utils";
 
 export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-  disabled?: boolean;
-  variant?: "primary" | "default" | "menu";
+  variant?: "default" | "primary" | "text" | "menu";
   size?: "default" | "small";
+  disabled?: boolean;
 }
 
 import styles from "./Button.module.css";

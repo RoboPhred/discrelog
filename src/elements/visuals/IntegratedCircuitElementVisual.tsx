@@ -71,7 +71,7 @@ export const IntegratedCircuitElementVisual: React.FC<
           className={interaction["text-unselectable"]}
           x={15}
           y={y}
-          alignmentBaseline="middle"
+          dominantBaseline="middle"
           fontSize=".7em"
         >
           {elementNamesById[pinId]}
@@ -99,7 +99,7 @@ export const IntegratedCircuitElementVisual: React.FC<
           x={85}
           y={y}
           textAnchor="end"
-          alignmentBaseline="middle"
+          dominantBaseline="middle"
           fontSize=".7em"
         >
           {elementNamesById[pinId]}
