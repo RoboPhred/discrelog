@@ -14,8 +14,11 @@
   --color-ui-light-text-disabled: rgb(218, 218, 218);
 
   --color-ui-surface-bg: rgb(231, 231, 231);
+  --color-ui-surface-bg-disabled: rgb(248, 248, 248);
   --color-ui-surface-border: rgb(209, 209, 209);
-
+  --color-ui-surface-text: black;
+  --color-ui-surface-text-disabled: rgb(218, 218, 218);
+  
   --color-ui-dark-bg: rgb(117, 117, 117);
 
   --color-ui-drop-bg: rgba(0, 153, 255, 0.445);

@@ -8,13 +8,27 @@
   padding: 7px 10px;
 }
 
+.button.disabled {
+  background: var(--color-ui-surface-bg-disabled);
+  color: var(--color-ui-surface-text-disabled);
+  cursor: not-allowed;
+}
+
 .button:hover {
   background-color: var(--color-ui-light-hover);
+}
+
+.button.disabled:hover {
+  background: var(--color-ui-surface-bg-disabled);
 }
 
 .button:focus {
   border: none;
   background-color: var(--color-ui-light-hover);
+}
+
+.button.disabled:focus {
+  background: var(--color-ui-surface-bg-disabled);
 }
 
 .button--size-small {

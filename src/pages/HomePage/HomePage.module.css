@@ -31,6 +31,10 @@
   padding: 10px;
   margin: 10px;
   border: rgb(194, 194, 194) solid 1px;
-  border-radius: 25px;
+  border-radius: 15px;
   background: white;
+}
+
+.panel.button-container {
+  text-align: center;
 }
