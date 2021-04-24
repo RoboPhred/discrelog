@@ -21,7 +21,7 @@
 }
 
 .button:hover {
-  background-color: var(--color-ui-surface-hover);
+  background: var(--color-ui-surface-hover);
 }
 
 .button.disabled:hover {
@@ -30,7 +30,7 @@
 
 .button:focus {
   border: none;
-  background-color: var(--color-ui-surface-hover);
+  background: var(--color-ui-surface-hover);
 }
 
 .button.disabled:focus {

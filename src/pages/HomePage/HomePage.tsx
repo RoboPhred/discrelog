@@ -64,7 +64,7 @@ const HomePage: React.FC = () => {
             </Button>
           </div>
         </div>
-        <div className={styles.footer}>{appVersion}</div>
+        <div className={cls(styles.footer, styles.panel)}>{appVersion}</div>
       </div>
     </div>
   );
