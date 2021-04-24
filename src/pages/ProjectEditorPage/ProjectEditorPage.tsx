@@ -8,6 +8,7 @@ import flex from "@/styles/flex.module.css";
 
 import { rearrangeLayout } from "@/actions/layout-rearrange";
 import { circuitEditorDragAbort } from "@/actions/circuit-editor-drag-abort";
+import { navigatePage } from "@/actions/page-navigate";
 
 import useSelector from "@/hooks/useSelector";
 import { useNativeEvent } from "@/hooks/useNativeEvent";
@@ -38,6 +39,11 @@ function renderWindow(window: TesselWindowItem): React.ReactElement | null {
 
 const ProjectEditorPage: React.FC = () => {
   const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(navigatePage("editor"));
+  }, [dispatch]);
+
   const layout = useSelector(layoutSelector);
   const onLayoutChange = React.useCallback(
     (layout: TesselValue) => {

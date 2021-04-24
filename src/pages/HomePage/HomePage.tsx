@@ -7,19 +7,26 @@ import flex from "@/styles/flex.module.css";
 
 import { useAction } from "@/hooks/useAction";
 
-import Button from "@/components/Button";
+import { hasAutosave } from "@/services/autosave/api";
+import { restorePreviousProject } from "@/actions/project-restore-previous";
+import { navigatePage } from "@/actions/page-navigate";
 
 import { newProject } from "@/actions/project-new";
 import { loadProject } from "@/actions/project-load";
 
+import Button from "@/components/Button";
+
 import styles from "./HomePage.module.css";
-import { hasAutosave } from "@/services/autosave/api";
-import { restorePreviousProject } from "@/actions/project-restore-previous";
 
 const HomePage: React.FC = () => {
+  const onNavigateHome = useAction(navigatePage, "home");
   const onNewProject = useAction(newProject);
   const onLoadProject = useAction(loadProject);
   const onLoadPreviousProject = useAction(restorePreviousProject);
+
+  React.useEffect(() => {
+    onNavigateHome();
+  }, [onNavigateHome]);
 
   const hasPreviousSave = hasAutosave();
 
