@@ -32,7 +32,7 @@ export default function captureUndoStateReducer(
     //  This should let us store far more undo operations as the project gets larger.
     // Could use https://www.npmjs.com/package/deep-diff
     // Problem with this is it takes up time capturing the undo, which slows down all operations.
-    undoStack: [...undoState.undoStack.slice(0, 25), captureUndoState(state)],
+    undoStack: [...undoState.undoStack.slice(0, 24), captureUndoState(state)],
     redoStack: [],
   }));
 }
