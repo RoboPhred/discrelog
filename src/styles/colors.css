@@ -1,5 +1,6 @@
 :root {
   --color-element-neutral: black;
+  --color-element-unwired: lightgrey;
   --color-element-selected: goldenrod;
   --color-element-powered: rgb(0, 230, 0);
 

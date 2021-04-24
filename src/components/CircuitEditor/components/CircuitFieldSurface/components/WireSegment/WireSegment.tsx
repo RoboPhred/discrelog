@@ -25,6 +25,7 @@ import {
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 import { isDraggingSelector } from "@/services/circuit-editor-drag/selectors/drag";
 import {
+  segmentIsWiredSelector,
   wireSegmentPoweredSelector,
   wireSegmentTypeFromSegmentIdSelector,
 } from "@/services/circuit-graph/selectors/wires";
@@ -60,8 +61,11 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
   const isSelected = useSelector((state) =>
     isSegmentSelectedFromSegmentIdSelector(state, wireSegmentId)
   );
-  const wireSegmentPowered = useSelector((state) =>
+  const isPowered = useSelector((state) =>
     wireSegmentPoweredSelector(state, elementIdPath, wireSegmentId)
+  );
+  const isWired = useSelector((state) =>
+    segmentIsWiredSelector(state, wireSegmentId)
   );
 
   const isDragging = useSelector(isDraggingSelector);
@@ -173,8 +177,9 @@ const WireSegment: React.FC<WireSegmentProps> = ({ wireId, wireSegmentId }) => {
     <g
       className={cls(
         styles["wire-segment"],
+        !isWired && styles["unwired"],
         isSelected && styles["selected"],
-        wireSegmentPowered && styles["powered"]
+        isPowered && styles["powered"]
       )}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}

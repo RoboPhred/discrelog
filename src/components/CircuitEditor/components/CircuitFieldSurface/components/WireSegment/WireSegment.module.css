@@ -3,7 +3,12 @@
   fill: var(--color-element-neutral);
 }
 
-.wire-segment.powered {
+.wire-segment.unwired {
+  stroke: var(--color-element-unwired);
+  fill: var(--color-element-unwired);
+}
+
+.wire-segment.powered.powered {
   stroke: var(--color-element-powered);
   fill: var(--color-element-powered);
 }

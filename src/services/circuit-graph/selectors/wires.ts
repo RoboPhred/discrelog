@@ -264,6 +264,14 @@ const wireSegmentSourcesBySegmentIdSelector = createSelector(
   }
 );
 
+export const segmentIsWiredSelector = (state: AppState, segmentId: string) => {
+  const segmentSourcesBySegmentId = wireSegmentSourcesBySegmentIdSelector(
+    state
+  );
+  const source = segmentSourcesBySegmentId[segmentId];
+  return source && source.length > 0;
+};
+
 function collectSegmentSources(
   wireId: string,
   segmentSources: Record<string, ElementPin[]>,
