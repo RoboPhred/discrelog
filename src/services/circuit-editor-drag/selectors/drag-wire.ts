@@ -162,6 +162,8 @@ export const dragWireEndTargetByPointSelector = (
   };
 };
 
+// TODO: This is called many times for many elements in a single render pass
+// It needs to be cached.
 export const dragWireEndTargetSelector = (
   state: AppState
 ): WireConnectTarget | null => {
@@ -176,26 +178,6 @@ export const dragWireEndTargetSelector = (
   }
 
   return dragWireEndTargetByPointSelector(state, dragEnd);
-};
-
-let dragWireTargetPinCache: ElementPin | null = null;
-export const dragWireTargetPinSelector = (
-  state: AppState
-): ElementPin | null => {
-  const dropTarget = dragWireEndTargetSelector(state);
-  if (!dropTarget || dropTarget.type !== "pin") {
-    return null;
-  }
-
-  const pin = dropTarget.pin;
-  if (
-    !dragWireTargetPinCache ||
-    !elementPinEquals(dragWireTargetPinCache, pin)
-  ) {
-    dragWireTargetPinCache = pin;
-  }
-
-  return dragWireTargetPinCache;
 };
 
 function getDragTargetPoint(
@@ -255,6 +237,48 @@ export const dragWireSegmentEndPositionSelector = (state: AppState) => {
   }
 
   return dragWireSegmentEndPositionCache;
+};
+
+export const isPinDragWireTarget = (
+  state: AppState,
+  elementId: string,
+  pinId: string
+) => {
+  const endTarget = dragWireEndTargetSelector(state);
+  if (!endTarget) {
+    return false;
+  }
+
+  return (
+    endTarget.type === "pin" &&
+    endTarget.pin.elementId === elementId &&
+    endTarget.pin.pinId === pinId
+  );
+};
+
+export const isJointDragWireTarget = (state: AppState, jointId: string) => {
+  const endTarget = dragWireEndTargetSelector(state);
+  if (!endTarget) {
+    return false;
+  }
+
+  return endTarget.type === "joint" && endTarget.jointId === jointId;
+};
+
+export const segmentDragWireTargetOffset = (
+  state: AppState,
+  segmentId: string
+): number | null => {
+  const endTarget = dragWireEndTargetSelector(state);
+  if (!endTarget) {
+    return null;
+  }
+
+  if (endTarget.type !== "segment" || endTarget.segmentId !== segmentId) {
+    return null;
+  }
+
+  return endTarget.segmentInsertLength;
 };
 
 export const dragWireJointPositionSelector = (state: AppState) => {

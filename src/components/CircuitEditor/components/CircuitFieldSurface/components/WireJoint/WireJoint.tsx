@@ -16,6 +16,7 @@ import { circuitEditorDragStartWire } from "@/actions/circuit-editor-drag-start-
 import { wireJointPositionFromJointIdSelector } from "@/services/circuit-graph/selectors/wire-positions";
 import { isJointSelectedFromJointIdSelector } from "@/services/selection/selectors/selection";
 import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
+import { isJointDragWireTarget } from "@/services/circuit-editor-drag/selectors/drag-wire";
 
 import { useCircuitEditor } from "../../../../contexts/circuit-editor-context";
 import { getWireJointHtmlId } from "../../../../ids";
@@ -40,6 +41,9 @@ const WireJoint: React.FC<WireJointProps> = ({ wireId, jointId }) => {
   );
   const isSelected = useSelector((state) =>
     isJointSelectedFromJointIdSelector(state, jointId)
+  );
+  const isDragTargetJoint = useSelector((state) =>
+    isJointDragWireTarget(state, jointId)
   );
 
   const [mouseOver, setMouseOver] = React.useState(false);
@@ -137,13 +141,14 @@ const WireJoint: React.FC<WireJointProps> = ({ wireId, jointId }) => {
         stroke="none"
       />
       <circle
+        className={cls(isDragTargetJoint && styles["is-drag-target"])}
         cx={position.x}
         cy={position.y}
         r={3}
         fill="black"
         stroke="none"
       />
-      {!isSimActive && (mouseOver || isSelected) && (
+      {!isSimActive && !isDragTargetJoint && (mouseOver || isSelected) && (
         <g
           className={cls(
             styles["wire-joint--interactor"],

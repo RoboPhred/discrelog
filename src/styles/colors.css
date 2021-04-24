@@ -3,6 +3,7 @@
   --color-element-unwired: lightgrey;
   --color-element-selected: goldenrod;
   --color-element-powered: rgb(0, 230, 0);
+  --color-element-wiretarget: rgb(15, 159, 255);
 
   --color-text-default: black;
   --color-text-link: rgb(15, 159, 255);

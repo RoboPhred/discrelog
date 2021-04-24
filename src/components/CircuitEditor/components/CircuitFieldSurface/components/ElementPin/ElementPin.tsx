@@ -14,7 +14,7 @@ import { circuitEditorDragStartWire } from "@/actions/circuit-editor-drag-start-
 
 import { elementPinPositionFromElementPinSelector } from "@/services/circuit-layout/selectors/element-pin-positions";
 import { pinDirectionFromElementPinSelector } from "@/services/circuit-graph/selectors/pins";
-import { dragWireTargetPinSelector } from "@/services/circuit-editor-drag/selectors/drag-wire";
+import { isPinDragWireTarget } from "@/services/circuit-editor-drag/selectors/drag-wire";
 
 import { useCircuitEditor } from "../../../../contexts/circuit-editor-context";
 import { getElementPinHtmlId } from "../../../../ids";
@@ -50,7 +50,9 @@ const ElementPin: React.FC<ElementPinProps> = React.memo(function ElementPin({
     pinDirectionFromElementPinSelector(s, elementId, pinId)
   );
 
-  const dragTargetPin = useSelector(dragWireTargetPinSelector);
+  const isDragTargetPin = useSelector((state) =>
+    isPinDragWireTarget(state, elementId, pinId)
+  );
 
   const onDragStart = React.useCallback(
     (e, originalPoint) => {
@@ -113,11 +115,6 @@ const ElementPin: React.FC<ElementPinProps> = React.memo(function ElementPin({
     return null;
   }
 
-  const isDragTarget =
-    dragTargetPin != null &&
-    dragTargetPin.elementId === elementId &&
-    dragTargetPin.pinId === pinId;
-
   const { x, y } = position;
 
   let pinVisual: JSX.Element;
@@ -129,7 +126,7 @@ const ElementPin: React.FC<ElementPinProps> = React.memo(function ElementPin({
         strokeWidth={2}
         className={cls(
           styles["element-pin-input"],
-          isDragTarget && styles["is-drag-target"],
+          isDragTargetPin && styles["is-drag-target"],
           highlight && styles.highlight
         )}
       />
@@ -139,7 +136,7 @@ const ElementPin: React.FC<ElementPinProps> = React.memo(function ElementPin({
       <circle
         className={cls(
           styles["element-pin-output"],
-          isDragTarget && styles["is-drag-target"],
+          isDragTargetPin && styles["is-drag-target"],
           highlight && styles.highlight
         )}
         cx={x}
