@@ -24,10 +24,10 @@ import {
 import { circuitIdToElementType, getICBorderPath } from "./utils";
 
 const IntegratedCircuitDefinitionSource: ElementDefinitionSource = createSelector(
-  elementIdsByCircuitIdSelector,
-  elementTypesByElementIdSelector,
-  elementPositionsByElementIdSelector,
-  circuitNamesByIdSelector,
+  (state) => elementIdsByCircuitIdSelector.local(state.circuitGraph),
+  (state) => elementTypesByElementIdSelector.local(state.circuitGraph),
+  (state) => elementPositionsByElementIdSelector.local(state.circuitLayout),
+  (state) => circuitNamesByIdSelector.local(state.circuitProperties),
   (
     elementIdsByCircuitId,
     elementTypesByElementId,

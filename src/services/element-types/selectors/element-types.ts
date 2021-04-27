@@ -7,27 +7,36 @@ import { AppState } from "@/store";
 
 import elementDefinitionSources from "@/elements/definitions";
 
-import { ElementDefinition, ElementDefinitionSource } from "@/elements/types";
+import {
+  ElementDefinition,
+  ElementDefinitionDerivedState,
+  ElementDefinitionSource,
+} from "@/elements/types";
+
+const elementDefinitionsDerivedStateSelector = createSelector(
+  (state: AppState) => state.services.circuitGraph,
+  (state: AppState) => state.services.circuitLayout,
+  (state: AppState) => state.services.circuitProperties,
+  (circuitGraph, circuitLayout, circuitProperties) => ({
+    circuitGraph,
+    circuitLayout,
+    circuitProperties,
+  })
+);
 
 /**
  * Gets an array of element definitions from the current state.
- * WARN: Returns an unstable reference, not react safe.
  */
-let cachedDefinitionsSelector: ElementDefinition[] = [];
-export const elementDefinitionsSelector = (state: AppState) => {
-  const definitions = flatMap(elementDefinitionSources, (source) =>
-    resolveSources(source, state)
-  );
+export const elementDefinitionsSelector = createSelector(
+  elementDefinitionsDerivedStateSelector,
+  (derivedState) => {
+    const definitions = flatMap(elementDefinitionSources, (source) =>
+      resolveSources(source, derivedState)
+    );
 
-  if (
-    definitions.every((def, index) => def === cachedDefinitionsSelector[index])
-  ) {
-    return cachedDefinitionsSelector;
+    return definitions;
   }
-
-  cachedDefinitionsSelector = definitions;
-  return definitions;
-};
+);
 
 export const elementDefinitionsByTypeSelector = createSelector(
   elementDefinitionsSelector,
@@ -50,7 +59,7 @@ export const elementDefinitionFromTypeSelector = (
 
 function resolveSources(
   source: ElementDefinitionSource,
-  state: AppState
+  state: ElementDefinitionDerivedState
 ): ElementDefinition[] {
   let resolved: MaybeArray<ElementDefinition>;
   if (typeof source === "function") {
