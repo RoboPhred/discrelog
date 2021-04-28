@@ -84,7 +84,7 @@ const ElementContextMenu: React.FC<NodeContextMenuProps> = ({
     <Menu>
       <EditableTextMenuItem
         defaultValue={elementName ?? "<unknown>"}
-        label={<span style={{ fontWeight: "bold" }}>{elementName}</span>}
+        label={<span style={{ fontWeight: 600 }}>{elementName}</span>}
         isEditing={isRenaming}
         onRequestEdit={onRename}
         onCommit={onRenameCommit}

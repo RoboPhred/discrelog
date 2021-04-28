@@ -1,13 +1,13 @@
 export interface ProjectServiceState {
+  projectLoadState: "no-project" | "loading" | "loaded";
   projectName: string;
   projectModified: boolean;
-  isLoading: boolean;
 }
 
 const _defaultProps: ProjectServiceState = {
+  projectLoadState: "no-project",
   projectName: "New Project",
   projectModified: false,
-  isLoading: false,
 };
 
 export const defaultProjectServiceState = Object.freeze(_defaultProps);

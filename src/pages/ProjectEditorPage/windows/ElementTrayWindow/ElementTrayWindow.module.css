@@ -27,7 +27,7 @@
 
 .element-tray-category {
   box-sizing: border-box;
-  font-weight: bold;
+  font-weight: 600;
   width: 100%;
   border-bottom: 1px solid black;
   padding-bottom: 2px;

@@ -95,7 +95,7 @@ export const MomentaryInteractionElementVisual: React.FC<ElementComponentProps> 
         fontSize=".8em"
         fill={onTextColor}
         textAnchor="middle"
-        alignmentBaseline="middle"
+        dominantBaseline="middle"
       >
         Push
       </text>

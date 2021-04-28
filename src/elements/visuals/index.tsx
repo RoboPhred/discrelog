@@ -21,7 +21,7 @@ const ErrorComponent: React.FC<{ componentName: string }> = ({
   return (
     <g>
       <rect width={50} height={50} fill="red" />
-      <text x={25} y={25} alignmentBaseline="middle">
+      <text x={25} y={25} dominantBaseline="middle">
         {componentName}
       </text>
     </g>

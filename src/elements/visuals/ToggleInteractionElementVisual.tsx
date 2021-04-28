@@ -78,7 +78,7 @@ export const ToggleInteractionElementVisual: React.FC<ElementComponentProps<
         fontSize=".8em"
         fill={onTextColor}
         textAnchor="middle"
-        alignmentBaseline="middle"
+        dominantBaseline="middle"
       >
         On
       </text>
@@ -97,7 +97,7 @@ export const ToggleInteractionElementVisual: React.FC<ElementComponentProps<
         fontSize=".8em"
         fill="lightgrey"
         textAnchor="middle"
-        alignmentBaseline="middle"
+        dominantBaseline="middle"
       >
         Off
       </text>

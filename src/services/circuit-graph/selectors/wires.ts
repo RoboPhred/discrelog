@@ -264,6 +264,14 @@ const wireSegmentSourcesBySegmentIdSelector = createSelector(
   }
 );
 
+export const segmentIsWiredSelector = (state: AppState, segmentId: string) => {
+  const segmentSourcesBySegmentId = wireSegmentSourcesBySegmentIdSelector(
+    state
+  );
+  const source = segmentSourcesBySegmentId[segmentId];
+  return source && source.length > 0;
+};
+
 function collectSegmentSources(
   wireId: string,
   segmentSources: Record<string, ElementPin[]>,
@@ -443,6 +451,11 @@ function resolveOutputPin(
   return { elementIdPath, elementPin };
 }
 
+// TODO: This takes lots of time in firefox.
+// This should be cachable (map by input pin), except for that we need the element defs
+// to figure out all input pins to map by, and getting that requires the root state.
+// The def selector needs to be modified to only take a subset of the state so that we can
+// keep it cached as the simulator service data changes.
 function getOutputPinForInputPin(
   state: AppState,
   elementPin: ElementPin

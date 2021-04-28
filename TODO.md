@@ -1,6 +1,7 @@
 # TODO
 
-- Mobile support? Change mouse tracking code to use pointer events.
+- Optimize getOutputPinForInputPin. See notes on function.
+- Slider to control speed of simulation.
 - Blank placeholder window when all circuit editor windows are closed.
   - Default to this blank window rather than assuming a default window in both circuit-editors and ui-layout services.
 - Tooltip on hover over sim controls showing the hotkeys.
@@ -9,12 +10,6 @@
 - Support dragging elements across windows.
 - If all circuit editors are closed, open a new editor on clicking a circuit.
 - Cut command
-
-- Multi window causes confusion with undo
-
-  - Undo is global, but most uis have undo per window
-  - We cannot do undo per-window in case an undo in one window breaks the situation for undo in another
-  - Might be possible if instead of snapshotting, we keep note of exactly what actions are done and have code to check the possibility of and and reverse the action.
 
 - IC test mode
 

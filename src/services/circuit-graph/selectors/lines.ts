@@ -1,4 +1,5 @@
 import values from "lodash/values";
+import { orderBy } from "natural-orderby";
 
 import { isTruthy } from "@/utils";
 
@@ -36,8 +37,9 @@ export const wireLineCandidatesForSegmentId = createCircuitGraphSelector(
 
     const [inputLineIds, outputLineIds] = collectWireLineIds(state, wireId);
 
+    let candidates: WireLineCandidate[] = [];
     if (isInputWireSegment(segment)) {
-      return outputLineIds
+      candidates = outputLineIds
         .map((lineId) => {
           const elementPin = outputElementPinFromLineId(state, lineId);
           if (!elementPin) {
@@ -60,7 +62,7 @@ export const wireLineCandidatesForSegmentId = createCircuitGraphSelector(
         })
         .filter(isTruthy);
     } else if (isOutputWireSegment(segment)) {
-      return inputLineIds
+      candidates = inputLineIds
         .filter((lineId) => !lineHasOutput(state, lineId, segment))
         .map((lineId) => {
           const inputPins = inputElementPinsFromLineId(state, lineId);
@@ -89,7 +91,7 @@ export const wireLineCandidatesForSegmentId = createCircuitGraphSelector(
         .filter(isTruthy);
     }
 
-    return [];
+    return orderBy(candidates, "name", "asc");
   }
 );
 
