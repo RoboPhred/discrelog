@@ -2,18 +2,10 @@ import { createSelector } from "reselect";
 
 import { AppState } from "@/store";
 
-import {
-  magnitude,
-  Point,
-  pointAdd,
-  pointSubtract,
-  ZeroPoint,
-} from "@/geometry";
+import { Point, pointAdd, ZeroPoint } from "@/geometry";
 
 import { elementTypesByElementIdSelector } from "@/services/circuit-graph/selectors/elements";
 import { elementDefinitionsByTypeSelector } from "@/services/element-types/selectors/element-types";
-import { elementIdsFromCircuitIdSelector } from "@/services/circuit-graph/selectors/elements";
-import { ElementPin, elementPinEquals } from "@/services/circuit-graph/types";
 
 import { elementPositionsByElementIdSelector } from "./element-positions";
 
