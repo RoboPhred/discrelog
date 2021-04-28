@@ -357,14 +357,32 @@ body,
   margin: 0;
   padding: 0;
   font-family: "Titillium Web", sans-serif;
+  color: black;
+  color: var(--color-text-default);
+}
+
+a {
+  color: rgb(15, 159, 255);
+  color: var(--color-text-link);
+}
+a:hover {
+  color: rgb(92, 190, 255);
+  color: var(--color-text-link-hover);
 }
 
 :root {
   --color-element-neutral: black;
+  --color-element-unwired: lightgrey;
   --color-element-selected: goldenrod;
   --color-element-powered: rgb(0, 230, 0);
+  --color-element-wiretarget: rgb(15, 159, 255);
+
+  --color-text-default: black;
+  --color-text-link: rgb(15, 159, 255);
+  --color-text-link-hover: rgb(92, 190, 255);
 
   --color-ui-primary-bg: rgb(0, 182, 0);
+  --color-ui-primary-bg-hover: rgb(0, 205, 0);
 
   --color-ui-light-bg: white;
   --color-ui-light-border: rgb(117, 117, 117);
@@ -374,8 +392,12 @@ body,
   --color-ui-light-text: black;
   --color-ui-light-text-disabled: rgb(218, 218, 218);
 
-  --color-ui-surface-bg: rgb(231, 231, 231);
+  --color-ui-surface-bg: rgb(221, 221, 221);
+  --color-ui-surface-bg-disabled: rgb(230, 230, 230);
   --color-ui-surface-border: rgb(209, 209, 209);
+  --color-ui-surface-hover: rgb(231, 231, 231);
+  --color-ui-surface-text: black;
+  --color-ui-surface-text-disabled: rgb(175, 175, 175);
 
   --color-ui-dark-bg: rgb(117, 117, 117);
 
@@ -403,6 +425,10 @@ body,
   flex-direction: column;
 }
 
+.flex-space-around--1tYx1 {
+  justify-content: space-around;
+}
+
 .flex-row--sHjOY.flex-reverse--2Vn7L {
   flex-direction: row-reverse;
 }
@@ -411,6 +437,9 @@ body,
   flex-direction: column-reverse;
 }
 
+.flexitem-grow--7seUA {
+  flex-grow: 1;
+}
 .flexitem-shrink--2U9EV {
   flex-shrink: 1;
 }
@@ -524,7 +553,7 @@ body,
 }
 
 .tessel-window-titlebar--uHBdn {
-  background: rgb(231, 231, 231);
+  background: rgb(221, 221, 221);
   background: var(--color-ui-surface-bg);
   display: flex;
   flex-direction: row;
@@ -538,8 +567,8 @@ body,
 }
 
 .tessel-window-title--2v0hT {
-  font-size: 0.8em;
-  font-weight: bold;
+  font-size: 0.9em;
+  font-weight: 600;
   cursor: default;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -566,6 +595,125 @@ body,
   box-sizing: border-box;
 }
 
+.button--Ui3Hp {
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  margin: 2px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+
+  /*
+  Default size and variant
+    These are specified here and not in their -default classNames
+    as variants need to override them
+  */
+  padding: 7px 10px;
+  background: rgb(221, 221, 221);
+  background: var(--color-ui-surface-bg);
+}
+
+.button--Ui3Hp.disabled--bnSiC {
+  background: rgb(230, 230, 230);
+  background: var(--color-ui-surface-bg-disabled);
+  color: rgb(175, 175, 175);
+  color: var(--color-ui-surface-text-disabled);
+  cursor: not-allowed;
+}
+
+.button--Ui3Hp:hover {
+  background: rgb(231, 231, 231);
+  background: var(--color-ui-surface-hover);
+}
+
+.button--Ui3Hp.disabled--bnSiC:hover {
+  background: rgb(230, 230, 230);
+  background: var(--color-ui-surface-bg-disabled);
+}
+
+.button--Ui3Hp:focus {
+  border: none;
+  background: rgb(231, 231, 231);
+  background: var(--color-ui-surface-hover);
+}
+
+.button--Ui3Hp.disabled--bnSiC:focus {
+  background: rgb(230, 230, 230);
+  background: var(--color-ui-surface-bg-disabled);
+}
+
+.button--size-small--289kb {
+  padding: 3px 6px;
+}
+
+.button--variant-primary--2qpAa {
+  background: rgb(0, 182, 0);
+  background: var(--color-ui-primary-bg);
+}
+.button--variant-primary--2qpAa:hover {
+  background: rgb(0, 205, 0);
+  background: var(--color-ui-primary-bg-hover);
+}
+.button--variant-primary--2qpAa:focus {
+  border: none;
+  background: rgb(0, 205, 0);
+  background: var(--color-ui-primary-bg-hover);
+}
+
+.button--variant-text--2oReW {
+  background: none;
+}
+
+.button--variant-menu--3lEZ1 {
+  background: none;
+  padding: 7px 7px;
+}
+
+.root--2DezE {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  background-size: 50px 50px;
+  background-image: linear-gradient(
+      to right,
+      rgb(194, 194, 194) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgb(194, 194, 194) 1px, transparent 1px);
+  background-repeat: repeat;
+}
+
+.content--2cUqW {
+  position: relative;
+  max-width: 960px;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer--lY1Go {
+  text-align: center;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+}
+
+.panel--uw2LA {
+  padding: 10px;
+  margin: 10px;
+  border: rgb(194, 194, 194) solid 1px;
+  border-radius: 15px;
+  background: white;
+}
+
+.panel--uw2LA.button-container--3zi4e {
+  text-align: center;
+}
+
 .titlebar--3-TCE {
   height: 50px;
   padding: 0 15px;
@@ -576,8 +724,8 @@ body,
 }
 
 .titlebar-heading--3RAl1 {
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .titlebar-divider--Wl_27 {
@@ -591,45 +739,6 @@ body,
   position: absolute;
   left: 50%;
   text-align: center;
-}
-
-.button--Ui3Hp {
-  border-radius: 3px;
-  border: none;
-  background: rgb(231, 231, 231);
-  background: var(--color-ui-surface-bg);
-  cursor: pointer;
-  margin: 2px;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  padding: 7px 10px;
-}
-
-.button--Ui3Hp:hover {
-  background-color: rgb(218, 218, 218);
-  background-color: var(--color-ui-light-hover);
-}
-
-.button--Ui3Hp:focus {
-  border: none;
-  background-color: rgb(218, 218, 218);
-  background-color: var(--color-ui-light-hover);
-}
-
-.button--size-small--289kb {
-  padding: 3px 6px;
-}
-
-.button--variant-primary--2qpAa {
-  background: rgb(0, 182, 0);
-  background: var(--color-ui-primary-bg);
-}
-
-.button--variant-menu--3lEZ1 {
-  background: none;
-  padding: 7px 7px;
 }
 
 .menu--3E86w {
@@ -667,6 +776,11 @@ body,
 
 .menu-item-content--3s1DG {
   display: flex;
+}
+
+.menu-item-content--3s1DG,
+.menu-item-content--3s1DG:hover {
+  color: inherit;
 }
 
 .menu-item-text--1F41V {
@@ -767,6 +881,7 @@ body,
 .circuit-element-breadcrumb--1CYNC {
   background: white;
   background: var(--color-ui-light-bg);
+  padding-bottom: 2px;
 }
 
 .text-unselectable--2tvXe {
@@ -803,12 +918,19 @@ body,
   stroke: var(--color-element-neutral);
 }
 
-.element-pin-output--1jFy-.highlight--Q2iLD,
-.element-pin-output--1jFy-.is-drag-target--1NYuw {
+.element-pin-output--1jFy-.highlight--Q2iLD {
   fill: goldenrod;
   fill: var(--color-element-selected);
   stroke: goldenrod;
   stroke: var(--color-element-selected);
+  stroke-width: 3px;
+}
+
+.element-pin-output--1jFy-.is-drag-target--1NYuw {
+  fill: rgb(15, 159, 255);
+  fill: var(--color-element-wiretarget);
+  stroke: rgb(15, 159, 255);
+  stroke: var(--color-element-wiretarget);
   stroke-width: 3px;
 }
 
@@ -818,13 +940,17 @@ body,
   stroke: var(--color-element-neutral);
 }
 
-.element-pin-input--1urBY.highlight--Q2iLD,
-.element-pin-input--1urBY.is-drag-target--1NYuw {
+.element-pin-input--1urBY.highlight--Q2iLD {
   stroke: goldenrod;
   stroke: var(--color-element-selected);
   stroke-width: 3px;
 }
 
+.element-pin-input--1urBY.is-drag-target--1NYuw {
+  stroke: rgb(15, 159, 255);
+  stroke: var(--color-element-wiretarget);
+  stroke-width: 3px;
+}
 .wire-segment--3ENBk {
   stroke: black;
   stroke: var(--color-element-neutral);
@@ -832,11 +958,23 @@ body,
   fill: var(--color-element-neutral);
 }
 
-.wire-segment--3ENBk.powered--I4EaN {
+.wire-segment--3ENBk.unwired--2GWhN {
+  stroke: lightgrey;
+  stroke: var(--color-element-unwired);
+  fill: lightgrey;
+  fill: var(--color-element-unwired);
+}
+
+.wire-segment--3ENBk.powered--I4EaN.powered--I4EaN {
   stroke: rgb(0, 230, 0);
   stroke: var(--color-element-powered);
   fill: rgb(0, 230, 0);
   fill: var(--color-element-powered);
+}
+
+.drag-wire-target--20uzz {
+  fill: rgb(15, 159, 255);
+  fill: var(--color-element-wiretarget);
 }
 
 .circuit-editor:not(.simulator-active) .wire-segment--3ENBk.selected--1ceWg {
@@ -851,6 +989,10 @@ body,
   fill: var(--color-element-selected);
 }
 
+.is-drag-target--1nP1l {
+  fill: rgb(15, 159, 255);
+  fill: var(--color-element-wiretarget);
+}
 .circuit-field-svg--o7YIn {
   display: block;
 }
@@ -997,7 +1139,7 @@ body,
 
 .element-tray-category--3K8sv {
   box-sizing: border-box;
-  font-weight: bold;
+  font-weight: 600;
   width: 100%;
   border-bottom: 1px solid black;
   padding-bottom: 2px;
@@ -1055,7 +1197,7 @@ body,
 
 .dialog-title--1DWsL {
   font-size: 1.2em;
-  font-weight: bold;
+  font-weight: 600;
   margin-bottom: 10px;
 }
 
