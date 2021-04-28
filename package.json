@@ -20,6 +20,7 @@
     "Simulator",
     "Logic Simulator"
   ],
+  "private": true,
   "author": "William Matthews",
   "license": "AGPL-3.0",
   "devDependencies": {
