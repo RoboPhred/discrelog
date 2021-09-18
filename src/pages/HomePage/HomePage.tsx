@@ -8,17 +8,23 @@ import flex from "@/styles/flex.module.css";
 import { useAction } from "@/hooks/useAction";
 
 import { hasAutosave } from "@/services/autosave/api";
+
+import examples from "@/services/examples/examples";
+
 import { restorePreviousProject } from "@/actions/project-restore-previous";
 import { navigatePage } from "@/actions/page-navigate";
 
 import { newProject } from "@/actions/project-new";
 import { loadProject } from "@/actions/project-load";
+import { loadExample } from "@/actions/example-load";
 
 import Button from "@/components/Button";
 
 import styles from "./HomePage.module.css";
+import { useDispatch } from "react-redux";
 
 const HomePage: React.FC = () => {
+  const dispatch = useDispatch();
   const onNavigateHome = useAction(navigatePage, "home");
   const onNewProject = useAction(newProject);
   const onLoadProject = useAction(loadProject);
@@ -70,6 +76,24 @@ const HomePage: React.FC = () => {
               Restore previous project
             </Button>
           </div>
+        </div>
+        <div className={styles.panel}>
+          <h3>Examples</h3>
+          <ul>
+            <li>
+              {Object.keys(examples).map((exampleKey) => (
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    dispatch(loadExample(exampleKey));
+                    e.preventDefault();
+                  }}
+                >
+                  {examples[exampleKey].title}
+                </a>
+              ))}
+            </li>
+          </ul>
         </div>
         <div className={cls(styles.footer, styles.panel)}>{appVersion}</div>
       </div>
