@@ -80,8 +80,8 @@ const HomePage: React.FC = () => {
         <div className={styles.panel}>
           <h3>Examples</h3>
           <ul>
-            <li>
-              {Object.keys(examples).map((exampleKey) => (
+            {Object.keys(examples).map((exampleKey) => (
+              <li key={exampleKey}>
                 <a
                   href="#"
                   onClick={(e) => {
@@ -91,8 +91,8 @@ const HomePage: React.FC = () => {
                 >
                   {examples[exampleKey].title}
                 </a>
-              ))}
-            </li>
+              </li>
+            ))}
           </ul>
         </div>
         <div className={cls(styles.footer, styles.panel)}>{appVersion}</div>
