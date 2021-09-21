@@ -1,0 +1,23 @@
+.wire-segment {
+  stroke: var(--color-element-neutral);
+  fill: var(--color-element-neutral);
+}
+
+.wire-segment.unwired {
+  stroke: var(--color-element-unwired);
+  fill: var(--color-element-unwired);
+}
+
+.wire-segment.powered.powered {
+  stroke: var(--color-element-powered);
+  fill: var(--color-element-powered);
+}
+
+.drag-wire-target {
+  fill: var(--color-element-wiretarget);
+}
+
+:global(.circuit-editor:not(.simulator-active)) .wire-segment.selected {
+  stroke: var(--color-element-selected);
+  fill: var(--color-element-selected);
+}

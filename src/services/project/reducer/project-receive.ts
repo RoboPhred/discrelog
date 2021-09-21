@@ -18,22 +18,22 @@ export default function projectReceiveReducer(
   const { fileName, saveData } = action.payload;
 
   try {
-    state = fpSet(state, "services", "project", "isLoading", true);
+    state = fpSet(state, "services", "project", "projectLoadState", "loading");
     state = loadSave(state, saveData);
     state = fpSet(state, "services", "project", (state) => ({
       ...state,
+      projectLoadState: "loaded" as const,
       projectName: fileName,
       projectModified: false,
-      isLoading: false,
     }));
   } catch (e) {
     // TODO: display error
     console.error("Failed to load save", e);
     state = fpSet(state, "services", "project", (state) => ({
       ...state,
+      projectLoadState: "no-project" as const,
       projectName: "",
       projectModified: false,
-      isLoading: false,
     }));
   }
 

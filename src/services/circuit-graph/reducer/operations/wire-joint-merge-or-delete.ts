@@ -5,8 +5,9 @@ import { wireIdFromWireJointIdSelector } from "../../selectors/wires";
 
 import { WireOperationError } from "../errors/WireOperationError";
 
-import { wireSegmentRemove } from "../primitives/wire-segment-remove";
 import { wireSegmentMerge } from "../primitives/wire-segment-merge";
+
+import wireSegmentDelete from "./wire-segment-delete";
 
 export function wireJointMergeOrDelete(
   state: CircuitGraphServiceState,
@@ -35,7 +36,7 @@ export function wireJointMergeOrDelete(
   }
 
   state = jointedSegmentIds.reduce(
-    (state, segmentId) => wireSegmentRemove(state, segmentId),
+    (state, segmentId) => wireSegmentDelete(state, segmentId),
     state
   );
 

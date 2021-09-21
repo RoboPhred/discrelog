@@ -36,7 +36,11 @@ const ExportProjectLinkDialog: React.FC = () => {
     return null;
   }
 
-  const dialogFooter = <Button onClick={onCopy}>Copy to Clipboard</Button>;
+  const dialogFooter = (
+    <Button variant="primary" onClick={onCopy}>
+      Copy to Clipboard
+    </Button>
+  );
 
   return (
     <Dialog

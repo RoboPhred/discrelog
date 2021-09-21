@@ -14,6 +14,7 @@ import {
   elementNameOrDefaultFromElementIdSelector,
   elementTypeFromElementIdSelector,
 } from "@/services/circuit-graph/selectors/elements";
+import { isSimActiveSelector } from "@/services/simulator-control/selectors/run";
 
 import Menu from "@/components/Menus/Menu";
 import DividerMenuItem from "@/components/Menus/DividerMenuItem";
@@ -36,6 +37,8 @@ const ElementContextMenu: React.FC<NodeContextMenuProps> = ({
   const dispatch = useDispatch();
 
   const { elementIdPath } = useCircuitEditor();
+
+  const isSimActive = useSelector(isSimActiveSelector);
 
   const elementName = useSelector((state) =>
     elementNameOrDefaultFromElementIdSelector(state, elementId)
@@ -73,11 +76,15 @@ const ElementContextMenu: React.FC<NodeContextMenuProps> = ({
     );
   }, [elementIdPath, dispatch, elementCircuitId, elementId]);
 
+  if (isSimActive) {
+    return null;
+  }
+
   return (
     <Menu>
       <EditableTextMenuItem
         defaultValue={elementName ?? "<unknown>"}
-        label={<span style={{ fontWeight: "bold" }}>{elementName}</span>}
+        label={<span style={{ fontWeight: 600 }}>{elementName}</span>}
         isEditing={isRenaming}
         onRequestEdit={onRename}
         onCommit={onRenameCommit}

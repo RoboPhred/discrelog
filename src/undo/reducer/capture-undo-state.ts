@@ -25,14 +25,22 @@ export default function captureUndoStateReducer(
     return state;
   }
 
-  return fpSet(state, "undo", (undoState) => ({
-    ...undoState,
+  return fpSet(state, "undo", (undoState) => {
+    const capturedUndoState = captureUndoState(state);
+
     // Limiting undo to 25 entries, since we store the entire project every slice.
-    // TODO: Consider using a difference engine to store the minimal difference between the states.
-    //  This should let us store far more undo operations as the project gets larger.
-    // Could use https://www.npmjs.com/package/deep-diff
-    // Problem with this is it takes up time capturing the undo, which slows down all operations.
-    undoStack: [...undoState.undoStack.slice(0, 25), captureUndoState(state)],
-    redoStack: [],
-  }));
+    let { undoStack } = undoState;
+    if (undoStack.length >= 25) {
+      undoStack = [...undoStack.slice(1, 25), capturedUndoState];
+    } else {
+      undoStack = [...undoStack, capturedUndoState];
+    }
+
+    return {
+      ...undoState,
+
+      undoStack,
+      redoStack: [],
+    };
+  });
 }

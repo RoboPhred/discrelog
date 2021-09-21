@@ -3,7 +3,7 @@ import pick from "lodash/pick";
 
 import { circuitIdForWireIdSelector } from "../../selectors/wires";
 import { CircuitGraphServiceState } from "../../state";
-import { collectWireLineIds } from "./wire-lineids-collect";
+import { collectWireLineIds } from "../../utils";
 
 export function wireMerge(
   state: CircuitGraphServiceState,

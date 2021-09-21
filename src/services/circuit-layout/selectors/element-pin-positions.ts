@@ -2,18 +2,10 @@ import { createSelector } from "reselect";
 
 import { AppState } from "@/store";
 
-import {
-  magnitude,
-  Point,
-  pointAdd,
-  pointSubtract,
-  ZeroPoint,
-} from "@/geometry";
+import { Point, pointAdd, ZeroPoint } from "@/geometry";
 
 import { elementTypesByElementIdSelector } from "@/services/circuit-graph/selectors/elements";
 import { elementDefinitionsByTypeSelector } from "@/services/element-types/selectors/element-types";
-import { elementIdsFromCircuitIdSelector } from "@/services/circuit-graph/selectors/elements";
-import { ElementPin, elementPinEquals } from "@/services/circuit-graph/types";
 
 import { elementPositionsByElementIdSelector } from "./element-positions";
 
@@ -71,41 +63,4 @@ export const elementPinPositionFromElementPinSelector = (
     return ZeroPoint;
   }
   return elementPinPositions[pinId] ?? ZeroPoint;
-};
-
-let cachedPinFromPoint: ElementPin | null = null;
-export const elementPinFromPointSelector = (
-  state: AppState,
-  point: Point,
-  circuitId: string
-) => {
-  const pinPositionsByPinIdByElementId = elementPinPositionsByPinIdByElementIdSelector(
-    state
-  );
-  const elementIds = elementIdsFromCircuitIdSelector(state, circuitId);
-  if (!elementIds) {
-    return null;
-  }
-
-  for (const elementId of elementIds) {
-    const pinPositionsByPinId =
-      pinPositionsByPinIdByElementId[elementId] ?? ZeroPoint;
-    const pinIds = Object.keys(pinPositionsByPinId);
-    for (const pinId of pinIds) {
-      const pinPosition = pinPositionsByPinId[pinId];
-      const offset = pointSubtract(point, pinPosition);
-      const length = magnitude(offset);
-      if (length > 6) {
-        continue;
-      }
-
-      const pin: ElementPin = { elementId, pinId };
-      if (!cachedPinFromPoint || !elementPinEquals(pin, cachedPinFromPoint)) {
-        cachedPinFromPoint = pin;
-      }
-      return cachedPinFromPoint;
-    }
-  }
-
-  return null;
 };

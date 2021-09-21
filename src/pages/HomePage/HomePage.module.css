@@ -1,0 +1,42 @@
+.root {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  background-size: 50px 50px;
+  background-image: linear-gradient(
+      to right,
+      rgb(194, 194, 194) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgb(194, 194, 194) 1px, transparent 1px);
+  background-repeat: repeat;
+}
+
+.content {
+  position: relative;
+  max-width: 960px;
+  height: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.footer {
+  text-align: center;
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+}
+
+.panel {
+  padding: 10px;
+  margin: 10px;
+  border: rgb(194, 194, 194) solid 1px;
+  border-radius: 15px;
+  background: white;
+}
+
+.panel.button-container {
+  text-align: center;
+}

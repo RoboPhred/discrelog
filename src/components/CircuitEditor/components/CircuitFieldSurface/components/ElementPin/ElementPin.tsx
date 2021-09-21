@@ -8,16 +8,20 @@ import { getModifiers } from "@/modifier-keys";
 import useSelector from "@/hooks/useSelector";
 import { useMouseDragDetector } from "@/hooks/useMouseDragDetector";
 
+import { useContextMenu } from "@/components/ContextMenu";
+
 import { circuitEditorDragStartWire } from "@/actions/circuit-editor-drag-start-wire";
 
 import { elementPinPositionFromElementPinSelector } from "@/services/circuit-layout/selectors/element-pin-positions";
 import { pinDirectionFromElementPinSelector } from "@/services/circuit-graph/selectors/pins";
-import { dragWireTargetPinSelector } from "@/services/circuit-editor-drag/selectors/drag-wire";
+import { isPinDragWireTarget } from "@/services/circuit-editor-drag/selectors/drag-wire";
 
 import { useCircuitEditor } from "../../../../contexts/circuit-editor-context";
 import { getElementPinHtmlId } from "../../../../ids";
 
 import { useMouseCoords } from "../../hooks/useMouseCoords";
+
+import PinContextMenu from "../PinContextMenu";
 
 import styles from "./ElementPin.module.css";
 
@@ -30,10 +34,14 @@ const ElementPin: React.FC<ElementPinProps> = React.memo(function ElementPin({
   elementId,
   pinId,
 }) {
+  const dispatch = useDispatch();
+
   const { editorId } = useCircuitEditor();
   const getMouseCoords = useMouseCoords();
+
+  const { openContextMenu, renderContextMenu } = useContextMenu();
+
   const [highlight, setHighlight] = React.useState(false);
-  const dispatch = useDispatch();
 
   const position = useSelector((s) =>
     elementPinPositionFromElementPinSelector(s, elementId, pinId)
@@ -42,14 +50,15 @@ const ElementPin: React.FC<ElementPinProps> = React.memo(function ElementPin({
     pinDirectionFromElementPinSelector(s, elementId, pinId)
   );
 
-  const dragTargetPin = useSelector(dragWireTargetPinSelector);
+  const isDragTargetPin = useSelector((state) =>
+    isPinDragWireTarget(state, elementId, pinId)
+  );
 
   const onDragStart = React.useCallback(
     (e, originalPoint) => {
       const p = getMouseCoords(originalPoint);
       const modifierKeys = getModifiers(e);
       dispatch(
-        //circuitEditorDragStartConnection(p, { elementId, pinId }, editorId)
         circuitEditorDragStartWire(
           p,
           { type: "pin", pin: { elementId, pinId } },
@@ -90,14 +99,21 @@ const ElementPin: React.FC<ElementPinProps> = React.memo(function ElementPin({
     setHighlight(false);
   }, []);
 
+  const onContextMenu = React.useCallback(
+    (e: React.MouseEvent) => {
+      if (e.defaultPrevented) {
+        return;
+      }
+      e.preventDefault();
+
+      openContextMenu(e);
+    },
+    [openContextMenu]
+  );
+
   if (!position) {
     return null;
   }
-
-  const isDragTarget =
-    dragTargetPin != null &&
-    dragTargetPin.elementId === elementId &&
-    dragTargetPin.pinId === pinId;
 
   const { x, y } = position;
 
@@ -110,7 +126,7 @@ const ElementPin: React.FC<ElementPinProps> = React.memo(function ElementPin({
         strokeWidth={2}
         className={cls(
           styles["element-pin-input"],
-          isDragTarget && styles["is-drag-target"],
+          isDragTargetPin && styles["is-drag-target"],
           highlight && styles.highlight
         )}
       />
@@ -120,7 +136,7 @@ const ElementPin: React.FC<ElementPinProps> = React.memo(function ElementPin({
       <circle
         className={cls(
           styles["element-pin-output"],
-          isDragTarget && styles["is-drag-target"],
+          isDragTargetPin && styles["is-drag-target"],
           highlight && styles.highlight
         )}
         cx={x}
@@ -135,6 +151,7 @@ const ElementPin: React.FC<ElementPinProps> = React.memo(function ElementPin({
       id={getElementPinHtmlId(editorId, elementId, pinId)}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onContextMenu={onContextMenu}
     >
       {pinVisual}
       <circle
@@ -145,6 +162,9 @@ const ElementPin: React.FC<ElementPinProps> = React.memo(function ElementPin({
         r={5}
         onMouseDown={onMouseDown}
       />
+      {renderContextMenu(
+        <PinContextMenu elementId={elementId} pinId={pinId} />
+      )}
     </g>
   );
 });

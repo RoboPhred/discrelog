@@ -6,9 +6,14 @@ import { SimProduction } from "./element-production";
 
 import { ElementVisualDefinition } from "./visual";
 
+export type ElementDefinitionDerivedState = Pick<
+  AppState["services"],
+  "circuitGraph" | "circuitLayout" | "circuitProperties"
+>;
+
 export type ElementDefinitionSource =
   | MaybeArray<ElementDefinition>
-  | ((state: AppState) => MaybeArray<ElementDefinition>);
+  | ((state: ElementDefinitionDerivedState) => MaybeArray<ElementDefinition>);
 
 export interface ElementDefinition {
   type: string;

@@ -7,3 +7,7 @@ export const projectNameSelector = createProjectSelector(
 export const projectModifiedSelector = createProjectSelector(
   (state) => state.projectModified
 );
+
+export const projectLoadStateSelector = createProjectSelector(
+  (state) => state.projectLoadState
+);

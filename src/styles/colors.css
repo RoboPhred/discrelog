@@ -1,9 +1,16 @@
 :root {
   --color-element-neutral: black;
+  --color-element-unwired: lightgrey;
   --color-element-selected: goldenrod;
-  --color-element-powered: green;
+  --color-element-powered: rgb(0, 230, 0);
+  --color-element-wiretarget: rgb(15, 159, 255);
+
+  --color-text-default: black;
+  --color-text-link: rgb(15, 159, 255);
+  --color-text-link-hover: rgb(92, 190, 255);
 
   --color-ui-primary-bg: rgb(0, 182, 0);
+  --color-ui-primary-bg-hover: rgb(0, 205, 0);
 
   --color-ui-light-bg: white;
   --color-ui-light-border: rgb(117, 117, 117);
@@ -13,8 +20,12 @@
   --color-ui-light-text: black;
   --color-ui-light-text-disabled: rgb(218, 218, 218);
 
-  --color-ui-surface-bg: rgb(231, 231, 231);
+  --color-ui-surface-bg: rgb(221, 221, 221);
+  --color-ui-surface-bg-disabled: rgb(230, 230, 230);
   --color-ui-surface-border: rgb(209, 209, 209);
+  --color-ui-surface-hover: rgb(231, 231, 231);
+  --color-ui-surface-text: black;
+  --color-ui-surface-text-disabled: rgb(175, 175, 175);
 
   --color-ui-dark-bg: rgb(117, 117, 117);
 

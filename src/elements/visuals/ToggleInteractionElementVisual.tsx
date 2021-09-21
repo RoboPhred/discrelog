@@ -22,6 +22,10 @@ export const ToggleInteractionElementVisual: React.FC<ElementComponentProps<
         return;
       }
 
+      if (e.button !== 0) {
+        return;
+      }
+
       if (e.defaultPrevented) {
         return;
       }
@@ -74,7 +78,7 @@ export const ToggleInteractionElementVisual: React.FC<ElementComponentProps<
         fontSize=".8em"
         fill={onTextColor}
         textAnchor="middle"
-        alignmentBaseline="middle"
+        dominantBaseline="middle"
       >
         On
       </text>
@@ -93,7 +97,7 @@ export const ToggleInteractionElementVisual: React.FC<ElementComponentProps<
         fontSize=".8em"
         fill="lightgrey"
         textAnchor="middle"
-        alignmentBaseline="middle"
+        dominantBaseline="middle"
       >
         Off
       </text>

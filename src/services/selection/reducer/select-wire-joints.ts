@@ -1,10 +1,11 @@
-import { isSelectJointsAction } from "@/actions/select-joints";
 import { combineExtraniousSelection, combineSelection } from "@/selection-mode";
+
+import { isSelectWireJointsAction } from "@/actions/select-wire-joints";
 
 import { createSelectionReducer } from "../utils";
 
 export default createSelectionReducer((state, action) => {
-  if (!isSelectJointsAction(action)) {
+  if (!isSelectWireJointsAction(action)) {
     return state;
   }
 
@@ -16,6 +17,14 @@ export default createSelectionReducer((state, action) => {
       state.selectedElementIds,
       mode
     ),
-    selectedJointIds: combineSelection(state.selectedJointIds, jointIds, mode),
+    selectedWireJointIds: combineSelection(
+      state.selectedWireJointIds,
+      jointIds,
+      mode
+    ),
+    selectedWireSegmentIds: combineExtraniousSelection(
+      state.selectedWireSegmentIds,
+      mode
+    ),
   };
 });

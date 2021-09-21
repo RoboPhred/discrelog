@@ -1,3 +1,5 @@
+import { createSelector } from "reselect";
+
 import { AppState } from "@/store";
 
 import {
@@ -15,13 +17,13 @@ import {
 import { immutableEmptyArray } from "@/arrays";
 
 import {
-  elementPinFromPointSelector,
   elementPinPositionFromElementPinSelector,
+  elementPinPositionsByPinIdByElementIdSelector,
 } from "@/services/circuit-layout/selectors/element-pin-positions";
 import { circuitIdForEditorIdSelector } from "@/services/circuit-editors/selectors/editor";
+import { elementIdsFromCircuitIdSelector } from "@/services/circuit-graph/selectors/elements";
 import {
   ElementPin,
-  elementPinEquals,
   JointWireConnectTarget,
   SegmentWireConnectTarget,
   WireConnectTarget,
@@ -39,6 +41,37 @@ import {
 
 import { applyGridJointSnapSelector, gridJointSnapSelector } from "./snap";
 
+function elementPinFromPoint(
+  state: AppState,
+  circuitId: string,
+  point: Point
+): ElementPin | null {
+  const pinPositionsByPinIdByElementId = elementPinPositionsByPinIdByElementIdSelector(
+    state
+  );
+  const elementIds = elementIdsFromCircuitIdSelector(state, circuitId);
+  if (!elementIds) {
+    return null;
+  }
+
+  for (const elementId of elementIds) {
+    const pinPositionsByPinId =
+      pinPositionsByPinIdByElementId[elementId] ?? ZeroPoint;
+    const pinIds = Object.keys(pinPositionsByPinId);
+    for (const pinId of pinIds) {
+      const pinPosition = pinPositionsByPinId[pinId];
+      const offset = pointSubtract(point, pinPosition);
+      const length = magnitude(offset);
+      if (length > 6) {
+        continue;
+      }
+
+      return { elementId, pinId };
+    }
+  }
+
+  return null;
+}
 function wireJointFromPoint(
   state: AppState,
   circuitId: string,
@@ -95,10 +128,41 @@ function wireSegmentFromPoint(
   return null;
 }
 
+function getDragTargetPoint(
+  state: AppState,
+  target: WireConnectTarget
+): Point | null {
+  switch (target.type) {
+    case "floating":
+      return target.point;
+    case "pin":
+      return elementPinPositionFromElementPinSelector(
+        state,
+        target.pin.elementId,
+        target.pin.pinId
+      );
+    case "segment": {
+      const { segmentId, segmentInsertLength } = target;
+      const startPos = startPositionForWireSegmentId(state, segmentId);
+      const endPos = endPositionForWireSegmentId(state, segmentId);
+      const lineVector = normalize(pointSubtract(endPos, startPos));
+      const fracPos = pointAdd(
+        startPos,
+        scale(lineVector, segmentInsertLength)
+      );
+      return fracPos;
+    }
+    case "joint":
+      return wireJointPositionFromJointIdSelector(state, target.jointId);
+  }
+
+  return null;
+}
+
 /**
  * Gets the drag target at the given point.
  *
- * WARN: Not react safe.  For reducer use only.
+ * WARN: Not react safe.
  */
 export const dragWireEndTargetByPointSelector = (
   state: AppState,
@@ -116,7 +180,7 @@ export const dragWireEndTargetByPointSelector = (
     return null;
   }
 
-  const targetPin = elementPinFromPointSelector(state, p, circuitId);
+  const targetPin = elementPinFromPoint(state, circuitId, p);
   if (targetPin) {
     return {
       type: "pin",
@@ -162,80 +226,45 @@ export const dragWireEndTargetByPointSelector = (
   };
 };
 
-export const dragWireEndTargetSelector = (
-  state: AppState
-): WireConnectTarget | null => {
-  const dragService = state.services.circuitEditorDrag;
-  if (dragService.dragMode !== "wire") {
-    return null;
-  }
-
-  const { dragEnd } = dragService;
-  if (!dragEnd) {
-    return null;
-  }
-
-  return dragWireEndTargetByPointSelector(state, dragEnd);
-};
-
-let dragWireTargetPinCache: ElementPin | null = null;
-export const dragWireTargetPinSelector = (
-  state: AppState
-): ElementPin | null => {
-  const dropTarget = dragWireEndTargetSelector(state);
-  if (!dropTarget || dropTarget.type !== "pin") {
-    return null;
-  }
-
-  const pin = dropTarget.pin;
-  if (
-    !dragWireTargetPinCache ||
-    !elementPinEquals(dragWireTargetPinCache, pin)
-  ) {
-    dragWireTargetPinCache = pin;
-  }
-
-  return dragWireTargetPinCache;
-};
-
-function getDragTargetPoint(
-  state: AppState,
-  target: WireConnectTarget
-): Point | null {
-  switch (target.type) {
-    case "floating":
-      return target.point;
-    case "pin":
-      return elementPinPositionFromElementPinSelector(
-        state,
-        target.pin.elementId,
-        target.pin.pinId
-      );
-    case "segment": {
-      const { segmentId, segmentInsertLength } = target;
-      const startPos = startPositionForWireSegmentId(state, segmentId);
-      const endPos = endPositionForWireSegmentId(state, segmentId);
-      const lineVector = normalize(pointSubtract(endPos, startPos));
-      const fracPos = pointAdd(
-        startPos,
-        scale(lineVector, segmentInsertLength)
-      );
-      return fracPos;
+// This is called many times in a single render pass, so we cache it by root state.
+// We need the root state, as lots of data is involved in finding the target point.  This is mainly
+// due to needing to calculate pin positions, which requires element definitions.
+// This could be more aggressively cached, but it is only heavy to calculate when dragging a wire,
+// and it invalidates every mouse move.
+export const dragWireEndTargetSelector = createSelector(
+  (state: AppState) => state,
+  (state: AppState): WireConnectTarget | null => {
+    const dragService = state.services.circuitEditorDrag;
+    if (dragService.dragMode !== "wire") {
+      return null;
     }
-    case "joint":
-      return wireJointPositionFromJointIdSelector(state, target.jointId);
+
+    const { dragEnd } = dragService;
+    if (!dragEnd) {
+      return null;
+    }
+
+    return dragWireEndTargetByPointSelector(state, dragEnd);
   }
+);
 
-  return null;
-}
-
+let dragWireSegmentStartPositionCache: Point = ZeroPoint;
 export const dragWireSegmentStartPositionSelector = (state: AppState) => {
   const dragService = state.services.circuitEditorDrag;
   if (dragService.dragMode !== "wire") {
     return null;
   }
 
-  return getDragTargetPoint(state, dragService.dragStartTarget);
+  const pt = getDragTargetPoint(state, dragService.dragStartTarget);
+  if (!pt) {
+    return null;
+  }
+
+  if (!pointEquals(pt, dragWireSegmentStartPositionCache)) {
+    dragWireSegmentStartPositionCache = pt;
+  }
+
+  return dragWireSegmentStartPositionCache;
 };
 
 let dragWireSegmentEndPositionCache: Point = ZeroPoint;
@@ -255,6 +284,48 @@ export const dragWireSegmentEndPositionSelector = (state: AppState) => {
   }
 
   return dragWireSegmentEndPositionCache;
+};
+
+export const isPinDragWireTarget = (
+  state: AppState,
+  elementId: string,
+  pinId: string
+) => {
+  const endTarget = dragWireEndTargetSelector(state);
+  if (!endTarget) {
+    return false;
+  }
+
+  return (
+    endTarget.type === "pin" &&
+    endTarget.pin.elementId === elementId &&
+    endTarget.pin.pinId === pinId
+  );
+};
+
+export const isJointDragWireTarget = (state: AppState, jointId: string) => {
+  const endTarget = dragWireEndTargetSelector(state);
+  if (!endTarget) {
+    return false;
+  }
+
+  return endTarget.type === "joint" && endTarget.jointId === jointId;
+};
+
+export const segmentDragWireTargetOffset = (
+  state: AppState,
+  segmentId: string
+): number | null => {
+  const endTarget = dragWireEndTargetSelector(state);
+  if (!endTarget) {
+    return null;
+  }
+
+  if (endTarget.type !== "segment" || endTarget.segmentId !== segmentId) {
+    return null;
+  }
+
+  return endTarget.segmentInsertLength;
 };
 
 export const dragWireJointPositionSelector = (state: AppState) => {

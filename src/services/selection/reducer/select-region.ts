@@ -49,8 +49,8 @@ export default createSelectionReducer((state, action, appState) => {
       chosenElementIds,
       mode
     ),
-    selectedJointIds: combineSelection(
-      state.selectedJointIds,
+    selectedWireJointIds: combineSelection(
+      state.selectedWireJointIds,
       chosenJointIds,
       mode
     ),

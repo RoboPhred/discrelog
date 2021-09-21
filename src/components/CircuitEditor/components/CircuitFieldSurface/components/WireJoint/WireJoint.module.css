@@ -1,3 +1,7 @@
 .wire-joint--interactor.selected *:not(.mouse-detector) {
   fill: var(--color-element-selected);
 }
+
+.is-drag-target {
+  fill: var(--color-element-wiretarget);
+}

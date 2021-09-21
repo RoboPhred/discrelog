@@ -1,0 +1,2916 @@
+{
+  "circuits": [
+    {
+      "circuitId": "root",
+      "circuitName": "Root"
+    },
+    {
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "circuitName": "SR Latch"
+    },
+    {
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "circuitName": "1-Bit Adder"
+    },
+    {
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "circuitName": "2-Bit Adder"
+    },
+    {
+      "circuitId": "e910207e-b345-42ce-9236-745ae89b7cb8",
+      "circuitName": "D-Latch"
+    },
+    {
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "circuitName": "Shift Register"
+    },
+    {
+      "circuitId": "284142f3-5856-47a4-9a41-e4491f3ab040",
+      "circuitName": "Leading Edge Detector"
+    }
+  ],
+  "elements": [
+    {
+      "elementId": "7a278e6b-e693-43e7-b729-b522239958ba",
+      "elementType": "logic-nor",
+      "elementName": null,
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "x": 400,
+      "y": 50
+    },
+    {
+      "elementId": "8032397a-c825-4491-bb9c-5a7bb3719a21",
+      "elementType": "logic-nor",
+      "elementName": null,
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "x": 400,
+      "y": 150
+    },
+    {
+      "elementId": "2f0f8686-eeca-4832-9266-d7c234bb42b7",
+      "elementType": "pin-input",
+      "elementName": "S",
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "x": 50,
+      "y": 50
+    },
+    {
+      "elementId": "17f7e769-f5a1-4456-aa16-cd05cee58345",
+      "elementType": "pin-input",
+      "elementName": "R",
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "x": 50,
+      "y": 150
+    },
+    {
+      "elementId": "d62d1f81-c97f-4112-862d-c093dc7cb9d9",
+      "elementType": "pin-output",
+      "elementName": "`Q",
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "x": 550,
+      "y": 150
+    },
+    {
+      "elementId": "60dcc660-3157-43df-99a8-c4e3a8931bae",
+      "elementType": "pin-output",
+      "elementName": "Q",
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "x": 550,
+      "y": 50
+    },
+    {
+      "elementId": "f32bb10f-a022-4d09-bf54-d01dd445db2d",
+      "elementType": "ic-89253a5f-f432-4947-90c6-05bbeed176ca",
+      "elementName": null,
+      "circuitId": "root",
+      "x": 700,
+      "y": 50
+    },
+    {
+      "elementId": "35614977-b87f-49a9-9806-48e54aa2e802",
+      "elementType": "output-led",
+      "elementName": "O",
+      "circuitId": "root",
+      "x": 850,
+      "y": 50
+    },
+    {
+      "elementId": "1cb4d5d3-77bd-4d17-9d0c-e66fe9d72d38",
+      "elementType": "logic-xor",
+      "elementName": null,
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "x": 250,
+      "y": 50
+    },
+    {
+      "elementId": "319b574b-a6b5-49ec-b456-4f4daf059768",
+      "elementType": "logic-xor",
+      "elementName": null,
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "x": 400,
+      "y": 150
+    },
+    {
+      "elementId": "bf628ceb-742b-49e8-a60d-d95479df673d",
+      "elementType": "logic-and",
+      "elementName": null,
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "x": 450,
+      "y": 250
+    },
+    {
+      "elementId": "21dbb98d-69f2-4fa9-ae38-c9ae895f10ab",
+      "elementType": "logic-and",
+      "elementName": null,
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "x": 450,
+      "y": 350
+    },
+    {
+      "elementId": "6067ce6c-0324-4379-96fe-627b860c9d02",
+      "elementType": "logic-or",
+      "elementName": null,
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "x": 550,
+      "y": 300
+    },
+    {
+      "elementId": "81b34fd8-1753-4e5c-bc20-5579e8cb28bf",
+      "elementType": "pin-output",
+      "elementName": "C",
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "x": 700,
+      "y": 300
+    },
+    {
+      "elementId": "990e5a51-cd5d-46f5-a916-94322babb919",
+      "elementType": "pin-output",
+      "elementName": "Out",
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "x": 700,
+      "y": 150
+    },
+    {
+      "elementId": "9301e06e-59fe-444c-913b-e531e41a552e",
+      "elementType": "pin-input",
+      "elementName": "C-In",
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "x": 50,
+      "y": 100
+    },
+    {
+      "elementId": "71c7659b-05dd-425e-84dd-06e201d62dde",
+      "elementType": "pin-input",
+      "elementName": "A",
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "x": 50,
+      "y": 250
+    },
+    {
+      "elementId": "0a650486-0c46-4585-aa2b-a4e71eddd739",
+      "elementType": "pin-input",
+      "elementName": "B",
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "x": 50,
+      "y": 350
+    },
+    {
+      "elementId": "18fbe202-699a-4c1d-b020-28736652819a",
+      "elementType": "ic-dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "elementName": null,
+      "circuitId": "root",
+      "x": 200,
+      "y": 50
+    },
+    {
+      "elementId": "a10b0269-72f7-4a32-9ed8-d160ea5e1f7d",
+      "elementType": "interaction-toggle",
+      "elementName": "A",
+      "circuitId": "root",
+      "x": 100,
+      "y": 100
+    },
+    {
+      "elementId": "4d8dff85-6cf4-4a25-89d7-2a131f0bcb76",
+      "elementType": "interaction-toggle",
+      "elementName": "B",
+      "circuitId": "root",
+      "x": 150,
+      "y": 150
+    },
+    {
+      "elementId": "f0046a32-5a91-470f-a96a-f2a0b84ef8b5",
+      "elementType": "output-led",
+      "elementName": "O",
+      "circuitId": "root",
+      "x": 350,
+      "y": 50
+    },
+    {
+      "elementId": "b8f94a24-ffa5-4549-8d76-9b808737d2e6",
+      "elementType": "output-led",
+      "elementName": "Carry",
+      "circuitId": "root",
+      "x": 400,
+      "y": 50
+    },
+    {
+      "elementId": "1ae3295c-7a70-4dac-8672-80a2cba435c0",
+      "elementType": "interaction-toggle",
+      "elementName": "Carry",
+      "circuitId": "root",
+      "x": 50,
+      "y": 50
+    },
+    {
+      "elementId": "99074876-6820-4143-9236-e208de48dd9c",
+      "elementType": "ic-dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "elementName": null,
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "x": 200,
+      "y": 50
+    },
+    {
+      "elementId": "5a7c6135-b777-49ec-bcf5-e937bd443776",
+      "elementType": "ic-dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "elementName": null,
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "x": 200,
+      "y": 250
+    },
+    {
+      "elementId": "4c58d092-4e82-4873-b4bf-ed1273ba72cf",
+      "elementType": "pin-output",
+      "elementName": "O1",
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "x": 400,
+      "y": 50
+    },
+    {
+      "elementId": "c204d4df-134f-4e00-828b-85ba4cec21d8",
+      "elementType": "pin-output",
+      "elementName": "O2",
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "x": 400,
+      "y": 250
+    },
+    {
+      "elementId": "c8c1e632-3724-4054-b275-15263ccd8a94",
+      "elementType": "pin-output",
+      "elementName": "C",
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "x": 400,
+      "y": 300
+    },
+    {
+      "elementId": "affdced1-3e2e-46cc-a60c-28bd0b13400f",
+      "elementType": "pin-input",
+      "elementName": "C-In",
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "x": 50,
+      "y": 50
+    },
+    {
+      "elementId": "72d6dce0-76a4-457b-b3f3-070d2a8fbe8f",
+      "elementType": "pin-input",
+      "elementName": "A1",
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "x": 50,
+      "y": 150
+    },
+    {
+      "elementId": "199bb61e-f4f0-4bfc-a9ca-2d44b6b6bd21",
+      "elementType": "pin-input",
+      "elementName": "A2",
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "x": 50,
+      "y": 200
+    },
+    {
+      "elementId": "492a4c22-13f3-4584-87e2-9a68540a4b5a",
+      "elementType": "pin-input",
+      "elementName": "B1",
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "x": 50,
+      "y": 300
+    },
+    {
+      "elementId": "29666d7d-4fb0-4d25-917e-4a01fe06fe6d",
+      "elementType": "pin-input",
+      "elementName": "B2",
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "x": 50,
+      "y": 350
+    },
+    {
+      "elementId": "5adbefc5-a993-47d4-843f-b83c5ee74b83",
+      "elementType": "ic-c5134284-5014-446f-ad00-b1c194610703",
+      "elementName": null,
+      "circuitId": "root",
+      "x": 200,
+      "y": 250
+    },
+    {
+      "elementId": "04c4e08f-0b50-4c49-8c83-4fb0acefe4a1",
+      "elementType": "interaction-toggle",
+      "elementName": "B1",
+      "circuitId": "root",
+      "x": 50,
+      "y": 450
+    },
+    {
+      "elementId": "70a60de5-bdee-49f4-9065-6f67f79dc5c2",
+      "elementType": "interaction-toggle",
+      "elementName": "B2",
+      "circuitId": "root",
+      "x": 100,
+      "y": 450
+    },
+    {
+      "elementId": "805d6133-7394-4653-80f8-42aba394b1e3",
+      "elementType": "interaction-toggle",
+      "elementName": "A2",
+      "circuitId": "root",
+      "x": 100,
+      "y": 350
+    },
+    {
+      "elementId": "035bdb40-5502-427b-a65d-5152f2a75f0c",
+      "elementType": "interaction-toggle",
+      "elementName": "A1",
+      "circuitId": "root",
+      "x": 50,
+      "y": 350
+    },
+    {
+      "elementId": "955e4d88-c33f-4d7d-b81e-ba5bdd6d8725",
+      "elementType": "output-led",
+      "elementName": "O1",
+      "circuitId": "root",
+      "x": 350,
+      "y": 250
+    },
+    {
+      "elementId": "1b15964c-12be-4c56-ad3d-b2c71e2c7ba1",
+      "elementType": "output-led",
+      "elementName": "O2",
+      "circuitId": "root",
+      "x": 400,
+      "y": 250
+    },
+    {
+      "elementId": "43cf3ce4-f896-4af2-adb6-492413ec7bdf",
+      "elementType": "output-led",
+      "elementName": "Carry",
+      "circuitId": "root",
+      "x": 450,
+      "y": 250
+    },
+    {
+      "elementId": "acb34fd2-12b7-422a-a54e-508b798bc613",
+      "elementType": "interaction-toggle",
+      "elementName": "Carry",
+      "circuitId": "root",
+      "x": 50,
+      "y": 250
+    },
+    {
+      "elementId": "acaced04-5904-4497-86fc-f7d58b51db9c",
+      "elementType": "interaction-momentary",
+      "elementName": "R",
+      "circuitId": "root",
+      "x": 600,
+      "y": 100
+    },
+    {
+      "elementId": "6094546c-86b9-48cd-bb2e-35acd9b661ff",
+      "elementType": "interaction-momentary",
+      "elementName": "S",
+      "circuitId": "root",
+      "x": 550,
+      "y": 50
+    },
+    {
+      "elementId": "384a9160-b182-4c51-8a26-88cbb1ca2b1b",
+      "elementType": "ic-89253a5f-f432-4947-90c6-05bbeed176ca",
+      "elementName": null,
+      "circuitId": "e910207e-b345-42ce-9236-745ae89b7cb8",
+      "x": 650,
+      "y": 200
+    },
+    {
+      "elementId": "9558059c-30ba-499e-9d55-1dd08d6b476a",
+      "elementType": "pin-output",
+      "elementName": "Q",
+      "circuitId": "e910207e-b345-42ce-9236-745ae89b7cb8",
+      "x": 800,
+      "y": 200
+    },
+    {
+      "elementId": "16dd0e3e-e92a-4aca-a1aa-b7e3c701b581",
+      "elementType": "pin-output",
+      "elementName": "`Q",
+      "circuitId": "e910207e-b345-42ce-9236-745ae89b7cb8",
+      "x": 800,
+      "y": 250
+    },
+    {
+      "elementId": "6f86f0af-d087-4cfe-b0f3-1964e6b0c2d3",
+      "elementType": "pin-input",
+      "elementName": "D",
+      "circuitId": "e910207e-b345-42ce-9236-745ae89b7cb8",
+      "x": 250,
+      "y": 150
+    },
+    {
+      "elementId": "bb97bd80-5b60-44ee-bcaf-7725d64a36b0",
+      "elementType": "pin-input",
+      "elementName": "Write",
+      "circuitId": "e910207e-b345-42ce-9236-745ae89b7cb8",
+      "x": 250,
+      "y": 250
+    },
+    {
+      "elementId": "1e2efaf0-d3b3-4659-b916-69f69994d8c9",
+      "elementType": "logic-and",
+      "elementName": null,
+      "circuitId": "e910207e-b345-42ce-9236-745ae89b7cb8",
+      "x": 500,
+      "y": 200
+    },
+    {
+      "elementId": "c02e19a1-e646-4a05-a93d-cffd56f9f296",
+      "elementType": "logic-and",
+      "elementName": null,
+      "circuitId": "e910207e-b345-42ce-9236-745ae89b7cb8",
+      "x": 500,
+      "y": 250
+    },
+    {
+      "elementId": "de6a0604-3f98-40de-8f52-7615ca19f979",
+      "elementType": "logic-not",
+      "elementName": null,
+      "circuitId": "e910207e-b345-42ce-9236-745ae89b7cb8",
+      "x": 350,
+      "y": 200
+    },
+    {
+      "elementId": "4be76277-805e-418f-9309-9a4958521059",
+      "elementType": "ic-e910207e-b345-42ce-9236-745ae89b7cb8",
+      "elementName": null,
+      "circuitId": "root",
+      "x": 700,
+      "y": 250
+    },
+    {
+      "elementId": "5873fcf8-802f-4e7e-8d04-166c981385be",
+      "elementType": "output-led",
+      "elementName": null,
+      "circuitId": "root",
+      "x": 850,
+      "y": 250
+    },
+    {
+      "elementId": "6b3f2a2a-5e2e-4588-bdd3-62d6cab5e702",
+      "elementType": "interaction-toggle",
+      "elementName": "D",
+      "circuitId": "root",
+      "x": 550,
+      "y": 250
+    },
+    {
+      "elementId": "9d2553d9-bd89-4ac3-9055-7e0036a5ed63",
+      "elementType": "interaction-momentary",
+      "elementName": "Write",
+      "circuitId": "root",
+      "x": 600,
+      "y": 300
+    },
+    {
+      "elementId": "1f96659a-2d63-49af-9f0d-57ff636135ba",
+      "elementType": "ic-e910207e-b345-42ce-9236-745ae89b7cb8",
+      "elementName": null,
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "x": 350,
+      "y": 50
+    },
+    {
+      "elementId": "c030cdac-75d8-4dcb-ae04-f4ad5be486b7",
+      "elementType": "ic-e910207e-b345-42ce-9236-745ae89b7cb8",
+      "elementName": null,
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "x": 350,
+      "y": 200
+    },
+    {
+      "elementId": "71602bdb-da54-4bb3-8429-ffc807e83eff",
+      "elementType": "ic-e910207e-b345-42ce-9236-745ae89b7cb8",
+      "elementName": null,
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "x": 350,
+      "y": 350
+    },
+    {
+      "elementId": "afaae6ce-37df-46f3-ae55-2825a2d379eb",
+      "elementType": "ic-e910207e-b345-42ce-9236-745ae89b7cb8",
+      "elementName": null,
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "x": 350,
+      "y": 500
+    },
+    {
+      "elementId": "8fc8616f-bf7b-4ce3-9284-b2c51e30dfca",
+      "elementType": "pin-output",
+      "elementName": "Q1",
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "x": 500,
+      "y": 50
+    },
+    {
+      "elementId": "707f9400-ac9c-4b2c-9f58-2afa344e7810",
+      "elementType": "pin-output",
+      "elementName": "Q2",
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "x": 500,
+      "y": 200
+    },
+    {
+      "elementId": "fc1a56ac-7478-455d-a0c3-944eede7f897",
+      "elementType": "pin-output",
+      "elementName": "Q3",
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "x": 500,
+      "y": 350
+    },
+    {
+      "elementId": "5c3efb1f-8be3-4828-b5ce-a5a544b1eaad",
+      "elementType": "pin-output",
+      "elementName": "Q4",
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "x": 500,
+      "y": 500
+    },
+    {
+      "elementId": "709113de-e09a-44d2-9420-b433ea4a4713",
+      "elementType": "pin-input",
+      "elementName": "D",
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "x": 50,
+      "y": 50
+    },
+    {
+      "elementId": "fbd1dbfb-b26a-4584-a22a-0f643dcc7ad8",
+      "elementType": "pin-input",
+      "elementName": "Clk",
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "x": 50,
+      "y": 150
+    },
+    {
+      "elementId": "9e11b54c-346a-4655-a1dc-a0c22977842f",
+      "elementType": "ic-788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "elementName": null,
+      "circuitId": "root",
+      "x": 700,
+      "y": 450
+    },
+    {
+      "elementId": "66b5bd03-143b-4acd-914a-3a50504a4eeb",
+      "elementType": "interaction-toggle",
+      "elementName": "D",
+      "circuitId": "root",
+      "x": 550,
+      "y": 450
+    },
+    {
+      "elementId": "5169d415-a7e4-445b-9ce7-f078e890779c",
+      "elementType": "interaction-momentary",
+      "elementName": "Clk",
+      "circuitId": "root",
+      "x": 600,
+      "y": 500
+    },
+    {
+      "elementId": "7ea2b8fb-d0b1-49c8-a90d-a95f18ed95d8",
+      "elementType": "output-led",
+      "elementName": null,
+      "circuitId": "root",
+      "x": 850,
+      "y": 450
+    },
+    {
+      "elementId": "21509643-54a4-4a41-a877-fcd355504625",
+      "elementType": "output-led",
+      "elementName": null,
+      "circuitId": "root",
+      "x": 850,
+      "y": 500
+    },
+    {
+      "elementId": "3900bd68-90a7-4455-ac77-8aa46db13ec8",
+      "elementType": "output-led",
+      "elementName": null,
+      "circuitId": "root",
+      "x": 850,
+      "y": 550
+    },
+    {
+      "elementId": "8cba105c-4200-42e4-8a03-7a5dbeedac57",
+      "elementType": "output-led",
+      "elementName": null,
+      "circuitId": "root",
+      "x": 850,
+      "y": 600
+    },
+    {
+      "elementId": "85948a88-e3a4-4ea9-ab06-26051b89a332",
+      "elementType": "pin-input",
+      "elementName": "In",
+      "circuitId": "284142f3-5856-47a4-9a41-e4491f3ab040",
+      "x": 50,
+      "y": 50
+    },
+    {
+      "elementId": "01771832-2fe6-47c5-9b58-14d3e03edfe0",
+      "elementType": "pin-output",
+      "elementName": "Out",
+      "circuitId": "284142f3-5856-47a4-9a41-e4491f3ab040",
+      "x": 450,
+      "y": 50
+    },
+    {
+      "elementId": "dc016d6e-ed97-4194-b8e1-6ae96c491b22",
+      "elementType": "logic-and",
+      "elementName": null,
+      "circuitId": "284142f3-5856-47a4-9a41-e4491f3ab040",
+      "x": 300,
+      "y": 50
+    },
+    {
+      "elementId": "3190c3c3-28ce-42e6-86e5-9da5e1a40cb8",
+      "elementType": "logic-not",
+      "elementName": null,
+      "circuitId": "284142f3-5856-47a4-9a41-e4491f3ab040",
+      "x": 200,
+      "y": 100
+    },
+    {
+      "elementId": "056df87c-fe82-42e5-96c8-ad3f2b74d6d9",
+      "elementType": "logic-buffer",
+      "elementName": null,
+      "circuitId": "284142f3-5856-47a4-9a41-e4491f3ab040",
+      "x": 100,
+      "y": 100
+    },
+    {
+      "elementId": "4af0e0c3-c133-4e5c-8f06-859693641f18",
+      "elementType": "ic-284142f3-5856-47a4-9a41-e4491f3ab040",
+      "elementName": null,
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "x": 150,
+      "y": 150
+    },
+    {
+      "elementId": "60d94647-eb5d-46cd-b3fd-42a782a54011",
+      "elementType": "logic-or",
+      "elementName": null,
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "x": 250,
+      "y": 150
+    },
+    {
+      "elementId": "93ea83af-ce9f-4bfe-8239-699335a5feb8",
+      "elementType": "pin-high",
+      "elementName": null,
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "x": 50,
+      "y": 200
+    },
+    {
+      "elementId": "5f9454cc-5c48-4359-bc1d-16908eeea6a2",
+      "elementType": "ic-284142f3-5856-47a4-9a41-e4491f3ab040",
+      "elementName": null,
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "x": 150,
+      "y": 200
+    }
+  ],
+  "wires": [
+    {
+      "wireId": "eee199c4-e8a9-4364-8326-b06288cf04f3",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "a9553d1a-e2f5-43ba-96db-dc46cf9efa84",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "18fbe202-699a-4c1d-b020-28736652819a",
+            "pinId": "0a650486-0c46-4585-aa2b-a4e71eddd739"
+          },
+          "outputPin": {
+            "elementId": "4d8dff85-6cf4-4a25-89d7-2a131f0bcb76",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "67f9487d-cc36-4a52-b937-074e3abd012b",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "7e99c28e-0d2d-4c17-810a-c889e3bf4932",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "18fbe202-699a-4c1d-b020-28736652819a",
+            "pinId": "9301e06e-59fe-444c-913b-e531e41a552e"
+          },
+          "outputPin": {
+            "elementId": "1ae3295c-7a70-4dac-8672-80a2cba435c0",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "345ab50a-9b24-43aa-adc8-16d29064f172",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "911e28d8-f77f-48e9-bada-086755045570",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "18fbe202-699a-4c1d-b020-28736652819a",
+            "pinId": "71c7659b-05dd-425e-84dd-06e201d62dde"
+          },
+          "outputPin": {
+            "elementId": "a10b0269-72f7-4a32-9ed8-d160ea5e1f7d",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "024651ac-7320-47cf-b645-11691cf75231",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "b2b57344-782b-452f-9f4d-815d5e5ea443",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "f0046a32-5a91-470f-a96a-f2a0b84ef8b5",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "18fbe202-699a-4c1d-b020-28736652819a",
+            "pinId": "990e5a51-cd5d-46f5-a916-94322babb919"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "4dc13cbc-0924-4186-9e7b-3bdd44113d86",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "b1d14e26-bf6c-4154-a16c-d2d405f86b14",
+          "type": "output",
+          "outputPin": {
+            "elementId": "18fbe202-699a-4c1d-b020-28736652819a",
+            "pinId": "81b34fd8-1753-4e5c-bc20-5579e8cb28bf"
+          },
+          "jointId": "33515f9a-a8f6-4b5f-8702-f50a796a2a5d",
+          "lineId": "715194b0-9061-4137-bd87-ca672e884732"
+        },
+        {
+          "wireSegmentId": "9b995d72-a6bb-444d-9c4b-3b154ea12671",
+          "type": "input",
+          "inputPin": {
+            "elementId": "b8f94a24-ffa5-4549-8d76-9b808737d2e6",
+            "pinId": "IN"
+          },
+          "jointId": "33515f9a-a8f6-4b5f-8702-f50a796a2a5d",
+          "lineId": "715194b0-9061-4137-bd87-ca672e884732"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "33515f9a-a8f6-4b5f-8702-f50a796a2a5d",
+          "x": 400,
+          "y": 125
+        }
+      ]
+    },
+    {
+      "wireId": "00b0911b-8590-40b8-a594-7818837fe5a0",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "f7dd283d-856a-403f-8f44-f18c5b412a1c",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "5adbefc5-a993-47d4-843f-b83c5ee74b83",
+            "pinId": "affdced1-3e2e-46cc-a60c-28bd0b13400f"
+          },
+          "outputPin": {
+            "elementId": "acb34fd2-12b7-422a-a54e-508b798bc613",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "d67bd81c-4d74-47ca-929b-d369a426d4d0",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "94f6bd5c-de79-42dd-8c44-98322c4899d3",
+          "type": "output",
+          "outputPin": {
+            "elementId": "035bdb40-5502-427b-a65d-5152f2a75f0c",
+            "pinId": "OUT"
+          },
+          "jointId": "106670a5-5235-4955-acd6-7a15ba07b2fb",
+          "lineId": "3f36ee25-c39d-4d62-83e9-1a0d03a2082a"
+        },
+        {
+          "wireSegmentId": "d6369cf3-da44-4184-81be-fd35308c396a",
+          "type": "input",
+          "inputPin": {
+            "elementId": "5adbefc5-a993-47d4-843f-b83c5ee74b83",
+            "pinId": "72d6dce0-76a4-457b-b3f3-070d2a8fbe8f"
+          },
+          "jointId": "106670a5-5235-4955-acd6-7a15ba07b2fb",
+          "lineId": "3f36ee25-c39d-4d62-83e9-1a0d03a2082a"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "106670a5-5235-4955-acd6-7a15ba07b2fb",
+          "x": 100,
+          "y": 325
+        }
+      ]
+    },
+    {
+      "wireId": "0860672d-c6c2-4920-8647-580fd6f82e06",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "68ce34a6-4463-49c1-948e-6214ce7850af",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "5adbefc5-a993-47d4-843f-b83c5ee74b83",
+            "pinId": "199bb61e-f4f0-4bfc-a9ca-2d44b6b6bd21"
+          },
+          "outputPin": {
+            "elementId": "805d6133-7394-4653-80f8-42aba394b1e3",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "a53d2eff-2c02-411c-bd6b-5cbd713ff9fd",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "0b401239-cb31-4c2e-8577-bf1a808fde3d",
+          "type": "output",
+          "outputPin": {
+            "elementId": "04c4e08f-0b50-4c49-8c83-4fb0acefe4a1",
+            "pinId": "OUT"
+          },
+          "jointId": "647c4201-97ae-47aa-b68f-719cd59118d0",
+          "lineId": "0ef6ab87-ae0f-4b99-9e99-01c66f000911"
+        },
+        {
+          "wireSegmentId": "782b119e-b35a-4bf5-8be0-175a407122ca",
+          "type": "input",
+          "inputPin": {
+            "elementId": "5adbefc5-a993-47d4-843f-b83c5ee74b83",
+            "pinId": "492a4c22-13f3-4584-87e2-9a68540a4b5a"
+          },
+          "jointId": "647c4201-97ae-47aa-b68f-719cd59118d0",
+          "lineId": "0ef6ab87-ae0f-4b99-9e99-01c66f000911"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "647c4201-97ae-47aa-b68f-719cd59118d0",
+          "x": 100,
+          "y": 425
+        }
+      ]
+    },
+    {
+      "wireId": "0e363e47-933e-4eff-aba4-fda9e79c7451",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "5261500b-35f2-4f31-9fed-e0f7b487623a",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "5adbefc5-a993-47d4-843f-b83c5ee74b83",
+            "pinId": "29666d7d-4fb0-4d25-917e-4a01fe06fe6d"
+          },
+          "outputPin": {
+            "elementId": "70a60de5-bdee-49f4-9065-6f67f79dc5c2",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "88d82612-622d-4852-9a62-7b6432a74600",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "83574d71-80ad-413c-a095-a96dc70cf581",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "955e4d88-c33f-4d7d-b81e-ba5bdd6d8725",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "5adbefc5-a993-47d4-843f-b83c5ee74b83",
+            "pinId": "4c58d092-4e82-4873-b4bf-ed1273ba72cf"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "40f3d0d5-f068-4856-af05-8d75dd389869",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "94eb9646-f87b-44b6-bca6-0a670e9ae6ea",
+          "type": "output",
+          "outputPin": {
+            "elementId": "5adbefc5-a993-47d4-843f-b83c5ee74b83",
+            "pinId": "c204d4df-134f-4e00-828b-85ba4cec21d8"
+          },
+          "jointId": "e0367352-b9ad-4dbf-805e-c94d24c30d5e",
+          "lineId": "8ab2b66f-c4d3-4ce1-a6e7-4646e2ee104e"
+        },
+        {
+          "wireSegmentId": "aeb883f1-8c02-4c91-af0c-da4698324918",
+          "type": "input",
+          "inputPin": {
+            "elementId": "1b15964c-12be-4c56-ad3d-b2c71e2c7ba1",
+            "pinId": "IN"
+          },
+          "jointId": "e0367352-b9ad-4dbf-805e-c94d24c30d5e",
+          "lineId": "8ab2b66f-c4d3-4ce1-a6e7-4646e2ee104e"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "e0367352-b9ad-4dbf-805e-c94d24c30d5e",
+          "x": 400,
+          "y": 325
+        }
+      ]
+    },
+    {
+      "wireId": "5827e150-f553-43e1-9da3-87ca054e13c3",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "e3d5add6-8f30-4851-8e6c-66fc10684033",
+          "type": "output",
+          "outputPin": {
+            "elementId": "5adbefc5-a993-47d4-843f-b83c5ee74b83",
+            "pinId": "c8c1e632-3724-4054-b275-15263ccd8a94"
+          },
+          "jointId": "366a00c8-a638-4c3e-ba49-999f60ab225b",
+          "lineId": "ea0588ed-fa4e-4b6c-8d7c-c8efa36cba8f"
+        },
+        {
+          "wireSegmentId": "0cc5242d-d4fe-495f-a8b9-ca13df021851",
+          "type": "input",
+          "inputPin": {
+            "elementId": "43cf3ce4-f896-4af2-adb6-492413ec7bdf",
+            "pinId": "IN"
+          },
+          "jointId": "366a00c8-a638-4c3e-ba49-999f60ab225b",
+          "lineId": "ea0588ed-fa4e-4b6c-8d7c-c8efa36cba8f"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "366a00c8-a638-4c3e-ba49-999f60ab225b",
+          "x": 450,
+          "y": 375
+        }
+      ]
+    },
+    {
+      "wireId": "04c9f78d-91b4-46f3-8250-83923d06021e",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "17c438d3-3de5-44fe-a79e-2cf89bb87065",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "f32bb10f-a022-4d09-bf54-d01dd445db2d",
+            "pinId": "2f0f8686-eeca-4832-9266-d7c234bb42b7"
+          },
+          "outputPin": {
+            "elementId": "6094546c-86b9-48cd-bb2e-35acd9b661ff",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "e215c897-52d2-4ef8-98f7-dece3f6a6f6f",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "74323a63-eeea-4e4e-a8b3-e84bc03b08ef",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "f32bb10f-a022-4d09-bf54-d01dd445db2d",
+            "pinId": "17f7e769-f5a1-4456-aa16-cd05cee58345"
+          },
+          "outputPin": {
+            "elementId": "acaced04-5904-4497-86fc-f7d58b51db9c",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "fd54618a-d1d0-4e3f-92a1-6cb525586854",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "797cf77b-d473-4501-bea3-33704045227a",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "35614977-b87f-49a9-9806-48e54aa2e802",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "f32bb10f-a022-4d09-bf54-d01dd445db2d",
+            "pinId": "60dcc660-3157-43df-99a8-c4e3a8931bae"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "2912cf7a-f04d-4feb-8874-1015ff3ea1d8",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "84367ac1-78d8-4473-885c-d82132798f66",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "4be76277-805e-418f-9309-9a4958521059",
+            "pinId": "6f86f0af-d087-4cfe-b0f3-1964e6b0c2d3"
+          },
+          "outputPin": {
+            "elementId": "6b3f2a2a-5e2e-4588-bdd3-62d6cab5e702",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "5e8b9444-116e-4ae0-9082-1b126c28775e",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "3b9ee1ce-0eb8-403f-97ba-7a78fbae637f",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "4be76277-805e-418f-9309-9a4958521059",
+            "pinId": "bb97bd80-5b60-44ee-bcaf-7725d64a36b0"
+          },
+          "outputPin": {
+            "elementId": "9d2553d9-bd89-4ac3-9055-7e0036a5ed63",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "869ce89d-541d-4b34-bbd0-a8d0d8901112",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "c60a8e07-d7df-47b3-b171-dd784c622a4f",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "5873fcf8-802f-4e7e-8d04-166c981385be",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "4be76277-805e-418f-9309-9a4958521059",
+            "pinId": "9558059c-30ba-499e-9d55-1dd08d6b476a"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "9938b91f-38f9-4dad-884a-17d3dad3d03e",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "40c77ed8-2640-48de-b5c0-f3d31fa557b5",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "9e11b54c-346a-4655-a1dc-a0c22977842f",
+            "pinId": "709113de-e09a-44d2-9420-b433ea4a4713"
+          },
+          "outputPin": {
+            "elementId": "66b5bd03-143b-4acd-914a-3a50504a4eeb",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "4b4a61a8-0f2b-4cd1-bffb-ef0e10bb5fd9",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "a829d4de-9c20-40c6-bb01-de60c7e2168c",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "9e11b54c-346a-4655-a1dc-a0c22977842f",
+            "pinId": "fbd1dbfb-b26a-4584-a22a-0f643dcc7ad8"
+          },
+          "outputPin": {
+            "elementId": "5169d415-a7e4-445b-9ce7-f078e890779c",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "1981429d-e461-4758-8909-8004885cf5a9",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "7c89dba7-3ddc-4eb6-9898-89f8494f5cc9",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "7ea2b8fb-d0b1-49c8-a90d-a95f18ed95d8",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "9e11b54c-346a-4655-a1dc-a0c22977842f",
+            "pinId": "8fc8616f-bf7b-4ce3-9284-b2c51e30dfca"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "6623247d-ec6a-4ef8-ab41-008e84780ba0",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "5ea4d4c1-d62e-4990-a817-7e5a4b6e4a07",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "21509643-54a4-4a41-a877-fcd355504625",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "9e11b54c-346a-4655-a1dc-a0c22977842f",
+            "pinId": "707f9400-ac9c-4b2c-9f58-2afa344e7810"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "77c9b311-d48c-4e82-914e-b291c54b19f6",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "7a011b26-5358-4873-97c3-8f38064b662c",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "3900bd68-90a7-4455-ac77-8aa46db13ec8",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "9e11b54c-346a-4655-a1dc-a0c22977842f",
+            "pinId": "fc1a56ac-7478-455d-a0c3-944eede7f897"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "107e47a0-94ca-439a-82f2-f532ee77157e",
+      "circuitId": "root",
+      "wireSegments": [
+        {
+          "wireSegmentId": "53ce281b-b237-42f9-94fd-27ed2634ebd8",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "8cba105c-4200-42e4-8a03-7a5dbeedac57",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "9e11b54c-346a-4655-a1dc-a0c22977842f",
+            "pinId": "5c3efb1f-8be3-4828-b5ce-a5a544b1eaad"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "5a8650e5-bc94-4b14-99dc-a580b2a09655",
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "wireSegments": [
+        {
+          "wireSegmentId": "f6a5446c-3eb9-4712-9db6-142335b5a140",
+          "type": "output",
+          "outputPin": {
+            "elementId": "2f0f8686-eeca-4832-9266-d7c234bb42b7",
+            "pinId": "OUT"
+          },
+          "jointId": "04b76ff0-5121-469b-b5fc-d4700012889a",
+          "lineId": "1ae4bcb2-606d-4cfd-bad8-41137b12f1ce"
+        },
+        {
+          "wireSegmentId": "82516c9e-28c7-44dd-bfcc-b91bdbd7a333",
+          "type": "bridge",
+          "jointAId": "04b76ff0-5121-469b-b5fc-d4700012889a",
+          "jointBId": "0e84d8ec-9e9d-4449-857f-d2e5f8e52c63"
+        },
+        {
+          "wireSegmentId": "5d07117b-269e-404c-9252-b04bea8a9c12",
+          "type": "input",
+          "inputPin": {
+            "elementId": "7a278e6b-e693-43e7-b729-b522239958ba",
+            "pinId": "A"
+          },
+          "jointId": "0e84d8ec-9e9d-4449-857f-d2e5f8e52c63",
+          "lineId": "1ae4bcb2-606d-4cfd-bad8-41137b12f1ce"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "04b76ff0-5121-469b-b5fc-d4700012889a",
+          "x": 375,
+          "y": 75
+        },
+        {
+          "jointId": "0e84d8ec-9e9d-4449-857f-d2e5f8e52c63",
+          "x": 375,
+          "y": 65
+        }
+      ]
+    },
+    {
+      "wireId": "2e78ee58-24c6-4663-9052-2b2aa70b2430",
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "wireSegments": [
+        {
+          "wireSegmentId": "1b2ae71b-29d5-4351-9bc7-012343d359e7",
+          "type": "output",
+          "outputPin": {
+            "elementId": "60d94647-eb5d-46cd-b3fd-42a782a54011",
+            "pinId": "OUT"
+          },
+          "jointId": "f02707e2-f216-41dd-b2e7-ad528b22ad14",
+          "lineId": "8d9b2f35-212e-4293-b5b0-68dfbf830076"
+        },
+        {
+          "wireSegmentId": "b328dfdd-fba5-45df-9feb-9c25c4823e24",
+          "type": "bridge",
+          "jointAId": "f02707e2-f216-41dd-b2e7-ad528b22ad14",
+          "jointBId": "6c791f89-ab0e-45df-baf2-9f380ef15ebd"
+        },
+        {
+          "wireSegmentId": "7a8c0060-6ff5-4cf1-aaa3-c93c953c7216",
+          "type": "input",
+          "inputPin": {
+            "elementId": "8032397a-c825-4491-bb9c-5a7bb3719a21",
+            "pinId": "B"
+          },
+          "jointId": "6c791f89-ab0e-45df-baf2-9f380ef15ebd",
+          "lineId": "8d9b2f35-212e-4293-b5b0-68dfbf830076"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "f02707e2-f216-41dd-b2e7-ad528b22ad14",
+          "x": 375,
+          "y": 175
+        },
+        {
+          "jointId": "6c791f89-ab0e-45df-baf2-9f380ef15ebd",
+          "x": 375,
+          "y": 185
+        }
+      ]
+    },
+    {
+      "wireId": "1a6669aa-01c4-4408-b4f2-570463ea8e88",
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "wireSegments": [
+        {
+          "wireSegmentId": "37da8221-4e15-43eb-80ae-db323f53cf74",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "5f9454cc-5c48-4359-bc1d-16908eeea6a2",
+            "pinId": "85948a88-e3a4-4ea9-ab06-26051b89a332"
+          },
+          "outputPin": {
+            "elementId": "93ea83af-ce9f-4bfe-8239-699335a5feb8",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "505f35e4-c869-4ac8-80e1-400c15707bbc",
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "wireSegments": [
+        {
+          "wireSegmentId": "68dacc55-078e-43f9-9093-6f8580e52536",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "60d94647-eb5d-46cd-b3fd-42a782a54011",
+            "pinId": "B"
+          },
+          "outputPin": {
+            "elementId": "5f9454cc-5c48-4359-bc1d-16908eeea6a2",
+            "pinId": "01771832-2fe6-47c5-9b58-14d3e03edfe0"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "eac28d4a-8524-4b69-bc21-623e51004877",
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "wireSegments": [
+        {
+          "wireSegmentId": "905aa383-fad3-45e8-bfc1-ef5bfedf8d1e",
+          "type": "output",
+          "outputPin": {
+            "elementId": "17f7e769-f5a1-4456-aa16-cd05cee58345",
+            "pinId": "OUT"
+          },
+          "jointId": "28a163f2-09f0-4ac2-8c80-e470d511a976",
+          "lineId": "f63206f0-62fb-48c0-97ab-4a1e5c9d33da"
+        },
+        {
+          "wireSegmentId": "1de38de8-2898-4367-bebd-4992871b5ca0",
+          "type": "bridge",
+          "jointAId": "28a163f2-09f0-4ac2-8c80-e470d511a976",
+          "jointBId": "941a2fce-4d20-4153-b0d8-433d2c5c8dbb"
+        },
+        {
+          "wireSegmentId": "7e5ddaaf-91da-4022-8419-6a9c6c1bf8a4",
+          "type": "input",
+          "inputPin": {
+            "elementId": "60d94647-eb5d-46cd-b3fd-42a782a54011",
+            "pinId": "A"
+          },
+          "jointId": "941a2fce-4d20-4153-b0d8-433d2c5c8dbb",
+          "lineId": "f63206f0-62fb-48c0-97ab-4a1e5c9d33da"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "28a163f2-09f0-4ac2-8c80-e470d511a976",
+          "x": 200,
+          "y": 175
+        },
+        {
+          "jointId": "941a2fce-4d20-4153-b0d8-433d2c5c8dbb",
+          "x": 200,
+          "y": 165
+        }
+      ]
+    },
+    {
+      "wireId": "527a4700-343a-4d43-a45c-84bc7eb0913f",
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "wireSegments": [
+        {
+          "wireSegmentId": "583f5e9d-6a20-4478-8e5d-0038d0e086c0",
+          "type": "output",
+          "outputPin": {
+            "elementId": "7a278e6b-e693-43e7-b729-b522239958ba",
+            "pinId": "OUT"
+          },
+          "jointId": "e47fdce1-fee7-429f-bb53-50552b44768f",
+          "lineId": "03a5f0a3-84cc-487b-bb0f-7e9a306cb5d0"
+        },
+        {
+          "wireSegmentId": "0226850b-bfdd-4d2e-9a57-faf1e92113c0",
+          "type": "bridge",
+          "jointAId": "e47fdce1-fee7-429f-bb53-50552b44768f",
+          "jointBId": "891a7444-0158-440e-943b-f1cfda7e9393"
+        },
+        {
+          "wireSegmentId": "76118930-7a17-4642-ba21-faf35e80aa72",
+          "type": "bridge",
+          "jointAId": "891a7444-0158-440e-943b-f1cfda7e9393",
+          "jointBId": "d8303246-19c3-4686-83b5-0afe7ae28a81"
+        },
+        {
+          "wireSegmentId": "ad9aa177-7dec-4210-abee-5e6beb544c16",
+          "type": "bridge",
+          "jointAId": "d8303246-19c3-4686-83b5-0afe7ae28a81",
+          "jointBId": "43e4c04f-9f98-4884-bc5a-3eefb6deee96"
+        },
+        {
+          "wireSegmentId": "dc9f6089-5991-41d7-92e8-dbfec162c07c",
+          "type": "input",
+          "inputPin": {
+            "elementId": "8032397a-c825-4491-bb9c-5a7bb3719a21",
+            "pinId": "A"
+          },
+          "jointId": "43e4c04f-9f98-4884-bc5a-3eefb6deee96",
+          "lineId": "03a5f0a3-84cc-487b-bb0f-7e9a306cb5d0"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "e47fdce1-fee7-429f-bb53-50552b44768f",
+          "x": 500,
+          "y": 110
+        },
+        {
+          "jointId": "891a7444-0158-440e-943b-f1cfda7e9393",
+          "x": 440,
+          "y": 110
+        },
+        {
+          "jointId": "d8303246-19c3-4686-83b5-0afe7ae28a81",
+          "x": 440,
+          "y": 140
+        },
+        {
+          "jointId": "43e4c04f-9f98-4884-bc5a-3eefb6deee96",
+          "x": 400,
+          "y": 140
+        }
+      ]
+    },
+    {
+      "wireId": "eeb18e72-886b-4258-8204-e00d975279cf",
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "wireSegments": [
+        {
+          "wireSegmentId": "cc4ad687-fc60-45d6-b2bd-8ecee9ab7ad0",
+          "type": "output",
+          "outputPin": {
+            "elementId": "8032397a-c825-4491-bb9c-5a7bb3719a21",
+            "pinId": "OUT"
+          },
+          "jointId": "7921b883-7c1f-4409-a109-8283c80d3854",
+          "lineId": "c5104397-7664-4cf2-be15-19de20d707a9"
+        },
+        {
+          "wireSegmentId": "3ad60e8a-8503-4be6-8f9f-90192b2c8c45",
+          "type": "bridge",
+          "jointAId": "7921b883-7c1f-4409-a109-8283c80d3854",
+          "jointBId": "aceffea1-4063-4228-bfff-e717f185858d"
+        },
+        {
+          "wireSegmentId": "fcbd77c6-7ec4-46c7-9b67-d2f92ca02109",
+          "type": "input",
+          "inputPin": {
+            "elementId": "7a278e6b-e693-43e7-b729-b522239958ba",
+            "pinId": "B"
+          },
+          "jointId": "aceffea1-4063-4228-bfff-e717f185858d",
+          "lineId": "c5104397-7664-4cf2-be15-19de20d707a9"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "7921b883-7c1f-4409-a109-8283c80d3854",
+          "x": 500,
+          "y": 125
+        },
+        {
+          "jointId": "aceffea1-4063-4228-bfff-e717f185858d",
+          "x": 400,
+          "y": 125
+        }
+      ]
+    },
+    {
+      "wireId": "2869a50a-0586-4484-81f3-cee06df7d5f6",
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "wireSegments": [
+        {
+          "wireSegmentId": "805a875e-6a61-4648-bbc9-91899f22c5ce",
+          "type": "output",
+          "outputPin": {
+            "elementId": "8032397a-c825-4491-bb9c-5a7bb3719a21",
+            "pinId": "OUT"
+          },
+          "jointId": "d5b26842-d3c7-4a48-920c-5dbf86804c63",
+          "lineId": "fb6586c4-19e4-4168-a046-b131349c2adb"
+        },
+        {
+          "wireSegmentId": "fc118d07-130b-4a2a-9d14-1a5e0dd6007a",
+          "type": "bridge",
+          "jointAId": "d5b26842-d3c7-4a48-920c-5dbf86804c63",
+          "jointBId": "786d1fbc-aa13-4c5e-8f56-e599c3476be3"
+        },
+        {
+          "wireSegmentId": "38b1adc9-3652-46e4-8e3f-e7a750e0b158",
+          "type": "input",
+          "inputPin": {
+            "elementId": "60dcc660-3157-43df-99a8-c4e3a8931bae",
+            "pinId": "IN"
+          },
+          "jointId": "786d1fbc-aa13-4c5e-8f56-e599c3476be3",
+          "lineId": "fb6586c4-19e4-4168-a046-b131349c2adb"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "d5b26842-d3c7-4a48-920c-5dbf86804c63",
+          "x": 525,
+          "y": 175
+        },
+        {
+          "jointId": "786d1fbc-aa13-4c5e-8f56-e599c3476be3",
+          "x": 525,
+          "y": 75
+        }
+      ]
+    },
+    {
+      "wireId": "5b9b91ba-997a-440f-af11-3a656e77da87",
+      "circuitId": "89253a5f-f432-4947-90c6-05bbeed176ca",
+      "wireSegments": [
+        {
+          "wireSegmentId": "bb00536b-13c7-4a8a-878c-53a7d27366b3",
+          "type": "output",
+          "outputPin": {
+            "elementId": "7a278e6b-e693-43e7-b729-b522239958ba",
+            "pinId": "OUT"
+          },
+          "jointId": "88b8eaf3-7618-44aa-9eac-c34110c2dd4b",
+          "lineId": "3eea10c5-34db-4d74-aca1-5ad8b87d746b"
+        },
+        {
+          "wireSegmentId": "3bad69f2-3026-4883-adea-d71d25d2dff0",
+          "type": "bridge",
+          "jointAId": "88b8eaf3-7618-44aa-9eac-c34110c2dd4b",
+          "jointBId": "5c98018f-fb93-4f3c-b92c-953ffd9ca554"
+        },
+        {
+          "wireSegmentId": "9e8ec5e6-8169-4130-ab54-04e7499c91e8",
+          "type": "bridge",
+          "jointAId": "5c98018f-fb93-4f3c-b92c-953ffd9ca554",
+          "jointBId": "50bf977b-5c0f-44fe-aee8-d182a1c9be66"
+        },
+        {
+          "wireSegmentId": "10541222-ef00-4759-93e7-02a0d9e85436",
+          "type": "input",
+          "inputPin": {
+            "elementId": "d62d1f81-c97f-4112-862d-c093dc7cb9d9",
+            "pinId": "IN"
+          },
+          "jointId": "50bf977b-5c0f-44fe-aee8-d182a1c9be66",
+          "lineId": "3eea10c5-34db-4d74-aca1-5ad8b87d746b"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "88b8eaf3-7618-44aa-9eac-c34110c2dd4b",
+          "x": 510,
+          "y": 75
+        },
+        {
+          "jointId": "5c98018f-fb93-4f3c-b92c-953ffd9ca554",
+          "x": 510,
+          "y": 135
+        },
+        {
+          "jointId": "50bf977b-5c0f-44fe-aee8-d182a1c9be66",
+          "x": 550,
+          "y": 135
+        }
+      ]
+    },
+    {
+      "wireId": "129b6ba5-38c0-44d4-9751-ad1ea91218d8",
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "wireSegments": [
+        {
+          "wireSegmentId": "ca87dd54-e057-4d50-bbec-10e3f4511478",
+          "type": "output",
+          "outputPin": {
+            "elementId": "71c7659b-05dd-425e-84dd-06e201d62dde",
+            "pinId": "OUT"
+          },
+          "jointId": "e380d216-8886-41e7-a881-6c8be4f55223",
+          "lineId": "3d25825b-f541-41dd-87bb-135c8fe7d268"
+        },
+        {
+          "wireSegmentId": "88816a60-7260-4dbf-9d33-f3fd464261f9",
+          "type": "bridge",
+          "jointAId": "e380d216-8886-41e7-a881-6c8be4f55223",
+          "jointBId": "2058bc4c-5013-4981-b5c2-1aa81304eb95"
+        },
+        {
+          "wireSegmentId": "0343562d-5a11-446f-982d-71d99b079206",
+          "type": "input",
+          "inputPin": {
+            "elementId": "bf628ceb-742b-49e8-a60d-d95479df673d",
+            "pinId": "A"
+          },
+          "jointId": "2058bc4c-5013-4981-b5c2-1aa81304eb95",
+          "lineId": "3d25825b-f541-41dd-87bb-135c8fe7d268"
+        },
+        {
+          "wireSegmentId": "ba8107aa-4f36-4ddc-a880-ccc41cdd09c0",
+          "type": "bridge",
+          "jointAId": "2058bc4c-5013-4981-b5c2-1aa81304eb95",
+          "jointBId": "bc04f11c-8c30-46bf-9aee-51f7cc187f3b"
+        },
+        {
+          "wireSegmentId": "e2a355ec-d2e9-4edc-95fc-9ba8a1a7697c",
+          "type": "input",
+          "inputPin": {
+            "elementId": "1cb4d5d3-77bd-4d17-9d0c-e66fe9d72d38",
+            "pinId": "A"
+          },
+          "jointId": "bc04f11c-8c30-46bf-9aee-51f7cc187f3b",
+          "lineId": "3d25825b-f541-41dd-87bb-135c8fe7d268"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "e380d216-8886-41e7-a881-6c8be4f55223",
+          "x": 150,
+          "y": 275
+        },
+        {
+          "jointId": "2058bc4c-5013-4981-b5c2-1aa81304eb95",
+          "x": 150,
+          "y": 265
+        },
+        {
+          "jointId": "bc04f11c-8c30-46bf-9aee-51f7cc187f3b",
+          "x": 150,
+          "y": 65
+        }
+      ]
+    },
+    {
+      "wireId": "1a946b04-71f3-4f74-a11d-0e268940c0cf",
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "wireSegments": [
+        {
+          "wireSegmentId": "131f06f6-4cd2-43af-9ce3-7f24778683fd",
+          "type": "output",
+          "outputPin": {
+            "elementId": "0a650486-0c46-4585-aa2b-a4e71eddd739",
+            "pinId": "OUT"
+          },
+          "jointId": "d9d7faef-e8eb-4743-abd1-87d6ffc829b5",
+          "lineId": "998e701d-7a4d-4242-8383-15cd520fc8e7"
+        },
+        {
+          "wireSegmentId": "3bf0bab1-e194-4b91-a492-7d031c23d01a",
+          "type": "bridge",
+          "jointAId": "d9d7faef-e8eb-4743-abd1-87d6ffc829b5",
+          "jointBId": "5a9ce78e-9af5-4828-8f8b-6097fd7ae421"
+        },
+        {
+          "wireSegmentId": "8b37f15f-d1eb-4391-a389-a9c90963b03d",
+          "type": "input",
+          "inputPin": {
+            "elementId": "bf628ceb-742b-49e8-a60d-d95479df673d",
+            "pinId": "B"
+          },
+          "jointId": "5a9ce78e-9af5-4828-8f8b-6097fd7ae421",
+          "lineId": "998e701d-7a4d-4242-8383-15cd520fc8e7"
+        },
+        {
+          "wireSegmentId": "34fc8fcd-9300-4c33-9af0-ec76cd65e07b",
+          "type": "bridge",
+          "jointAId": "5a9ce78e-9af5-4828-8f8b-6097fd7ae421",
+          "jointBId": "78fd9018-1a91-4c14-9404-36f4afa9a4e8"
+        },
+        {
+          "wireSegmentId": "82e08557-9d33-42d6-a00f-44b02b6c7618",
+          "type": "input",
+          "inputPin": {
+            "elementId": "1cb4d5d3-77bd-4d17-9d0c-e66fe9d72d38",
+            "pinId": "B"
+          },
+          "jointId": "78fd9018-1a91-4c14-9404-36f4afa9a4e8",
+          "lineId": "998e701d-7a4d-4242-8383-15cd520fc8e7"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "d9d7faef-e8eb-4743-abd1-87d6ffc829b5",
+          "x": 175,
+          "y": 375
+        },
+        {
+          "jointId": "5a9ce78e-9af5-4828-8f8b-6097fd7ae421",
+          "x": 175,
+          "y": 285
+        },
+        {
+          "jointId": "78fd9018-1a91-4c14-9404-36f4afa9a4e8",
+          "x": 175,
+          "y": 85
+        }
+      ]
+    },
+    {
+      "wireId": "d67b4fd6-7dac-4f5c-9352-289d772637f3",
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "wireSegments": [
+        {
+          "wireSegmentId": "ca45a02c-46d6-4c4b-ac66-444b06935756",
+          "type": "output",
+          "outputPin": {
+            "elementId": "9301e06e-59fe-444c-913b-e531e41a552e",
+            "pinId": "OUT"
+          },
+          "jointId": "4dfc5dc9-e30b-4898-a679-51999e2f8d4e",
+          "lineId": "b0558f7b-151d-46c3-a6b1-e7834afb16af"
+        },
+        {
+          "wireSegmentId": "36a75ef0-76f9-4e79-b09b-c35b3656c9c6",
+          "type": "input",
+          "inputPin": {
+            "elementId": "21dbb98d-69f2-4fa9-ae38-c9ae895f10ab",
+            "pinId": "B"
+          },
+          "jointId": "8a9f7291-1f68-43e0-af98-17b9b5a70dc8",
+          "lineId": "b0558f7b-151d-46c3-a6b1-e7834afb16af"
+        },
+        {
+          "wireSegmentId": "92f92ebf-ada8-4244-a291-f116a6b1d4ae",
+          "type": "bridge",
+          "jointAId": "4dfc5dc9-e30b-4898-a679-51999e2f8d4e",
+          "jointBId": "168734bd-1a9c-4cfd-83ea-431d5b00432d"
+        },
+        {
+          "wireSegmentId": "7e4bf0ab-f8e0-4026-954c-50669f32aee7",
+          "type": "bridge",
+          "jointAId": "168734bd-1a9c-4cfd-83ea-431d5b00432d",
+          "jointBId": "8a9f7291-1f68-43e0-af98-17b9b5a70dc8"
+        },
+        {
+          "wireSegmentId": "bc0732cc-f7eb-4467-ad06-9ebe90645bc2",
+          "type": "input",
+          "inputPin": {
+            "elementId": "319b574b-a6b5-49ec-b456-4f4daf059768",
+            "pinId": "B"
+          },
+          "jointId": "168734bd-1a9c-4cfd-83ea-431d5b00432d",
+          "lineId": "b0558f7b-151d-46c3-a6b1-e7834afb16af"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "4dfc5dc9-e30b-4898-a679-51999e2f8d4e",
+          "x": 315,
+          "y": 125
+        },
+        {
+          "jointId": "8a9f7291-1f68-43e0-af98-17b9b5a70dc8",
+          "x": 315,
+          "y": 385
+        },
+        {
+          "jointId": "168734bd-1a9c-4cfd-83ea-431d5b00432d",
+          "x": 315,
+          "y": 185
+        }
+      ]
+    },
+    {
+      "wireId": "9f351439-e736-420b-8f53-74bbd0a76f9c",
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "wireSegments": [
+        {
+          "wireSegmentId": "2f6ba92b-f188-4f16-83d4-160506e6061c",
+          "type": "input",
+          "inputPin": {
+            "elementId": "21dbb98d-69f2-4fa9-ae38-c9ae895f10ab",
+            "pinId": "A"
+          },
+          "jointId": "0b00a915-be1d-4eec-a714-2bec6f06680b",
+          "lineId": "fa543bef-ec20-431e-b4c9-039c609a2311"
+        },
+        {
+          "wireSegmentId": "25f8d0e5-4714-46ea-acc8-1dc02705209b",
+          "type": "output",
+          "outputPin": {
+            "elementId": "1cb4d5d3-77bd-4d17-9d0c-e66fe9d72d38",
+            "pinId": "OUT"
+          },
+          "jointId": "9978393c-f71b-44f3-b876-5583555c3edc",
+          "lineId": "fa543bef-ec20-431e-b4c9-039c609a2311"
+        },
+        {
+          "wireSegmentId": "55fd0afa-e7a6-4f36-8d71-525e9ed64721",
+          "type": "bridge",
+          "jointAId": "9978393c-f71b-44f3-b876-5583555c3edc",
+          "jointBId": "0b00a915-be1d-4eec-a714-2bec6f06680b"
+        },
+        {
+          "wireSegmentId": "a04da32d-64e5-49c7-ae00-07139bd7c83e",
+          "type": "input",
+          "inputPin": {
+            "elementId": "319b574b-a6b5-49ec-b456-4f4daf059768",
+            "pinId": "A"
+          },
+          "jointId": "9978393c-f71b-44f3-b876-5583555c3edc",
+          "lineId": "fa543bef-ec20-431e-b4c9-039c609a2311"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "0b00a915-be1d-4eec-a714-2bec6f06680b",
+          "x": 350,
+          "y": 365
+        },
+        {
+          "jointId": "9978393c-f71b-44f3-b876-5583555c3edc",
+          "x": 350,
+          "y": 165
+        }
+      ]
+    },
+    {
+      "wireId": "f1ca90a8-5183-49d0-84df-618981448703",
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "wireSegments": [
+        {
+          "wireSegmentId": "bcbe43af-24f7-4555-b7bd-7aa7890ddc97",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "990e5a51-cd5d-46f5-a916-94322babb919",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "319b574b-a6b5-49ec-b456-4f4daf059768",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "2bf97a42-6130-4aaf-9809-db78dafe6795",
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "wireSegments": [
+        {
+          "wireSegmentId": "94b690f5-ff11-433d-b791-8728b0f7cd1e",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "6067ce6c-0324-4379-96fe-627b860c9d02",
+            "pinId": "B"
+          },
+          "outputPin": {
+            "elementId": "21dbb98d-69f2-4fa9-ae38-c9ae895f10ab",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "26472dc0-0d59-4c77-a193-506655128cf9",
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "wireSegments": [
+        {
+          "wireSegmentId": "1ce94ade-1a3f-447f-b7a1-04b2eba6b084",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "6067ce6c-0324-4379-96fe-627b860c9d02",
+            "pinId": "A"
+          },
+          "outputPin": {
+            "elementId": "bf628ceb-742b-49e8-a60d-d95479df673d",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "38900962-0f64-4bdf-bac7-8e0e6b20e4bd",
+      "circuitId": "dbe15d73-ee6c-4104-8ced-d5c0295d05bb",
+      "wireSegments": [
+        {
+          "wireSegmentId": "7d1561d8-eb91-43e3-91a6-45d78a9c6b98",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "81b34fd8-1753-4e5c-bc20-5579e8cb28bf",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "6067ce6c-0324-4379-96fe-627b860c9d02",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "e514fe45-b5e6-47d2-add7-967ad9d407aa",
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "wireSegments": [
+        {
+          "wireSegmentId": "69cbc246-2c41-4db2-b900-7d83ea45d4e3",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "99074876-6820-4143-9236-e208de48dd9c",
+            "pinId": "9301e06e-59fe-444c-913b-e531e41a552e"
+          },
+          "outputPin": {
+            "elementId": "affdced1-3e2e-46cc-a60c-28bd0b13400f",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "d30470c0-d278-4000-ac67-8aaa7d9a051a",
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "wireSegments": [
+        {
+          "wireSegmentId": "027fd13e-4c4c-4752-b288-f3e0b41d8e2c",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "4c58d092-4e82-4873-b4bf-ed1273ba72cf",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "99074876-6820-4143-9236-e208de48dd9c",
+            "pinId": "990e5a51-cd5d-46f5-a916-94322babb919"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "95417a81-12e3-423e-9e6e-d67bb8230c62",
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "wireSegments": [
+        {
+          "wireSegmentId": "76d045d1-d26c-45cb-bd24-2edeee7ee5a9",
+          "type": "output",
+          "outputPin": {
+            "elementId": "99074876-6820-4143-9236-e208de48dd9c",
+            "pinId": "81b34fd8-1753-4e5c-bc20-5579e8cb28bf"
+          },
+          "jointId": "e5af6dff-8b7f-4dc4-a8fb-16799a60ee48",
+          "lineId": "7ecc1dff-b212-481b-9c83-a49003ca09e8"
+        },
+        {
+          "wireSegmentId": "f25ac4c8-3d42-491e-949c-3ba2d50dbea9",
+          "type": "bridge",
+          "jointAId": "e5af6dff-8b7f-4dc4-a8fb-16799a60ee48",
+          "jointBId": "97b09cea-4eaa-46be-b934-668f1c4180f6"
+        },
+        {
+          "wireSegmentId": "2e74a544-232a-43ac-811d-42f45d3ab5bf",
+          "type": "input",
+          "inputPin": {
+            "elementId": "5a7c6135-b777-49ec-bcf5-e937bd443776",
+            "pinId": "9301e06e-59fe-444c-913b-e531e41a552e"
+          },
+          "jointId": "97b09cea-4eaa-46be-b934-668f1c4180f6",
+          "lineId": "7ecc1dff-b212-481b-9c83-a49003ca09e8"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "e5af6dff-8b7f-4dc4-a8fb-16799a60ee48",
+          "x": 300,
+          "y": 225
+        },
+        {
+          "jointId": "97b09cea-4eaa-46be-b934-668f1c4180f6",
+          "x": 200,
+          "y": 225
+        }
+      ]
+    },
+    {
+      "wireId": "28da7f8e-4c05-4510-9c14-d4628e96c413",
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "wireSegments": [
+        {
+          "wireSegmentId": "0138a4fc-9147-4903-8642-2b512bc9977a",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "c204d4df-134f-4e00-828b-85ba4cec21d8",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "5a7c6135-b777-49ec-bcf5-e937bd443776",
+            "pinId": "990e5a51-cd5d-46f5-a916-94322babb919"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "a456e899-e47f-46b7-be41-19b965b4dfdc",
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "wireSegments": [
+        {
+          "wireSegmentId": "72bd8de8-3f7f-468d-bde8-629e11d4a2ff",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "c8c1e632-3724-4054-b275-15263ccd8a94",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "5a7c6135-b777-49ec-bcf5-e937bd443776",
+            "pinId": "81b34fd8-1753-4e5c-bc20-5579e8cb28bf"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "51fd63c0-48b5-47b6-a1c9-4e67cd586db1",
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "wireSegments": [
+        {
+          "wireSegmentId": "4d2e7607-9dcb-4ff2-8ee2-8eb7e0bcfb62",
+          "type": "output",
+          "outputPin": {
+            "elementId": "72d6dce0-76a4-457b-b3f3-070d2a8fbe8f",
+            "pinId": "OUT"
+          },
+          "jointId": "4ebfb0cf-281e-40a6-8e05-b9cd6e6aae8b",
+          "lineId": "258a91af-a030-41ff-bb45-5a3cfb5098e6"
+        },
+        {
+          "wireSegmentId": "f6030646-3ec8-4bae-9ca3-9c57b584b81d",
+          "type": "bridge",
+          "jointAId": "4ebfb0cf-281e-40a6-8e05-b9cd6e6aae8b",
+          "jointBId": "a7d67dfa-2881-40db-9c46-d59110121ed0"
+        },
+        {
+          "wireSegmentId": "a8662b13-be5a-4574-ac95-03ff6397d9de",
+          "type": "input",
+          "inputPin": {
+            "elementId": "99074876-6820-4143-9236-e208de48dd9c",
+            "pinId": "71c7659b-05dd-425e-84dd-06e201d62dde"
+          },
+          "jointId": "a7d67dfa-2881-40db-9c46-d59110121ed0",
+          "lineId": "258a91af-a030-41ff-bb45-5a3cfb5098e6"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "4ebfb0cf-281e-40a6-8e05-b9cd6e6aae8b",
+          "x": 115,
+          "y": 175
+        },
+        {
+          "jointId": "a7d67dfa-2881-40db-9c46-d59110121ed0",
+          "x": 115,
+          "y": 125
+        }
+      ]
+    },
+    {
+      "wireId": "6ebeaf13-bc74-44c6-8700-5498d2aaab9a",
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "wireSegments": [
+        {
+          "wireSegmentId": "92c545e3-4d93-43f5-a62e-0bf7ac135456",
+          "type": "output",
+          "outputPin": {
+            "elementId": "199bb61e-f4f0-4bfc-a9ca-2d44b6b6bd21",
+            "pinId": "OUT"
+          },
+          "jointId": "40cd0a79-148e-4a54-9408-69fbb5d50a7d",
+          "lineId": "298c6dd0-f0fb-48e2-8310-17fc2bfe784e"
+        },
+        {
+          "wireSegmentId": "526aca3a-db7d-4db8-b51f-b1e4d61dcb4d",
+          "type": "bridge",
+          "jointAId": "40cd0a79-148e-4a54-9408-69fbb5d50a7d",
+          "jointBId": "51377e28-dc7b-4fd2-9cd8-e864e1f744a7"
+        },
+        {
+          "wireSegmentId": "a1495568-808b-4f2b-89d1-17663fe42a39",
+          "type": "input",
+          "inputPin": {
+            "elementId": "5a7c6135-b777-49ec-bcf5-e937bd443776",
+            "pinId": "71c7659b-05dd-425e-84dd-06e201d62dde"
+          },
+          "jointId": "51377e28-dc7b-4fd2-9cd8-e864e1f744a7",
+          "lineId": "298c6dd0-f0fb-48e2-8310-17fc2bfe784e"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "40cd0a79-148e-4a54-9408-69fbb5d50a7d",
+          "x": 180,
+          "y": 225
+        },
+        {
+          "jointId": "51377e28-dc7b-4fd2-9cd8-e864e1f744a7",
+          "x": 180,
+          "y": 325
+        }
+      ]
+    },
+    {
+      "wireId": "c182fa12-1f90-4f41-b782-eb9daaec5379",
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "wireSegments": [
+        {
+          "wireSegmentId": "7e6be0ef-0d7a-4469-8bb9-e9746e6eff47",
+          "type": "output",
+          "outputPin": {
+            "elementId": "492a4c22-13f3-4584-87e2-9a68540a4b5a",
+            "pinId": "OUT"
+          },
+          "jointId": "56d02fe4-cd5c-4990-ad3a-34ae0c1872dd",
+          "lineId": "56afced2-b0dd-4c0d-8f22-b2f959ef8fc6"
+        },
+        {
+          "wireSegmentId": "fa4e79af-e02b-4683-90cf-0f70e4350cd0",
+          "type": "bridge",
+          "jointAId": "56d02fe4-cd5c-4990-ad3a-34ae0c1872dd",
+          "jointBId": "a4bfedbf-9422-491b-b553-2823424ca801"
+        },
+        {
+          "wireSegmentId": "a0920c4f-e51d-4101-aac6-7b35ed211951",
+          "type": "input",
+          "inputPin": {
+            "elementId": "99074876-6820-4143-9236-e208de48dd9c",
+            "pinId": "0a650486-0c46-4585-aa2b-a4e71eddd739"
+          },
+          "jointId": "a4bfedbf-9422-491b-b553-2823424ca801",
+          "lineId": "56afced2-b0dd-4c0d-8f22-b2f959ef8fc6"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "56d02fe4-cd5c-4990-ad3a-34ae0c1872dd",
+          "x": 150,
+          "y": 325
+        },
+        {
+          "jointId": "a4bfedbf-9422-491b-b553-2823424ca801",
+          "x": 150,
+          "y": 175
+        }
+      ]
+    },
+    {
+      "wireId": "5742f36e-0d97-43b6-aa3b-a11b7cd16513",
+      "circuitId": "c5134284-5014-446f-ad00-b1c194610703",
+      "wireSegments": [
+        {
+          "wireSegmentId": "87c21e32-6833-4a6a-a0e8-8a5e28a00b8c",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "5a7c6135-b777-49ec-bcf5-e937bd443776",
+            "pinId": "0a650486-0c46-4585-aa2b-a4e71eddd739"
+          },
+          "outputPin": {
+            "elementId": "29666d7d-4fb0-4d25-917e-4a01fe06fe6d",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "59d620d7-f5e1-46e4-bed3-79075883a3b4",
+      "circuitId": "e910207e-b345-42ce-9236-745ae89b7cb8",
+      "wireSegments": [
+        {
+          "wireSegmentId": "7b6fee2f-aa10-4ebf-bccc-8cf4edead493",
+          "type": "output",
+          "outputPin": {
+            "elementId": "bb97bd80-5b60-44ee-bcaf-7725d64a36b0",
+            "pinId": "OUT"
+          },
+          "jointId": "2bc45be4-d317-4ddd-a615-542e0e1afac8",
+          "lineId": "3704515f-7e6d-4446-b8ba-065915cd1e6e"
+        },
+        {
+          "wireSegmentId": "6da39561-9760-4171-b144-47cff8fc75b4",
+          "type": "input",
+          "inputPin": {
+            "elementId": "1e2efaf0-d3b3-4659-b916-69f69994d8c9",
+            "pinId": "B"
+          },
+          "jointId": "0e850bee-8ab9-420b-8f00-e3f8179ed541",
+          "lineId": "3704515f-7e6d-4446-b8ba-065915cd1e6e"
+        },
+        {
+          "wireSegmentId": "9861c7ec-200b-4619-860c-024c0d600913",
+          "type": "bridge",
+          "jointAId": "2bc45be4-d317-4ddd-a615-542e0e1afac8",
+          "jointBId": "58410470-739d-4a9d-887e-cefddabf1b42"
+        },
+        {
+          "wireSegmentId": "847de413-f3ce-421b-a4ef-60774ca5fe0d",
+          "type": "bridge",
+          "jointAId": "58410470-739d-4a9d-887e-cefddabf1b42",
+          "jointBId": "0e850bee-8ab9-420b-8f00-e3f8179ed541"
+        },
+        {
+          "wireSegmentId": "a94a2b9d-cf33-4bb2-935a-92e1a911875c",
+          "type": "input",
+          "inputPin": {
+            "elementId": "c02e19a1-e646-4a05-a93d-cffd56f9f296",
+            "pinId": "A"
+          },
+          "jointId": "58410470-739d-4a9d-887e-cefddabf1b42",
+          "lineId": "3704515f-7e6d-4446-b8ba-065915cd1e6e"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "2bc45be4-d317-4ddd-a615-542e0e1afac8",
+          "x": 480,
+          "y": 275
+        },
+        {
+          "jointId": "0e850bee-8ab9-420b-8f00-e3f8179ed541",
+          "x": 480,
+          "y": 235
+        },
+        {
+          "jointId": "58410470-739d-4a9d-887e-cefddabf1b42",
+          "x": 480,
+          "y": 265
+        }
+      ]
+    },
+    {
+      "wireId": "5f9cd815-5c98-4cf2-b8a0-9cc5d08463de",
+      "circuitId": "e910207e-b345-42ce-9236-745ae89b7cb8",
+      "wireSegments": [
+        {
+          "wireSegmentId": "12bfa9b0-1205-43a2-b8c4-cb133af38b50",
+          "type": "input",
+          "inputPin": {
+            "elementId": "1e2efaf0-d3b3-4659-b916-69f69994d8c9",
+            "pinId": "A"
+          },
+          "jointId": "f752a385-d152-4700-988c-5ed96ad5cfee",
+          "lineId": "442d8d77-986a-4f14-a83e-9980f0f11e25"
+        },
+        {
+          "wireSegmentId": "e3489829-da9e-458a-a637-6beb917d20c2",
+          "type": "output",
+          "outputPin": {
+            "elementId": "6f86f0af-d087-4cfe-b0f3-1964e6b0c2d3",
+            "pinId": "OUT"
+          },
+          "jointId": "92f9b5f7-90fa-4e99-b572-66880d45d6d8",
+          "lineId": "442d8d77-986a-4f14-a83e-9980f0f11e25"
+        },
+        {
+          "wireSegmentId": "d306169c-e634-41cf-b151-2c42d9c81ced",
+          "type": "bridge",
+          "jointAId": "92f9b5f7-90fa-4e99-b572-66880d45d6d8",
+          "jointBId": "f752a385-d152-4700-988c-5ed96ad5cfee"
+        },
+        {
+          "wireSegmentId": "f6a51b65-cca6-4bba-a997-dd029cdd5736",
+          "type": "input",
+          "inputPin": {
+            "elementId": "de6a0604-3f98-40de-8f52-7615ca19f979",
+            "pinId": "IN"
+          },
+          "jointId": "92f9b5f7-90fa-4e99-b572-66880d45d6d8",
+          "lineId": "442d8d77-986a-4f14-a83e-9980f0f11e25"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "f752a385-d152-4700-988c-5ed96ad5cfee",
+          "x": 500,
+          "y": 175
+        },
+        {
+          "jointId": "92f9b5f7-90fa-4e99-b572-66880d45d6d8",
+          "x": 350,
+          "y": 175
+        }
+      ]
+    },
+    {
+      "wireId": "91b9c0ac-79c1-491f-9cdf-454844c380c7",
+      "circuitId": "e910207e-b345-42ce-9236-745ae89b7cb8",
+      "wireSegments": [
+        {
+          "wireSegmentId": "b73dbf04-8c4e-411b-aa2d-5ab814c1b18a",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "384a9160-b182-4c51-8a26-88cbb1ca2b1b",
+            "pinId": "2f0f8686-eeca-4832-9266-d7c234bb42b7"
+          },
+          "outputPin": {
+            "elementId": "1e2efaf0-d3b3-4659-b916-69f69994d8c9",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "3192f5e1-f91f-428e-8262-735a25d2fc69",
+      "circuitId": "e910207e-b345-42ce-9236-745ae89b7cb8",
+      "wireSegments": [
+        {
+          "wireSegmentId": "a3ac302b-8082-44e4-ade2-9b73aab96693",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "384a9160-b182-4c51-8a26-88cbb1ca2b1b",
+            "pinId": "17f7e769-f5a1-4456-aa16-cd05cee58345"
+          },
+          "outputPin": {
+            "elementId": "c02e19a1-e646-4a05-a93d-cffd56f9f296",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "043ff01e-ef83-4a25-80c4-f173f27bb351",
+      "circuitId": "e910207e-b345-42ce-9236-745ae89b7cb8",
+      "wireSegments": [
+        {
+          "wireSegmentId": "c27bd660-4702-48b8-84f3-d918baa2594e",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "9558059c-30ba-499e-9d55-1dd08d6b476a",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "384a9160-b182-4c51-8a26-88cbb1ca2b1b",
+            "pinId": "60dcc660-3157-43df-99a8-c4e3a8931bae"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "ef79250e-7d6e-44aa-a6fe-a1eea7f59abc",
+      "circuitId": "e910207e-b345-42ce-9236-745ae89b7cb8",
+      "wireSegments": [
+        {
+          "wireSegmentId": "8520ac52-de9e-4c5f-8ecc-e9b8bb6232b2",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "16dd0e3e-e92a-4aca-a1aa-b7e3c701b581",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "384a9160-b182-4c51-8a26-88cbb1ca2b1b",
+            "pinId": "d62d1f81-c97f-4112-862d-c093dc7cb9d9"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "01bbec87-708d-4272-a0fd-cd8b337d1505",
+      "circuitId": "e910207e-b345-42ce-9236-745ae89b7cb8",
+      "wireSegments": [
+        {
+          "wireSegmentId": "0f08d1b0-c4a5-4863-8b88-d3d9d37cb2f4",
+          "type": "output",
+          "outputPin": {
+            "elementId": "de6a0604-3f98-40de-8f52-7615ca19f979",
+            "pinId": "OUT"
+          },
+          "jointId": "9b9635ca-6df5-4335-9fb4-131185984148",
+          "lineId": "f43a43e3-808d-4d6c-8d2b-e20d8f196cdf"
+        },
+        {
+          "wireSegmentId": "b87cd21a-9a77-4e64-a789-141af0d1b77b",
+          "type": "input",
+          "inputPin": {
+            "elementId": "c02e19a1-e646-4a05-a93d-cffd56f9f296",
+            "pinId": "B"
+          },
+          "jointId": "9b9635ca-6df5-4335-9fb4-131185984148",
+          "lineId": "f43a43e3-808d-4d6c-8d2b-e20d8f196cdf"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "9b9635ca-6df5-4335-9fb4-131185984148",
+          "x": 450,
+          "y": 285
+        }
+      ]
+    },
+    {
+      "wireId": "a7d0c13f-e061-41e9-b8a3-9633247cbabd",
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "wireSegments": [
+        {
+          "wireSegmentId": "b511b953-7cb3-4b60-bd6c-d3989c176c43",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "4af0e0c3-c133-4e5c-8f06-859693641f18",
+            "pinId": "85948a88-e3a4-4ea9-ab06-26051b89a332"
+          },
+          "outputPin": {
+            "elementId": "fbd1dbfb-b26a-4584-a22a-0f643dcc7ad8",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "d20cbb01-a307-4f84-aa4a-30d552ce97c5",
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "wireSegments": [
+        {
+          "wireSegmentId": "1b0ba84c-5637-4714-9038-6fdc302cfab2",
+          "type": "output",
+          "outputPin": {
+            "elementId": "4af0e0c3-c133-4e5c-8f06-859693641f18",
+            "pinId": "01771832-2fe6-47c5-9b58-14d3e03edfe0"
+          },
+          "jointId": "c25364b8-6df4-493a-9edc-2f99d9b23620",
+          "lineId": "bba777e6-c8b3-4aea-bb83-22924aeffcb6"
+        },
+        {
+          "wireSegmentId": "0e92eb32-62df-48e8-9754-da470ff3c7c6",
+          "type": "bridge",
+          "jointAId": "c25364b8-6df4-493a-9edc-2f99d9b23620",
+          "jointBId": "8a173dc0-822d-4982-92ca-fcf53d2bd0a5"
+        },
+        {
+          "wireSegmentId": "7e6a261e-eddb-4ca7-9a26-757d972f85ac",
+          "type": "input",
+          "inputPin": {
+            "elementId": "1f96659a-2d63-49af-9f0d-57ff636135ba",
+            "pinId": "bb97bd80-5b60-44ee-bcaf-7725d64a36b0"
+          },
+          "jointId": "8a173dc0-822d-4982-92ca-fcf53d2bd0a5",
+          "lineId": "bba777e6-c8b3-4aea-bb83-22924aeffcb6"
+        },
+        {
+          "wireSegmentId": "02127901-3332-46ab-80d6-e4bf6adf80e4",
+          "type": "input",
+          "inputPin": {
+            "elementId": "afaae6ce-37df-46f3-ae55-2825a2d379eb",
+            "pinId": "bb97bd80-5b60-44ee-bcaf-7725d64a36b0"
+          },
+          "jointId": "105a31eb-75a2-42b2-9316-9ad3bf92ff2f",
+          "lineId": "bba777e6-c8b3-4aea-bb83-22924aeffcb6"
+        },
+        {
+          "wireSegmentId": "2a5a4ee8-b244-4903-9b8a-75225e233510",
+          "type": "bridge",
+          "jointAId": "c1559f25-23f0-44b4-9e47-9e6042e5491c",
+          "jointBId": "105a31eb-75a2-42b2-9316-9ad3bf92ff2f"
+        },
+        {
+          "wireSegmentId": "ddc0b9a4-c615-4601-a027-15ab22944270",
+          "type": "input",
+          "inputPin": {
+            "elementId": "71602bdb-da54-4bb3-8429-ffc807e83eff",
+            "pinId": "bb97bd80-5b60-44ee-bcaf-7725d64a36b0"
+          },
+          "jointId": "c1559f25-23f0-44b4-9e47-9e6042e5491c",
+          "lineId": "bba777e6-c8b3-4aea-bb83-22924aeffcb6"
+        },
+        {
+          "wireSegmentId": "f66be20a-f075-4a0d-9039-53b9efa237ff",
+          "type": "bridge",
+          "jointAId": "c25364b8-6df4-493a-9edc-2f99d9b23620",
+          "jointBId": "8d43cf37-7e0f-4dbc-b4b6-c0be57ae3892"
+        },
+        {
+          "wireSegmentId": "8c5a1f61-c7fa-4284-95c0-820d1a064bf1",
+          "type": "bridge",
+          "jointAId": "8d43cf37-7e0f-4dbc-b4b6-c0be57ae3892",
+          "jointBId": "c1559f25-23f0-44b4-9e47-9e6042e5491c"
+        },
+        {
+          "wireSegmentId": "a886d3cc-47f3-467b-8e36-66a54d085273",
+          "type": "input",
+          "inputPin": {
+            "elementId": "c030cdac-75d8-4dcb-ae04-f4ad5be486b7",
+            "pinId": "bb97bd80-5b60-44ee-bcaf-7725d64a36b0"
+          },
+          "jointId": "8d43cf37-7e0f-4dbc-b4b6-c0be57ae3892",
+          "lineId": "bba777e6-c8b3-4aea-bb83-22924aeffcb6"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "c25364b8-6df4-493a-9edc-2f99d9b23620",
+          "x": 300,
+          "y": 175
+        },
+        {
+          "jointId": "8a173dc0-822d-4982-92ca-fcf53d2bd0a5",
+          "x": 300,
+          "y": 125
+        },
+        {
+          "jointId": "105a31eb-75a2-42b2-9316-9ad3bf92ff2f",
+          "x": 300,
+          "y": 575
+        },
+        {
+          "jointId": "c1559f25-23f0-44b4-9e47-9e6042e5491c",
+          "x": 300,
+          "y": 425
+        },
+        {
+          "jointId": "8d43cf37-7e0f-4dbc-b4b6-c0be57ae3892",
+          "x": 300,
+          "y": 275
+        }
+      ]
+    },
+    {
+      "wireId": "39cf6e75-9b11-4d6c-a309-3a07c3ccc1e1",
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "wireSegments": [
+        {
+          "wireSegmentId": "9e951ee6-1b10-45da-8e28-efae2665174a",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "5c3efb1f-8be3-4828-b5ce-a5a544b1eaad",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "afaae6ce-37df-46f3-ae55-2825a2d379eb",
+            "pinId": "9558059c-30ba-499e-9d55-1dd08d6b476a"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "e2fb87c4-016c-40e7-a785-0f70d5561151",
+      "circuitId": "284142f3-5856-47a4-9a41-e4491f3ab040",
+      "wireSegments": [
+        {
+          "wireSegmentId": "8c2eb998-e7c6-49d2-becd-1ade83a7cfac",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "056df87c-fe82-42e5-96c8-ad3f2b74d6d9",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "85948a88-e3a4-4ea9-ab06-26051b89a332",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "223f1866-bc30-4d8a-bba1-3f472bb0518e",
+      "circuitId": "284142f3-5856-47a4-9a41-e4491f3ab040",
+      "wireSegments": [
+        {
+          "wireSegmentId": "ee6d6493-3db0-46d7-8716-96c85ce6732a",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "dc016d6e-ed97-4194-b8e1-6ae96c491b22",
+            "pinId": "B"
+          },
+          "outputPin": {
+            "elementId": "3190c3c3-28ce-42e6-86e5-9da5e1a40cb8",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "05666f8f-671d-4e2d-9055-075943e5662d",
+      "circuitId": "284142f3-5856-47a4-9a41-e4491f3ab040",
+      "wireSegments": [
+        {
+          "wireSegmentId": "55b77d14-cac5-47b1-8749-a97f28b571c4",
+          "type": "input",
+          "inputPin": {
+            "elementId": "dc016d6e-ed97-4194-b8e1-6ae96c491b22",
+            "pinId": "A"
+          },
+          "jointId": "84b5ed04-65a1-468c-9505-7eeb4b1dea53",
+          "lineId": "99a436b0-1f74-4771-aaa9-5fb6598c372a"
+        },
+        {
+          "wireSegmentId": "ce6e79e6-68e3-490f-bfd9-12b173f3ffe7",
+          "type": "output",
+          "outputPin": {
+            "elementId": "85948a88-e3a4-4ea9-ab06-26051b89a332",
+            "pinId": "OUT"
+          },
+          "jointId": "84b5ed04-65a1-468c-9505-7eeb4b1dea53",
+          "lineId": "99a436b0-1f74-4771-aaa9-5fb6598c372a"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "84b5ed04-65a1-468c-9505-7eeb4b1dea53",
+          "x": 100,
+          "y": 64.5
+        }
+      ]
+    },
+    {
+      "wireId": "4e70679e-71ef-439c-b3c8-98c9f3d294c3",
+      "circuitId": "284142f3-5856-47a4-9a41-e4491f3ab040",
+      "wireSegments": [
+        {
+          "wireSegmentId": "cb939a90-4725-416c-9eb6-ff6ee3b9fe57",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "01771832-2fe6-47c5-9b58-14d3e03edfe0",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "dc016d6e-ed97-4194-b8e1-6ae96c491b22",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "28a7fa34-1119-4023-8594-394f0c9e7f17",
+      "circuitId": "284142f3-5856-47a4-9a41-e4491f3ab040",
+      "wireSegments": [
+        {
+          "wireSegmentId": "a3c634c0-9d59-4233-a6f8-ed21334936b4",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "3190c3c3-28ce-42e6-86e5-9da5e1a40cb8",
+            "pinId": "IN"
+          },
+          "outputPin": {
+            "elementId": "056df87c-fe82-42e5-96c8-ad3f2b74d6d9",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "2e786be5-d2dc-40d9-913e-1bccb85c87f4",
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "wireSegments": [
+        {
+          "wireSegmentId": "9995e21a-96aa-43d2-8fae-56f7e0e0d853",
+          "type": "input-output",
+          "inputPin": {
+            "elementId": "1f96659a-2d63-49af-9f0d-57ff636135ba",
+            "pinId": "6f86f0af-d087-4cfe-b0f3-1964e6b0c2d3"
+          },
+          "outputPin": {
+            "elementId": "709113de-e09a-44d2-9420-b433ea4a4713",
+            "pinId": "OUT"
+          }
+        }
+      ],
+      "wireJoints": []
+    },
+    {
+      "wireId": "24d4b1b8-f379-4b5c-ac22-7d7022a687c9",
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "wireSegments": [
+        {
+          "wireSegmentId": "b92b3c1b-4a2c-4590-987d-086d30290033",
+          "type": "input",
+          "inputPin": {
+            "elementId": "c030cdac-75d8-4dcb-ae04-f4ad5be486b7",
+            "pinId": "6f86f0af-d087-4cfe-b0f3-1964e6b0c2d3"
+          },
+          "jointId": "f59e36aa-26ff-43cc-a287-1b64aed24341",
+          "lineId": "5bc667d7-34da-40cd-965a-800d745ea13d"
+        },
+        {
+          "wireSegmentId": "efaf136c-44a5-4710-888f-2b516a0eb062",
+          "type": "bridge",
+          "jointAId": "f59e36aa-26ff-43cc-a287-1b64aed24341",
+          "jointBId": "243a4250-0685-4c81-89c6-da21fe29c3b4"
+        },
+        {
+          "wireSegmentId": "dfc96353-fcc9-4717-9211-48942c28f176",
+          "type": "output",
+          "outputPin": {
+            "elementId": "1f96659a-2d63-49af-9f0d-57ff636135ba",
+            "pinId": "9558059c-30ba-499e-9d55-1dd08d6b476a"
+          },
+          "jointId": "1999cb4f-5bce-48e5-98e3-2f8201635d2c",
+          "lineId": "5bc667d7-34da-40cd-965a-800d745ea13d"
+        },
+        {
+          "wireSegmentId": "7aa43445-afd1-4fac-bde0-8cae31219881",
+          "type": "input",
+          "inputPin": {
+            "elementId": "8fc8616f-bf7b-4ce3-9284-b2c51e30dfca",
+            "pinId": "IN"
+          },
+          "jointId": "1999cb4f-5bce-48e5-98e3-2f8201635d2c",
+          "lineId": "5bc667d7-34da-40cd-965a-800d745ea13d"
+        },
+        {
+          "wireSegmentId": "08c5155d-e206-4df3-8e54-acb9042ae66b",
+          "type": "bridge",
+          "jointAId": "243a4250-0685-4c81-89c6-da21fe29c3b4",
+          "jointBId": "1999cb4f-5bce-48e5-98e3-2f8201635d2c"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "f59e36aa-26ff-43cc-a287-1b64aed24341",
+          "x": 350,
+          "y": 170
+        },
+        {
+          "jointId": "243a4250-0685-4c81-89c6-da21fe29c3b4",
+          "x": 475,
+          "y": 170
+        },
+        {
+          "jointId": "1999cb4f-5bce-48e5-98e3-2f8201635d2c",
+          "x": 475,
+          "y": 75
+        }
+      ]
+    },
+    {
+      "wireId": "6947979f-74c4-459d-b20a-503263a3fa86",
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "wireSegments": [
+        {
+          "wireSegmentId": "bd515d1f-655b-4a8f-bac2-f73d4b3b9d25",
+          "type": "input",
+          "inputPin": {
+            "elementId": "71602bdb-da54-4bb3-8429-ffc807e83eff",
+            "pinId": "6f86f0af-d087-4cfe-b0f3-1964e6b0c2d3"
+          },
+          "jointId": "ca1ad106-29ae-4e94-829e-558b2f473646",
+          "lineId": "b9f3658b-c347-4abd-ba55-1deaad794a12"
+        },
+        {
+          "wireSegmentId": "c1bd459a-dc7b-4edb-aac2-9a1b5388476f",
+          "type": "bridge",
+          "jointAId": "ca1ad106-29ae-4e94-829e-558b2f473646",
+          "jointBId": "3aabc5a8-7036-4992-8222-907a582b81df"
+        },
+        {
+          "wireSegmentId": "4ecbf470-eea6-4c19-8451-136252f6dcac",
+          "type": "output",
+          "outputPin": {
+            "elementId": "c030cdac-75d8-4dcb-ae04-f4ad5be486b7",
+            "pinId": "9558059c-30ba-499e-9d55-1dd08d6b476a"
+          },
+          "jointId": "2a4af08a-6d7e-401d-83d6-29e56499fb03",
+          "lineId": "b9f3658b-c347-4abd-ba55-1deaad794a12"
+        },
+        {
+          "wireSegmentId": "2777beb8-7a93-4256-9277-18b225455551",
+          "type": "input",
+          "inputPin": {
+            "elementId": "707f9400-ac9c-4b2c-9f58-2afa344e7810",
+            "pinId": "IN"
+          },
+          "jointId": "2a4af08a-6d7e-401d-83d6-29e56499fb03",
+          "lineId": "b9f3658b-c347-4abd-ba55-1deaad794a12"
+        },
+        {
+          "wireSegmentId": "87ecddcb-a2a3-40a0-a142-37cb946c456c",
+          "type": "bridge",
+          "jointAId": "3aabc5a8-7036-4992-8222-907a582b81df",
+          "jointBId": "2a4af08a-6d7e-401d-83d6-29e56499fb03"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "ca1ad106-29ae-4e94-829e-558b2f473646",
+          "x": 350,
+          "y": 320
+        },
+        {
+          "jointId": "3aabc5a8-7036-4992-8222-907a582b81df",
+          "x": 475,
+          "y": 320
+        },
+        {
+          "jointId": "2a4af08a-6d7e-401d-83d6-29e56499fb03",
+          "x": 475,
+          "y": 225
+        }
+      ]
+    },
+    {
+      "wireId": "904c512d-d098-444b-a6e9-656032f32abe",
+      "circuitId": "788e1342-ec6a-408e-a461-6b69d1a4f24b",
+      "wireSegments": [
+        {
+          "wireSegmentId": "9e1e3bd0-a78b-4c29-803c-e3362ebf7db3",
+          "type": "input",
+          "inputPin": {
+            "elementId": "afaae6ce-37df-46f3-ae55-2825a2d379eb",
+            "pinId": "6f86f0af-d087-4cfe-b0f3-1964e6b0c2d3"
+          },
+          "jointId": "6a19f04c-9874-40d8-8c1c-241b776f649e",
+          "lineId": "d3c03552-16af-4c42-ba01-360ff4182431"
+        },
+        {
+          "wireSegmentId": "9bd14ea3-2fa7-415a-8f6b-933f645d7ea4",
+          "type": "bridge",
+          "jointAId": "6a19f04c-9874-40d8-8c1c-241b776f649e",
+          "jointBId": "0a3cb065-11c4-4e52-9901-d8fcfdeda954"
+        },
+        {
+          "wireSegmentId": "ec70a2a5-f22b-40a1-b95d-304e243bc9bd",
+          "type": "output",
+          "outputPin": {
+            "elementId": "71602bdb-da54-4bb3-8429-ffc807e83eff",
+            "pinId": "9558059c-30ba-499e-9d55-1dd08d6b476a"
+          },
+          "jointId": "1a09fe2e-3178-4aab-957c-4b067fb04b1e",
+          "lineId": "d3c03552-16af-4c42-ba01-360ff4182431"
+        },
+        {
+          "wireSegmentId": "be30fb6c-4cc8-4682-8cee-029907ad80d2",
+          "type": "input",
+          "inputPin": {
+            "elementId": "fc1a56ac-7478-455d-a0c3-944eede7f897",
+            "pinId": "IN"
+          },
+          "jointId": "1a09fe2e-3178-4aab-957c-4b067fb04b1e",
+          "lineId": "d3c03552-16af-4c42-ba01-360ff4182431"
+        },
+        {
+          "wireSegmentId": "3b561639-78ce-4176-874c-7ae7cb5bab49",
+          "type": "bridge",
+          "jointAId": "0a3cb065-11c4-4e52-9901-d8fcfdeda954",
+          "jointBId": "1a09fe2e-3178-4aab-957c-4b067fb04b1e"
+        }
+      ],
+      "wireJoints": [
+        {
+          "jointId": "6a19f04c-9874-40d8-8c1c-241b776f649e",
+          "x": 350,
+          "y": 475
+        },
+        {
+          "jointId": "0a3cb065-11c4-4e52-9901-d8fcfdeda954",
+          "x": 475,
+          "y": 475
+        },
+        {
+          "jointId": "1a09fe2e-3178-4aab-957c-4b067fb04b1e",
+          "x": 475,
+          "y": 375
+        }
+      ]
+    }
+  ]
+}

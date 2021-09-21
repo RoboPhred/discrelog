@@ -53,10 +53,7 @@ export default function wireSegmentDelete(
       wire.wireJointIds.indexOf(jointAId) !== -1 &&
       wire.wireJointIds.indexOf(jointBId) !== -1
     ) {
-      const splitState = wireSplit(state, removedSegment.jointBId);
-      if (splitState) {
-        state = splitState;
-      }
+      state = wireSplit(state, removedSegment.jointAId);
     }
 
     return state;

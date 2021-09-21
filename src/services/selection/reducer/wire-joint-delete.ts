@@ -1,18 +1,32 @@
-import difference from "lodash/difference";
+import intersection from "lodash/intersection";
 
 import { isWireJointDeleteAction } from "@/actions/wire-joint-delete";
 
 import { createSelectionReducer } from "../utils";
+import { PRIORITY_POST, reducerPriority } from "@/store/priorities";
 
-export default createSelectionReducer((state, action) => {
-  if (!isWireJointDeleteAction(action)) {
-    return state;
-  }
+export default reducerPriority(
+  PRIORITY_POST,
+  createSelectionReducer((state, action, rootState) => {
+    if (!isWireJointDeleteAction(action)) {
+      return state;
+    }
 
-  const { jointIds } = action.payload;
+    const {
+      wireJointPositionsByJointId,
+      wireSegmentsById,
+    } = rootState.services.circuitGraph;
 
-  return {
-    ...state,
-    selectedJointIds: difference(state.selectedJointIds, jointIds),
-  };
-});
+    return {
+      ...state,
+      selectedWireJointIds: intersection(
+        state.selectedWireJointIds,
+        Object.keys(wireJointPositionsByJointId)
+      ),
+      selectedWireSegmentIds: intersection(
+        state.selectedWireSegmentIds,
+        Object.keys(wireSegmentsById)
+      ),
+    };
+  })
+);

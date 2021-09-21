@@ -9,7 +9,7 @@ import rootReducer from "@/store/reducer";
 import { isJointSelectedFromJointIdSelector } from "@/services/selection/selectors/selection";
 
 import { isCircuitEditorDragStartWireJointAction } from "@/actions/circuit-editor-drag-start-wire-joint";
-import { selectJoints } from "@/actions/select-joints";
+import { selectWireJoints } from "@/actions/select-wire-joints";
 
 export default (state: AppState = defaultAppState, action: AnyAction) => {
   if (!isCircuitEditorDragStartWireJointAction(action)) {
@@ -45,7 +45,7 @@ export default (state: AppState = defaultAppState, action: AnyAction) => {
     if (!isJointSelectedFromJointIdSelector(state, jointId)) {
       const selectionMode = getSelectMode(modifierKeys);
       // Dragging an element that was not previously selected.  Perform a selection on the element.
-      state = rootReducer(state, selectJoints(jointId, selectionMode));
+      state = rootReducer(state, selectWireJoints(jointId, selectionMode));
     }
   }
 

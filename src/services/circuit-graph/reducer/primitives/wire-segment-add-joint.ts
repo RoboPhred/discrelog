@@ -17,7 +17,7 @@ import { wireSegmentRemove } from "./wire-segment-remove";
 import { wireSegmentInsert } from "./wire-segment-insert";
 import { WireOperationError } from "../errors/WireOperationError";
 
-export default function wireSegmentSplit(
+export default function wireSegmentAddJoint(
   state: CircuitGraphServiceState,
   wireSegmentId: string,
   segmentSplitLength: number,

@@ -35,6 +35,10 @@ export const MomentaryInteractionElementVisual: React.FC<ElementComponentProps> 
         return;
       }
 
+      if (e.button !== 0) {
+        return;
+      }
+
       if (e.defaultPrevented) {
         return;
       }
@@ -91,7 +95,7 @@ export const MomentaryInteractionElementVisual: React.FC<ElementComponentProps> 
         fontSize=".8em"
         fill={onTextColor}
         textAnchor="middle"
-        alignmentBaseline="middle"
+        dominantBaseline="middle"
       >
         Push
       </text>

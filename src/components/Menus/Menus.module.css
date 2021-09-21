@@ -30,6 +30,11 @@
   display: flex;
 }
 
+.menu-item-content,
+.menu-item-content:hover {
+  color: inherit;
+}
+
 .menu-item-text {
   width: 100%;
 }

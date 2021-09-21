@@ -18,6 +18,13 @@ export default createSelectionReducer((state, action) => {
       elementIds,
       mode
     ),
-    selectedJointIds: combineExtraniousSelection(state.selectedJointIds, mode),
+    selectedWireJointIds: combineExtraniousSelection(
+      state.selectedWireJointIds,
+      mode
+    ),
+    selectedWireSegmentIds: combineExtraniousSelection(
+      state.selectedWireSegmentIds,
+      mode
+    ),
   };
 });

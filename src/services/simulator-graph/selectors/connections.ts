@@ -6,7 +6,7 @@ import { AppState } from "@/store";
 import { rootCircuitGraphSelector } from "./graph";
 import { EvolverPin } from "../types";
 
-const EmptyPinArray = Object.freeze([] as string[]);
+const EmptyIdArray = Object.freeze([] as string[]);
 const EmptyPinInputs = Object.freeze({} as Record<string, EvolverPin>);
 
 /**
@@ -21,7 +21,7 @@ export const outputEvolverIdsFromEvolverIdSelector = (
 
   const evolver = evolversById[evolverId];
   if (!evolver) {
-    return EmptyPinArray;
+    return EmptyIdArray;
   }
 
   return flatMap(values(evolver.outputsByPin), (pins) =>

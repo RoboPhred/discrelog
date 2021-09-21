@@ -9,7 +9,7 @@ import freeze from "redux-freeze";
 import createSagaMiddleware from "redux-saga";
 
 import { isTruthy } from "@/utils";
-import { isProd } from "@/env";
+import { isDev } from "@/env";
 
 import { doInit } from "@/actions/init";
 
@@ -35,18 +35,18 @@ function finalReducer(
 }
 
 const composeEnhancers =
-  (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-      actionSanitizer,
-      stateSanitizer,
-      actionsBlacklist,
-    })) ||
-  compose;
+  isDev && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+        actionSanitizer,
+        stateSanitizer,
+        actionsBlacklist,
+      })
+    : compose;
 
 const sagaMiddleware = createSagaMiddleware();
 
 const middleware: Middleware<any, any, any>[] = [
-  !isProd && freeze,
+  isDev && freeze,
   sagaMiddleware,
 ].filter(isTruthy);
 

@@ -40,3 +40,18 @@ export const elementOutputsFromCircuitElementIdSelector = (
 
   return elementOutputsBySimulatorElementId[evolverId];
 };
+
+export const elementOutputFromCircuitElementPinSelector = (
+  state: AppState,
+  elementIdPath: string[],
+  pin: string
+) => {
+  const outputs = elementOutputsFromCircuitElementIdSelector(
+    state,
+    elementIdPath
+  );
+  if (!outputs) {
+    return false;
+  }
+  return outputs[pin] ?? false;
+};
