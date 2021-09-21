@@ -13,10 +13,6 @@ export default createSnapshotsReducer((state, action, rootState) => {
     return state;
   }
 
-  if (state.peekSnapshotId) {
-    return state;
-  }
-
   const { snapshotId } = action.payload;
 
   return {

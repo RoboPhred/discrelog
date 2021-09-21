@@ -2,10 +2,10 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 
 import useSelector from "@/hooks/useSelector";
+import { useAction } from "@/hooks/useAction";
 
-import { peekSnapshot } from "@/actions/snapshot-peek";
 import { restoreSnapshot } from "@/actions/snapshot-restore";
-import { captureSnapshot } from "@/actions/snapshot-capture";
+import { captureSnapshot as captureSnapshotAction } from "@/actions/snapshot-capture";
 
 import SelectionList, { SelectionListItem } from "@/components/SelectionList";
 import Menu from "@/components/Menus/Menu";
@@ -15,7 +15,6 @@ import TesselWindow from "@/components/Tessel/TesselWindow";
 import Button from "@/components/Button";
 
 import {
-  peekSnapshotIdSelector,
   snapshotIdsSelector,
   snapshotNameFromSnapshotIdSelector,
 } from "@/services/snapshots/selectors/snapshots";
@@ -24,26 +23,25 @@ import { isSimActiveSelector } from "@/services/simulator-control/selectors/run"
 import styles from "./SnapshotsWindow.module.css";
 
 const SnapshotsWindow: React.FC = () => {
+  const captureSnapshot = useAction(captureSnapshotAction);
   const isActive = useSelector(isSimActiveSelector);
-  const dispatch = useDispatch();
   const snapshotIds = useSelector(snapshotIdsSelector);
-  const peekSnapshotId = useSelector(peekSnapshotIdSelector);
+  const [selectedSnapshotId, setSelectedSnapshotId] = React.useState<
+    string | null
+  >(null);
 
   const onCreateSnapshot = React.useCallback(() => {
-    dispatch(captureSnapshot());
-  }, [dispatch]);
+    captureSnapshot();
+  }, [captureSnapshot]);
 
-  const onSnapshotSelected = React.useCallback(
-    (snapshotId: string) => {
-      dispatch(peekSnapshot(snapshotId));
-    },
-    [dispatch]
-  );
+  const onSnapshotSelected = React.useCallback((snapshotId: string) => {
+    setSelectedSnapshotId(snapshotId);
+  }, []);
 
   const items: SelectionListItem[] = snapshotIds.map((id) => ({
     label: <SnapshotLabel snapshotId={id} />,
     value: id,
-    isSelected: id === peekSnapshotId,
+    isSelected: id === selectedSnapshotId,
   }));
 
   let content: React.ReactNode;
