@@ -1,5 +1,6 @@
-import { Point } from "@/geometry";
 import * as React from "react";
+
+import { Point } from "@/geometry";
 
 export interface UseMouseDragDetector {
   startTracking(e: React.MouseEvent): void;

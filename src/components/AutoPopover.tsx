@@ -2,7 +2,7 @@ import * as React from "react";
 import { Options } from "@popperjs/core";
 
 import Popover from "./Popover";
-import { MenuCloseContextProvider } from "./Menus/MenuCloseContext";
+import { MenuCloseListener } from "./Menus/MenuCloseContext";
 
 export interface AutoPopoverProps {
   content: JSX.Element;
@@ -25,7 +25,7 @@ const AutoPopover: React.FC<AutoPopoverProps> = ({
   }, []);
 
   return (
-    <MenuCloseContextProvider value={onClose}>
+    <MenuCloseListener onClose={onClose}>
       <div ref={anchorEl} onClick={onClick}>
         {children}
       </div>
@@ -37,7 +37,7 @@ const AutoPopover: React.FC<AutoPopoverProps> = ({
       >
         {open && content}
       </Popover>
-    </MenuCloseContextProvider>
+    </MenuCloseListener>
   );
 };
 

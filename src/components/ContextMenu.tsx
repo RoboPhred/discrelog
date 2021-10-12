@@ -3,7 +3,7 @@ import { VirtualElement } from "@popperjs/core";
 
 import { Point } from "@/geometry";
 
-import { MenuCloseContextProvider } from "./Menus/MenuCloseContext";
+import { MenuCloseListener } from "./Menus/MenuCloseContext";
 
 import Popover from "./Popover";
 
@@ -38,7 +38,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
   );
 
   return (
-    <MenuCloseContextProvider value={onRequestClose}>
+    <MenuCloseListener value={onRequestClose}>
       <Popover
         isOpen={open}
         onRequestClose={onRequestClose}
@@ -47,7 +47,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
       >
         {children}
       </Popover>
-    </MenuCloseContextProvider>
+    </MenuCloseListener>
   );
 };
 
