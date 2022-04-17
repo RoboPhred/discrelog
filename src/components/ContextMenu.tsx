@@ -38,7 +38,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
   );
 
   return (
-    <MenuCloseListener value={onRequestClose}>
+    <MenuCloseListener onClose={onRequestClose}>
       <Popover
         isOpen={open}
         onRequestClose={onRequestClose}
