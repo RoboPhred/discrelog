@@ -21,7 +21,7 @@
     "Logic Simulator"
   ],
   "private": true,
-  "author": "William Matthews",
+  "author": "RoboPhred",
   "license": "UNLICENSED",
   "devDependencies": {
     "@types/file-saver": "^2.0.1",
